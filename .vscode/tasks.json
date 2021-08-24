@@ -1,0 +1,59 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compiler",
+            "type": "shell",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+            "args": [
+                "-c",
+                "${workspaceFolder}\\src\\main.cpp",
+                "-o",
+                "${workspaceFolder}\\obj\\main.o",
+                "-IC:\\Users\\miche\\Desktop\\boost_1_76_0",
+                "--coverage"
+            ],
+			"detail": "compilateur : C:\\MinGW\\bin\\g++.exe"
+        },
+        {
+            "label": "Linker",
+            "type": "shell",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+            "args": [
+                "${workspaceFolder}\\obj\\main.o",
+                "-o",
+                "${workspaceFolder}\\bin\\Application.exe",
+                "-LC:\\Users\\miche\\Desktop\\boost_1_76_0\\libs",
+                "--coverage"
+            ],
+			"detail": "compilateur : C:\\MinGW\\bin\\g++.exe"
+        },
+        {
+            "label": "Build Application",
+			"dependsOrder": "sequence",
+            "dependsOn": [
+                "Compiler",
+                "Linker"
+            ],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+			"detail": "compilateur : C:\\MinGW\\bin\\g++.exe"
+        }
+    ]
+}

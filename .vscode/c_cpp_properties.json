@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "GCC",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:\\MinGW\\lib\\gcc\\mingw32\\6.3.0\\include\\c++\\**",
+                "C:\\MinGW\\include\\**",
+                "C:\\Users\\miche\\Desktop\\boost_1_76_0\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:\\MinGW\\bin\\g++.exe",
+            "cStandard": "c17",
+            "intelliSenseMode": "windows-gcc-x86",
+            "cppStandard": "c++20"
+        }
+    ],
+    "version": 4
+}
