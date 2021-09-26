@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.12)
 # Notre projet est étiqueté hello
 project(ApplicationExample)
 
+set (CMAKE_CXX_STANDARD 11)
+
 add_definitions("-Wall" "-g")
 
 # Crée des variables avec les fichiers à compiler
@@ -19,7 +21,11 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # On indique que l'on veut un exécutable "hello" compilé à partir des fichiers décrits par les variables SRCS et HEADERS
   add_executable(ApplicationExample ${SRCS})
-  target_link_libraries(ApplicationExample ${Boost_LIBRARIES})
+  target_link_libraries(ApplicationExample ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib)
+  if(WIN32)
+    #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
+    target_link_libraries(ApplicationExample wsock32 ws2_32)
+  endif()
 else ()
   # Sinon, nous affichons un message
   message(FATAL_ERROR "Boost not found")
