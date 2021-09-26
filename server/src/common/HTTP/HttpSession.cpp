@@ -1,5 +1,6 @@
 
 #include "HttpSession.hpp"
+#include "../../api/HttpRestrictiveEndpoint.hpp"
 
 /**
  * Append an HTTP rel-path to a local filesystem path.
@@ -142,7 +143,9 @@ void HttpSession::handleRequest(
         {boost::beast::http::verb::put, false},
         {boost::beast::http::verb::patch, false},
         {boost::beast::http::verb::delete_, false}};
-    // HttpRestrictiveEndpoint fruits(req, send, allowedMethods);
+    HttpRestrictiveEndpoint fruits<Body, Allocator>(req, allowedMethods);
+    http::response<http::empty_body> res = fruits.getResponse();
+    return send(res);
   }
 
   // Request path must be absolute and not contain "..".

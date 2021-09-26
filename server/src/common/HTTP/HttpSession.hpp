@@ -14,7 +14,6 @@
 // Short alias for this namespace
 namespace pt = boost::property_tree;
 
-#include "../../api/HttpRestrictiveEndpoint.hpp"
 #include "HttpUtils.hpp"
 
 /**

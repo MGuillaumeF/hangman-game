@@ -9,7 +9,7 @@
 /**
  * Http Endpoint Class ito create HTTP response
  */
-template <class Body, class Allocator, class Send>
+template <class Body, class Allocator> //, class Send>
 class HttpRestrictiveEndpoint {
 private:
   void doGet() { writeNotImplementedResponse(); }
@@ -26,7 +26,7 @@ protected:
   boost::beast::http::request<Body, boost::beast::http::basic_fields<Allocator>>
       m_request;
 
-  Send m_send;
+  boost::beast::http::response<boost::beast::http::string_body> m_response;
   std::map<boost::beast::http::verb, bool> m_allowedMethods;
 
   void writeMethodNotAllowed() {
@@ -37,7 +37,7 @@ protected:
     res.keep_alive(m_request.keep_alive());
     res.body() = "The method is not allowed.";
     res.prepare_payload();
-    m_send(res);
+    m_response = res;
   }
 
   void writeNotImplementedResponse() {
@@ -48,10 +48,10 @@ protected:
     res.keep_alive(m_request.keep_alive());
     res.body() = "The method is not implemented.";
     res.prepare_payload();
-    m_send(res);
+    m_response = res;
   }
 
-  void handleRequest() {
+  void dispatchRequest() {
     try {
       if (m_allowedMethods.at(m_request.method())) {
         switch (m_request.method()) {
@@ -97,7 +97,7 @@ public:
                         {boost::beast::http::verb::put, allowPut},
                         {boost::beast::http::verb::patch, allowPatch},
                         {boost::beast::http::verb::delete_, allowDelete}};
-    handleRequest();
+    dispatchRequest();
   };*/
   /**
    * HTTP Endpoint where all method is not allowed by default
@@ -105,11 +105,15 @@ public:
   HttpRestrictiveEndpoint(
       boost::beast::http::request<
           Body, boost::beast::http::basic_fields<Allocator>> &&req,
-      Send &&send, std::map<boost::beast::http::verb, bool> allowedMethods)
-      : m_request(req), m_send(send), m_allowedMethods(allowedMethods) {
+      std::map<boost::beast::http::verb, bool> allowedMethods)
+      : m_request(req), m_allowedMethods(allowedMethods) {
 
-    handleRequest();
+    dispatchRequest();
   };
+
+  boost::beast::http::response<boost::beast::http::string_body> getResponse() {
+    return m_response;
+  }
 
   ~HttpRestrictiveEndpoint() {}
 };
