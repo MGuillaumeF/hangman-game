@@ -1,6 +1,6 @@
 
 #include "HttpSession.hpp"
-#include "../../api/HttpRestrictiveEndpoint.hpp"
+#include "../../api/HttpFruitsEndpoint.hpp"
 
 /**
  * Append an HTTP rel-path to a local filesystem path.
@@ -137,15 +137,16 @@ void HttpSession::handleRequest(
   }
 
   if (req.target() == "/api/fruits") {
-    std::map<boost::beast::http::verb, bool> allowedMethods = {
-        {boost::beast::http::verb::post, false},
-        {boost::beast::http::verb::get, true},
-        {boost::beast::http::verb::put, false},
-        {boost::beast::http::verb::patch, false},
-        {boost::beast::http::verb::delete_, false}};
-    HttpRestrictiveEndpoint fruits<Body, Allocator>(req, allowedMethods);
-    http::response<http::empty_body> res = fruits.getResponse();
-    return send(res);
+    HttpFruitsEndpoint fruits(req);
+    fruits.dispatchRequest();
+    boost::beast::http::response<boost::beast::http::string_body> response =
+        fruits.getResponse();
+    // Returns response
+    auto const buildResponse =
+        [](boost::beast::http::response<boost::beast::http::string_body> res) {
+          return res;
+        };
+    return send(buildResponse(response));
   }
 
   // Request path must be absolute and not contain "..".
