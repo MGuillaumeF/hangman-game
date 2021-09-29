@@ -39,60 +39,6 @@ void HttpSession::handleRequest(
     http::request<Body, http::basic_fields<Allocator>> &&req, Send &&send) {
 
   // Returns a bad request response
-  auto const printResponse = [&req]() {
-    http::response<http::string_body> res{http::status::bad_request,
-                                          req.version()};
-    res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(http::field::content_type, "application/json");
-    res.keep_alive(req.keep_alive());
-
-    // Create a root
-    pt::ptree root;
-
-    root.put("height", 320);
-    root.put("some.complex.path", "bonjour");
-
-    // Create a node
-    pt::ptree animals_node;
-    std::string animalsNames[3] = {"rabbit", "dog", "cat"};
-    std::string animalsColors[3] = {"white", "brown", "grey"};
-
-    // Add animals as childs
-    for (int i = 0; i < 3; i += 1)
-      animals_node.put(animalsNames[i], animalsColors[i]);
-    // Add the new node to the root
-    root.add_child("animals", animals_node);
-
-    // Add two objects with the same name
-    pt::ptree fish1;
-    fish1.put_value("blue");
-    pt::ptree fish2;
-    fish2.put_value("yellow");
-    root.push_back(std::make_pair("fish", fish1));
-    root.push_back(std::make_pair("fish", fish2));
-
-    std::string fruits[3] = {"banana", "strawsberry", "orange"};
-    // Add a list
-    pt::ptree fruits_node;
-    for (auto &fruit : fruits) {
-      // Create an unnamed node containing the value
-      pt::ptree fruit_node;
-      fruit_node.put("", fruit);
-
-      // Add this node to the list.
-      fruits_node.push_back(std::make_pair("", fruit_node));
-    }
-    root.add_child("fruits", fruits_node);
-
-    std::ostringstream buf;
-    pt::write_json(buf, root, false);
-
-    res.body() = buf.str();
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a bad request response
   auto const bad_request = [&req](boost::beast::string_view why) {
     http::response<http::string_body> res{http::status::bad_request,
                                           req.version()};
@@ -131,10 +77,6 @@ void HttpSession::handleRequest(
   // Make sure we can handle the method
   if (req.method() != http::verb::get && req.method() != http::verb::head)
     return send(bad_request("Unknown HTTP-method"));
-
-  if (req.target() == "/api/print") {
-    return send(printResponse());
-  }
 
   if (req.target() == "/api/fruits") {
     HttpFruitsEndpoint fruits(req);

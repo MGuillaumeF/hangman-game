@@ -61,23 +61,6 @@ public:
   /**
    * HTTP Endpoint where all method is not allowed by default
    */
-  /*HttpRestrictiveEndpoint(
-      boost::beast::http::request<
-          Body, boost::beast::http::basic_fields<Allocator>> &&req,
-      Send &&send, bool allowPost = false, bool allowGet = false,
-      bool allowPut = false, bool allowPatch = false, bool allowDelete = false)
-      : m_request(req), m_send(send) {
-
-    m_allowedMethods = {{boost::beast::http::verb::post, allowPost},
-                        {boost::beast::http::verb::get, allowGet},
-                        {boost::beast::http::verb::put, allowPut},
-                        {boost::beast::http::verb::patch, allowPatch},
-                        {boost::beast::http::verb::delete_, allowDelete}};
-    dispatchRequest();
-  };*/
-  /**
-   * HTTP Endpoint where all method is not allowed by default
-   */
   HttpRestrictiveEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       std::map<boost::beast::http::verb, bool> allowedMethods)
