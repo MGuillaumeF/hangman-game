@@ -1,0 +1,13 @@
+{
+  "body": {
+    "content": "ewogICJsb2dpbiIgOiAiYSIsICJwYXNzd29yZCIgOiAiYiIKfQ==",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {
+    "content-type": "application/json"
+  },
+  "method": "POST",
+  "title": "Récupération d'un jeton de connexion",
+  "url": "http://localhost:8080/api/token"
+}

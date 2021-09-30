@@ -1,6 +1,7 @@
 
 #include "HttpSession.hpp"
 #include "../../api/HttpFruitsEndpoint.hpp"
+#include "../../api/HttpTokenEndpoint.hpp"
 
 /**
  * Append an HTTP rel-path to a local filesystem path.
@@ -74,22 +75,36 @@ void HttpSession::handleRequest(
     return res;
   };
 
+  auto const buildResponse =
+      [](boost::beast::http::response<boost::beast::http::string_body> res) {
+        return res;
+      };
+  try {
+    if (req.target().compare("/api/token") == 0) {
+      std::cout << "handleRequest - /api/token" << std::endl;
+      HttpTokenEndpoint tokenEndpoint(req);
+      tokenEndpoint.dispatchRequest();
+      boost::beast::http::response<boost::beast::http::string_body> response =
+          tokenEndpoint.getResponse();
+      return send(buildResponse(response));
+    }
+
+    if (req.target().compare("/api/fruits") == 0) {
+      std::cout << "handleRequest - /api/fruits" << std::endl;
+      HttpFruitsEndpoint fruits(req);
+      fruits.dispatchRequest();
+      boost::beast::http::response<boost::beast::http::string_body> response =
+          fruits.getResponse();
+      return send(buildResponse(response));
+    }
+  } catch (const ParsingException &ex) {
+    std::cerr << "handleRequest - parsing error : " << ex.what() << std::endl;
+
+    return send(bad_request("parsing error"));
+  }
   // Make sure we can handle the method
   if (req.method() != http::verb::get && req.method() != http::verb::head)
     return send(bad_request("Unknown HTTP-method"));
-
-  if (req.target() == "/api/fruits") {
-    HttpFruitsEndpoint fruits(req);
-    fruits.dispatchRequest();
-    boost::beast::http::response<boost::beast::http::string_body> response =
-        fruits.getResponse();
-    // Returns response
-    auto const buildResponse =
-        [](boost::beast::http::response<boost::beast::http::string_body> res) {
-          return res;
-        };
-    return send(buildResponse(response));
-  }
 
   // Request path must be absolute and not contain "..".
   if (req.target().empty() || req.target()[0] != '/' ||
