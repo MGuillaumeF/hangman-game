@@ -34,14 +34,29 @@ public:
 
     const boost::string_view contentType =
         m_request.at(boost::beast::http::field::content_type);
+
     if (contentType.compare("application/json") == 0) {
       std::cout << "HttpTokenEndpoint - doPost - json body content expected"
                 << std::endl;
-      boost::property_tree::read_json(l_stream, requestRodyTree);
+      try {
+        boost::property_tree::read_json(l_stream, requestRodyTree);
+      } catch (const std::exception &ex) {
+        std::cerr
+            << "HttpTokenEndpoint - doPost - JSON body has invalid structure"
+            << ex.what() << std::endl;
+        throw ParsingException("body has invalid structure");
+      }
     } else if (contentType.compare("application/xml") == 0) {
       std::cout << "HttpTokenEndpoint - doPost - xml body content expected"
                 << std::endl;
-      boost::property_tree::read_xml(l_stream, requestRodyTree);
+      try {
+        boost::property_tree::read_xml(l_stream, requestRodyTree);
+      } catch (const std::exception &ex) {
+        std::cerr
+            << "HttpTokenEndpoint - doPost - XML body has invalid structure"
+            << ex.what() << std::endl;
+        throw ParsingException("body has invalid structure");
+      }
     } else {
       std::cout << "HttpTokenEndpoint - doPost - content type not supported"
                 << std::endl;
