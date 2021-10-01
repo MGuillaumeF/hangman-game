@@ -5,6 +5,17 @@
  */
 #include <iostream>
 
+LoggerConsole *LoggerConsole::s_pInstance = nullptr;
+
+LoggerConsole::LoggerConsole(int level) : Logger() { setLevel(level); }
+
+LoggerConsole *LoggerConsole::getInstance() {
+  if (s_pInstance == nullptr) {
+    s_pInstance = new LoggerConsole(Logger::LEVEL::LINFO);
+  }
+  return s_pInstance;
+}
+
 /**
  * To write a log message
  * @param msg The message to print

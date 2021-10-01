@@ -30,6 +30,8 @@ public:
    * Destructor of Logger
    */
   ~LoggerFile();
+  static LoggerFile *s_pInstance;
+  static LoggerFile *getInstance();
 };
 
 #endif // __LOGGERFILE_H__

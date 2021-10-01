@@ -20,6 +20,13 @@ private:
    * @param msg The message to print
    */
   void write(const std::string &msg);
+
+  static LoggerConsole *s_pInstance;
+
+  LoggerConsole(int level);
+
+public:
+  LoggerConsole *getInstance();
 };
 
 #endif // __LOGGERCONSOLE_H__

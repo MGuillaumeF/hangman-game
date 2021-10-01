@@ -3,10 +3,21 @@
  * The fstream include is to print messages in file
  */
 #include <fstream>
+
+LoggerFile *LoggerFile::s_pInstance = nullptr;
+
 /**
  * Contructor of Logger
  */
 LoggerFile::LoggerFile() {}
+
+LoggerFile *LoggerFile::getInstance() {
+  if (s_pInstance == nullptr) {
+    s_pInstance = new LoggerFile();
+  }
+  return s_pInstance;
+}
+
 /**
  * To write a log message
  * @param msg The message to print

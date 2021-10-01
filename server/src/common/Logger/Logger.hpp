@@ -7,38 +7,6 @@
 #include <string>
 
 /**
- * All levels available for logs
- */
-enum LEVEL {
-  /**
-   * The **debug** level
-   * Level of Logger for dev mode
-   * To print debug message with Logger to help dev
-   * value 0
-   */
-  LDEBUG = 0,
-  /**
-   * The **information** level
-   * Default level of Logger for production mode
-   * To print information, normal message with Logger
-   * value 1
-   */
-  LINFO = 1,
-  /**
-   * The **warnning** level
-   * To print warnning, important message with Logger
-   * value 2
-   */
-  LWARN = 2,
-  /**
-   * The **error** level
-   * To print error, very important message with Logger
-   * value 3
-   */
-  LERROR = 3
-};
-
-/**
  * abstract class for generic definition of logger
  */
 class Logger {
@@ -48,7 +16,6 @@ private:
    * @see LEVEL
    */
   int m_level = 1;
-
   /**
    * To write a log message
    * @param msg The message to print
@@ -56,6 +23,37 @@ private:
   virtual void write(const std::string &msg) = 0;
 
 public:
+  /**
+   * All levels available for logs
+   */
+  enum LEVEL {
+    /**
+     * The **debug** level
+     * Level of Logger for dev mode
+     * To print debug message with Logger to help dev
+     * value 0
+     */
+    LDEBUG = 0,
+    /**
+     * The **information** level
+     * Default level of Logger for production mode
+     * To print information, normal message with Logger
+     * value 1
+     */
+    LINFO = 1,
+    /**
+     * The **warnning** level
+     * To print warnning, important message with Logger
+     * value 2
+     */
+    LWARN = 2,
+    /**
+     * The **error** level
+     * To print error, very important message with Logger
+     * value 3
+     */
+    LERROR = 3
+  };
   /**
    * To get the log level of Logger
    * @see LEVEL

@@ -9,10 +9,14 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "../common/HTTP/Exception/ParsingException.hpp"
+#include "../common/Logger/LoggerFile.hpp"
+
 /**
  * Http Endpoint Class ito create HTTP response
  */
 class HttpTokenEndpoint : public HttpRestrictiveEndpoint {
+private:
+  LoggerFile *m_logger;
 
 public:
   HttpTokenEndpoint(
@@ -23,11 +27,14 @@ public:
                                  {boost::beast::http::verb::put, false},
                                  {boost::beast::http::verb::patch, false},
                                  {boost::beast::http::verb::delete_, true}}) {
+    m_logger = LoggerFile::getInstance();
+    m_logger->setLevel(LoggerFile::LEVEL::LINFO);
 
-    std::cout << "HttpTokenEndpoint - constructor" << std::endl;
+    m_logger->debug("HttpTokenEndpoint - constructor");
   }
+
   void doPost() override {
-    std::cout << "HttpTokenEndpoint - doPost - start" << std::endl;
+    m_logger->debug("HttpTokenEndpoint - doPost - start");
 
     std::stringstream l_stream(m_request.body());
     boost::property_tree::ptree requestRodyTree;
@@ -36,53 +43,53 @@ public:
         m_request.at(boost::beast::http::field::content_type);
 
     if (contentType.compare("application/json") == 0) {
-      std::cout << "HttpTokenEndpoint - doPost - json body content expected"
-                << std::endl;
+      m_logger->debug(
+          "HttpTokenEndpoint - doPost - json body content expected");
       try {
         boost::property_tree::read_json(l_stream, requestRodyTree);
       } catch (const std::exception &ex) {
-        std::cerr
-            << "HttpTokenEndpoint - doPost - JSON body has invalid structure"
-            << ex.what() << std::endl;
+        m_logger->error(
+            "HttpTokenEndpoint - doPost - JSON body has invalid structure" +
+            std::string(ex.what()));
         throw ParsingException("body has invalid structure");
       }
     } else if (contentType.compare("application/xml") == 0) {
-      std::cout << "HttpTokenEndpoint - doPost - xml body content expected"
-                << std::endl;
+      m_logger->debug("HttpTokenEndpoint - doPost - xml body content expected");
       try {
         boost::property_tree::read_xml(l_stream, requestRodyTree);
       } catch (const std::exception &ex) {
-        std::cerr
-            << "HttpTokenEndpoint - doPost - XML body has invalid structure"
-            << ex.what() << std::endl;
+        m_logger->error(
+            "HttpTokenEndpoint - doPost - XML body has invalid structure" +
+            std::string(ex.what()));
         throw ParsingException("body has invalid structure");
       }
     } else {
-      std::cout << "HttpTokenEndpoint - doPost - content type not supported"
-                << std::endl;
+      m_logger->error(
+          "HttpTokenEndpoint - doPost - content type not supported");
       throw ParsingException("content type is not valid");
     }
     try {
       const std::string l_login = requestRodyTree.get<std::string>("login");
-      std::cout << "HttpTokenEndpoint - doPost - login :" << l_login
-                << std::endl;
+      m_logger->debug("HttpTokenEndpoint - doPost - login :" +
+                      std::string(l_login));
       const std::string l_pwd = requestRodyTree.get<std::string>("password");
-      std::cout << "HttpTokenEndpoint - doPost - password :" << l_pwd
-                << std::endl;
+      m_logger->debug("HttpTokenEndpoint - doPost - password :" +
+                      std::string(l_pwd));
     } catch (
         const boost::wrapexcept<boost::property_tree::ptree_bad_path> &ex) {
       // ERROR TYPE : ENOKEY, mandatory key not found
       // FIELD : [NAME, ERROR]
-      std::cerr << "HttpTokenEndpoint - doPost - body has at least one "
-                   "mandatory field : "
-                << ex.what() << std::endl;
+      m_logger->error("HttpTokenEndpoint - doPost - body has at least one "
+                      "mandatory field : " +
+                      std::string(ex.what()));
       throw ParsingException("body has at least one mandatory field");
     } catch (
         const boost::wrapexcept<boost::property_tree::ptree_bad_data> &ex) {
       // ERROR TYPE : EVALUETYPE, key found with bad value type
       // FIELD : [NAME, ERROR]
-      std::cerr << "HttpTokenEndpoint - doPost - body has bad value type : "
-                << ex.what() << std::endl;
+      m_logger->error(
+          "HttpTokenEndpoint - doPost - body has bad value type : " +
+          std::string(ex.what()));
       throw ParsingException("body has bad value type");
     }
 
@@ -94,7 +101,7 @@ public:
     res.body() = "This is a fake token";
     res.prepare_payload();
     setResponse(res);
-    std::cout << "HttpTokenEndpoint - doPost - end" << std::endl;
+    m_logger->debug("HttpTokenEndpoint - doPost - end");
   }
 };
 

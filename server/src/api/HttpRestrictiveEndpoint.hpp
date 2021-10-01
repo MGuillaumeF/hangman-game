@@ -1,11 +1,12 @@
 #ifndef __HTTP_RESTRICTIVE_ENDPOINT_HPP__
 #define __HTTP_RESTRICTIVE_ENDPOINT_HPP__
 
+#include <iostream>
+#include <map>
+
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
-#include <iostream>
-#include <map>
 
 /**
  * Http Endpoint Class ito create HTTP response
