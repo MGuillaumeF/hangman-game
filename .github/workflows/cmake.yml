@@ -34,11 +34,11 @@ jobs:
       run: sudo apt-get install -y lcov
 
     - name: Install Boost
-      run: sudo wget https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.bz2; \ 
-tar --bzip2 -xf ./boost_1_77_0.tar.bz2; \
-cd ./boost_1_77_0; ./bootstrap.sh; \
-./b2 toolset=clang threading=multi runtime-link=static  link=static cxxflags="-stdlib=libc++ -std=c++11" linkflags="-stdlib=libc++" address-model=64; \
-./b2 install
+      run: sudo wget https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.bz2;
+      run: tar --bzip2 -xf ./boost_1_77_0.tar.bz2;
+      run: cd ./boost_1_77_0; ./bootstrap.sh;
+      run: ./b2 toolset=clang threading=multi runtime-link=static  link=static cxxflags="-stdlib=libc++ -std=c++11" linkflags="-stdlib=libc++" address-model=64;
+      run: ./b2 install
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
