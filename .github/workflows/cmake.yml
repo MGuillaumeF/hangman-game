@@ -33,11 +33,15 @@ jobs:
     - name: Install lcov
       run: sudo apt-get install -y lcov
 
-    - name: Install Boost
+    - name: Download Boost
       run: sudo wget https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.bz2;
+    - name: Unzip Boost
       run: tar --bzip2 -xf ./boost_1_77_0.tar.bz2;
+    - name: Bootstrap Boost
       run: cd ./boost_1_77_0; ./bootstrap.sh;
+    - name: Build Boost  
       run: ./b2 toolset=clang threading=multi runtime-link=static  link=static cxxflags="-stdlib=libc++ -std=c++11" linkflags="-stdlib=libc++" address-model=64;
+    - name: Install Boost
       run: ./b2 install
 
     - name: Configure CMake
