@@ -34,7 +34,9 @@ jobs:
       run: sudo apt-get install -y lcov
 
     - name: Download Boost
-      run: sudo wget https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.bz2;
+      uses: wei/wget@v1
+      with:
+        args: -qO- https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.bz2
     - name: Unzip Boost
       run: tar --bzip2 -xf ./boost_1_77_0.tar.bz2;
     - name: Bootstrap Boost
