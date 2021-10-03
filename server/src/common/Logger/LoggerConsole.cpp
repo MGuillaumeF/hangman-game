@@ -20,6 +20,7 @@ LoggerConsole *LoggerConsole::getInstance() {
  * To write a log message
  * @param msg The message to print
  */
-void LoggerConsole::write(const std::string &msg) {
-  std::cout << msg << std::endl;
+void LoggerConsole::write(const std::string &level, const std::string &theme,
+                          const std::string &msg) {
+  std::cout << '[' << level << "] - [" << theme << "] - " << msg << std::endl;
 }

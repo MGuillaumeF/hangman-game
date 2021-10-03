@@ -3,9 +3,7 @@
 
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
-
-#include "HttpSession.hpp"
-#include "HttpUtils.hpp"
+#include <boost/beast/core.hpp>
 
 /**
  *  Accepts incoming connections and launches the sessions

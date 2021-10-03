@@ -11,15 +11,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-// Short alias for this namespace
-namespace pt = boost::property_tree;
-
 #include "HttpUtils.hpp"
-
-/**
- * from <boost/beast/http.hpp>
- */
-namespace http = boost::beast::http;
 
 /**
  * Handles an HTTP server connection
@@ -33,19 +25,20 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
     explicit send_lambda(HttpSession &self) : self_(self) {}
 
     template <bool isRequest, class Body, class Fields>
-    void operator()(http::message<isRequest, Body, Fields> &&msg) const {
+    void operator()(
+        boost::beast::http::message<isRequest, Body, Fields> &&msg) const {
       // The lifetime of the message has to extend
       // for the duration of the async operation so
       // we use a shared_ptr to manage it.
-      auto sp = std::make_shared<http::message<isRequest, Body, Fields>>(
-          std::move(msg));
+      auto sp = std::make_shared<
+          boost::beast::http::message<isRequest, Body, Fields>>(std::move(msg));
 
       // Store a type-erased version of the shared
       // pointer in the class to keep it alive.
       self_.m_res = sp;
 
       // Write the response
-      http::async_write(
+      boost::beast::http::async_write(
           self_.m_stream, *sp,
           boost::beast::bind_front_handler(
               &HttpSession::onWrite, self_.shared_from_this(), sp->need_eof()));
@@ -55,7 +48,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
   boost::beast::tcp_stream m_stream;
   boost::beast::flat_buffer m_buffer;
   std::shared_ptr<std::string const> m_doc_root;
-  http::request<http::string_body> m_req;
+  boost::beast::http::request<boost::beast::http::string_body> m_req;
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
 
@@ -73,9 +66,11 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * caller to pass a generic lambda for receiving the response.
    */
   template <class Body, class Allocator, class Send>
-  void handleRequest(boost::beast::string_view doc_root,
-                     http::request<Body, http::basic_fields<Allocator>> &&req,
-                     Send &&send);
+  void
+  handleRequest(boost::beast::string_view doc_root,
+                boost::beast::http::request<
+                    Body, boost::beast::http::basic_fields<Allocator>> &&req,
+                Send &&send);
 
 public:
   // Take ownership of the stream

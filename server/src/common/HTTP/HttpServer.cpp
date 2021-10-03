@@ -1,4 +1,7 @@
 #include "HttpServer.hpp"
+
+#include <boost/asio/signal_set.hpp>
+#include <boost/bind.hpp>
 #include <thread>
 
 HttpServer::HttpServer(char *address, char *port, char *doc_root,

@@ -1,5 +1,8 @@
 #include "HttpListener.hpp"
 
+#include "HttpSession.hpp"
+#include "HttpUtils.hpp"
+
 HttpListener::HttpListener(boost::asio::io_context &ioc,
                            boost::asio::ip::tcp::endpoint endpoint,
                            std::shared_ptr<std::string const> const &doc_root)

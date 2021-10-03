@@ -17,9 +17,11 @@ class LoggerConsole : public Logger {
 private:
   /**
    * To write a log message
+   * @param theme The theme of log
    * @param msg The message to print
    */
-  void write(const std::string &msg);
+  void write(const std::string &level, const std::string &theme,
+             const std::string &msg);
 
   static LoggerConsole *s_pInstance;
 

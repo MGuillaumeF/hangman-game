@@ -37,14 +37,16 @@ std::string HttpSession::pathCat(boost::beast::string_view base,
 template <class Body, class Allocator, class Send>
 void HttpSession::handleRequest(
     boost::beast::string_view doc_root,
-    http::request<Body, http::basic_fields<Allocator>> &&req, Send &&send) {
+    boost::beast::http::request<
+        Body, boost::beast::http::basic_fields<Allocator>> &&req,
+    Send &&send) {
 
   // Returns a bad request response
   auto const bad_request = [&req](boost::beast::string_view why) {
-    http::response<http::string_body> res{http::status::bad_request,
-                                          req.version()};
-    res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(http::field::content_type, "text/html");
+    boost::beast::http::response<boost::beast::http::string_body> res{
+        boost::beast::http::status::bad_request, req.version()};
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type, "text/html");
     res.keep_alive(req.keep_alive());
     res.body() = std::string(why);
     res.prepare_payload();
@@ -53,10 +55,10 @@ void HttpSession::handleRequest(
 
   // Returns a not found response
   auto const not_found = [&req](boost::beast::string_view target) {
-    http::response<http::string_body> res{http::status::not_found,
-                                          req.version()};
-    res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(http::field::content_type, "text/html");
+    boost::beast::http::response<boost::beast::http::string_body> res{
+        boost::beast::http::status::not_found, req.version()};
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type, "text/html");
     res.keep_alive(req.keep_alive());
     res.body() = "The resource '" + std::string(target) + "' was not found.";
     res.prepare_payload();
@@ -65,10 +67,10 @@ void HttpSession::handleRequest(
 
   // Returns a server error response
   auto const server_error = [&req](boost::beast::string_view what) {
-    http::response<http::string_body> res{http::status::internal_server_error,
-                                          req.version()};
-    res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(http::field::content_type, "text/html");
+    boost::beast::http::response<boost::beast::http::string_body> res{
+        boost::beast::http::status::internal_server_error, req.version()};
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type, "text/html");
     res.keep_alive(req.keep_alive());
     res.body() = "An error occurred: '" + std::string(what) + "'";
     res.prepare_payload();
@@ -103,7 +105,8 @@ void HttpSession::handleRequest(
     return send(bad_request("parsing error"));
   }
   // Make sure we can handle the method
-  if (req.method() != http::verb::get && req.method() != http::verb::head)
+  if (req.method() != boost::beast::http::verb::get &&
+      req.method() != boost::beast::http::verb::head)
     return send(bad_request("Unknown HTTP-method"));
 
   // Request path must be absolute and not contain "..".
@@ -118,7 +121,7 @@ void HttpSession::handleRequest(
 
   // Attempt to open the file
   boost::beast::error_code ec;
-  http::file_body::value_type body;
+  boost::beast::http::file_body::value_type body;
   body.open(path.c_str(), boost::beast::file_mode::scan, ec);
 
   // Handle the case where the file doesn't exist
@@ -133,21 +136,24 @@ void HttpSession::handleRequest(
   auto const size = body.size();
 
   // Respond to HEAD request
-  if (req.method() == http::verb::head) {
-    http::response<http::empty_body> res{http::status::ok, req.version()};
-    res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(http::field::content_type, HttpUtils::getMimeType(path));
+  if (req.method() == boost::beast::http::verb::head) {
+    boost::beast::http::response<boost::beast::http::empty_body> res{
+        boost::beast::http::status::ok, req.version()};
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type,
+            HttpUtils::getMimeType(path));
     res.content_length(size);
     res.keep_alive(req.keep_alive());
     return send(std::move(res));
   }
 
   // Respond to GET request
-  http::response<http::file_body> res{
+  boost::beast::http::response<boost::beast::http::file_body> res{
       std::piecewise_construct, std::make_tuple(std::move(body)),
-      std::make_tuple(http::status::ok, req.version())};
-  res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(http::field::content_type, HttpUtils::getMimeType(path));
+      std::make_tuple(boost::beast::http::status::ok, req.version())};
+  res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+  res.set(boost::beast::http::field::content_type,
+          HttpUtils::getMimeType(path));
   res.content_length(size);
   res.keep_alive(req.keep_alive());
   return send(std::move(res));
@@ -173,9 +179,9 @@ void HttpSession::doRead() {
   m_stream.expires_after(std::chrono::seconds(30));
 
   // Read a request
-  http::async_read(m_stream, m_buffer, m_req,
-                   boost::beast::bind_front_handler(&HttpSession::onRead,
-                                                    shared_from_this()));
+  boost::beast::http::async_read(m_stream, m_buffer, m_req,
+                                 boost::beast::bind_front_handler(
+                                     &HttpSession::onRead, shared_from_this()));
 }
 
 void HttpSession::onRead(boost::beast::error_code ec,
@@ -183,7 +189,7 @@ void HttpSession::onRead(boost::beast::error_code ec,
   boost::ignore_unused(bytes_transferred);
 
   // This means they closed the connection
-  if (ec == http::error::end_of_stream)
+  if (ec == boost::beast::http::error::end_of_stream)
     return doClose();
 
   if (ec)

@@ -20,7 +20,8 @@ private:
    * To write a log message
    * @param msg The message to print
    */
-  virtual void write(const std::string &msg) = 0;
+  virtual void write(const std::string &level, const std::string &theme,
+                     const std::string &msg) = 0;
 
 public:
   /**
@@ -69,22 +70,22 @@ public:
    * To print debug log
    * @param msg The message to print
    */
-  void debug(const std::string &msg);
+  void debug(const std::string &theme, const std::string &msg);
   /**
    * To print info log
    * @param msg The message to print
    */
-  void info(const std::string &msg);
+  void info(const std::string &theme, const std::string &msg);
   /**
    * To print warn log
    * @param msg The message to print
    */
-  void warn(const std::string &msg);
+  void warn(const std::string &theme, const std::string &msg);
   /**
    * To print error log
    * @param msg The message to print
    */
-  void error(const std::string &msg);
+  void error(const std::string &theme, const std::string &msg);
 };
 
 #endif // __LOGGER_H__

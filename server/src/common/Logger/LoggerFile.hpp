@@ -19,7 +19,8 @@ private:
    * To write a log message
    * @param msg The message to print
    */
-  void write(const std::string &msg);
+  void write(const std::string &level, const std::string &theme,
+             const std::string &msg);
 
 public:
   /**

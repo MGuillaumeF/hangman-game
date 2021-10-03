@@ -1,4 +1,28 @@
 #include "HttpUtils.hpp"
+#include "../Logger/LoggerFile.hpp"
+
+const std::map<boost::beast::string_view, boost::beast::string_view>
+    HttpUtils::s_extTomimtype = {{".htm", "text/html"},
+                                 {".html", "text/html"},
+                                 {".php", "text/html"},
+                                 {".css", "text/css"},
+                                 {".txt", "text/plain"},
+                                 {".js", "application/javascript"},
+                                 {".json", "application/json"},
+                                 {".xml", "application/xml"},
+                                 {".swf", "application/x-shockwave-flash"},
+                                 {".flv", "video/x-flv"},
+                                 {".png", "image/png"},
+                                 {".jpe", "image/jpeg"},
+                                 {".jpeg", "image/jpeg"},
+                                 {".jpg", "image/jpeg"},
+                                 {".gif", "image/gif"},
+                                 {".bmp", "image/bmp"},
+                                 {".ico", "image/vnd.microsoft.icon"},
+                                 {".tiff", "image/tiff"},
+                                 {".tif", "image/tiff"},
+                                 {".svg", "image/svg+xml"},
+                                 {".svgz", "image/svg+xml"}};
 
 /**
  * The default constructor of Utils class
@@ -21,41 +45,16 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
   }();
 
   boost::beast::string_view l_sMimeType = "application/text";
-
-  if (iequals(ext, ".htm") || iequals(ext, ".html") || iequals(ext, ".php")) {
-    l_sMimeType = "text/html";
-  } else if (iequals(ext, ".css")) {
-    l_sMimeType = "text/css";
-  } else if (iequals(ext, ".txt")) {
-    l_sMimeType = "text/plain";
-  } else if (iequals(ext, ".js")) {
-    l_sMimeType = "application/javascript";
-  } else if (iequals(ext, ".json")) {
-    l_sMimeType = "application/json";
-  } else if (iequals(ext, ".xml")) {
-    l_sMimeType = "application/xml";
-  } else if (iequals(ext, ".swf")) {
-    l_sMimeType = "application/x-shockwave-flash";
-  } else if (iequals(ext, ".flv")) {
-    l_sMimeType = "video/x-flv";
-  } else if (iequals(ext, ".png")) {
-    l_sMimeType = "image/png";
-  } else if (iequals(ext, ".jpe") || iequals(ext, ".jpeg") ||
-             iequals(ext, ".jpg")) {
-    l_sMimeType = "image/jpeg";
-  } else if (iequals(ext, ".gif")) {
-    l_sMimeType = "image/gif";
-  } else if (iequals(ext, ".bmp")) {
-    l_sMimeType = "image/bmp";
-  } else if (iequals(ext, ".ico")) {
-    l_sMimeType = "image/vnd.microsoft.icon";
-  } else if (iequals(ext, ".tiff") || iequals(ext, ".tif")) {
-    l_sMimeType = "image/tiff";
-  } else if (iequals(ext, ".svg") || iequals(ext, ".svgz")) {
-    l_sMimeType = "image/svg+xml";
+  LoggerFile *logger = LoggerFile::getInstance();
+  try {
+    l_sMimeType = HttpUtils::s_extTomimtype.at(ext);
+  } catch (const std::out_of_range &) {
+    logger->warn("HTTP_CONFIGURATION",
+                 "MimeType of File not found for extension : " +
+                     ext.to_string());
   }
-  LoggerFile logger = LoggerFile();
-  logger.info("MimeType of File found : " + l_sMimeType.to_string());
+  logger->info("HTTP_CONFIGURATION",
+               "MimeType of File found : " + l_sMimeType.to_string());
   return l_sMimeType;
 }
 
@@ -65,8 +64,8 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
  * @param what the explanation of error
  */
 void HttpUtils::onFail(boost::beast::error_code ec, char const *what) {
-  LoggerFile logger = LoggerFile();
-  logger.error(std::string(what) + ": " + ec.message());
+  LoggerFile::getInstance()->error("HTTP_CONFIGURATION",
+                                   std::string(what) + ": " + ec.message());
 }
 
 /**

@@ -19,35 +19,35 @@ void Logger::setLevel(int level) {
  * To print debug log
  * @param msg The message to print
  */
-void Logger::debug(const std::string &msg) {
+void Logger::debug(const std::string &theme, const std::string &msg) {
   if (m_level == LEVEL::LDEBUG) {
-    write(msg);
+    write("DEBUG", theme, msg);
   }
 }
 /**
  * To print info log
  * @param msg The message to print
  */
-void Logger::info(const std::string &msg) {
+void Logger::info(const std::string &theme, const std::string &msg) {
   if (m_level <= LEVEL::LINFO) {
-    write(msg);
+    write("INFO", theme, msg);
   }
 }
 /**
  * To print warn log
  * @param msg The message to print
  */
-void Logger::warn(const std::string &msg) {
+void Logger::warn(const std::string &theme, const std::string &msg) {
   if (m_level <= LEVEL::LWARN) {
-    write(msg);
+    write("WARN", theme, msg);
   }
 }
 /**
  * To print error log
  * @param msg The message to print
  */
-void Logger::error(const std::string &msg) {
+void Logger::error(const std::string &theme, const std::string &msg) {
   if (m_level <= LEVEL::LERROR) {
-    write(msg);
+    write("ERROR", theme, msg);
   }
 }

@@ -2,8 +2,7 @@
 #define __HTTP_UTILS_H__
 
 #include <boost/beast/core.hpp>
-
-#include "../Logger/LoggerFile.hpp"
+#include <map>
 /**
  * Utilitaries functions in static class
  */
@@ -12,13 +11,10 @@ private:
   /**
    * Output file path
    */
-  static const std::string s_outputFilePath;
+  static const std::map<boost::beast::string_view, boost::beast::string_view>
+      s_extTomimtype;
 
 public:
-  /**
-   * Application LoggerFile
-   */
-  static const LoggerFile s_appLogger;
   /**
    * The default constructor of Utils class
    */

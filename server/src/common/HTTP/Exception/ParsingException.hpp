@@ -14,7 +14,7 @@ public:
    */
   explicit ParsingException(const char *message) : m_message(message) {}
 
-  /** Constructor (C++ STL strings).
+  /** Constructor
    *  @param message The error message.
    */
   explicit ParsingException(const std::string &message) : m_message(message) {}
