@@ -21,6 +21,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install graphviz
+      run: sudo apt-get install -y graphviz
+
+    - name: Install doxygen 
+      run: sudo apt-get install -y doxygen
+
+    - name: Install llvm 
+      run: sudo apt-get install -y llvm
+
+    - name: Install lcov
+      run: sudo apt-get install -y lcov
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
