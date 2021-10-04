@@ -42,16 +42,16 @@ jobs:
     - name: Unzip Boost
       run: tar xzvf ./boost_1_77_0.tar.gz
     - name: Bootstrap Boost
-      run: cd ./boost_1_77_0; ./bootstrap.sh --with-toolset=clang b2 toolset=clang
+      run: cd ./boost_1_77_0; ./bootstrap.sh --with-toolset=clang; ./b2 toolset=clang
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Build
+    - name: Generate target
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
 
     - name: Test
       working-directory: ${{github.workspace}}/build
