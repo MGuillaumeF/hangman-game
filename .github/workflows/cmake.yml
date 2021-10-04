@@ -38,7 +38,7 @@ jobs:
     - name: Download Boost
       uses: wei/wget@v1
       with:
-        args: wget -O boost_1_77_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.77.0/boost_1_77_0.tar.gz/download
+        args: -O boost_1_77_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.77.0/boost_1_77_0.tar.gz/download
     - name: Unzip Boost
       run: tar xzvf ./boost_1_77_0.tar.gz
     - name: Bootstrap Boost
