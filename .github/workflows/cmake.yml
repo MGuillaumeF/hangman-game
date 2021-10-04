@@ -48,7 +48,7 @@ jobs:
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build server
       # Build your program with the given configuration
@@ -61,10 +61,10 @@ jobs:
       run: ctest -C ${{env.BUILD_TYPE}}
 
     - name: Coverage
-      run: lcov --directory . -c -o ./server/report/resultCoverageRuntime.info --no-external
+      run: lcov --directory ./server/bin/CMakeFiles/ApplicationExample.dir/server/src -c -o ./server/report/resultCoverageRuntime.info --no-external
 
     - name: Reports
-      run: genhtml --highlight --legend --output-directory ./server/coverage -t "Boost Server coverage report" ./server/report/resultCoverageRuntime.info ./server/report/resultCoverage.info
+      run: genhtml --highlight --legend --output-directory ./server/coverage -t "Hangman game Server coverage report" ./server/report/resultCoverageRuntime.info ./server/report/resultCoverage.info
 
     - name: Docs
       run: doxygen docg.conf
