@@ -1,5 +1,5 @@
 #include "HttpUtils.hpp"
-#include "../Logger/LoggerFile.hpp"
+#include "../Logger/Logger.hpp"
 
 const std::map<boost::beast::string_view, boost::beast::string_view>
     HttpUtils::s_extTomimtype = {{".htm", "text/html"},
@@ -45,7 +45,7 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
   }();
 
   boost::beast::string_view l_sMimeType = "application/text";
-  LoggerFile *logger = LoggerFile::getInstance();
+  Logger *logger = Logger::getInstance();
   try {
     l_sMimeType = HttpUtils::s_extTomimtype.at(ext);
   } catch (const std::out_of_range &) {
@@ -64,8 +64,8 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
  * @param what the explanation of error
  */
 void HttpUtils::onFail(boost::beast::error_code ec, char const *what) {
-  LoggerFile::getInstance()->error("HTTP_CONFIGURATION",
-                                   std::string(what) + ": " + ec.message());
+  Logger::getInstance()->error("HTTP_CONFIGURATION",
+                               std::string(what) + ": " + ec.message());
 }
 
 /**

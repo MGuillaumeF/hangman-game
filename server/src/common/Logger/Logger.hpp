@@ -4,24 +4,38 @@
 /**
  * The string include is to message parameters of Logger
  */
+#include <map>
+#include <set>
 #include <string>
 
+using appender_t = void (*)(const std::string &);
+typedef std::map<std::string, std::set<appender_t>> appendersByLevel;
+typedef std::map<std::string, appendersByLevel> appendersByTheme;
 /**
  * abstract class for generic definition of logger
  */
 class Logger {
+public:
 private:
+  static Logger *s_pInstance;
   /**
    * The current log Level
    * @see LEVEL
    */
   int m_level = 1;
   /**
+   * @brief appenders of logger for each theme and levels
+   *
+   */
+  appendersByTheme m_appenders;
+  /**
    * To write a log message
    * @param msg The message to print
    */
-  virtual void write(const std::string &level, const std::string &theme,
-                     const std::string &msg) = 0;
+  void write(const std::string &level, const std::string &theme,
+             const std::string &msg);
+
+  Logger() {}
 
 public:
   /**
@@ -55,6 +69,7 @@ public:
      */
     LERROR = 3
   };
+  static Logger *getInstance();
   /**
    * To get the log level of Logger
    * @see LEVEL
@@ -86,6 +101,13 @@ public:
    * @param msg The message to print
    */
   void error(const std::string &theme, const std::string &msg);
+
+  void addAppender(const int level, const std::string &theme, appender_t);
+
+  std::string getLog(const std::string &level, const std::string &theme,
+                     const std::string &msg);
+  static void defaultOutAppender(const std::string &message);
+  static void defaultErrAppender(const std::string &message);
 };
 
 #endif // __LOGGER_H__

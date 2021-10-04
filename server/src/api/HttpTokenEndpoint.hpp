@@ -9,14 +9,14 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "../common/HTTP/Exception/ParsingException.hpp"
-#include "../common/Logger/LoggerFile.hpp"
+#include "../common/Logger/Logger.hpp"
 
 /**
  * Http Endpoint Class ito create HTTP response
  */
 class HttpTokenEndpoint : public HttpRestrictiveEndpoint {
 private:
-  LoggerFile *m_logger;
+  Logger *m_logger;
 
 public:
   HttpTokenEndpoint(
@@ -27,8 +27,8 @@ public:
                                  {boost::beast::http::verb::put, false},
                                  {boost::beast::http::verb::patch, false},
                                  {boost::beast::http::verb::delete_, true}}) {
-    m_logger = LoggerFile::getInstance();
-    m_logger->setLevel(LoggerFile::LEVEL::LINFO);
+    m_logger = Logger::getInstance();
+    m_logger->setLevel(Logger::LEVEL::LINFO);
 
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
   }
