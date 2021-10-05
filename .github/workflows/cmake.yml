@@ -56,12 +56,14 @@ jobs:
         sudo ./b2 install
 
     - name: Install client's dependencies
-      run: cd ./client
-      run: npm install
+      run: |
+        cd ./client \
+        npm install
 
     - name: Build client
-      run: cd ./client
-      run: npm build
+      run: |
+        cd ./client \
+        npm build
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
