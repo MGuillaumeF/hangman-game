@@ -49,10 +49,11 @@ jobs:
     - name: Unzip Boost
       run: tar xzvf ./boost_1_${{env.BOOST_VERSION}}_0.tar.gz
     - name: Bootstrap Boost
-      run: cd ./boost_1_${{env.BOOST_VERSION}}_0; 
-      run: sudo ./bootstrap.sh --with-toolset=clang
-      run: sudo ./b2 toolset=clang
-      run: sudo ./b2 install
+      run: |
+        cd ./boost_1_${{env.BOOST_VERSION}}_0 \
+        sudo ./bootstrap.sh --with-toolset=clang \
+        sudo ./b2 toolset=clang \
+        sudo ./b2 install
 
     - name: Install client's dependencies
       run: cd ./client
