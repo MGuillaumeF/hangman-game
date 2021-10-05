@@ -50,19 +50,19 @@ jobs:
       run: tar xzvf ./boost_1_${{env.BOOST_VERSION}}_0.tar.gz
     - name: Bootstrap Boost
       run: |
-        cd ./boost_1_${{env.BOOST_VERSION}}_0 \
-        sudo ./bootstrap.sh --with-toolset=clang \
-        sudo ./b2 toolset=clang \
+        cd ./boost_1_${{env.BOOST_VERSION}}_0; \
+        sudo ./bootstrap.sh --with-toolset=clang; \
+        sudo ./b2 toolset=clang; \
         sudo ./b2 install
 
     - name: Install client's dependencies
       run: |
-        cd ./client \
+        cd ./client; \
         npm install
 
     - name: Build client
       run: |
-        cd ./client \
+        cd ./client; \
         npm build
 
     - name: Generate target
