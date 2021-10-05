@@ -96,7 +96,7 @@ jobs:
         npm build
 
     - name: Archive IHM
-        uses: actions/upload-artifact@v2
-        with:
-          name: save build directory
-          path: ./client/build
+      uses: actions/upload-artifact@v2
+      with:
+        name: save build directory
+        path: ./client/build
