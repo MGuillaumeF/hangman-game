@@ -100,7 +100,7 @@ jobs:
 
 
   report-server:
-    needs: tools-install-server
+    needs: [tools-install-server, build-server]
     runs-on: ubuntu-latest
 
     steps:
