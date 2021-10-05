@@ -14,7 +14,6 @@ env:
 permissions: write-all
 
 jobs:
-
   build-client:
     steps:
       - uses: actions/checkout@v2
