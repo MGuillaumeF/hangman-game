@@ -14,6 +14,8 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
      "server/src/*.cpp"
 )
 
+find_package (Threads)
+
 # Recherche la dépendance externe
 find_package (Boost)
 if (Boost_FOUND)
@@ -25,6 +27,8 @@ if (Boost_FOUND)
     target_link_libraries(ApplicationExample ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib)
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
     target_link_libraries(ApplicationExample wsock32 ws2_32)
+  else ()
+    target_link_libraries(ApplicationExample threads::Threads)
   endif()
 else ()
   # Sinon, nous affichons un message
