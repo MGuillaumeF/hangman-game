@@ -23,15 +23,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - name: Install dependencies
-    - run: cd ./client; npm install
-    - name: Build client
-    - run: cd ./client; npm build
-    # - name: Test client
-    # - run: npm test
 
     - name: Install make
       run: sudo apt-get install -y build-essential
