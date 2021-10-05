@@ -28,7 +28,7 @@ if (Boost_FOUND)
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
     target_link_libraries(ApplicationExample wsock32 ws2_32)
   else ()
-    target_link_libraries(ApplicationExample threads::Threads)
+    target_link_libraries(ApplicationExample ${CMAKE_THREAD_LIBS_INIT})
   endif()
 else ()
   # Sinon, nous affichons un message
