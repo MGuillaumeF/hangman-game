@@ -23,9 +23,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Setup Node.Js
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
+    
+    - name: Install dependencies
+    - run: cd ./client; npm install
 
     - name: Install make
       run: sudo apt-get install -y build-essential
