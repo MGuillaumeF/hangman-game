@@ -6,7 +6,7 @@ project(ApplicationExample)
 
 set (CMAKE_CXX_STANDARD 20)
 
-add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601" "-fprofile-instr-generate" "-fcoverage-mapping" "-lpthread")
+add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601" "-fprofile-instr-generate" "-fcoverage-mapping")
 
 # Crée des variables avec les fichiers à compiler
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
