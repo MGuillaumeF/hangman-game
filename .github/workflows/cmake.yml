@@ -15,17 +15,18 @@ permissions: write-all
 
 jobs:
   build-client:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Install dependencies
-      - run: cd ./client; npm install
-      - name: Build client
-      - run: cd ./client; npm build
-      # - name: Test client
-      # - run: npm test
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    - name: Install dependencies
+    - run: cd ./client; npm install
+    - name: Build client
+    - run: cd ./client; npm build
+    # - name: Test client
+    # - run: npm test
   build-server:
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
