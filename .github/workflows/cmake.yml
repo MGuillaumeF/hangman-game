@@ -93,7 +93,7 @@ jobs:
     - name: Build client
       run: |
         cd ./client; \
-        npm build
+        npm run build
 
     - name: Archive IHM
       uses: actions/upload-artifact@v2
