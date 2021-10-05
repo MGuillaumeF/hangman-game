@@ -5,6 +5,9 @@
 
 Logger *Logger::s_pInstance = nullptr;
 
+std::map<int, std::string> Logger::s_corresp = {
+    {0, "DEBUG"}, {1, "INFO"}, {2, "WARN"}, {3, "ERROR"}};
+
 Logger *Logger::getInstance() {
   if (s_pInstance == nullptr) {
     s_pInstance = new Logger();
@@ -78,17 +81,17 @@ void Logger::defaultErrAppender(const std::string &message) {
 
 void Logger::addAppender(const int level, const std::string &theme,
                          appender_t appender) {
-  std::map<int, std::string> corresp = {
-      {0, "DEBUG"}, {1, "INFO"}, {2, "WARN"}, {3, "ERROR"}};
   if (m_appenders.find(theme) != m_appenders.end()) {
-    if (m_appenders[theme].find(corresp[level]) != m_appenders[theme].end()) {
-      m_appenders[theme][corresp[level]].insert(appender);
+    if (m_appenders[theme].find(Logger::s_corresp[level]) !=
+        m_appenders[theme].end()) {
+      m_appenders[theme][Logger::s_corresp[level]].insert(appender);
     } else {
-      m_appenders[theme][corresp[level]] = std::set<appender_t>{appender};
+      m_appenders[theme][Logger::s_corresp[level]] =
+          std::set<appender_t>{appender};
     }
   } else {
     m_appenders[theme] = std::map<std::string, std::set<appender_t>>{
-        {corresp[level], std::set<appender_t>{appender}}};
+        {Logger::s_corresp[level], std::set<appender_t>{appender}}};
   }
 }
 
@@ -98,9 +101,12 @@ void Logger::addAppender(const int level, const std::string &theme,
  */
 void Logger::write(const std::string &level, const std::string &theme,
                    const std::string &msg) {
-  const std::string message = getLog(level, theme, msg);
-  const std::set<appender_t> appenders = m_appenders[theme][level];
-  for (const appender_t &appender : appenders) {
-    (*appender)(message);
+  if ((m_appenders.find(theme) != m_appenders.end()) &&
+      (m_appenders[theme].find(level) != m_appenders[theme].end())) {
+    const std::string message = getLog(level, theme, msg);
+    const std::set<appender_t> appenders = m_appenders[theme][level];
+    for (const appender_t &appender : appenders) {
+      (*appender)(message);
+    }
   }
 }

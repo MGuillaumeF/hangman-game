@@ -37,12 +37,16 @@ int main(int argc, char *argv[]) {
             std::fstream::in | std::fstream::out | std::fstream::app);
 
   Logger *logger = Logger::getInstance();
-  logger->addAppender(Logger::LDEBUG, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(Logger::LINFO, "HTTP_DATA_READ", appenderFile);
   logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(Logger::LWARN, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION", appenderFile);
   logger->addAppender(Logger::LERROR, "HTTP_DATA_READ", appenderFile);
   logger->addAppender(Logger::LERROR, "HTTP_CONFIGURATION", appenderFile);
 
   logger->addAppender(Logger::LDEBUG, "HTTP_DATA_READ",
+                      Logger::defaultOutAppender);
+  logger->addAppender(Logger::LINFO, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
   logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION",
                       Logger::defaultOutAppender);
@@ -135,7 +139,8 @@ int main(int argc, char *argv[]) {
   // If configuration of server is in arguments of execution
   // server is started
   ConfigurationServer config = ConfigurationServer(argv);
-  HttpServer server = HttpServer(argv[1], argv[2], argv[3], argv[4]);
+  HttpServer server = HttpServer("0.0.0.0", 8080, ".",
+                                 3); //(argv[1], argv[2], argv[3], argv[4]);
 
   g_fs.close();
   return EXIT_SUCCESS;

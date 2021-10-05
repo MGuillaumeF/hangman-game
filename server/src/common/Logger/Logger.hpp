@@ -18,6 +18,7 @@ class Logger {
 public:
 private:
   static Logger *s_pInstance;
+  static std::map<int, std::string> s_corresp;
   /**
    * The current log Level
    * @see LEVEL

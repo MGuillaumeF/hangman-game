@@ -11,7 +11,8 @@ public:
   /**
    * HTTP Server definition and starting
    */
-  HttpServer(char *address, char *port, char *doc_root, char *threads);
+  HttpServer(const std::string &address, const uint16_t port,
+             const std::string &doc_root, const uint8_t threads);
   ~HttpServer() {}
 };
 

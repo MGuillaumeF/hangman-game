@@ -41,6 +41,11 @@ void HttpSession::handleRequest(
         Body, boost::beast::http::basic_fields<Allocator>> &&req,
     Send &&send) {
 
+  Logger *logger = Logger::getInstance();
+
+  logger->info("HTTP_DATA_READ",
+               "request received on target " + req.target().to_string());
+
   // Returns a bad request response
   auto const bad_request = [&req](boost::beast::string_view why) {
     boost::beast::http::response<boost::beast::http::string_body> res{
