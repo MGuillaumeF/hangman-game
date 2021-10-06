@@ -13,6 +13,9 @@
 
 #include "HttpUtils.hpp"
 
+using requestHandler_t =
+    boost::beast::http::response<boost::beast::http::string_body> (*)(
+        const boost::beast::http::request<boost::beast::http::string_body> &);
 /**
  * Handles an HTTP server connection
  */
@@ -52,6 +55,8 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
 
+  std::map<std::string, requestHandler_t> m_requestDispatcher;
+
   /**
    * Append an HTTP rel-path to a local filesystem path.
    * The returned path is normalized for the platform.
@@ -89,6 +94,9 @@ public:
                std::size_t bytes_transferred);
 
   void doClose();
+
+  void addRequestDispatcher(const std::string &target,
+                            const requestHandler_t &handler);
 };
 
 #endif

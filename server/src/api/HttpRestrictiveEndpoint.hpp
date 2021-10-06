@@ -8,24 +8,44 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
+#include "../common/Logger/Logger.hpp"
+
 /**
  * Http Endpoint Class ito create HTTP response
  */
 class HttpRestrictiveEndpoint {
 private:
+  Logger *m_logger = Logger::getInstance();
   virtual void doGet() {
-    std::cout << "HttpRestrictiveEndpoint - doGet - start" << std::endl;
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
     writeNotImplementedResponse();
-    std::cout << "HttpRestrictiveEndpoint - doGet - end" << std::endl;
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - end");
   }
 
-  virtual void doPost() { writeNotImplementedResponse(); }
+  virtual void doPost() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - end");
+  }
 
-  virtual void doPut() { writeNotImplementedResponse(); }
+  virtual void doPut() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - end");
+  }
 
-  virtual void doDelete() { writeNotImplementedResponse(); }
+  virtual void doDelete() {
+    m_logger->debug("HTTP_ACCESS",
+                    "HttpRestrictiveEndpoint - doDelete - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doDelete - end");
+  }
 
-  virtual void doPatch() { writeNotImplementedResponse(); }
+  virtual void doPatch() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
+  }
 
 protected:
   boost::beast::http::request<boost::beast::http::string_body> m_request;
@@ -92,6 +112,9 @@ public:
         writeMethodNotAllowed();
       }
     } catch (std::out_of_range) {
+      m_logger->error(
+          "HTTP_DATA_READ",
+          "HttpRestrictiveEndpoint - dispatchRequest - out of range of method");
       writeMethodNotAllowed();
     }
   }
@@ -100,10 +123,14 @@ public:
     m_response = response;
   }
   boost::beast::http::response<boost::beast::http::string_body> getResponse() {
-    std::cout << "getResponse - start " << std::endl
-              << "body : " << m_response.body() << std::endl;
+    m_logger->debug("HTTP_DATA_READ",
+                    "HttpRestrictiveEndpoint - getResponse - start");
+    m_logger->debug("HTTP_DATA_READ",
+                    "HttpRestrictiveEndpoint - readResponse body " +
+                        m_response.body());
+    m_logger->debug("HTTP_DATA_READ",
+                    "HttpRestrictiveEndpoint - getResponse - end");
     return m_response;
-    std::cout << "getResponse - end " << std::endl;
   }
 
   ~HttpRestrictiveEndpoint() {}

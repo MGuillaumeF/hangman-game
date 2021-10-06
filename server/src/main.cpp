@@ -26,42 +26,59 @@
 // typedef std::vector<Server> Servers;
 
 std::fstream g_fs;
+std::fstream g_access_fs;
 /**
  * To write a log message
  * @param msg The message to print
  */
 void appenderFile(const std::string &message) { g_fs << message << std::endl; }
+/**
+ * To write a log message
+ * @param msg The message to print
+ */
+void appenderAccessFile(const std::string &message) {
+  g_access_fs << message << std::endl;
+}
 
 int main(int argc, char *argv[]) {
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
+  g_access_fs.open("./logs/access.log",
+                   std::fstream::in | std::fstream::out | std::fstream::app);
 
   Logger *logger = Logger::getInstance();
+
+  logger->addAppender(Logger::LDEBUG, "HTTP_ACCESS",
+                      Logger::defaultOutAppender);
+  logger->addAppender(Logger::LINFO, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(Logger::LWARN, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(Logger::LERROR, "HTTP_ACCESS", appenderAccessFile);
+
   logger->addAppender(Logger::LINFO, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION", appenderFile);
   logger->addAppender(Logger::LWARN, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION", appenderFile);
   logger->addAppender(Logger::LERROR, "HTTP_DATA_READ", appenderFile);
+
+  logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION", appenderFile);
   logger->addAppender(Logger::LERROR, "HTTP_CONFIGURATION", appenderFile);
 
   logger->addAppender(Logger::LDEBUG, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
   logger->addAppender(Logger::LINFO, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
+  logger->addAppender(Logger::LWARN, "HTTP_DATA_READ",
+                      Logger::defaultErrAppender);
+  logger->addAppender(Logger::LERROR, "HTTP_DATA_READ",
+                      Logger::defaultErrAppender);
+
+  logger->addAppender(Logger::LDEBUG, "HTTP_CONFIGURATION",
+                      Logger::defaultOutAppender);
   logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LERROR, "HTTP_DATA_READ",
+  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
   logger->addAppender(Logger::LERROR, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
-
-  std::vector<std::string> msg{"Hello", "C++",     "World",
-                               "from",  "VS Code", "and the C++ extension!"};
-
-  for (const std::string &word : msg) {
-    std::cout << word << " ";
-  }
-  std::cout << std::endl;
 
   boost::property_tree::ptree pt;
   try {

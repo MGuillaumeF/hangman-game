@@ -161,6 +161,13 @@ void HttpSession::handleRequest(
           HttpUtils::getMimeType(path));
   res.content_length(size);
   res.keep_alive(req.keep_alive());
+  const std::string accessLog =
+      "[" + std::to_string(res.result_int()) + "] " + req.target().to_string();
+  if (res.result_int() < 400) {
+    logger->info("HTTP_ACCESS", accessLog);
+  } else {
+    logger->error("HTTP_ACCESS", accessLog);
+  }
   return send(std::move(res));
 }
 
@@ -230,4 +237,9 @@ void HttpSession::doClose() {
   m_stream.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send, ec);
 
   // At this point the connection is closed gracefully
+}
+
+void HttpSession::addRequestDispatcher(const std::string &target,
+                                       const requestHandler_t &handler) {
+  m_requestDispatcher.insert(std::pair(target, handler));
 }

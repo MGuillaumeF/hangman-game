@@ -14,8 +14,6 @@ env:
 permissions: write-all
 
 jobs:
-
-
  build-server:
     runs-on: ubuntu-latest
     steps:
@@ -74,10 +72,10 @@ jobs:
       run: ./HangmanGameTest
 
     - name: Coverage
-      run: lcov -q --no-external -c --directory ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src -o ${{github.workspace}}/server/resultCoverageRuntime.info
+      run: llvm-gcov ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/**/*.gcno -q --no-external -a -u -b -c -o ${{github.workspace}}/server/coverage.info > coverage.log
 
     - name: Reports
-      run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/resultCoverageRuntime.info ${{github.workspace}}/server/resultCoverage.info
+      run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/coverage.info
 
     - name: Docs
       run: doxygen docg.conf
