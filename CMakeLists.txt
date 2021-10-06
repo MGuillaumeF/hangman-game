@@ -21,7 +21,6 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 )
 
 find_package (Threads)
-
 # Recherche la dépendance externe
 find_package (Boost)
 if (Boost_FOUND)
@@ -29,18 +28,15 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # On indique que l'on veut un exécutable "hello" compilé à partir des fichiers décrits par les variables SRCS et HEADERS
   add_executable(HangmanGame ${SRCS})
+  add_executable(HangmanGameTest ./server/src/common/HTTP/HttpUtils.cpp ./server/src/common/Logger/Logger.cpp ./server/test/testHttpUtils.cpp)
   if(WIN32)
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib)
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
-    target_link_libraries(HangmanGame wsock32 ws2_32)
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
   else ()
     target_link_libraries(HangmanGame ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()
-  
-  add_executable(HangmanGameTest ./server/src/common/HTTP/HttpUtils.cpp ./server/src/common/Logger/Logger.cpp ./server/test/testHttpUtils.cpp)
-  target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib)
-  target_link_libraries(HangmanGameTest wsock32 ws2_32)
-
 else ()
   # Sinon, nous affichons un message
   message(FATAL_ERROR "Boost not found")
