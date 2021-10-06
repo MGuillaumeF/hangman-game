@@ -43,14 +43,14 @@ jobs:
         args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
 
     - name: Unzip Boost
-      run: tar xzvf ./boost_1_${{env.BOOST_VERSION}}_0.tar.gz
+      run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
 
     - name: Bootstrap Boost
       run: |
-        cd ./boost_1_${{env.BOOST_VERSION}}_0; \
-        sudo ./bootstrap.sh --with-toolset=clang; \
-        sudo ./b2 toolset=clang; \
-        sudo ./b2 install
+        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0; \
+        sudo ${{github.workspace}}/bootstrap.sh --with-toolset=clang; \
+        sudo ${{github.workspace}}/b2 toolset=clang; \
+        sudo ${{github.workspace}}/b2 install
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -65,19 +65,19 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game
-        path: ./server/bin/ApplicationExample
+        path: ${{github.workspace}}/server/bin/HangmanGame
 
     - name: Test
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/server/bin
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: HangmanGameTest
 
     - name: Coverage
-      run: lcov --directory ./server/bin/CMakeFiles/ApplicationExample.dir/server/src -c -o ./server/report/resultCoverageRuntime.info --no-external
+      run: lcov --directory ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src -c -o ${{github.workspace}}/server/report/resultCoverageRuntime.info --no-external
 
     - name: Reports
-      run: genhtml --highlight --legend --output-directory ./server/coverage -t "Hangman game Server coverage report" ./server/report/resultCoverageRuntime.info ./server/report/resultCoverage.info
+      run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/report/resultCoverageRuntime.info ${{github.workspace}}/server/report/resultCoverage.info
 
     - name: Docs
       run: doxygen docg.conf
@@ -93,16 +93,16 @@ jobs:
 
     - name: Install client's dependencies
       run: |
-        cd ./client; \
+        cd ${{github.workspace}}/client; \
         npm install
 
     - name: Build client
       run: |
-        cd ./client; \
+        cd ${{github.workspace}}/client; \
         npm run build
 
     - name: Archive IHM
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game
-        path: ./client/build
+        path: ${{github.workspace}}/client/build
