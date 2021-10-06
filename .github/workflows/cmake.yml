@@ -74,7 +74,7 @@ jobs:
       run: ./HangmanGameTest
 
     - name: Coverage
-      run: lcov --gcov-tool /usr/bin/gcov -q --no-external -c --directory ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src -o ${{github.workspace}}/server/resultCoverageRuntime.info
+      run: lcov -q --no-external -c --directory ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src -o ${{github.workspace}}/server/resultCoverageRuntime.info
 
     - name: Reports
       run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/resultCoverageRuntime.info ${{github.workspace}}/server/resultCoverage.info
