@@ -7,9 +7,9 @@ project(HangmanGame)
 set (CMAKE_CXX_STANDARD 20)
 
 SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage -fcoverage-mapping -fprofile-instr-generate")
-# SET(GCC_COVERAGE_LINK_FLAGS    " -lC:\\MinGW\\bin\\gcov")
+SET(GCC_COVERAGE_LINK_FLAGS    " -ftest-coverage -fcoverage-mapping -fprofile-instr-generate")
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
-# SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
+SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 
 
 add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601")
