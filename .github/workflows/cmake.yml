@@ -72,7 +72,7 @@ jobs:
       run: ./HangmanGameTest
 
     - name: Coverage
-      run: llvm-cov export -instr-profile ${{github.workspace}}/server/bin/CMakeFiles/default.profraw --format=lcov ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: tree -d ${{github.workspace}} llvm-cov export -instr-profile ${{github.workspace}}/server/bin/CMakeFiles/default.profraw --format=lcov ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
 
     - name: Reports
       run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/coverage.info
