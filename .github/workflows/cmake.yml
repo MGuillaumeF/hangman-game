@@ -74,6 +74,9 @@ jobs:
     - name: Merge raw coverage instrumentation profile
       run: tree ${{github.workspace}}/server;  llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/default.profraw
 
+    - name: Coverage Gcov
+      run: llvm-cov gcov ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/**/*.gcno
+
     - name: Coverage
       run: llvm-cov export -format=lcov -instr-profile ${{github.workspace}}/server/bin/project.profdata -object=${{github.workspace}}/server/bin/HangmanGameTest
 
