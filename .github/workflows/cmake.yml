@@ -72,10 +72,10 @@ jobs:
       run: ./HangmanGameTest
 
     - name: Merge raw coverage instrumentation profile
-      run: llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/**/*.profraw
+      run: tree ${{github.workspace}}/server;  llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/default.profraw
 
     - name: Coverage
-      run: tree ${{github.workspace}}/server; llvm-cov export -format=lcov -instr-profile ${{github.workspace}}/server/bin/project.profdata -object=${{github.workspace}}/server/bin/HangmanGameTest ${{github.workspace}}/server/src
+      run: llvm-cov export -format=lcov -instr-profile ${{github.workspace}}/server/bin/project.profdata -object=${{github.workspace}}/server/bin/HangmanGameTest ${{github.workspace}}/server/src
 
     - name: Reports
       run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/coverage.info
