@@ -83,7 +83,7 @@ jobs:
       run: tree ${{github.workspace}}/server;  llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/default.profraw
 
     - name: Coverage Gcov
-      run: cd ${{github.workspace}}/server/;gcov `find . -name "*.cpp"`
+      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/;gcov `find . -name "*.cpp"`
 
    # - name: Coverage
     #  run: llvm-cov export -format=lcov -instr-profile ${{github.workspace}}/server/bin/project.profdata -object=${{github.workspace}}/server/bin/HangmanGameTest
