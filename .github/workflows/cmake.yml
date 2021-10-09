@@ -76,7 +76,7 @@ jobs:
       run: ./HangmanGameTest
 
     #- name: lcov after test
-     % run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
+     #run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
 
     - name: Merge raw coverage instrumentation profile
