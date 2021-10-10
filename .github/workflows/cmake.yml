@@ -20,7 +20,11 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: Install graphviz
+    - name: update
+      run: sudo apt-get update -y && sudo apt-get upgrade -y
+
+
+    - name: graphviz
       run: sudo apt-get install -y graphviz
 
     - name: Install doxygen 
