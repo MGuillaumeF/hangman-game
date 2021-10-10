@@ -72,9 +72,18 @@ std::string Logger::getLog(const std::string &level, const std::string &theme,
   return l_message;
 }
 
+/**
+ * Function of default std:cout appender
+ * @param message The message to print
+ */
 void Logger::defaultOutAppender(const std::string &message) {
   std::cout << message << std::endl;
 }
+
+/**
+ * Function of default std:cerr appender
+ * @param message The message to print
+ */
 void Logger::defaultErrAppender(const std::string &message) {
   std::cerr << message << std::endl;
 }

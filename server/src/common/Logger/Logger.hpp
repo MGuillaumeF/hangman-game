@@ -31,6 +31,8 @@ private:
   appendersByTheme m_appenders;
   /**
    * To write a log message
+   * @param level The level of message
+   * @param theme The theme of message
    * @param msg The message to print
    */
   void write(const std::string &level, const std::string &theme,
@@ -84,30 +86,55 @@ public:
   void setLevel(int level);
   /**
    * To print debug log
+   * @param theme The theme of message
    * @param msg The message to print
    */
   void debug(const std::string &theme, const std::string &msg);
   /**
    * To print info log
+   * @param theme The theme of message
    * @param msg The message to print
    */
   void info(const std::string &theme, const std::string &msg);
   /**
    * To print warn log
+   * @param theme The theme of message
    * @param msg The message to print
    */
   void warn(const std::string &theme, const std::string &msg);
   /**
    * To print error log
+   * @param theme The theme of message
    * @param msg The message to print
    */
   void error(const std::string &theme, const std::string &msg);
 
-  void addAppender(const int level, const std::string &theme, appender_t);
+  /**
+   * To write a log message
+   * @param level The level of message
+   * @param theme The theme of message
+   * @param tracer The tracer function to manage printing of message
+   */
+  void addAppender(const int level, const std::string &theme,
+                   appender_t tracer);
 
+  /**
+   * Function to get formated message
+   * @param level The level of message
+   * @param theme The theme of message
+   * @param msg The message body
+   */
   std::string getLog(const std::string &level, const std::string &theme,
                      const std::string &msg);
+  /**
+   * Function of default std:cout appender
+   * @param message The message to print
+   */
   static void defaultOutAppender(const std::string &message);
+  /**
+   * Function of default std:cerr appender
+   * @param message The message to print
+   */
   static void defaultErrAppender(const std::string &message);
 };
 
