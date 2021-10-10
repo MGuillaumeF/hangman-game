@@ -26,6 +26,9 @@ jobs:
     - name: Install doxygen 
       run: sudo apt-get install -y doxygen
 
+    - name: Install g++/gcc/make
+      run: sudo apt-get install -y g++ gcc make
+
     - name: Install lcov
       run: sudo apt-get install -y lcov
 
