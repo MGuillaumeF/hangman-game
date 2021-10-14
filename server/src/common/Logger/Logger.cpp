@@ -109,7 +109,7 @@ void Logger::defaultErrAppender(const std::string &message) {
  * To write a log message
  * @param level The level of message
  * @param theme The theme of message
- * @param appendet The tracer function to manage printing of message
+ * @param appender The tracer function to manage printing of message
  */
 void Logger::addAppender(const int level, const std::string &theme,
                          appender_t appender) {
