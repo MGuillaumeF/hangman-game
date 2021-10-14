@@ -124,7 +124,7 @@ public:
    * To write a log message
    * @param level The level of message
    * @param theme The theme of message
-   * @param tracer The tracer function to manage printing of message
+   * @param appender The tracer function to manage printing of message
    */
   void addAppender(const int level, const std::string &theme,
                    appender_t tracer);
