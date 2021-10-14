@@ -43,3 +43,5 @@ reports
 *.gcov
 *.gcda
 *.gcno
+tools/swagger/swagger-codegen-cli-*.jar
+tools/swagger/docs
