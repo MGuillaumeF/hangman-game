@@ -92,6 +92,13 @@ jobs:
     - name: Docs
       run: tree ${{github.workspace}}/server; doxygen docg.conf
 
+
+    - name: Archive Docs
+      uses: actions/upload-artifact@v2
+      with:
+        name: Docs-Hangman-Game
+        path: ${{github.workspace}}/docs
+
       
  build-client:
     runs-on: ubuntu-latest
