@@ -99,7 +99,7 @@ jobs:
     - name: Archive Swagger UI
       uses: actions/upload-artifact@v2
       with:
-        name: Docs-Hangman-Game
+        name: API-Docs-Hangman-Game
         path: ${{github.workspace}}/swagger-ui
 
     - name: Docs
