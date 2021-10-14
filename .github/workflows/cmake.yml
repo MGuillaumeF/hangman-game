@@ -90,15 +90,20 @@ jobs:
     #   run: genhtml --highlight --legend --output-directory ${{github.workspace}}/server/coverage -t "Hangman game Server coverage report" ${{github.workspace}}/server/coverage.info
 
 
-      - name: Generate Swagger UI
-        uses: Legion2/swagger-ui-action@v1
-        with:
-          output: ${{github.workspace}}/swagger-ui
-          spec-file: ${{github.workspace}}/server/docs/api_doc.json
+    - name: Generate Swagger UI
+      uses: Legion2/swagger-ui-action@v1
+      with:
+        output: ${{github.workspace}}/swagger-ui
+        spec-file: ${{github.workspace}}/server/docs/api_doc.json
+
+    - name: Archive Swagger UI
+      uses: actions/upload-artifact@v2
+      with:
+        name: Docs-Hangman-Game
+        path: ${{github.workspace}}/swagger-ui
 
     - name: Docs
-      run: tree ${{github.workspace}}/server; doxygen docg.conf
-
+      run: doxygen docg.conf
 
     - name: Archive Docs
       uses: actions/upload-artifact@v2
@@ -106,6 +111,8 @@ jobs:
         name: Docs-Hangman-Game
         path: ${{github.workspace}}/docs
 
+    - name: Tree Server
+      run: tree ${{github.workspace}}/server;
       
  build-client:
     runs-on: ubuntu-latest
