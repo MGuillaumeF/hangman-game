@@ -29,12 +29,12 @@ std::fstream g_fs;
 std::fstream g_access_fs;
 /**
  * To write a log message
- * @param msg The message to print
+ * @param message The message to print
  */
 void appenderFile(const std::string &message) { g_fs << message << std::endl; }
 /**
  * To write a log message
- * @param msg The message to print
+ * @param message The message to print
  */
 void appenderAccessFile(const std::string &message) {
   g_access_fs << message << std::endl;
