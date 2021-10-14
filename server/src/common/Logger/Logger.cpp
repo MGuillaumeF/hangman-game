@@ -8,6 +8,11 @@ Logger *Logger::s_pInstance = nullptr;
 std::map<int, std::string> Logger::s_corresp = {
     {0, "DEBUG"}, {1, "INFO"}, {2, "WARN"}, {3, "ERROR"}};
 
+/**
+ * @brief Get instance of singleton logger
+ *
+ * @return Logger* address of logger instance
+ */
 Logger *Logger::getInstance() {
   if (s_pInstance == nullptr) {
     s_pInstance = new Logger();
@@ -16,7 +21,9 @@ Logger *Logger::getInstance() {
 }
 
 /**
- * To get the log level of Logger
+ * @brief To get the log level of Logger
+ *
+ * @return int log level
  */
 int Logger::getLevel() { return m_level; }
 /**
@@ -31,6 +38,7 @@ void Logger::setLevel(int level) {
 }
 /**
  * To print debug log
+ * @param theme The theme of message
  * @param msg The message to print
  */
 void Logger::debug(const std::string &theme, const std::string &msg) {
@@ -40,6 +48,7 @@ void Logger::debug(const std::string &theme, const std::string &msg) {
 }
 /**
  * To print info log
+ * @param theme The theme of message
  * @param msg The message to print
  */
 void Logger::info(const std::string &theme, const std::string &msg) {
@@ -49,6 +58,7 @@ void Logger::info(const std::string &theme, const std::string &msg) {
 }
 /**
  * To print warn log
+ * @param theme The theme of message
  * @param msg The message to print
  */
 void Logger::warn(const std::string &theme, const std::string &msg) {
@@ -58,6 +68,7 @@ void Logger::warn(const std::string &theme, const std::string &msg) {
 }
 /**
  * To print error log
+ * @param theme The theme of message
  * @param msg The message to print
  */
 void Logger::error(const std::string &theme, const std::string &msg) {
@@ -66,6 +77,12 @@ void Logger::error(const std::string &theme, const std::string &msg) {
   }
 }
 
+/**
+ * Function to get formated message
+ * @param level The level of message
+ * @param theme The theme of message
+ * @param msg The message body
+ */
 std::string Logger::getLog(const std::string &level, const std::string &theme,
                            const std::string &msg) {
   std::string l_message = "[" + level + "] - [" + theme + "] - " + msg;
@@ -88,6 +105,12 @@ void Logger::defaultErrAppender(const std::string &message) {
   std::cerr << message << std::endl;
 }
 
+/**
+ * To write a log message
+ * @param level The level of message
+ * @param theme The theme of message
+ * @param tracer The tracer function to manage printing of message
+ */
 void Logger::addAppender(const int level, const std::string &theme,
                          appender_t appender) {
   if (m_appenders.find(theme) != m_appenders.end()) {

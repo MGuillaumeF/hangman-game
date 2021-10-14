@@ -6,6 +6,11 @@
 #include "../../Logger/Logger.hpp"
 #include "../Exception/ConfigurationException.hpp"
 
+/**
+ * @brief Construct a new Configuration Server:: Configuration Server object
+ *
+ * @param argv
+ */
 ConfigurationServer::ConfigurationServer(char *argv[]) {
 
   Logger *logger = Logger::getInstance();
@@ -33,11 +38,38 @@ ConfigurationServer::ConfigurationServer(char *argv[]) {
     throw ConfigurationException("HTTP Configuration file is invalid");
   }
 }
-
+/**
+ * @brief  Get the Description object
+ *
+ * @return std::string
+ */
 std::string ConfigurationServer::getDescription() const {
   return m_description;
 };
+/**
+ * @brief Get the Hostname object
+ *
+ * @return std::string
+ */
 std::string ConfigurationServer::getHostname() const { return m_hostname; };
+
+/**
+ * @brief Get the Root object
+ *
+ * @return uint16_t
+ */
 std::string ConfigurationServer::getRoot() const { return m_root; };
+
+/**
+ * @brief Get the Threads object
+ *
+ * @return uint16_t
+ */
 uint8_t ConfigurationServer::getThreads() const { return m_thread; };
+
+/**
+ * @brief Get the Port object
+ *
+ * @return uint16_t
+ */
 uint16_t ConfigurationServer::getPort() const { return m_port; };

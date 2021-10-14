@@ -4,6 +4,13 @@
 #include "HttpSession.hpp"
 #include "HttpUtils.hpp"
 
+/**
+ * @brief Construct a new Http Listener:: Http Listener object
+ *
+ * @param ioc The context to listen
+ * @param endpoint The TCP/IP endpoint
+ * @param doc_root The root path of file server
+ */
 HttpListener::HttpListener(boost::asio::io_context &ioc,
                            boost::asio::ip::tcp::endpoint endpoint,
                            std::shared_ptr<std::string const> const &doc_root)
@@ -44,16 +51,26 @@ HttpListener::HttpListener(boost::asio::io_context &ioc,
   }
 }
 
-// Start accepting incoming connections
+/**
+ * Start accepting incoming connections
+ */
 void HttpListener::run() { doAccept(); }
 
+/**
+ * Dispatch new connection to gets its own strand
+ */
 void HttpListener::doAccept() {
   // The new connection gets its own strand
   m_acceptor.async_accept(boost::asio::make_strand(m_ioc),
                           boost::beast::bind_front_handler(
                               &HttpListener::onAccept, shared_from_this()));
 }
-
+/**
+ * @brief Create the session for the new connection and run it
+ *
+ * @param ec The error code of previous step
+ * @param socket The TCP/IP socket
+ */
 void HttpListener::onAccept(boost::beast::error_code ec,
                             boost::asio::ip::tcp::socket socket) {
   Logger *logger = Logger::getInstance();

@@ -8,14 +8,15 @@
 #include <set>
 #include <string>
 
-using appender_t = void (*)(const std::string &);
-typedef std::map<std::string, std::set<appender_t>> appendersByLevel;
-typedef std::map<std::string, appendersByLevel> appendersByTheme;
 /**
  * abstract class for generic definition of logger
  */
 class Logger {
 public:
+  using appender_t = void (*)(const std::string &);
+  typedef std::map<std::string, std::set<appender_t>> appendersByLevel;
+  typedef std::map<std::string, appendersByLevel> appendersByTheme;
+
 private:
   static Logger *s_pInstance;
   static std::map<int, std::string> s_corresp;
@@ -38,6 +39,10 @@ private:
   void write(const std::string &level, const std::string &theme,
              const std::string &msg);
 
+  /**
+   * @brief Construct a new Logger object
+   *
+   */
   Logger() {}
 
 public:
@@ -72,6 +77,12 @@ public:
      */
     LERROR = 3
   };
+
+  /**
+   * @brief Get instance of singleton logger
+   *
+   * @return Logger* address of logger instance
+   */
   static Logger *getInstance();
   /**
    * To get the log level of Logger

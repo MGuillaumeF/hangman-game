@@ -4,8 +4,11 @@
 #include "../../api/HttpTokenEndpoint.hpp"
 
 /**
- * Append an HTTP rel-path to a local filesystem path.
- * The returned path is normalized for the platform.
+ * @brief Append an HTTP rel-path to a local filesystem path.
+ *
+ * @param base The base of path to merge
+ * @param path The end of path to merge
+ * @return std::string  The returned path is normalized for the platform.
  */
 std::string HttpSession::pathCat(boost::beast::string_view base,
                                  boost::beast::string_view path) {
@@ -35,6 +38,16 @@ std::string HttpSession::pathCat(boost::beast::string_view base,
  * caller to pass a generic lambda for receiving the response.
  */
 template <class Body, class Allocator, class Send>
+/**
+ * @brief This function produces an HTTP response for the given
+ * request. The type of the response object depends on the
+ * contents of the request, so the interface requires the
+ * caller to pass a generic lambda for receiving the response.
+ *
+ * @param doc_root The path of static files of file server
+ * @param req The HTTP request
+ * @param send The Sender to emit HTTP response
+ */
 void HttpSession::handleRequest(
     boost::beast::string_view doc_root,
     boost::beast::http::request<
@@ -171,7 +184,10 @@ void HttpSession::handleRequest(
   return send(std::move(res));
 }
 
-// Start the asynchronous operation
+/**
+ * @brief Start the asynchronous operation
+ *
+ */
 void HttpSession::run() {
   // We need to be executing within a strand to perform async operations
   // on the I/O objects in this session. Although not strictly necessary
@@ -182,6 +198,10 @@ void HttpSession::run() {
                                                          shared_from_this()));
 }
 
+/**
+ * @brief Method to start async reading of request
+ *
+ */
 void HttpSession::doRead() {
   // Make the request empty before reading,
   // otherwise the operation behavior is undefined.
@@ -196,6 +216,12 @@ void HttpSession::doRead() {
                                      &HttpSession::onRead, shared_from_this()));
 }
 
+/**
+ * @brief Method to read request
+ *
+ * @param ec The error code of previous step
+ * @param bytes_transferred The size of bytes transferred
+ */
 void HttpSession::onRead(boost::beast::error_code ec,
                          std::size_t bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
@@ -211,6 +237,13 @@ void HttpSession::onRead(boost::beast::error_code ec,
   handleRequest(*m_doc_root, std::move(m_req), m_lambda);
 }
 
+/**
+ * @brief Method to write response
+ *
+ * @param close The decision to close socket or not
+ * @param ec The error code of previous step
+ * @param bytes_transferred The size of bytes transferred
+ */
 void HttpSession::onWrite(bool close, boost::beast::error_code ec,
                           std::size_t bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
@@ -231,6 +264,10 @@ void HttpSession::onWrite(bool close, boost::beast::error_code ec,
   doRead();
 }
 
+/**
+ * @brief method to close TCP/IP socket
+ *
+ */
 void HttpSession::doClose() {
   // Send a TCP shutdown
   boost::beast::error_code ec;
@@ -239,6 +276,12 @@ void HttpSession::doClose() {
   // At this point the connection is closed gracefully
 }
 
+/**
+ * @brief methode to add route for prefix uri
+ *
+ * @param target The prefix of uri to dispatch requests
+ * @param handler The handler function to call
+ */
 void HttpSession::addRequestDispatcher(const std::string &target,
                                        const requestHandler_t &handler) {
   m_requestDispatcher.insert(std::pair(target, handler));

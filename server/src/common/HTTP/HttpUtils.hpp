@@ -21,14 +21,14 @@ public:
   HttpUtils();
 
   /**
-   *  Return a reasonable mime type based on the extension of a file.
+   * @brief Return a reasonable mime type based on the extension of a file.
    * @param path the path of request
    * @return the mime-type of file
    */
   static boost::beast::string_view getMimeType(boost::beast::string_view path);
 
   /**
-   * Report a failure
+   * @brief Report a failure
    * @param ec the error code
    * @param what the explanation of error
    */

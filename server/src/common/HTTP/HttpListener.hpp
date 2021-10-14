@@ -15,7 +15,11 @@ class HttpListener : public std::enable_shared_from_this<HttpListener> {
 
 public:
   /**
-   * Constructor of class
+   * @brief Construct a new Http Listener:: Http Listener object
+   *
+   * @param ioc The context to listen
+   * @param endpoint The TCP/IP endpoint
+   * @param doc_root The root path of file server
    */
   HttpListener(boost::asio::io_context &ioc,
                boost::asio::ip::tcp::endpoint endpoint,
@@ -31,8 +35,12 @@ private:
    * Dispatch new connection to gets its own strand
    */
   void doAccept();
+
   /**
-   * Create the session for the new connection and run it
+   * @brief Create the session for the new connection and run it
+   *
+   * @param ec The error code of previous step
+   * @param socket The TCP/IP socket
    */
   void onAccept(boost::beast::error_code ec,
                 boost::asio::ip::tcp::socket socket);

@@ -20,14 +20,26 @@ using requestHandler_t =
  * Handles an HTTP server connection
  */
 class HttpSession : public std::enable_shared_from_this<HttpSession> {
-  // This is the C++11 equivalent of a generic lambda.
-  // The function object is used to send an HTTP message.
+  /**
+   * @brief This is the C++11 equivalent of a generic lambda.
+   * The function object is used to send an HTTP message.
+   *
+   */
   struct send_lambda {
     HttpSession &self_;
-
+    /**
+     * @brief Construct a new send lambda object
+     *
+     * @param self pointer on struct
+     */
     explicit send_lambda(HttpSession &self) : self_(self) {}
 
     template <bool isRequest, class Body, class Fields>
+    /**
+     * @brief operator parenthesis to manage handled request
+     *
+     * @param msg
+     */
     void operator()(
         boost::beast::http::message<isRequest, Body, Fields> &&msg) const {
       // The lifetime of the message has to extend
@@ -58,19 +70,26 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
   std::map<std::string, requestHandler_t> m_requestDispatcher;
 
   /**
-   * Append an HTTP rel-path to a local filesystem path.
-   * The returned path is normalized for the platform.
+   * @brief Append an HTTP rel-path to a local filesystem path.
+   *
+   * @param base The base of path to merge
+   * @param path The end of path to merge
+   * @return std::string  The returned path is normalized for the platform.
    */
   std::string pathCat(boost::beast::string_view base,
                       boost::beast::string_view path);
 
+  template <class Body, class Allocator, class Send>
   /**
-   * This function produces an HTTP response for the given
+   * @brief This function produces an HTTP response for the given
    * request. The type of the response object depends on the
    * contents of the request, so the interface requires the
    * caller to pass a generic lambda for receiving the response.
+   *
+   * @param doc_root The path of static files of file server
+   * @param req The HTTP request
+   * @param send The Sender to emit HTTP response
    */
-  template <class Body, class Allocator, class Send>
   void
   handleRequest(boost::beast::string_view doc_root,
                 boost::beast::http::request<
@@ -78,23 +97,53 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
                 Send &&send);
 
 public:
-  // Take ownership of the stream
+  /**
+   * @brief Construct a new Http Session object
+   *
+   * @param socket Take ownership of the socket's stream
+   * @param doc_root The path of static files
+   */
   HttpSession(boost::asio::ip::tcp::socket &&socket,
               std::shared_ptr<std::string const> const &doc_root)
       : m_stream(std::move(socket)), m_doc_root(doc_root), m_lambda(*this) {}
 
-  // Start the asynchronous operation
+  /**
+   * @brief Start the asynchronous operation
+   *
+   */
   void run();
-
+  /**
+   * @brief Method to start async reading of request
+   *
+   */
   void doRead();
-
+  /**
+   * @brief Method to read request
+   *
+   * @param ec The error code of previous step
+   * @param bytes_transferred The size of bytes transferred
+   */
   void onRead(boost::beast::error_code ec, std::size_t bytes_transferred);
-
+  /**
+   * @brief Method to write response
+   *
+   * @param close The decision to close socket or not
+   * @param ec The error code of previous step
+   * @param bytes_transferred The size of bytes transferred
+   */
   void onWrite(bool close, boost::beast::error_code ec,
                std::size_t bytes_transferred);
-
+  /**
+   * @brief method to close TCP/IP socket
+   *
+   */
   void doClose();
-
+  /**
+   * @brief methode to add route for prefix uri
+   *
+   * @param target The prefix of uri to dispatch requests
+   * @param handler The handler function to call
+   */
   void addRequestDispatcher(const std::string &target,
                             const requestHandler_t &handler);
 };
