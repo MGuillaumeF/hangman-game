@@ -1,5 +1,5 @@
 {
-    "swagger": "3.0",
+    "swagger": "2.0",
     "info": {
       "description": "This API is REST service to access hangman game data.",
       "version": "1.0.0",
