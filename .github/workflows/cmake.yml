@@ -137,6 +137,12 @@ jobs:
         boost_version: 1.77.0
         # OPTIONAL: Specify a platform version
         platform_version: 2019
+
+    - name: Configure CMake
+      run: cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE -B build
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
     - name: Generate target
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_CXX_COMPILER=make -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
