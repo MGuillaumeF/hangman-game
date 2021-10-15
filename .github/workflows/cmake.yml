@@ -113,7 +113,7 @@ jobs:
     - name: Tree Server
       run: tree ${{github.workspace}}/server;
       
-  build-server-win:
+ build-server-win:
     runs-on: windows-latest
     steps:
     - name: Set up MinGW
