@@ -141,7 +141,7 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_CXX_COMPILER=make -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -G "MinGW Makefiles" -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_CXX_COMPILER=mingw32-make.exe -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
