@@ -137,6 +137,8 @@ jobs:
         boost_version: 1.77.0
         # OPTIONAL: Specify a platform version
         platform_version: 2019
+        # OPTIONAL: in workspace by default
+        boost_install_dir: 'C:/'
 
     - name: Configure CMake
       run: cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE -B build
