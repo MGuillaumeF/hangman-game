@@ -140,16 +140,10 @@ jobs:
         # OPTIONAL: in workspace by default
         boost_install_dir: 'D:/'
 
-    - name: Configure CMake
-      run: cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE -B build
+    - name: Build server windows 
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_CXX_COMPILER=make -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} build
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Generate target
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_CXX_COMPILER=make -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    - name: Build server windows
-      run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Archive Server windows 
       uses: actions/upload-artifact@v2
