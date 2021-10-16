@@ -115,6 +115,7 @@ jobs:
       id: review
       with:
         build_dir: ${{github.workspace}}/server/bin
+        pr: sanitize
 
     - name: Tree Server
       run: tree ${{github.workspace}}/server;
