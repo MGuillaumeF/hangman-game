@@ -115,6 +115,7 @@ jobs:
       id: review
       with:
         build_dir: ${{github.workspace}}/server/bin
+        exclude: boost*
 
     - name: Tree Server
       run: tree ${{github.workspace}}/server;
