@@ -33,5 +33,6 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
   signals.async_wait(boost::bind(&boost::asio::io_context::stop, &ioc));
+  // run server listeners on context
   ioc.run();
 }
