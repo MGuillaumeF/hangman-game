@@ -113,15 +113,15 @@ jobs:
         name: Docs-Hangman-Game
         path: ${{github.workspace}}/docs
 
+    - name: Tree Server
+      run: tree ${{github.workspace}}/server;
+
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
       with:
-        build_dir: ${{github.workspace}}/server/bin
+        build_dir: ${{github.workspace}}
         exclude: boost*
-
-    - name: Tree Server
-      run: tree ${{github.workspace}}/server;
       
  build-server-win:
     runs-on: windows-latest
