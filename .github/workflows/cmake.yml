@@ -50,8 +50,8 @@ jobs:
         sudo ./b2 toolset=clang; \
         sudo ./b2 install
 
-    - name: create symbolic link for analysis
-      run: ln -s /usr/include/boost ${{github.workspace}}/boost
+   # - name: create symbolic link for analysis
+   #   run: ln -s /usr/include/boost ${{github.workspace}}/boost
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -114,14 +114,13 @@ jobs:
         path: ${{github.workspace}}/docs
 
     - name: Tree Server
-      run: tree ${{github.workspace}}/server;
+      run: tree ${{github.workspace}};
 
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
       with:
         build_dir: ${{github.workspace}}
-        exclude: boost*
       
  build-server-win:
     runs-on: windows-latest
@@ -169,18 +168,18 @@ jobs:
     - name: Install nodejs
       run: sudo apt install -y nodejs
 
-    - name: Install client's dependencies
-      run: |
-        cd ${{github.workspace}}/client; \
-        npm install
+   # - name: Install client's dependencies
+   #   run: |
+   #     cd ${{github.workspace}}/client; \
+   #     npm install
 
-    - name: Build client
-      run: |
-        cd ${{github.workspace}}/client; \
-        npm run build
+   # - name: Build client
+   #   run: |
+   #     cd ${{github.workspace}}/client; \
+   #     npm run build
 
-    - name: Archive IHM
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
+   # - name: Archive IHM
+   #   uses: actions/upload-artifact@v2
+   #   with:
+   #     name: IHM-Hangman-Game
+   #     path: ${{github.workspace}}/client/build
