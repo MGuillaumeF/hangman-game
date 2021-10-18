@@ -50,6 +50,9 @@ jobs:
         sudo ./b2 toolset=clang; \
         sudo ./b2 install
 
+    - name: create symbolic link for analysis
+      run: ln -s /usr/include/boost ${{github.workspace}}/boost
+
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
