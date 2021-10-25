@@ -41,6 +41,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.0.0
+      id: install-boost
+      with:
+        boost_version: 1.77.0
+        # OPTIONAL: in workspace by default
+        boost_install_dir: 'D:/'
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
