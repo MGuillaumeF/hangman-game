@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: 
       - main
-    tags: 
-      - !dependencies
+    tags-ignore: 
+      - dependencies
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
