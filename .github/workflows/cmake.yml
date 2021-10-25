@@ -122,6 +122,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
 
     - name: Tree Server
       run: tree ${{github.workspace}}/server/bin;
