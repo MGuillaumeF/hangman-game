@@ -13,8 +13,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   BOOST_VERSION: 77
-  SONAR_SCANNER_VERSION: 4.4.0.2170
-  SONAR_SERVER_URL: "https://sonarcloud.io"
+  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
 permissions: write-all
 
@@ -23,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2 with:
+      # Disabling shallow clone is recommended for improving relevancy of reporting
+      fetch-depth: 0
 
     - name: graphviz
       run: sudo apt-get install -y graphviz
@@ -119,6 +120,7 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
     - name: Tree Server
       run: tree ${{github.workspace}}/server/bin;
