@@ -127,6 +127,12 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       with:
         projectBaseDir: ${{github.workspace}}/server/bin
+        projectKey=MGuillaumeF_hangman-game
+        organization=mguillaumef
+        projectName=hangman-game
+        projectVersion=1.0
+        sourceEncoding=UTF-8
+
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
