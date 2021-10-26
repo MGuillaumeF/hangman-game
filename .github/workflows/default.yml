@@ -133,7 +133,7 @@ jobs:
           -Dsonar.projectName=hangman-game
           -Dsonar.projectVersion=1.0
           -Dsonar.sourceEncoding=UTF-8
-          -Dsonar.cfamily.compile-commands=${{github.workspace}}/server/bin/compile_commands.json
+          -Dsonar.cfamily.compile-commands=bin/compile_commands.json
           -Dsonar.sources=src
           -Dsonar.tests=test
 
