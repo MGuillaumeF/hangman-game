@@ -133,9 +133,9 @@ jobs:
           -Dsonar.projectName=hangman-game
           -Dsonar.projectVersion=1.0
           -Dsonar.sourceEncoding=UTF-8
-          -Dsonar.cfamily.compile-commands=./server/bin/compile_commands.json
-          -Dsonar.sources=./server/src
-          -Dsonar.tests=./server/test
+          -Dsonar.cfamily.compile-commands=server/bin/compile_commands.json
+          -Dsonar.sources=server/src
+          -Dsonar.tests=server/test
 
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
