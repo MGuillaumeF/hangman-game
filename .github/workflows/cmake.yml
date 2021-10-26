@@ -120,10 +120,13 @@ jobs:
     - name: Archive Compilation DataBase
       uses: actions/upload-artifact@v2
       with:
-        name: Docs-Hangman-Game
+        name: Compilation-Database
         path: ${{github.workspace}}/server/bin/compile_commands.json
+
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
+      with:
+        projectBaseDir: ${{github.workspace}}
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
