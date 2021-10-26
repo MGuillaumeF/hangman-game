@@ -126,15 +126,16 @@ jobs:
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       with:
-        projectBaseDir: ${{github.workspace}}/server/bin
+        projectBaseDir: ${{github.workspace}}/server
         args: >
           -Dsonar.projectKey=MGuillaumeF_hangman-game
           -Dsonar.organization=mguillaumef
           -Dsonar.projectName=hangman-game
           -Dsonar.projectVersion=1.0
           -Dsonar.sourceEncoding=UTF-8
-          -Dsonar.sources=../src
-          -Dsonar.tests=../test
+          -Dsonar.cfamily.compile-commands=bin/compile_commands.json
+          -Dsonar.sources=src
+          -Dsonar.tests=test
 
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
