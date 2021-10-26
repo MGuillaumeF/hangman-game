@@ -135,7 +135,7 @@ jobs:
           -Dsonar.sourceEncoding=UTF-8
           -Dsonar.cfamily.compile-commands=${{github.workspace}}/server/bin/compile_commands.json
           -Dsonar.sources=${{github.workspace}}/server/src
-          -Dsonar.tests= ${{github.workspace}}/server/test
+          -Dsonar.tests=${{github.workspace}}/server/test
 
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -152,7 +152,7 @@ jobs:
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
       with:
-        build_dir: server/bin
+        build_dir: ${{github.workspace}}/server/bin
       
  build-server-win:
     runs-on: windows-latest
