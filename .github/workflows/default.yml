@@ -123,6 +123,17 @@ jobs:
         name: Compilation-Database
         path: ${{github.workspace}}/server/bin/compile_commands.json
 
+     - name: Setup sonarqube
+       uses: warchant/setup-sonar-scanner@v3
+     - name: Run SonarQube
+       env:
+       GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+       run: sonar-scanner
+         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+         -Dsonar.host.url= ${{ secrets.SONAR_HOST_URL }}
+         -Dsonar.verbose=true
+
+
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       with:
