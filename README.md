@@ -6,5 +6,4 @@ mini jeux avec API HTTP Boost/C++ et IHM Web React
 ```
 bootstrap --with-toolset=clang-win  
 b2 toolset=clang-win
-
 ```
