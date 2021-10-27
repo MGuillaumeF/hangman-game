@@ -130,7 +130,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
       run: sonar-scanner
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.host.url= ${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=true
 
     - name: SonarQube Scan
