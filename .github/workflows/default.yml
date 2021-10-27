@@ -133,18 +133,6 @@ jobs:
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=true
 
-    - name: Tree Server
-      run: tree ${{github.workspace}}/server/bin;
-
-    - name: create symbolic link for analysis
-      run: ln -s /usr/local/include/boost ${{github.workspace}}/server/bin/boost
-
-    - name: Run clang-tidy
-      uses: ZedThree/clang-tidy-review@v0.6.1
-      id: review
-      with:
-        build_dir: server/bin
-      
  build-server-win:
     runs-on: windows-latest
     steps:
