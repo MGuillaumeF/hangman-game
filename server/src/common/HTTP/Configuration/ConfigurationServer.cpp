@@ -34,7 +34,7 @@ ConfigurationServer::ConfigurationServer(char *argv[]) {
                      "\n -> Thread       : " + std::to_string(m_thread));
 
   } catch (const boost::property_tree::ptree_error &e) {
-    logger->error("HTTP_CONFIGURATION", "Configuration reading error");
+    logger->error("HTTP_CONFIGURATION", ("Configuration reading error" + e.what()));
     throw ConfigurationException("HTTP Configuration file is invalid");
   }
 }
