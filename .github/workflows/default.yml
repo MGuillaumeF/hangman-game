@@ -128,14 +128,6 @@ jobs:
       with:
         projectBaseDir: ${{github.workspace}}
         args: >
-          -Dsonar.projectKey=MGuillaumeF_hangman-game
-          -Dsonar.organization=mguillaumef
-          -Dsonar.projectName=hangman-game
-          -Dsonar.projectVersion=1.0
-          -Dsonar.sourceEncoding=UTF-8
-          -Dsonar.cfamily.compile-commands=server/bin/compile_commands.json
-          -Dsonar.sources=server/src/
-          -Dsonar.tests=server/test/
           -Dsonar.verbose=true
 
       env:
