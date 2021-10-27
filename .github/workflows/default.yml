@@ -133,18 +133,6 @@ jobs:
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=true
 
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      with:
-        projectBaseDir: ${{github.workspace}}
-        args: >
-          -Dsonar.verbose=true
-
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-
     - name: Tree Server
       run: tree ${{github.workspace}}/server/bin;
 
@@ -155,7 +143,7 @@ jobs:
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
       with:
-        build_dir: ${{github.workspace}}/server/bin
+        build_dir: server/bin
       
  build-server-win:
     runs-on: windows-latest
