@@ -19,7 +19,7 @@ private:
   Logger *m_logger;
 
 public:
-  HttpTokenEndpoint(
+  explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : HttpRestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, true},
