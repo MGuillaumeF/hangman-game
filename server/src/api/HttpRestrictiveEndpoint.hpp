@@ -47,11 +47,11 @@ private:
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
   }
 
+protected:
+
   boost::beast::http::request<boost::beast::http::string_body> m_request;
   boost::beast::http::response<boost::beast::http::string_body> m_response;
   std::map<boost::beast::http::verb, bool> m_allowedMethods;
-
-protected:
 
   void writeMethodNotAllowed() {
     boost::beast::http::response<boost::beast::http::string_body> res;
