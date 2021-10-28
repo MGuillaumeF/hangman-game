@@ -11,7 +11,7 @@
  * @return std::string  The returned path is normalized for the platform.
  */
 std::string HttpSession::pathCat(boost::beast::string_view base,
-                                 boost::beast::string_view path) {
+                                 boost::beast::string_view path) const {
   if (base.empty())
     return std::string(path);
   std::string result(base);

@@ -77,7 +77,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * @return std::string  The returned path is normalized for the platform.
    */
   std::string pathCat(boost::beast::string_view base,
-                      boost::beast::string_view path);
+                      boost::beast::string_view path) const;
 
   template <class Body, class Allocator, class Send>
   /**
