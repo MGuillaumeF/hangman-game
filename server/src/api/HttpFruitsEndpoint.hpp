@@ -8,7 +8,7 @@
 class HttpFruitsEndpoint : public HttpRestrictiveEndpoint {
 
 public:
-  HttpFruitsEndpoint(
+  explicit HttpFruitsEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : HttpRestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, false},
