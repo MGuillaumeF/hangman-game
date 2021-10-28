@@ -51,9 +51,9 @@ jobs:
       run: tree ${{github.workspace}}/server/bin;
 
     - name: create symbolic link for analysis
-      run: cp ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz ${{github.workspace}}/server/bon/boost.tar.gz
+      run: cp ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz ${{github.workspace}}/server/bin/boost.tar.gz
     - name: a
-      run: tar xzvf ${{github.workspace}}/server/bon/boost.tar.gz
+      run: tar xzvf ${{github.workspace}}/server/bin/boost.tar.gz
     - name: b
       run: ln -s /usr/local/include/boost ${{github.workspace}}/server/bin/boost
 
