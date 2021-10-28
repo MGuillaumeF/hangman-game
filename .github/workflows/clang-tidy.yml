@@ -31,12 +31,11 @@ jobs:
     - name: Unzip Boost
       run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
 
-    - name: Bootstrap Boost
+    - name: Bootstrap Boost tidy
       run: |
         cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0; \
-        sudo ./bootstrap.sh --with-toolset=clang; \
-        sudo ./b2 toolset=clang; \
-        sudo ./b2 install
+        sudo ./bootstrap.sh --with-toolset=clang --prefix=${{github.workspace}} --includedir=headers --libdir=dist --with-libraries=date_time; \
+        sudo ./b2 toolset=clang --prefix=${{github.workspace}} install
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -46,13 +45,7 @@ jobs:
     - name: Build server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
-
-    - name: Bootstrap Boost tidy
-      run: |
-        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0; \
-        sudo ./bootstrap.sh --prefix=${{github.workspace}} --includedir=headers --libdir=dist --with-libraries=date_time; \
-        sudo ./b2 --prefix=${{github.workspace}} install
-
+ 
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
