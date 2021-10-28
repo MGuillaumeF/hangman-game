@@ -25,7 +25,7 @@ Logger *Logger::getInstance() {
  *
  * @return int log level
  */
-int Logger::getLevel() { return m_level; }
+int Logger::getLevel() const { return m_level; }
 /**
  * To set the log level of Logger
  * @param level The new level of logger
