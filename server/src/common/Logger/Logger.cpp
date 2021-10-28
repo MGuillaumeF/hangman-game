@@ -84,7 +84,7 @@ void Logger::error(const std::string &theme, const std::string &msg) {
  * @param msg The message body
  */
 std::string Logger::getLog(const std::string &level, const std::string &theme,
-                           const std::string &msg) {
+                           const std::string &msg) const {
   std::string l_message = "[" + level + "] - [" + theme + "] - " + msg;
   return l_message;
 }
