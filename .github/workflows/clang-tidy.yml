@@ -47,15 +47,11 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
-    - name: Tree Server
-      run: tree ${{github.workspace}}/server/bin;
-
-    - name: create symbolic link for analysis
-      run: cp ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz ${{github.workspace}}/server/bin/boost.tar.gz
-    - name: a
-      run: tar xzvf ${{github.workspace}}/server/bin/boost.tar.gz
-    - name: b
-      run: ln -s /usr/local/include/boost ${{github.workspace}}/server/bin/boost
+    - name: Bootstrap Boost tidy
+      run: |
+        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0; \
+        sudo ./bootstrap.sh --prefix=${{github.workspace}} --includedir=headers --libdir=dist --with-libraries=date_time; \
+        sudo ./b2 --prefix=${{github.workspace}} install
 
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
