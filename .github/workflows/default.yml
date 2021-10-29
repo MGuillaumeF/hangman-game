@@ -82,7 +82,7 @@ jobs:
       run: ./HangmanGameTest
 
     - name: lcov after test
-      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/common/HTTP;llvm-cov gcov -a -b -c -f HttpUtils.cpp.gcno
+      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/common/HTTP;llvm-cov gcov -a -b -c -f HttpUtils.cpp.gcda
     #   run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
     # - name: Merge raw coverage instrumentation profile
