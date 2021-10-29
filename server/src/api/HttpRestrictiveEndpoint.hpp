@@ -144,7 +144,7 @@ public:
     return m_allowedMethods.at(method);
   }
 
-  ~HttpRestrictiveEndpoint() = default;
+  virtual ~HttpRestrictiveEndpoint() = default;
 };
 
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__
