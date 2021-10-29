@@ -22,7 +22,7 @@ public:
    * @brief Destroy the Http Server object
    *
    */
-  ~HttpServer() {}
+  ~HttpServer() = default;
 };
 
 #endif

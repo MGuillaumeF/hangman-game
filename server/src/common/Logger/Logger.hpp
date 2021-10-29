@@ -43,7 +43,7 @@ private:
    * @brief Construct a new Logger object
    *
    */
-  Logger() {}
+  Logger() = default;
 
 public:
   /**

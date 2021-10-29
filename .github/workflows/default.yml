@@ -81,11 +81,12 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ./HangmanGameTest
 
-    # - name: lcov after test
+    - name: lcov after test
+      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/common/HTTP;llvm-cov gcov -a -b -c -f -i HttpUtils.cpp.gcno
     #   run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
-    - name: Merge raw coverage instrumentation profile
-      run: llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/default.profraw
+    # - name: Merge raw coverage instrumentation profile
+    #   run: llvm-profdata merge -output=${{github.workspace}}/server/bin/project.profdata ${{github.workspace}}/server/bin/default.profraw
 
     # - name: Coverage Gcov
     #   run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server; gcov **/*.gcno -a -u -b -c

@@ -18,7 +18,7 @@ public:
    * @brief Destroy the Configuration Server object
    *
    */
-  ~ConfigurationServer() {}
+  ~ConfigurationServer() = default;
   std::string getDescription() const;
   /**
    * @brief Get the Hostname object
