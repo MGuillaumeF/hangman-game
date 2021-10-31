@@ -22,7 +22,7 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 
 find_package (Threads)
 # Recherche la dépendance externe
-find_package (Boost .)
+find_package (Boost)
 if (Boost_FOUND)
   # Une fois la dépendance trouvée, nous l'incluons au projet
   include_directories(${Boost_INCLUDE_DIRS}) 
