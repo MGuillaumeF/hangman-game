@@ -11,21 +11,19 @@
  * @return std::string  The returned path is normalized for the platform.
  */
 std::string HttpSession::pathCat(boost::beast::string_view base,
-                                 boost::beast::string_view path) {
+                                 boost::beast::string_view path) const {
   if (base.empty())
     return std::string(path);
   std::string result(base);
 #ifdef BOOST_MSVC
-  char constexpr path_separator = '\\';
-  if (result.back() == path_separator)
+  if (char constexpr path_separator = '\\'; result.back() == path_separator)
     result.resize(result.size() - 1);
   result.append(path.data(), path.size());
   for (auto &c : result)
     if (c == '/')
       c = path_separator;
 #else
-  char constexpr path_separator = '/';
-  if (result.back() == path_separator)
+  if (char constexpr path_separator = '/'; result.back() == path_separator)
     result.resize(result.size() - 1);
   result.append(path.data(), path.size());
 #endif
@@ -284,5 +282,5 @@ void HttpSession::doClose() {
  */
 void HttpSession::addRequestDispatcher(const std::string &target,
                                        const requestHandler_t &handler) {
-  m_requestDispatcher.insert(std::pair(target, handler));
+  m_requestDispatcher.try_emplace(target, handler);
 }

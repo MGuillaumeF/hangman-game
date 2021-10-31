@@ -19,7 +19,7 @@ private:
   Logger *m_logger;
 
 public:
-  HttpTokenEndpoint(
+  explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : HttpRestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, true},
@@ -34,15 +34,16 @@ public:
   }
 
   void doPost() override {
+    const boost::beast::http::request<boost::beast::http::string_body> request =
+        this->getRequest();
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - start");
 
-    std::stringstream l_stream(m_request.body());
+    std::stringstream l_stream(request.body());
     boost::property_tree::ptree requestRodyTree;
 
-    const boost::string_view contentType =
-        m_request.at(boost::beast::http::field::content_type);
-
-    if (contentType.compare("application/json") == 0) {
+    if (const boost::string_view contentType =
+            request.at(boost::beast::http::field::content_type);
+        contentType.compare("application/json") == 0) {
       m_logger->debug(
           "HTTP_DATA_READ",
           "HttpTokenEndpoint - doPost - json body content expected");
@@ -102,10 +103,10 @@ public:
     }
 
     boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::ok, m_request.version()};
+        boost::beast::http::status::ok, request.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(boost::beast::http::field::content_type, "text/plain");
-    res.keep_alive(m_request.keep_alive());
+    res.keep_alive(request.keep_alive());
     res.body() = "This is a fake token";
     res.prepare_payload();
     setResponse(res);

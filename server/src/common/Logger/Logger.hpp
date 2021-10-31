@@ -43,7 +43,7 @@ private:
    * @brief Construct a new Logger object
    *
    */
-  Logger() {}
+  Logger() = default;
 
 public:
   /**
@@ -88,7 +88,7 @@ public:
    * To get the log level of Logger
    * @see LEVEL
    */
-  int getLevel();
+  int getLevel() const;
   /**
    * To set the log level of Logger
    * @param level The new level of logger
@@ -136,7 +136,7 @@ public:
    * @param msg The message body
    */
   std::string getLog(const std::string &level, const std::string &theme,
-                     const std::string &msg);
+                     const std::string &msg) const;
   /**
    * Function of default std:cout appender
    * @param message The message to print

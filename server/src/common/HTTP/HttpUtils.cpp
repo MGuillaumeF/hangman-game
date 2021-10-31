@@ -27,7 +27,7 @@ const std::map<boost::beast::string_view, boost::beast::string_view>
 /**
  * The default constructor of Utils class
  */
-HttpUtils::HttpUtils() {}
+HttpUtils::HttpUtils() = default;
 
 /**
  * @brief Return a reasonable mime type based on the extension of a file.
@@ -72,4 +72,4 @@ void HttpUtils::onFail(boost::beast::error_code ec, char const *what) {
  *
  * The default destructor of Utils class
  */
-HttpUtils::~HttpUtils() {}
+HttpUtils::~HttpUtils() = default;

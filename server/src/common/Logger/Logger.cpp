@@ -25,7 +25,7 @@ Logger *Logger::getInstance() {
  *
  * @return int log level
  */
-int Logger::getLevel() { return m_level; }
+int Logger::getLevel() const { return m_level; }
 /**
  * To set the log level of Logger
  * @param level The new level of logger
@@ -84,7 +84,7 @@ void Logger::error(const std::string &theme, const std::string &msg) {
  * @param msg The message body
  */
 std::string Logger::getLog(const std::string &level, const std::string &theme,
-                           const std::string &msg) {
+                           const std::string &msg) const {
   std::string l_message = "[" + level + "] - [" + theme + "] - " + msg;
   return l_message;
 }
@@ -113,9 +113,8 @@ void Logger::defaultErrAppender(const std::string &message) {
  */
 void Logger::addAppender(const int level, const std::string &theme,
                          appender_t appender) {
-  if (m_appenders.find(theme) != m_appenders.end()) {
-    if (m_appenders[theme].find(Logger::s_corresp[level]) !=
-        m_appenders[theme].end()) {
+  if (m_appenders.contains(theme)) {
+    if (m_appenders[theme].contains(Logger::s_corresp[level])) {
       m_appenders[theme][Logger::s_corresp[level]].insert(appender);
     } else {
       m_appenders[theme][Logger::s_corresp[level]] =
@@ -133,8 +132,7 @@ void Logger::addAppender(const int level, const std::string &theme,
  */
 void Logger::write(const std::string &level, const std::string &theme,
                    const std::string &msg) {
-  if ((m_appenders.find(theme) != m_appenders.end()) &&
-      (m_appenders[theme].find(level) != m_appenders[theme].end())) {
+  if ((m_appenders.contains(theme)) && (m_appenders[theme].contains(level))) {
     const std::string message = getLog(level, theme, msg);
     const std::set<appender_t> appenders = m_appenders[theme][level];
     for (const appender_t &appender : appenders) {

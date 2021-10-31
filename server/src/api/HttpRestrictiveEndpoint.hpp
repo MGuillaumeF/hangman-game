@@ -16,6 +16,11 @@
 class HttpRestrictiveEndpoint {
 private:
   Logger *m_logger = Logger::getInstance();
+
+  boost::beast::http::request<boost::beast::http::string_body> m_request;
+  boost::beast::http::response<boost::beast::http::string_body> m_response;
+  std::map<boost::beast::http::verb, bool> m_allowedMethods;
+
   virtual void doGet() {
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
     writeNotImplementedResponse();
@@ -48,10 +53,6 @@ private:
   }
 
 protected:
-  boost::beast::http::request<boost::beast::http::string_body> m_request;
-  boost::beast::http::response<boost::beast::http::string_body> m_response;
-  std::map<boost::beast::http::verb, bool> m_allowedMethods;
-
   void writeMethodNotAllowed() {
     boost::beast::http::response<boost::beast::http::string_body> res;
 
@@ -84,7 +85,7 @@ public:
    */
   HttpRestrictiveEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      std::map<boost::beast::http::verb, bool> allowedMethods)
+      const std::map<boost::beast::http::verb, bool> &allowedMethods)
       : m_request(req), m_allowedMethods(allowedMethods){};
   void dispatchRequest() {
     try {
@@ -119,10 +120,12 @@ public:
     }
   }
   void setResponse(
-      boost::beast::http::response<boost::beast::http::string_body> response) {
+      const boost::beast::http::response<boost::beast::http::string_body>
+          &response) {
     m_response = response;
   }
-  boost::beast::http::response<boost::beast::http::string_body> getResponse() {
+  boost::beast::http::response<boost::beast::http::string_body>
+  getResponse() const {
     m_logger->debug("HTTP_DATA_READ",
                     "HttpRestrictiveEndpoint - getResponse - start");
     m_logger->debug("HTTP_DATA_READ",
@@ -133,7 +136,16 @@ public:
     return m_response;
   }
 
-  ~HttpRestrictiveEndpoint() {}
+  boost::beast::http::request<boost::beast::http::string_body>
+  getRequest() const {
+    return m_request;
+  }
+
+  bool methodIsAllowed(const boost::beast::http::verb &method) const {
+    return m_allowedMethods.at(method);
+  }
+
+  virtual ~HttpRestrictiveEndpoint() = default;
 };
 
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__
