@@ -120,7 +120,7 @@ public:
     }
   }
   void setResponse(
-      boost::beast::http::response<boost::beast::http::string_body> response) {
+      const boost::beast::http::response<boost::beast::http::string_body>& response) {
     m_response = response;
   }
   boost::beast::http::response<boost::beast::http::string_body>

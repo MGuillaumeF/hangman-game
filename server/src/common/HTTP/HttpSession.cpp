@@ -282,5 +282,5 @@ void HttpSession::doClose() {
  */
 void HttpSession::addRequestDispatcher(const std::string &target,
                                        const requestHandler_t &handler) {
-  m_requestDispatcher.insert(std::pair(target, handler));
+  m_requestDispatcher.try_emplace(target, handler);
 }
