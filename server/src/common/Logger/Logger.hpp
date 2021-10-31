@@ -9,6 +9,38 @@
 #include <string>
 
 /**
+ * All levels available for logs
+ */
+enum class ELogLevel {
+  /**
+   * The **debug** level
+   * Level of Logger for dev mode
+   * To print debug message with Logger to help dev
+   * value 0
+   */
+  LDEBUG = 0,
+  /**
+   * The **information** level
+   * Default level of Logger for production mode
+   * To print information, normal message with Logger
+   * value 1
+   */
+  LINFO = 1,
+  /**
+   * The **warnning** level
+   * To print warnning, important message with Logger
+   * value 2
+   */
+  LWARN = 2,
+  /**
+   * The **error** level
+   * To print error, very important message with Logger
+   * value 3
+   */
+  LERROR = 3
+};
+
+/**
  * abstract class for generic definition of logger
  */
 class Logger {
@@ -19,12 +51,12 @@ public:
 
 private:
   static Logger *s_pInstance;
-  static std::map<int, std::string> s_corresp;
+  static std::map<ELogLevel, std::string> s_corresp;
   /**
    * The current log Level
    * @see LEVEL
    */
-  int m_level = 1;
+  ELogLevel m_level = ELogLevel::LINFO;
   /**
    * @brief appenders of logger for each theme and levels
    *
@@ -47,38 +79,6 @@ private:
 
 public:
   /**
-   * All levels available for logs
-   */
-  enum LEVEL {
-    /**
-     * The **debug** level
-     * Level of Logger for dev mode
-     * To print debug message with Logger to help dev
-     * value 0
-     */
-    LDEBUG = 0,
-    /**
-     * The **information** level
-     * Default level of Logger for production mode
-     * To print information, normal message with Logger
-     * value 1
-     */
-    LINFO = 1,
-    /**
-     * The **warnning** level
-     * To print warnning, important message with Logger
-     * value 2
-     */
-    LWARN = 2,
-    /**
-     * The **error** level
-     * To print error, very important message with Logger
-     * value 3
-     */
-    LERROR = 3
-  };
-
-  /**
    * @brief Get instance of singleton logger
    *
    * @return Logger* address of logger instance
@@ -88,13 +88,13 @@ public:
    * To get the log level of Logger
    * @see LEVEL
    */
-  int getLevel() const;
+  ELogLevel getLevel() const;
   /**
    * To set the log level of Logger
    * @param level The new level of logger
    * @see LEVEL
    */
-  void setLevel(int level);
+  void setLevel(ELogLevel level);
   /**
    * To print debug log
    * @param theme The theme of message
@@ -126,7 +126,7 @@ public:
    * @param theme The theme of message
    * @param appender The tracer function to manage printing of message
    */
-  void addAppender(const int level, const std::string &theme,
+  void addAppender(const ELogLevel level, const std::string &theme,
                    appender_t tracer);
 
   /**

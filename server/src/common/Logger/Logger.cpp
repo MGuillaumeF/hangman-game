@@ -5,8 +5,11 @@
 
 Logger *Logger::s_pInstance = nullptr;
 
-std::map<int, std::string> Logger::s_corresp = {
-    {0, "DEBUG"}, {1, "INFO"}, {2, "WARN"}, {3, "ERROR"}};
+std::map<ELogLevel, std::string> Logger::s_corresp = {
+    {ELogLevel::LDEBUG, "DEBUG"},
+    {ELogLevel::LINFO, "INFO"},
+    {ELogLevel::LWARN, "WARN"},
+    {ELogLevel::LERROR, "ERROR"}};
 
 /**
  * @brief Get instance of singleton logger
@@ -25,14 +28,14 @@ Logger *Logger::getInstance() {
  *
  * @return int log level
  */
-int Logger::getLevel() const { return m_level; }
+ELogLevel Logger::getLevel() const { return m_level; }
 /**
  * To set the log level of Logger
  * @param level The new level of logger
  * @see LEVEL
  */
-void Logger::setLevel(int level) {
-  if (level >= LEVEL::LDEBUG && level <= LEVEL::LERROR) {
+void Logger::setLevel(ELogLevel level) {
+  if (level >= ELogLevel::LDEBUG && level <= ELogLevel::LERROR) {
     m_level = level;
   }
 }
@@ -42,7 +45,7 @@ void Logger::setLevel(int level) {
  * @param msg The message to print
  */
 void Logger::debug(const std::string &theme, const std::string &msg) {
-  if (m_level == LEVEL::LDEBUG) {
+  if (m_level == ELogLevel::LDEBUG) {
     write("DEBUG", theme, msg);
   }
 }
@@ -52,7 +55,7 @@ void Logger::debug(const std::string &theme, const std::string &msg) {
  * @param msg The message to print
  */
 void Logger::info(const std::string &theme, const std::string &msg) {
-  if (m_level <= LEVEL::LINFO) {
+  if (m_level <= ELogLevel::LINFO) {
     write("INFO", theme, msg);
   }
 }
@@ -62,7 +65,7 @@ void Logger::info(const std::string &theme, const std::string &msg) {
  * @param msg The message to print
  */
 void Logger::warn(const std::string &theme, const std::string &msg) {
-  if (m_level <= LEVEL::LWARN) {
+  if (m_level <= ELogLevel::LWARN) {
     write("WARN", theme, msg);
   }
 }
@@ -72,7 +75,7 @@ void Logger::warn(const std::string &theme, const std::string &msg) {
  * @param msg The message to print
  */
 void Logger::error(const std::string &theme, const std::string &msg) {
-  if (m_level <= LEVEL::LERROR) {
+  if (m_level <= ELogLevel::LERROR) {
     write("ERROR", theme, msg);
   }
 }
@@ -111,7 +114,7 @@ void Logger::defaultErrAppender(const std::string &message) {
  * @param theme The theme of message
  * @param appender The tracer function to manage printing of message
  */
-void Logger::addAppender(const int level, const std::string &theme,
+void Logger::addAppender(const ELogLevel level, const std::string &theme,
                          appender_t appender) {
   if (m_appenders.contains(theme)) {
     if (m_appenders[theme].contains(Logger::s_corresp[level])) {
@@ -132,8 +135,7 @@ void Logger::addAppender(const int level, const std::string &theme,
  */
 void Logger::write(const std::string &level, const std::string &theme,
                    const std::string &msg) {
-  if ((m_appenders.contains(theme)) &&
-      (m_appenders[theme].contains(level))) {
+  if ((m_appenders.contains(theme)) && (m_appenders[theme].contains(level))) {
     const std::string message = getLog(level, theme, msg);
     const std::set<appender_t> appenders = m_appenders[theme][level];
     for (const appender_t &appender : appenders) {

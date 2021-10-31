@@ -28,7 +28,7 @@ public:
                                  {boost::beast::http::verb::patch, false},
                                  {boost::beast::http::verb::delete_, true}}) {
     m_logger = Logger::getInstance();
-    m_logger->setLevel(Logger::LEVEL::LINFO);
+    m_logger->setLevel(ELogLevel::LLINFO);
 
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
   }
@@ -41,7 +41,9 @@ public:
     std::stringstream l_stream(request.body());
     boost::property_tree::ptree requestRodyTree;
 
-    if (const boost::string_view contentType = request.at(boost::beast::http::field::content_type); contentType.compare("application/json") == 0) {
+    if (const boost::string_view contentType =
+            request.at(boost::beast::http::field::content_type);
+        contentType.compare("application/json") == 0) {
       m_logger->debug(
           "HTTP_DATA_READ",
           "HttpTokenEndpoint - doPost - json body content expected");

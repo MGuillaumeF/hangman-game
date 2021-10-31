@@ -36,36 +36,36 @@ int main(int argc, char *argv[]) {
 
   Logger *logger = Logger::getInstance();
 
-  logger->addAppender(Logger::LDEBUG, "HTTP_ACCESS",
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LINFO, "HTTP_ACCESS", appenderAccessFile);
-  logger->addAppender(Logger::LWARN, "HTTP_ACCESS", appenderAccessFile);
-  logger->addAppender(Logger::LERROR, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_ACCESS", appenderAccessFile);
 
-  logger->addAppender(Logger::LINFO, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(Logger::LWARN, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(Logger::LERROR, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ", appenderFile);
 
-  logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION", appenderFile);
-  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION", appenderFile);
-  logger->addAppender(Logger::LERROR, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION", appenderFile);
 
-  logger->addAppender(Logger::LDEBUG, "HTTP_DATA_READ",
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LINFO, "HTTP_DATA_READ",
+  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LWARN, "HTTP_DATA_READ",
+  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ",
                       Logger::defaultErrAppender);
-  logger->addAppender(Logger::LERROR, "HTTP_DATA_READ",
+  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ",
                       Logger::defaultErrAppender);
 
-  logger->addAppender(Logger::LDEBUG, "HTTP_CONFIGURATION",
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_CONFIGURATION",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LINFO, "HTTP_CONFIGURATION",
+  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION",
                       Logger::defaultOutAppender);
-  logger->addAppender(Logger::LWARN, "HTTP_CONFIGURATION",
+  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
-  logger->addAppender(Logger::LERROR, "HTTP_CONFIGURATION",
+  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
 
   boost::property_tree::ptree pt;
@@ -129,8 +129,7 @@ int main(int argc, char *argv[]) {
   // If configuration of server is in arguments of execution
   // server is started
   auto config = ConfigurationServer(argv);
-  auto server = HttpServer("0.0.0.0", 8080, ".",
-                                 3);
+  auto server = HttpServer("0.0.0.0", 8080, ".", 3);
 
   g_fs.close();
   return EXIT_SUCCESS;
