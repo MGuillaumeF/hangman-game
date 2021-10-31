@@ -41,10 +41,7 @@ public:
     std::stringstream l_stream(request.body());
     boost::property_tree::ptree requestRodyTree;
 
-    const boost::string_view contentType =
-        request.at(boost::beast::http::field::content_type);
-
-    if (contentType.compare("application/json") == 0) {
+    if (const boost::string_view contentType = request.at(boost::beast::http::field::content_type); contentType.compare("application/json") == 0) {
       m_logger->debug(
           "HTTP_DATA_READ",
           "HttpTokenEndpoint - doPost - json body content expected");
