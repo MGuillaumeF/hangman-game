@@ -28,6 +28,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   // Run the I/O service on the requested number of threads
   std::vector<std::jthread> threadList;
   threadList.reserve(threads);
+
   for (auto i = 0; i < threads; i++) {
     threadList.emplace_back([&ioc] { ioc.run(); });
   }
