@@ -2,12 +2,7 @@ name: HANGMAN-GAME - DEFAULT
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: 
-      - main
-    tags-ignore: 
-      - dependencies
+    branches: [ feature/sonar-fix ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
