@@ -6,8 +6,8 @@ project(HangmanGame)
 
 set (CMAKE_CXX_STANDARD 20)
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage -fcoverage-mapping -fprofile-instr-generate --coverage")
-SET(GCC_COVERAGE_LINK_FLAGS    " -ftest-coverage -fcoverage-mapping -fprofile-instr-generate  --coverage")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage --coverage")
+SET(GCC_COVERAGE_LINK_FLAGS "-ftest-coverage --coverage")
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 
