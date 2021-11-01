@@ -144,7 +144,7 @@ jobs:
       run: sonar-scanner
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.verbose=true
+        -Dsonar.verbose=false
 
  build-server-win:
     runs-on: windows-latest
