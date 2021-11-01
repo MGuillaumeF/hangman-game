@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: 
       - main
-    tags-ignore: 
-      - dependencies
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -130,6 +128,7 @@ jobs:
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
     - name: Run SonarQube
+      if: github.actor!= 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
       run: sonar-scanner
