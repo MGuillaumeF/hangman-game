@@ -78,6 +78,12 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --log_level=all --log_format=JUNIT > ${{github.workspace}}/server/reports/reports.xml
 
+    - name: Archive Test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game Unit Test - Reports
+        path: ${{github.workspace}}/server/reports
+
     - name: gcov after test
       run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/common/HTTP;gcov HttpUtils.cpp.gcno
 
