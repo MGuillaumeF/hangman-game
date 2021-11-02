@@ -85,7 +85,7 @@ jobs:
         path: ${{github.workspace}}/server/reports
 
     - name: gcov after test
-      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src/common;gcov HTTP/HttpUtils.cpp.gcno
+      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server;gcov src/common/HTTP/HttpUtils.cpp.gcno;gcov src/common/Logger/Logger.cpp.gcno;gcov src/common/HTTP/HttpUtils.hpp.gcno;gcov src/common/Logger/Logger.hpp.gcno
 
     # run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
