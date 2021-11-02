@@ -30,9 +30,11 @@ if (Boost_FOUND)
   add_executable(HangmanGame ${SRCS})
   add_executable(HangmanGameTest ./server/src/common/HTTP/HttpUtils.cpp ./server/src/common/Logger/Logger.cpp ./server/test/testHttpUtils.cpp)
   if(WIN32)
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32)
+    # c:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32)
+    # C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib 
   else ()
     add_definitions("-lboost_unit_test_framework" "--coverage")
     target_link_libraries(HangmanGame ${CMAKE_THREAD_LIBS_INIT})
