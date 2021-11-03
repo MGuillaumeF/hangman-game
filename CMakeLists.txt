@@ -60,7 +60,7 @@ if (Boost_FOUND)
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32)
   else ()
     target_link_libraries(HangmanGame ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} boost::unit_test_framework)
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()
 else ()
   # If boost not found print fatal error message
