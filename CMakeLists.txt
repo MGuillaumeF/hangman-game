@@ -5,11 +5,12 @@ cmake_minimum_required(VERSION 3.12)
 set (HangmanGame_VERSION_MAJOR 1)
 set (HangmanGame_VERSION_MINOR 0) 
 
-# Add name on project 
-project(HangmanGame)
-
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Add name on project 
+project(HangmanGame)
 
 SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage --coverage")
 SET(GCC_COVERAGE_LINK_FLAGS "-ftest-coverage --coverage")
