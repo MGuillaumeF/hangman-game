@@ -34,7 +34,7 @@ jobs:
     - name: Bootstrap Boost
       run: |
         cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0;
-        sudo ./b2 toolset=clang; \
+        sudo ./bootstrap.sh; \
         sudo ./b2 install
 
     - name: Generate target
