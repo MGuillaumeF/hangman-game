@@ -49,8 +49,8 @@ jobs:
       run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
 
     - name: Bootstrap Boost
+      working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
       run: |
-        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0; \
         sudo ./bootstrap.sh; \
         sudo ./b2 install
 
@@ -85,7 +85,8 @@ jobs:
         path: ${{github.workspace}}/server/reports
 
     - name: gcov after test
-      run: cd ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src;gcov common/HTTP/HttpUtils.cpp.gcno;gcov common/Logger/Logger.cpp.gcno;gcov common/HTTP/HttpUtils.hpp.gcno;gcov common/Logger/Logger.hpp.gcno
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: gcov common/HTTP/HttpUtils.cpp.gcno;gcov common/Logger/Logger.cpp.gcno;gcov common/HTTP/HttpUtils.hpp.gcno;gcov common/Logger/Logger.hpp.gcno
 
     # run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
@@ -193,14 +194,12 @@ jobs:
       run: sudo apt install -y nodejs
 
    # - name: Install client's dependencies
-   #   run: |
-   #     cd ${{github.workspace}}/client; \
-   #     npm install
+   #   working-directory: ${{github.workspace}}/client
+   #   run: npm install
 
    # - name: Build client
-   #   run: |
-   #     cd ${{github.workspace}}/client; \
-   #     npm run build
+   #   working-directory: ${{github.workspace}}/client
+   #   run: npm run build
 
    # - name: Archive IHM
    #   uses: actions/upload-artifact@v2

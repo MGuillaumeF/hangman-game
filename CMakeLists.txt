@@ -5,17 +5,31 @@ cmake_minimum_required(VERSION 3.12)
 set (HangmanGame_VERSION_MAJOR 1)
 set (HangmanGame_VERSION_MINOR 0) 
 
+# define C++ version on standard
+set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Add name on project 
 project(HangmanGame)
 
-# define C++ version on standard
-set (CMAKE_CXX_STANDARD 20)
-
-SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage --coverage")
-SET(GCC_COVERAGE_LINK_FLAGS "-ftest-coverage --coverage")
-SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
-SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
-
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  # using Clang
+  MESSAGE("Compiler used is Clang")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  MESSAGE("Compiler used is g++")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2a -g -O0 -fprofile-arcs -ftest-coverage --coverage")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+  MESSAGE("Compiler used is Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
+  MESSAGE("Compiler used is Microsoft Visual Studio C++")
+endif()
 
 add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601")
 
