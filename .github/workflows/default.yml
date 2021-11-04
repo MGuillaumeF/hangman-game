@@ -161,16 +161,16 @@ jobs:
         # OPTIONAL: Specify a platform version
         platform_version: 2019
         # OPTIONAL: in workspace by default
-        boost_install_dir: 'D:/'
+        # boost_install_dir: 'D:/'
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
-    # - name: Build server windows
-    #   # Build your program with the given configuration
-    #   run: cmake --build ${{github.workspace}}/server/bin
+    - name: Build server windows
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin
 
     # - name: Archive Server windows 
     #   uses: actions/upload-artifact@v2
@@ -193,16 +193,16 @@ jobs:
     - name: Install nodejs
       run: sudo apt install -y nodejs
 
-   # - name: Install client's dependencies
-   #   working-directory: ${{github.workspace}}/client
-   #   run: npm install
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: npm install
 
-   # - name: Build client
-   #   working-directory: ${{github.workspace}}/client
-   #   run: npm run build
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
 
-   # - name: Archive IHM
-   #   uses: actions/upload-artifact@v2
-   #   with:
-   #     name: IHM-Hangman-Game
-   #     path: ${{github.workspace}}/client/build
+    - name: Archive IHM
+      uses: actions/upload-artifact@v2
+        with:
+          name: IHM-Hangman-Game
+          path: ${{github.workspace}}/client/build
