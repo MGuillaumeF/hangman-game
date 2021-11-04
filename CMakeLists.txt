@@ -63,7 +63,7 @@ find_package (Boost)
 if (Boost_FOUND)
   # add boost includes
   include_directories(${Boost_INCLUDE_DIRS}) 
-  # On indique que l'on veut un exécutable "hello" compilé à partir des fichiers décrits par les variables SRCS et HEADERS
+  # Create application executable files
   add_executable(HangmanGame ${SRCS})
   add_executable(HangmanGameTest ${TESTS_SRC_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
   if(WIN32)
