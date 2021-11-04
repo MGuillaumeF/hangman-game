@@ -37,7 +37,7 @@ jobs:
         sudo ./bootstrap.sh; \
         sudo ./b2 install;   \
         sudo ./b2 install --prefix= ${{github.workspace}}/server; \
-        sudo ./b2 install --prefix= ${{github.workspace}}/server/bin; 
+        sudo ./b2 install --prefix= ${{github.workspace}}; 
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
