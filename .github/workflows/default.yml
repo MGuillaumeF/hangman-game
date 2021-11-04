@@ -203,6 +203,6 @@ jobs:
 
     - name: Archive IHM
       uses: actions/upload-artifact@v2
-        with:
-          name: IHM-Hangman-Game
-          path: ${{github.workspace}}/client/build
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
