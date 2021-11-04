@@ -51,8 +51,11 @@ jobs:
     - name: Tree Server
       run: tree ${{github.workspace}}/server/bin;
 
-    - name: create symbolic link for analysis
-      run: ln -s /usr/local/include/boost ${{github.workspace}}/server/bin/boost
+    -  name: Bootstrap Boost bis
+      run: |
+        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0;
+        sudo ./b2 install --prefix= ${{github.workspace}}/server/bin; 
+
 
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
