@@ -13,8 +13,11 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+// global streams for files loggers
 std::fstream g_fs;
+// light http access logs
 std::fstream g_access_fs;
+
 /**
  * To write a log message
  * @param message The message to print

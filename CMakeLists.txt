@@ -39,10 +39,22 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
      "server/src/*.cpp"
 )
 
-# Add all tests files in TESTS_SRCS variable
-file(GLOB_RECURSE TESTS_SRCS CONFIGURE_DEPENDS
+# Add all tests files in TESTS_SRC_DIR variable
+file(GLOB_RECURSE TESTS_SRC_DIR CONFIGURE_DEPENDS
      "server/test/*.hpp"
      "server/test/*.cpp"
+)
+
+# Add all HTTP files in HTTP_SRC_DIR variable
+file(GLOB_RECURSE HTTP_SRC_DIR CONFIGURE_DEPENDS
+     "server/src/common/HTTP/*.hpp"
+     "server/src/common/HTTP/*.cpp"
+)
+
+# Add all Logger files in LOGGER_SRC_DIR variable
+file(GLOB_RECURSE LOGGER_SRC_DIR CONFIGURE_DEPENDS
+     "server/src/common/Logger/*.hpp"
+     "server/src/common/Logger/*.cpp"
 )
 
 find_package (Threads)
@@ -53,14 +65,13 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # On indique que l'on veut un exécutable "hello" compilé à partir des fichiers décrits par les variables SRCS et HEADERS
   add_executable(HangmanGame ${SRCS})
-  add_executable(HangmanGameTest ${TESTS_SRCS} ./server/src/common/HTTP/HttpUtils.cpp ./server/src/common/Logger/Logger.cpp)
+  add_executable(HangmanGameTest ${TESTS_SRC_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
   if(WIN32)
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32)
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw12-mt-gd-x64-1_76.lib wsock32 ws2_32)
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32)
   else ()
-    add_definitions("-lboost_unit_test_framework" "--coverage")
-    target_link_libraries(HangmanGame ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()
 else ()
