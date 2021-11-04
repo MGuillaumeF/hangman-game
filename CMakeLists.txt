@@ -29,7 +29,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
   MESSAGE("Compiler used is Microsoft Visual Studio C++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++latest")
 endif()
 
 add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601")
