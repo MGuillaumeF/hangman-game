@@ -51,7 +51,7 @@ jobs:
     - name: Tree Server
       run: tree ${{github.workspace}}/server/bin;
 
-   -  name: Bootstrap Boost bis
+    - name: Bootstrap Boost bis
       run: |
         cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0;
         sudo ./b2 install --prefix= ${{github.workspace}}/server/bin; 
