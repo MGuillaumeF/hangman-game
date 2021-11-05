@@ -11,73 +11,9 @@
 #include "../common/Logger/Logger.hpp"
 
 /**
- * Http Endpoint Class ito create HTTP response
+ * Http Endpoint Class to create HTTP response
  */
 class HttpRestrictiveEndpoint {
-private:
-  Logger *m_logger = Logger::getInstance();
-
-  boost::beast::http::request<boost::beast::http::string_body> m_request;
-  boost::beast::http::response<boost::beast::http::string_body> m_response;
-  std::map<boost::beast::http::verb, bool> m_allowedMethods;
-
-  virtual void doGet() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
-    writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - end");
-  }
-
-  virtual void doPost() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - start");
-    writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - end");
-  }
-
-  virtual void doPut() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - start");
-    writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - end");
-  }
-
-  virtual void doDelete() {
-    m_logger->debug("HTTP_ACCESS",
-                    "HttpRestrictiveEndpoint - doDelete - start");
-    writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doDelete - end");
-  }
-
-  virtual void doPatch() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - start");
-    writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
-  }
-
-protected:
-  void writeMethodNotAllowed() {
-    boost::beast::http::response<boost::beast::http::string_body> res;
-
-    res.version(11); // HTTP/1.1
-    res.result(boost::beast::http::status::method_not_allowed);
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(m_request.keep_alive());
-    res.body() = "The method is not allowed.";
-    res.prepare_payload();
-    m_response = res;
-  }
-
-  void writeNotImplementedResponse() {
-    boost::beast::http::response<boost::beast::http::string_body> res;
-
-    res.version(11); // HTTP/1.1
-    res.result(boost::beast::http::status::not_implemented);
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(m_request.keep_alive());
-    res.body() = "The method is not implemented.";
-    res.prepare_payload();
-    m_response = res;
-  }
 
 public:
   /**
@@ -145,6 +81,72 @@ public:
   }
 
   virtual ~HttpRestrictiveEndpoint() = default;
+
+protected:
+  void writeMethodNotAllowed() {
+    boost::beast::http::response<boost::beast::http::string_body> res;
+
+    res.version(11); // HTTP/1.1
+    res.result(boost::beast::http::status::method_not_allowed);
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type, "text/html");
+    res.keep_alive(m_request.keep_alive());
+    res.body() = "The method is not allowed.";
+    res.prepare_payload();
+    m_response = res;
+  }
+
+  void writeNotImplementedResponse() {
+    boost::beast::http::response<boost::beast::http::string_body> res;
+
+    res.version(11); // HTTP/1.1
+    res.result(boost::beast::http::status::not_implemented);
+    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    res.set(boost::beast::http::field::content_type, "text/html");
+    res.keep_alive(m_request.keep_alive());
+    res.body() = "The method is not implemented.";
+    res.prepare_payload();
+    m_response = res;
+  }
+
+private:
+  Logger *m_logger = Logger::getInstance();
+
+  boost::beast::http::request<boost::beast::http::string_body> m_request;
+  boost::beast::http::response<boost::beast::http::string_body> m_response;
+  std::map<boost::beast::http::verb, bool> m_allowedMethods;
+
+  virtual void doGet() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - end");
+  }
+
+  virtual void doPost() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - end");
+  }
+
+  virtual void doPut() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - end");
+  }
+
+  virtual void doDelete() {
+    m_logger->debug("HTTP_ACCESS",
+                    "HttpRestrictiveEndpoint - doDelete - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doDelete - end");
+  }
+
+  virtual void doPatch() {
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - start");
+    writeNotImplementedResponse();
+    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
+  }
+
 };
 
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__
