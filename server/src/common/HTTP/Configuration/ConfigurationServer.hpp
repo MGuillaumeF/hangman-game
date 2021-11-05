@@ -50,7 +50,7 @@ private:
   std::string m_hostname;
   std::string m_root;
   unsigned short m_thread;
-  unit16_t  m_port;
+  uint16_t  m_port;
 };
 
 #endif
