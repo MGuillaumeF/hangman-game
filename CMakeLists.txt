@@ -32,7 +32,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++latest")
 endif()
 
-add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601")
+#add_definitions("-Wall" "-g" "-D_WIN32_WINNT=0x0601")
 
 # Add all srcs files in SRCS variable
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
