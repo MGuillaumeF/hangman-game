@@ -32,6 +32,7 @@ void appenderAccessFile(const std::string &message) {
 }
 
 int main(int argc, char *argv[]) {
+  int exitStatus = EXIT_SUCCESS;
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
   g_access_fs.open("./logs/access.log",
@@ -126,14 +127,14 @@ int main(int argc, char *argv[]) {
                   "Usage: HttpServer <address> <port> <doc_root> "
                   "<threads>\nExample:\n    HttpServer 0.0.0.0 8080 . 1\n");
     g_fs.close();
-    return EXIT_FAILURE;
+    exitStatus = EXIT_FAILURE;
+  } else {
+    // If configuration of server is in arguments of execution
+    // server is started
+    auto config = ConfigurationServer(argv);
+    auto server = HttpServer("0.0.0.0", 8080, ".", 3);
+
+    g_fs.close();
   }
-
-  // If configuration of server is in arguments of execution
-  // server is started
-  auto config = ConfigurationServer(argv);
-  auto server = HttpServer("0.0.0.0", 8080, ".", 3);
-
-  g_fs.close();
-  return EXIT_SUCCESS;
+  return exitStatus;
 }
