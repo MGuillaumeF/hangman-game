@@ -46,8 +46,8 @@ enum class ELogLevel {
 class Logger {
 public:
   using appender_t = void (*)(const std::string &);
-  typedef std::map<std::string, std::set<appender_t>> appendersByLevel;
-  typedef std::map<std::string, appendersByLevel> appendersByTheme;
+  using appendersByLevel = std::map<std::string, std::set<appender_t>>;
+  using appendersByTheme = std::map<std::string, appendersByLevel>;
 
 private:
   static Logger *s_pInstance;
