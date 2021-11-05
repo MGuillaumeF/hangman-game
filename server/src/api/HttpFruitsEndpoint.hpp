@@ -7,8 +7,6 @@
  * Http Endpoint Class ito create HTTP response
  */
 class HttpFruitsEndpoint : public HttpRestrictiveEndpoint {
-private:
-  Logger *m_logger = Logger::getInstance();
 
 public:
   explicit HttpFruitsEndpoint(
@@ -38,6 +36,10 @@ public:
     setResponse(res);
     m_logger->debug("HTTP_ACCESS", "HttpFruitsEndpoint - doGet - end");
   }
+
+private:
+  Logger *m_logger = Logger::getInstance();
+
 };
 
 #endif // __HTTP_FRUITS_ENDPOINT_HPP__
