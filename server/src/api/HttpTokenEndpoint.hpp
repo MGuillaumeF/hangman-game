@@ -15,8 +15,6 @@
  * Http Endpoint Class ito create HTTP response
  */
 class HttpTokenEndpoint : public HttpRestrictiveEndpoint {
-private:
-  Logger *m_logger;
 
 public:
   explicit HttpTokenEndpoint(
@@ -112,6 +110,10 @@ public:
     setResponse(res);
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - end");
   }
+
+private:
+  Logger *m_logger;
+
 };
 
 #endif // __HTTP_TOKEN_ENDPOINT_HPP__
