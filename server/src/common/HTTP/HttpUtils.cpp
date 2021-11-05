@@ -39,9 +39,7 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
   using boost::beast::iequals;
   auto const ext = [&path] {
     auto const pos = path.rfind(".");
-    if (pos == boost::beast::string_view::npos)
-      return boost::beast::string_view{};
-    return path.substr(pos);
+    return (pos == boost::beast::string_view::npos) ? boost::beast::string_view{} : path.substr(pos);
   }();
 
   boost::beast::string_view l_sMimeType = "application/text";
