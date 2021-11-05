@@ -49,35 +49,6 @@ public:
   using appendersByLevel = std::map<std::string, std::set<appender_t>>;
   using appendersByTheme = std::map<std::string, appendersByLevel>;
 
-private:
-  static Logger *s_pInstance;
-  static std::map<ELogLevel, std::string> s_corresp;
-  /**
-   * The current log Level
-   * @see LEVEL
-   */
-  ELogLevel m_level = ELogLevel::LINFO;
-  /**
-   * @brief appenders of logger for each theme and levels
-   *
-   */
-  appendersByTheme m_appenders;
-  /**
-   * To write a log message
-   * @param level The level of message
-   * @param theme The theme of message
-   * @param msg The message to print
-   */
-  void write(const std::string &level, const std::string &theme,
-             const std::string &msg);
-
-  /**
-   * @brief Construct a new Logger object
-   *
-   */
-  Logger() = default;
-
-public:
   /**
    * @brief Get instance of singleton logger
    *
@@ -147,6 +118,35 @@ public:
    * @param message The message to print
    */
   static void defaultErrAppender(const std::string &message);
+
+private:
+  static Logger *s_pInstance;
+  static std::map<ELogLevel, std::string> s_corresp;
+  /**
+   * The current log Level
+   * @see LEVEL
+   */
+  ELogLevel m_level = ELogLevel::LINFO;
+  /**
+   * @brief appenders of logger for each theme and levels
+   *
+   */
+  appendersByTheme m_appenders;
+  /**
+   * To write a log message
+   * @param level The level of message
+   * @param theme The theme of message
+   * @param msg The message to print
+   */
+  void write(const std::string &level, const std::string &theme,
+             const std::string &msg);
+
+  /**
+   * @brief Construct a new Logger object
+   *
+   */
+  Logger() = default;
+
 };
 
 #endif // __LOGGER_H__
