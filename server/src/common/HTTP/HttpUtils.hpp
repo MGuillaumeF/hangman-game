@@ -7,13 +7,6 @@
  * Utilitaries functions in static class
  */
 class HttpUtils {
-private:
-  /**
-   * Output file path
-   */
-  static const std::map<boost::beast::string_view, boost::beast::string_view>
-      s_extTomimtype;
-
 public:
   /**
    * The default constructor of Utils class
@@ -38,6 +31,13 @@ public:
    * The default destructor of Utils class
    */
   ~HttpUtils();
+
+private:
+  /**
+   * Output file path
+   */
+  static const std::map<boost::beast::string_view, boost::beast::string_view>
+      s_extTomimtype;
 };
 
 #endif
