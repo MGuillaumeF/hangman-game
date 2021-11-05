@@ -1,12 +1,9 @@
 @echo off
 
-set LLVM_HOME=C:/Users/miche/Desktop/LLVM/bin
-set MINGW_HOME=C:/MinGW/bin
-
 set DCMAKE_GENERATOR="MinGW Makefiles"
-set DCMAKE_CXX_COMPILER=%LLVM_HOME%/clang++.exe
-set DCMAKE_C_COMPILER=%LLVM_HOME%/clang.exe
-set DCMAKE_MAKE_PROGRAM=%MINGW_HOME%/mingw32-make.exe
+set DCMAKE_CXX_COMPILER=clang++.exe
+set DCMAKE_C_COMPILER=clang.exe
+set DCMAKE_MAKE_PROGRAM=mingw32-make.exe
 
 set DCMAKE_BUILD_TYPE=Debug
 set DESTINATION_DIRECTORY=./server/bin

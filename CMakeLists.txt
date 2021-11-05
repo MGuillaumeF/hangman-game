@@ -68,11 +68,15 @@ if (Boost_FOUND)
   add_executable(HangmanGame ${SRCS})
   add_executable(HangmanGameTest ${TESTS_SRC_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
   if(WIN32)
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32)
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 
+      C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
+      )
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32)
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 
+      C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
+    )
   else ()
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()
 else ()
