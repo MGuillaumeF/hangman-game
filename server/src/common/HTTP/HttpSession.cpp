@@ -225,14 +225,14 @@ void HttpSession::onRead(boost::beast::error_code ec,
   boost::ignore_unused(bytes_transferred);
 
   // This means they closed the connection
-  if (ec == boost::beast::http::error::end_of_stream)
-    return doClose();
-
-  if (ec)
+  if (ec == boost::beast::http::error::end_of_stream) {
+    doClose();
+  } else if (ec) {
     return HttpUtils::onFail(ec, "read");
-
-  // Send the response
-  handleRequest(*m_doc_root, std::move(m_req), m_lambda);
+  } else {
+    // Send the response
+    handleRequest(*m_doc_root, std::move(m_req), m_lambda);
+  }
 }
 
 /**
