@@ -12,21 +12,26 @@
  */
 std::string HttpSession::pathCat(boost::beast::string_view base,
                                  boost::beast::string_view path) const {
-  if (base.empty())
-    return std::string(path);
-  std::string result(base);
+  std::string result(path);
+  if (!base.empty()) {
+    result = std::string(base);
 #ifdef BOOST_MSVC
-  if (char constexpr path_separator = '\\'; result.back() == path_separator)
-    result.resize(result.size() - 1);
-  result.append(path.data(), path.size());
-  for (auto &c : result)
-    if (c == '/')
-      c = path_separator;
+    if (char constexpr path_separator = '\\'; result.back() == path_separator) {
+      result.resize(result.size() - 1);
+    }
+    result.append(path.data(), path.size());
+    for (auto &c : result) {
+      if (c == '/') {
+        c = path_separator;
+      }
+    }
 #else
-  if (char constexpr path_separator = '/'; result.back() == path_separator)
-    result.resize(result.size() - 1);
-  result.append(path.data(), path.size());
+    if (char constexpr path_separator = '/'; result.back() == path_separator) {
+      result.resize(result.size() - 1);
+    }
+    result.append(path.data(), path.size());
 #endif
+  }
   return result;
 }
 
@@ -228,7 +233,7 @@ void HttpSession::onRead(boost::beast::error_code ec,
   if (ec == boost::beast::http::error::end_of_stream) {
     doClose();
   } else if (ec) {
-    return HttpUtils::onFail(ec, "read");
+    HttpUtils::onFail(ec, "read");
   } else {
     // Send the response
     handleRequest(*m_doc_root, std::move(m_req), m_lambda);
@@ -246,20 +251,19 @@ void HttpSession::onWrite(bool close, boost::beast::error_code ec,
                           std::size_t bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
 
-  if (ec)
-    return HttpUtils::onFail(ec, "write");
-
-  if (close) {
+  if (ec) {
+    HttpUtils::onFail(ec, "write");
+  } else if (close) {
     // This means we should close the connection, usually because
     // the response indicated the "Connection: close" semantic.
-    return doClose();
+    doClose();
+  } else {
+    // We're done with the response so delete it
+    m_res = nullptr;
+
+    // Read another request
+    doRead();
   }
-
-  // We're done with the response so delete it
-  m_res = nullptr;
-
-  // Read another request
-  doRead();
 }
 
 /**
