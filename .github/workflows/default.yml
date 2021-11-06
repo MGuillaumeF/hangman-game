@@ -85,7 +85,7 @@ jobs:
 
     - name: Generate Unit Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --html-title "HangmanGame Server Coverage report" --html-details ${{github.workspace}}/server/reports
+      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --html-title "HangmanGame Server Coverage report" --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html
 
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
