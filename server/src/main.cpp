@@ -132,7 +132,7 @@ int32_t main(int argc, char *argv[]) {
     // If configuration of server is in arguments of execution
     // server is started
     auto config = ConfigurationServer(argv);
-    auto server = HttpServer("0.0.0.0", 8080, ".", 3);
+    auto server = HttpServer("0.0.0.0", 8080, ".", 1);
 
     g_fs.close();
     std::cout << "Server shutdown" << std::endl;
