@@ -77,9 +77,9 @@ int32_t main(int argc, char *argv[]) {
 
     boost::property_tree::read_json("../resources/data.json", pt);
 
-    const long double latitude = pt.get<long double>("point.latitude", 0);
+    const std::double_t latitude = pt.get<std::double_t>("point.latitude", 0);
 
-    const long double longitude = pt.get<long double>("point.longitude");
+    const std::double_t longitude = pt.get<std::double_t>("point.longitude");
 
     std::cout << "Le point est : " << std::endl
               << "Latitude : " << latitude << std::endl
