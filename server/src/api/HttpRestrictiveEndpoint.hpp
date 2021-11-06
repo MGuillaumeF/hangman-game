@@ -176,7 +176,7 @@ private:
   std::map<boost::beast::http::verb, bool> m_allowedMethods;
 
   /**
-   * @brief DEFAULT - @GET - HTTP Method not implemented for endpoind
+   * @brief DEFAULT - GET - HTTP Method not implemented for endpoind
    */
   virtual void doGet() {
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
@@ -185,7 +185,7 @@ private:
   }
 
   /**
-   * @brief DEFAULT - @POST - HTTP Method not implemented for endpoind
+   * @brief DEFAULT - POST - HTTP Method not implemented for endpoind
    */
   virtual void doPost() {
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - start");
@@ -194,7 +194,7 @@ private:
   }
 
   /**
-   * @brief DEFAULT - @PUT - HTTP Method not implemented for endpoind
+   * @brief DEFAULT - PUT - HTTP Method not implemented for endpoind
    */
   virtual void doPut() {
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - start");
@@ -203,7 +203,7 @@ private:
   }
 
   /**
-   * @brief DEFAULT - @DELETE - HTTP Method not implemented for endpoind
+   * @brief DEFAULT - DELETE - HTTP Method not implemented for endpoind
    */
   virtual void doDelete() {
     m_logger->debug("HTTP_ACCESS",
@@ -213,7 +213,7 @@ private:
   }
 
   /**
-   * @brief DEFAULT - @PATCH - HTTP Method not implemented for endpoind
+   * @brief DEFAULT - PATCH - HTTP Method not implemented for endpoind
    */
   virtual void doPatch() {
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - start");
