@@ -3,4 +3,4 @@ cd ../bin
 sleep 30
 curl -X POST http://localhost:8080/api/token -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"login" : "a", "password" : "b"}'
 sleep 15
-pkill -15 a.out
+pkill -15 HangmanGame
