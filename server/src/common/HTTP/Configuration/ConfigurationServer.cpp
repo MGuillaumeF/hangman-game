@@ -22,7 +22,7 @@ ConfigurationServer::ConfigurationServer(char *argv[]) {
     m_description = pt.get<std::string>("server.description");
     m_hostname = pt.get<std::string>("server.hostname");
     m_root = pt.get<std::string>("server.root");
-    m_thread = pt.get<unsigned short>("server.thread");
+    m_thread = pt.get<uint8_t>("server.thread");
     m_port = pt.get<uint16_t>("server.port");
 
     logger->info("HTTP_CONFIGURATION",
