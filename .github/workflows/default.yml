@@ -82,12 +82,6 @@ jobs:
       working-directory: ${{github.workspace}}/server/test
       run: chmod +x ./run-ti.sh; ./run-ti.sh
 
-    - name: Archive Test report
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game Unit Test - Reports
-        path: ${{github.workspace}}/server/reports
-
     - name: gcov after unit tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
       run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
@@ -100,6 +94,12 @@ jobs:
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
       run: ls -a
     #  run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+
+    - name: Archive Test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game Unit Test - Reports
+        path: ${{github.workspace}}/server/reports
 
     # run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
