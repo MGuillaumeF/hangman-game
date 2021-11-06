@@ -135,6 +135,7 @@ int32_t main(int argc, char *argv[]) {
     auto server = HttpServer("0.0.0.0", 8080, ".", 3);
 
     g_fs.close();
+    std::cout << "Server shutdown" << std::endl;
   }
   return exitStatus;
 }
