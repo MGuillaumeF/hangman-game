@@ -49,7 +49,7 @@ private:
   std::string m_description;
   std::string m_hostname;
   std::string m_root;
-  unsigned short m_thread;
+  uint8_t m_thread;
   uint16_t  m_port;
 };
 
