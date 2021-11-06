@@ -34,7 +34,7 @@ ELogLevel Logger::getLevel() const { return m_level; }
  * @param level The new level of logger
  * @see LEVEL
  */
-void Logger::setLevel(ELogLevel level) {
+void Logger::setLevel(const ELogLevel &level) {
   if (level >= ELogLevel::LDEBUG && level <= ELogLevel::LERROR) {
     m_level = level;
   }
@@ -44,7 +44,7 @@ void Logger::setLevel(ELogLevel level) {
  * @param theme The theme of message
  * @param msg The message to print
  */
-void Logger::debug(const std::string &theme, const std::string &msg) {
+void Logger::debug(const std::string &theme, const std::string &msg) const {
   if (m_level == ELogLevel::LDEBUG) {
     write("DEBUG", theme, msg);
   }
@@ -54,7 +54,7 @@ void Logger::debug(const std::string &theme, const std::string &msg) {
  * @param theme The theme of message
  * @param msg The message to print
  */
-void Logger::info(const std::string &theme, const std::string &msg) {
+void Logger::info(const std::string &theme, const std::string &msg) const {
   if (m_level <= ELogLevel::LINFO) {
     write("INFO", theme, msg);
   }
@@ -64,7 +64,7 @@ void Logger::info(const std::string &theme, const std::string &msg) {
  * @param theme The theme of message
  * @param msg The message to print
  */
-void Logger::warn(const std::string &theme, const std::string &msg) {
+void Logger::warn(const std::string &theme, const std::string &msg) const {
   if (m_level <= ELogLevel::LWARN) {
     write("WARN", theme, msg);
   }
@@ -74,7 +74,7 @@ void Logger::warn(const std::string &theme, const std::string &msg) {
  * @param theme The theme of message
  * @param msg The message to print
  */
-void Logger::error(const std::string &theme, const std::string &msg) {
+void Logger::error(const std::string &theme, const std::string &msg) const {
   if (m_level <= ELogLevel::LERROR) {
     write("ERROR", theme, msg);
   }
@@ -115,7 +115,7 @@ void Logger::defaultErrAppender(const std::string &message) {
  * @param appender The tracer function to manage printing of message
  */
 void Logger::addAppender(const ELogLevel level, const std::string &theme,
-                         appender_t appender) {
+                         const appender_t &appender) {
   if (m_appenders.find(theme) != m_appenders.end()) {
     if (m_appenders[theme].find(Logger::s_corresp[level]) !=
         m_appenders[theme].end()) {
@@ -135,11 +135,11 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
  * @param msg The message to print
  */
 void Logger::write(const std::string &level, const std::string &theme,
-                   const std::string &msg) {
+                   const std::string &msg) const {
   if ((m_appenders.find(theme) != m_appenders.end()) &&
-      (m_appenders[theme].find(level) != m_appenders[theme].end())) {
+      (m_appenders.at(theme).find(level) != m_appenders.at(theme).end())) {
     const std::string message = getLog(level, theme, msg);
-    const std::set<appender_t> appenders = m_appenders[theme][level];
+    const std::set<appender_t> appenders = m_appenders.at(theme).at(level);
     for (const appender_t &appender : appenders) {
       (*appender)(message);
     }

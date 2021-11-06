@@ -13,7 +13,7 @@
  */
 ConfigurationServer::ConfigurationServer(char *argv[]) {
 
-  Logger *logger = Logger::getInstance();
+  const Logger *logger = Logger::getInstance();
 
   boost::property_tree::ptree pt;
   boost::property_tree::read_xml("../resources/configuration.xml", pt);
@@ -34,7 +34,9 @@ ConfigurationServer::ConfigurationServer(char *argv[]) {
                      "\n -> Thread       : " + std::to_string(m_thread));
 
   } catch (const boost::property_tree::ptree_error &e) {
-    logger->error("HTTP_CONFIGURATION", std::string("Configuration reading error") + std::string(e.what()));
+    logger->error("HTTP_CONFIGURATION",
+                  std::string("Configuration reading error") +
+                      std::string(e.what()));
     throw ConfigurationException("HTTP Configuration file is invalid");
   }
 }

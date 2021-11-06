@@ -48,15 +48,17 @@ public:
       } else {
         writeMethodNotAllowed();
       }
-    } catch (std::out_of_range) {
+    } catch (const std::out_of_range &e) {
       m_logger->error(
           "HTTP_DATA_READ",
-          "HttpRestrictiveEndpoint - dispatchRequest - out of range of method");
+          "HttpRestrictiveEndpoint - dispatchRequest - out of range of method" +
+              std::string(e.what()));
       writeMethodNotAllowed();
     }
   }
   void setResponse(
-      const boost::beast::http::response<boost::beast::http::string_body>& response) {
+      const boost::beast::http::response<boost::beast::http::string_body>
+          &response) {
     m_response = response;
   }
   boost::beast::http::response<boost::beast::http::string_body>
@@ -146,7 +148,6 @@ private:
     writeNotImplementedResponse();
     m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
   }
-
 };
 
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__

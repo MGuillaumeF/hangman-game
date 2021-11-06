@@ -65,31 +65,31 @@ public:
    * @param level The new level of logger
    * @see LEVEL
    */
-  void setLevel(ELogLevel level);
+  void setLevel(const ELogLevel &level);
   /**
    * To print debug log
    * @param theme The theme of message
    * @param msg The message to print
    */
-  void debug(const std::string &theme, const std::string &msg);
+  void debug(const std::string &theme, const std::string &msg) const;
   /**
    * To print info log
    * @param theme The theme of message
    * @param msg The message to print
    */
-  void info(const std::string &theme, const std::string &msg);
+  void info(const std::string &theme, const std::string &msg) const;
   /**
    * To print warn log
    * @param theme The theme of message
    * @param msg The message to print
    */
-  void warn(const std::string &theme, const std::string &msg);
+  void warn(const std::string &theme, const std::string &msg) const;
   /**
    * To print error log
    * @param theme The theme of message
    * @param msg The message to print
    */
-  void error(const std::string &theme, const std::string &msg);
+  void error(const std::string &theme, const std::string &msg) const;
 
   /**
    * To write a log message
@@ -98,7 +98,7 @@ public:
    * @param appender The tracer function to manage printing of message
    */
   void addAppender(const ELogLevel level, const std::string &theme,
-                   appender_t tracer);
+                   const appender_t &tracer);
 
   /**
    * Function to get formated message
@@ -139,14 +139,13 @@ private:
    * @param msg The message to print
    */
   void write(const std::string &level, const std::string &theme,
-             const std::string &msg);
+             const std::string &msg) const;
 
   /**
    * @brief Construct a new Logger object
    *
    */
   Logger() = default;
-
 };
 
 #endif // __LOGGER_H__
