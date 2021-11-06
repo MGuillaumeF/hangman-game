@@ -17,7 +17,7 @@ HttpListener::HttpListener(boost::asio::io_context &ioc,
     : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)),
       m_doc_root(doc_root) {
 
-  Logger *logger = Logger::getInstance();
+  const Logger *const logger = Logger::getInstance();
   boost::beast::error_code ec;
 
   // Open the acceptor
@@ -73,7 +73,7 @@ void HttpListener::doAccept() {
  */
 void HttpListener::onAccept(boost::beast::error_code ec,
                             boost::asio::ip::tcp::socket socket) {
-  Logger *logger = Logger::getInstance();
+  const Logger *const logger = Logger::getInstance();
   if (ec) {
     logger->error("HTTP_CONFIGURATION", "onAccept error " + ec.message());
   } else {

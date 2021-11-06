@@ -13,7 +13,7 @@
  */
 ConfigurationServer::ConfigurationServer(char *argv[]) {
 
-  const Logger *logger = Logger::getInstance();
+  const Logger *const logger = Logger::getInstance();
 
   boost::property_tree::ptree pt;
   boost::property_tree::read_xml("../resources/configuration.xml", pt);

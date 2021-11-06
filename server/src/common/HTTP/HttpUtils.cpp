@@ -39,11 +39,13 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
   using boost::beast::iequals;
   auto const ext = [&path] {
     auto const pos = path.rfind(".");
-    return (pos == boost::beast::string_view::npos) ? boost::beast::string_view{} : path.substr(pos);
+    return (pos == boost::beast::string_view::npos)
+               ? boost::beast::string_view{}
+               : path.substr(pos);
   }();
 
   boost::beast::string_view l_sMimeType = "application/text";
-  Logger *logger = Logger::getInstance();
+  const Logger *const logger = Logger::getInstance();
   try {
     l_sMimeType = HttpUtils::s_extTomimtype.at(ext);
   } catch (const std::out_of_range &) {
