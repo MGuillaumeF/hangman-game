@@ -4,4 +4,4 @@ sleep 30
 curl -X POST http://localhost:8080/api/token -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"login" : "a", "password" : "b"}'
 sleep 30
 echo "soft stop emitted"
-pkill -INT HangmanGame
+pkill -15 HangmanGame
