@@ -31,8 +31,8 @@ void appenderAccessFile(const std::string &message) {
   g_access_fs << message << std::endl;
 }
 
-int main(int argc, char *argv[]) {
-  int exitStatus = EXIT_SUCCESS;
+int32_t main(int16_t argc, char *argv[]) {
+  int16_t exitStatus = EXIT_SUCCESS;
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
   g_access_fs.open("./logs/access.log",
