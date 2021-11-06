@@ -90,7 +90,7 @@ jobs:
 
     - name: gcov after test
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: gcov common/HTTP/HttpUtils.cpp.gcno;gcov common/Logger/Logger.cpp.gcno;gcov common/HTTP/HttpUtils.hpp.gcno;gcov common/Logger/Logger.hpp.gcno
+      run: find -name '*.gcno' -exec gcov; find -name '*.gcda' -exec gcov;
 
     # run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 
