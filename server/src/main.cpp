@@ -102,7 +102,7 @@ int32_t main(int argc, char *argv[]) {
       // example : "data.json(5): garbage after data"
       std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide, ligne "
                 << m[2] << " : " << m[3] << std::endl;
-    } else if (m.size() == 3) {
+    } else if (3 == m.size()) {
       // example : data.json: cannot open file
       std::cerr << "Le fichier " << m[1]
                 << " n'est pas un JSON valide : " << m[2] << std::endl;
