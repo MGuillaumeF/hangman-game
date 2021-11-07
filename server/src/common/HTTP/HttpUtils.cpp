@@ -35,7 +35,7 @@ HttpUtils::HttpUtils() = default;
  * @return the mime-type of file
  */
 boost::beast::string_view
-HttpUtils::getMimeType(boost::beast::string_view path) {
+HttpUtils::getMimeType(const boost::beast::string_view& path) {
   using boost::beast::iequals;
   auto const ext = [&path] {
     auto const pos = path.rfind(".");
@@ -63,7 +63,7 @@ HttpUtils::getMimeType(boost::beast::string_view path) {
  * @param ec the error code
  * @param what the explanation of error
  */
-void HttpUtils::onFail(boost::beast::error_code ec, char const *what) {
+void HttpUtils::onFail(const boost::beast::error_code& ec, const char * const what) {
   Logger::getInstance()->error("HTTP_CONFIGURATION",
                                std::string(what) + ": " + ec.message());
 }
