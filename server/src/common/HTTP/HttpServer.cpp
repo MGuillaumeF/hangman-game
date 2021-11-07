@@ -38,4 +38,5 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   });
   // run server listeners on context
   ioc.run();
+  Logger::getInstance()->info("HTTP_CONFIGURATION", "---------------- HERE 1 ----------------");
 }
