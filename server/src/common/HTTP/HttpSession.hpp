@@ -76,8 +76,8 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * @param path The end of path to merge
    * @return std::string  The returned path is normalized for the platform.
    */
-  std::string pathCat(boost::beast::string_view base,
-                      boost::beast::string_view path) const;
+  std::string pathCat(const boost::beast::string_view& base,
+                      const boost::beast::string_view& path) const;
 
   template <class Body, class Allocator, class Send>
   /**
@@ -91,7 +91,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * @param send The Sender to emit HTTP response
    */
   void
-  handleRequest(boost::beast::string_view doc_root,
+  handleRequest(const boost::beast::string_view& doc_root,
                 boost::beast::http::request<
                     Body, boost::beast::http::basic_fields<Allocator>> &&req,
                 Send &&send);
@@ -123,7 +123,7 @@ public:
    * @param ec The error code of previous step
    * @param bytes_transferred The size of bytes transferred
    */
-  void onRead(boost::beast::error_code ec, std::size_t bytes_transferred);
+  void onRead(const boost::beast::error_code& ec, const std::size_t& bytes_transferred);
   /**
    * @brief Method to write response
    *
@@ -131,8 +131,8 @@ public:
    * @param ec The error code of previous step
    * @param bytes_transferred The size of bytes transferred
    */
-  void onWrite(bool close, boost::beast::error_code ec,
-               std::size_t bytes_transferred);
+  void onWrite(const bool& close, const boost::beast::error_code& ec,
+               const std::size_t& bytes_transferred);
   /**
    * @brief method to close TCP/IP socket
    *
