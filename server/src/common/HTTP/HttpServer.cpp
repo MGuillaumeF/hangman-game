@@ -1,7 +1,7 @@
 #include "HttpServer.hpp"
+#include "../Logger/Logger.hpp"
 
 #include <boost/asio/signal_set.hpp>
-#include <boost/bind.hpp>
 #include <thread>
 
 /**
@@ -33,9 +33,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
   signals.async_wait([&ioc](const boost::system::error_code& ec, const int32_t& n){
-    if (ec) {
-      // TODO add error log
-    }
+    Logger::getInstance()->info("HTTP_CONFIGURATION", std::string("IO Context stop with ") + ec.message() + std::string(" and handler code : ") + std::to_string(n));
     ioc.stop();
   });
   // run server listeners on context
