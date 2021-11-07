@@ -103,7 +103,7 @@ void HttpSession::handleRequest(
         return res;
       };
   try {
-    if (req.target().compare("/api/token") == 0) {
+    if (0 == req.target().compare("/api/token")) {
       std::cout << "handleRequest - /api/token" << std::endl;
       HttpTokenEndpoint tokenEndpoint(req);
       tokenEndpoint.dispatchRequest();
@@ -112,7 +112,7 @@ void HttpSession::handleRequest(
       return send(buildResponse(response));
     }
 
-    if (req.target().compare("/api/fruits") == 0) {
+    if (0 == req.target().compare("/api/fruits")) {
       std::cout << "handleRequest - /api/fruits" << std::endl;
       HttpFruitsEndpoint fruits(req);
       fruits.dispatchRequest();
@@ -131,13 +131,13 @@ void HttpSession::handleRequest(
     return send(bad_request("Unknown HTTP-method"));
 
   // Request path must be absolute and not contain "..".
-  if (req.target().empty() || req.target()[0] != '/' ||
+  if (req.target().empty() || '/' != req.target()[0] ||
       req.target().find("..") != boost::beast::string_view::npos)
     return send(bad_request("Illegal request-target"));
 
   // Build the path to the requested file
   std::string path = pathCat(doc_root, req.target());
-  if (req.target().back() == '/')
+  if ('/' == req.target().back())
     path.append("index.html");
 
   // Attempt to open the file
