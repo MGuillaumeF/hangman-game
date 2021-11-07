@@ -17,7 +17,7 @@ std::map<ELogLevel, std::string> Logger::s_corresp = {
  * @return Logger* address of logger instance
  */
 Logger *Logger::getInstance() {
-  if (s_pInstance == nullptr) {
+  if (nullptr == s_pInstance) {
     s_pInstance = new Logger();
   }
   return s_pInstance;
