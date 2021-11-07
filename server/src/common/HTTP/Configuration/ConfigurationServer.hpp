@@ -13,7 +13,7 @@ public:
    *
    * @param argv
    */
-  explicit ConfigurationServer(char *argv[]);
+  explicit ConfigurationServer(const char * const argv[]);
   /**
    * @brief Destroy the Configuration Server object
    *
