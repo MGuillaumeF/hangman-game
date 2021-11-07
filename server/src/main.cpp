@@ -98,7 +98,7 @@ int32_t main(int argc, char *argv[]) {
       re = std::regex("(.+): (.*)");
       std::regex_search(errorStr, m, re);
     }
-    if (m.size() == 4) {
+    if (4 == m.size()) {
       // example : "data.json(5): garbage after data"
       std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide, ligne "
                 << m[2] << " : " << m[3] << std::endl;
@@ -122,7 +122,7 @@ int32_t main(int argc, char *argv[]) {
   }
 
   // Check command line arguments.
-  if (argc != 5) {
+  if (5 != argc) {
     logger->error("HTTP_CONFIGURATION",
                   "Usage: HttpServer <address> <port> <doc_root> "
                   "<threads>\nExample:\n    HttpServer 0.0.0.0 8080 . 1\n");
