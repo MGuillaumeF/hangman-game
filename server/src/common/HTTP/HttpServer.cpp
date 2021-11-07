@@ -32,7 +32,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
     threadList.emplace_back([&ioc] { ioc.run(); });
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
-  signals.async_wait([](const boost::system::error_code& ec){
+  signals.async_wait([&ioc](const boost::system::error_code& ec){
     if (ec) {
       // TODO add error log
     }
