@@ -22,7 +22,7 @@ public:
    * @param doc_root The root path of file server
    */
   HttpListener(boost::asio::io_context &ioc,
-               boost::asio::ip::tcp::endpoint endpoint,
+               const boost::asio::ip::tcp::endpoint& endpoint,
                std::shared_ptr<std::string const> const &doc_root);
 
   /**
@@ -42,7 +42,7 @@ private:
    * @param ec The error code of previous step
    * @param socket The TCP/IP socket
    */
-  void onAccept(boost::beast::error_code ec,
+  void onAccept(const boost::beast::error_code& ec,
                 boost::asio::ip::tcp::socket socket);
 };
 

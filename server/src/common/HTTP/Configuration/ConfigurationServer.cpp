@@ -11,7 +11,7 @@
  *
  * @param argv
  */
-ConfigurationServer::ConfigurationServer(char *argv[]) {
+ConfigurationServer::ConfigurationServer(const char * const argv[]) {
 
   const Logger *const logger = Logger::getInstance();
 
