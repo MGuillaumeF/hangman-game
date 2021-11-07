@@ -57,13 +57,13 @@ void HttpSession::handleRequest(
         Body, boost::beast::http::basic_fields<Allocator>> &&req,
     Send &&send) {
 
-  Logger *logger = Logger::getInstance();
+  const Logger * const logger = Logger::getInstance();
 
   logger->info("HTTP_DATA_READ",
                "request received on target " + req.target().to_string());
 
   // Returns a bad request response
-  auto const bad_request = [&req](boost::beast::string_view why) {
+  auto const bad_request = [&req](const boost::beast::string_view& why) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::bad_request, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -75,7 +75,7 @@ void HttpSession::handleRequest(
   };
 
   // Returns a not found response
-  auto const not_found = [&req](boost::beast::string_view target) {
+  auto const not_found = [&req](const boost::beast::string_view& target) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::not_found, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -87,7 +87,7 @@ void HttpSession::handleRequest(
   };
 
   // Returns a server error response
-  auto const server_error = [&req](boost::beast::string_view what) {
+  auto const server_error = [&req](const boost::beast::string_view& what) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::internal_server_error, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
