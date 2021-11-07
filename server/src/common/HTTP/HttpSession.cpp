@@ -10,8 +10,8 @@
  * @param path The end of path to merge
  * @return std::string  The returned path is normalized for the platform.
  */
-std::string HttpSession::pathCat(boost::beast::string_view base,
-                                 boost::beast::string_view path) const {
+std::string HttpSession::pathCat(const boost::beast::string_view& base,
+                                 const boost::beast::string_view& path) const {
   std::string result(path);
   if (!base.empty()) {
     result = std::string(base);
@@ -52,7 +52,7 @@ template <class Body, class Allocator, class Send>
  * @param send The Sender to emit HTTP response
  */
 void HttpSession::handleRequest(
-    boost::beast::string_view doc_root,
+    const boost::beast::string_view& doc_root,
     boost::beast::http::request<
         Body, boost::beast::http::basic_fields<Allocator>> &&req,
     Send &&send) {
@@ -225,8 +225,8 @@ void HttpSession::doRead() {
  * @param ec The error code of previous step
  * @param bytes_transferred The size of bytes transferred
  */
-void HttpSession::onRead(boost::beast::error_code ec,
-                         std::size_t bytes_transferred) {
+void HttpSession::onRead(const boost::beast::error_code& ec,
+                     const std::size_t& bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
 
   // This means they closed the connection
@@ -247,8 +247,8 @@ void HttpSession::onRead(boost::beast::error_code ec,
  * @param ec The error code of previous step
  * @param bytes_transferred The size of bytes transferred
  */
-void HttpSession::onWrite(bool close, boost::beast::error_code ec,
-                          std::size_t bytes_transferred) {
+void HttpSession::onWrite(const bool& close, const boost::beast::error_code& ec,
+                          const std::size_t& bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
 
   if (ec) {
