@@ -12,7 +12,7 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit SerializationException(const char *message) : m_message(message) {}
+  explicit SerializationException(const char * const message) : m_message(message) {}
 
   /** Constructor
    *  @param message The error message.
