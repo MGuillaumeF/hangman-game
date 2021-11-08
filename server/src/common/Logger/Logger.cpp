@@ -16,7 +16,7 @@ std::map<ELogLevel, std::string> Logger::s_corresp = {
  *
  * @return Logger* address of logger instance
  */
-std::unique_ptr<Logger> Logger::getInstance() {
+std::unique_ptr<Logger>& Logger::getInstance() {
  
   return s_pInstance;
 }
