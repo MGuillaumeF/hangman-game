@@ -38,7 +38,7 @@ public:
   }
 
 private:
-  const std::unique_ptr<Logger> m_logger = Logger::getInstance();
+  const std::unique_ptr<Logger>& m_logger = Logger::getInstance();
 
 };
 
