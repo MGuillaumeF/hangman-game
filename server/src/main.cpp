@@ -38,7 +38,7 @@ int32_t main(int argc, char *argv[]) {
   g_access_fs.open("./logs/access.log",
                    std::fstream::in | std::fstream::out | std::fstream::app);
 
-  Logger *logger = Logger::getInstance();
+  const std::unique_ptr<Logger>& logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
                       Logger::defaultOutAppender);
