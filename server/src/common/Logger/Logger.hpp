@@ -120,7 +120,7 @@ public:
   static void defaultErrAppender(const std::string &message);
 
 private:
-  static Logger *s_pInstance;
+  static std::unique_ptr<Logger> s_pInstance;
   static std::map<ELogLevel, std::string> s_corresp;
   /**
    * The current log Level
