@@ -12,13 +12,10 @@
  * @param doc_root The path of root directory of static files
  * @param threads The number of thread of server
  */
-HttpServer::HttpServer(const std::string &address, const uint16_t port,
+HttpServer::HttpServer(const boost::asio::io_context& ioc, const std::string &address, const uint16_t port,
                        const std::string &doc_root, const uint8_t threads) {
   auto const l_address = boost::asio::ip::make_address(address);
   auto const l_doc_root = std::make_shared<std::string>(doc_root);
-
-  // The io_context is required for all I/O
-  boost::asio::io_context ioc{threads};
 
   // Create and launch a listening port
   std::make_shared<HttpListener>(
