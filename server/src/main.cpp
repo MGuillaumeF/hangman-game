@@ -3,6 +3,7 @@
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
 #include "./common/HTTP/HttpServer.hpp"
 
+#include <boost/asio/io_context.hpp>
 #include <algorithm>
 #include <iostream>
 #include <iterator>
