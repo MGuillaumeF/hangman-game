@@ -1,5 +1,5 @@
-#ifndef __LOGGER_H__
-#define __LOGGER_H__
+#ifndef __LOGGER_HPP__
+#define __LOGGER_HPP__
 
 /**
  * The string include is to message parameters of Logger
@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <memory>
 
 /**
  * All levels available for logs
