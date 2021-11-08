@@ -2,7 +2,7 @@
 #define __CONFIGURATION_SERVER_HPP__
 
 #include <iostream>
-#include <array>
+#include <vector>
 #include <string>
 
 /**
@@ -15,7 +15,7 @@ public:
    *
    * @param argv
    */
-  explicit ConfigurationServer(const std::array<std::string>& argv);
+  explicit ConfigurationServer(const std::vector<std::string>& argv);
   /**
    * @brief Destroy the Configuration Server object
    *
