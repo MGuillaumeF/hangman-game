@@ -2,9 +2,8 @@
 #include "Logger.hpp"
 #include <iostream>
 #include <streambuf>
-#include <memory>
 
-Logger *Logger::s_pInstance = nullptr;
+std::unique_ptr<Logger> Logger::s_pInstance = std::make_unique<Logger>();
 
 std::map<ELogLevel, std::string> Logger::s_corresp = {
     {ELogLevel::LDEBUG, "DEBUG"},
@@ -17,11 +16,9 @@ std::map<ELogLevel, std::string> Logger::s_corresp = {
  *
  * @return Logger* address of logger instance
  */
-Logger *Logger::getInstance() {
-  if (nullptr == s_pInstance) {
-    s_pInstance = std::make_unique<Logger>();
-  }
-  return s_pInstance;
+std::unique_ptr<Logger>& Logger::getInstance() {
+ 
+  return s_pInstance&;
 }
 
 /**
