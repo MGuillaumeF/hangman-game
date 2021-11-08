@@ -137,7 +137,5 @@ int32_t main(int argc, char *argv[]) {
     g_fs.close();
   }
   logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
-  logger->~Logger();
-  delete logger;
   return exitStatus;
 }
