@@ -136,7 +136,11 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
-    auto server = HttpServer("0.0.0.0", 8080, ".", 1);
+
+    // The io_context is required for all I/O
+    boost::asio::io_context ioc{threads};
+
+    auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", 1);
 
     g_fs.close();
   }
