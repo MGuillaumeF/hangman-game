@@ -126,8 +126,13 @@ public:
    */
   static void defaultErrAppender(const std::string &message);
 
+  Logger(Logger &) = delete;
+  Logger(Logger &&) = delete;
+  Logger &operator=(Logger &) = delete;
+  Logger &operator=(Logger &&) = delete;
+
 private:
-  static std::unique_ptr<Logger> s_pInstance;
+  static std::unique_ptr<Logger>& s_pInstance;
   static std::map<ELogLevel, std::string> s_corresp;
   /**
    * The current log Level
