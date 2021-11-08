@@ -61,7 +61,7 @@ public:
    *
    * @return Logger* address of logger instance
    */
-  static std::unique_ptr<Logger> getInstance();
+  static std::unique_ptr<Logger>& getInstance();
   /**
    * To get the log level of Logger
    * @see LEVEL
@@ -132,7 +132,7 @@ public:
   Logger &operator=(Logger &&) = delete;
 
 private:
-  static std::unique_ptr<Logger>& s_pInstance;
+  static std::unique_ptr<Logger> s_pInstance;
   static std::map<ELogLevel, std::string> s_corresp;
   /**
    * The current log Level
