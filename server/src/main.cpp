@@ -139,7 +139,7 @@ int32_t main(int argc, char *argv[]) {
     auto config = ConfigurationServer(arguments);
 
     // The io_context is required for all I/O
-    boost::asio::io_context ioc{threads};
+    boost::asio::io_context ioc{1};
 
     auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", 1);
 
