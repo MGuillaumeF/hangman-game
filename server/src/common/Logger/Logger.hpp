@@ -51,6 +51,12 @@ public:
   using appendersByTheme = std::map<std::string, appendersByLevel>;
 
   /**
+   * @brief Construct a new Logger object
+   *
+   */
+  Logger() = default;
+
+  /**
    * @brief Get instance of singleton logger
    *
    * @return Logger* address of logger instance
@@ -141,12 +147,6 @@ private:
    */
   void write(const std::string &level, const std::string &theme,
              const std::string &msg) const;
-
-  /**
-   * @brief Construct a new Logger object
-   *
-   */
-  Logger() = default;
 };
 
 #endif // __LOGGER_H__
