@@ -73,7 +73,7 @@ void HttpListener::doAccept() {
  */
 void HttpListener::onAccept(const boost::beast::error_code& ec,
                             boost::asio::ip::tcp::socket socket) {
-  const Logger *const logger = Logger::getInstance();
+  const std::unique_ptr<Logger> logger = Logger::getInstance();
   if (ec) {
     logger->error("HTTP_CONFIGURATION", "onAccept error " + ec.message());
   } else {
