@@ -130,8 +130,12 @@ int32_t main(int argc, char *argv[]) {
     exitStatus = EXIT_FAILURE;
   } else {
     // If configuration of server is in arguments of execution
+    std::vector<std::string> arguments;
+    for (uint32_t i = 0; i < argc; i++) {
+      arguments.push_back(std::string(argv[i]));
+    }
     // server is started
-    auto config = ConfigurationServer(argv);
+    auto config = ConfigurationServer(arguments);
     auto server = HttpServer("0.0.0.0", 8080, ".", 1);
 
     g_fs.close();
