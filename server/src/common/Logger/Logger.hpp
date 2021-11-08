@@ -55,7 +55,7 @@ public:
    *
    * @return Logger* address of logger instance
    */
-  static Logger *getInstance();
+  static std::unique_ptr<Logger> getInstance();
   /**
    * To get the log level of Logger
    * @see LEVEL
