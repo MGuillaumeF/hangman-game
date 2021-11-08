@@ -17,7 +17,7 @@ HttpListener::HttpListener(boost::asio::io_context &ioc,
     : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)),
       m_doc_root(doc_root) {
 
-  const Logger *const logger = Logger::getInstance();
+  const std::unique_ptr<Logger> logger = Logger::getInstance();
   boost::beast::error_code ec;
 
   // Open the acceptor
