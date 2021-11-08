@@ -45,7 +45,7 @@ HttpUtils::getMimeType(const boost::beast::string_view& path) {
   }();
 
   boost::beast::string_view l_sMimeType = "application/text";
-  const Logger *const logger = Logger::getInstance();
+  const std::unique_ptr<Logger>& logger = Logger::getInstance();
   try {
     l_sMimeType = HttpUtils::s_extTomimtype.at(ext);
   } catch (const std::out_of_range &) {

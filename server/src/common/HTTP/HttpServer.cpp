@@ -32,10 +32,13 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
     threadList.emplace_back([&ioc] { ioc.run(); });
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
-  signals.async_wait([&ioc](const boost::system::error_code& ec, const int32_t& n){
+  signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
     Logger::getInstance()->info("HTTP_CONFIGURATION", std::string("IO Context stop with ") + ec.message() + std::string(" and handler code : ") + std::to_string(n));
-    ioc.stop();
+    for (auto i = 0; i < threads; i++) {
+      ioc.stop();
+    }
   });
   // run server listeners on context
   ioc.run();
+  Logger::getInstance()->info("HTTP_CONFIGURATION", "---------------- HERE 1 ----------------");
 }
