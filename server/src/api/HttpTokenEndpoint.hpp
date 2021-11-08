@@ -25,7 +25,6 @@ public:
                                  {boost::beast::http::verb::put, false},
                                  {boost::beast::http::verb::patch, false},
                                  {boost::beast::http::verb::delete_, true}}) {
-    m_logger = Logger::getInstance();
     m_logger->setLevel(ELogLevel::LINFO);
 
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
@@ -112,7 +111,7 @@ public:
   }
 
 private:
-  std::unique_ptr<Logger>& m_logger;
+  std::unique_ptr<Logger>& m_logger = Logger::getInstance();
 
 };
 
