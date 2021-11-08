@@ -3,6 +3,8 @@
 
 #include "HttpListener.hpp"
 
+#include <boost/asio/io_context.hpp>
+
 /**
  * Http Server Class is to run and stop HTTP Server
  */
@@ -16,7 +18,7 @@ public:
    * @param doc_root The path of root directory of static files
    * @param threads The number of thread of server
    */
-  HttpServer(const std::string &address, const uint16_t port,
+  HttpServer(const boost::asio::io_context& ioc, const std::string &address, const uint16_t port,
              const std::string &doc_root, const uint8_t threads);
   /**
    * @brief Destroy the Http Server object
