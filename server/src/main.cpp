@@ -132,7 +132,7 @@ int32_t main(int argc, char *argv[]) {
     // If configuration of server is in arguments of execution
     std::vector<std::string> arguments;
     for (uint32_t i = 0; i < argc; i++) {
-      arguments.emplace_back(std::string(argv[i]));
+      arguments.emplace_back(std::to_string(argv[i]));
     }
     // server is started
     auto config = ConfigurationServer(arguments);
