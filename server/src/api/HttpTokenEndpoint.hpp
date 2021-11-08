@@ -112,7 +112,7 @@ public:
   }
 
 private:
-  std::unique_ptr<Logger> m_logger;
+  std::unique_ptr<Logger>& m_logger;
 
 };
 
