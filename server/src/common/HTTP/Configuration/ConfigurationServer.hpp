@@ -13,7 +13,7 @@ public:
   /**
    * @brief Construct a new Configuration Server object
    *
-   * @param argv
+   * @param argv arguments list of server configuration
    */
   explicit ConfigurationServer(const std::vector<std::string>& argv);
   /**
