@@ -57,7 +57,7 @@ void HttpSession::handleRequest(
         Body, boost::beast::http::basic_fields<Allocator>> &&req,
     Send &&send) {
 
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+  const std::unique_ptr<Logger> logger = Logger::getInstance();
 
   logger->info("HTTP_DATA_READ",
                "request received on target " + req.target().to_string());
