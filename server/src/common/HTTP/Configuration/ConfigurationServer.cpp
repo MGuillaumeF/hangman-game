@@ -11,7 +11,7 @@
  *
  * @param argv
  */
-ConfigurationServer::ConfigurationServer(const std::array<std::string>& argv) {
+ConfigurationServer::ConfigurationServer(const std::vector<std::string>& argv) {
 
   const std::unique_ptr<Logger>& logger = Logger::getInstance();
 
