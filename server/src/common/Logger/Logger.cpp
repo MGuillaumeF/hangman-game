@@ -2,6 +2,7 @@
 #include "Logger.hpp"
 #include <iostream>
 #include <streambuf>
+#include <memory>
 
 Logger *Logger::s_pInstance = nullptr;
 
@@ -18,7 +19,7 @@ std::map<ELogLevel, std::string> Logger::s_corresp = {
  */
 Logger *Logger::getInstance() {
   if (nullptr == s_pInstance) {
-    s_pInstance = new Logger();
+    s_pInstance = std::make_unique<Logger>();
   }
   return s_pInstance;
 }
