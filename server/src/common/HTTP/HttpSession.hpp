@@ -67,7 +67,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
 
-  std::map<std::string, requestHandler_t> m_requestDispatcher;
+  std::map<std::string, requestHandler_t, std::less<>> m_requestDispatcher;
 
   /**
    * @brief Append an HTTP rel-path to a local filesystem path.
