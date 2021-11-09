@@ -1,7 +1,6 @@
 #include "./common/Logger/Logger.hpp"
 
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
-#include "./common/HTTP/HttpServer.hpp"
 
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
@@ -142,7 +141,20 @@ int32_t main(int argc, char *argv[]) {
     // The io_context is required for all I/O
     boost::asio::io_context ioc{threads};
 
-    auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", threads);
+auto const l_address = boost::asio::ip::make_address("0.0.0.0");
+  auto const l_doc_root = std::make_shared<std::string>(".");
+
+  // Create and launch a listening port
+  std::make_shared<HttpListener>(
+      ioc, boost::asio::ip::tcp::endpoint{l_address, 8080}, l_doc_root)
+      ->run();
+
+  // Run the I/O service on the requested number of threads
+  std::vector<std::thread> threadList;
+  threadList.reserve(threads);
+  for (auto i = 0; i < threads; i++) {
+    threadList.emplace_back([&ioc] { ioc.run(); });
+  }
 
     boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
     signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
