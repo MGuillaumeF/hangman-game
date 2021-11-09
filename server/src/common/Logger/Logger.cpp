@@ -123,7 +123,7 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
           std::set<appender_t>{appender};
     }
   } else {
-    m_appenders[theme] = std::map<std::string, std::set<appender_t>>{
+    m_appenders[theme] = std::map<std::string, std::set<appender_t>, std::less<>>{
         {Logger::s_corresp[level], std::set<appender_t>{appender}}};
   }
 }
