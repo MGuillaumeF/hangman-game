@@ -37,6 +37,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
     for (auto i = 0; i < threads; i++) {
       ioc.stop();
     }
+    throw "force exit";
   });
   // run server listeners on context
   ioc.run();
