@@ -33,10 +33,6 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
   signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
-    Logger::getInstance()->info("HTTP_CONFIGURATION", std::string("IO Context stop with ") + ec.message() + std::string(" and handler code : ") + std::to_string(n));
-    for (auto i = 0; i < threads; i++) {
-      ioc.stop();
-    }
     throw "force exit";
   });
   // run server listeners on context
