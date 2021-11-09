@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <memory>
+#include <functional>
 
 /**
  * All levels available for logs
