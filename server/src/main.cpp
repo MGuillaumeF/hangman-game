@@ -1,6 +1,7 @@
 #include "./common/Logger/Logger.hpp"
 
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
+#include "./common/HTTP/HttpListener.hpp"
 
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
