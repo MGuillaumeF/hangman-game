@@ -35,7 +35,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
   signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
-    throw std::exception("force exit");
+    throw std::invalid_argument("force exit");
   });
   // run server listeners on context
   ioc.run();
