@@ -5,7 +5,7 @@
 
 std::unique_ptr<Logger> Logger::s_pInstance = std::make_unique<Logger>();
 
-std::map<ELogLevel, std::string> Logger::s_corresp = {
+std::map<ELogLevel, std::string, std::less<>> Logger::s_corresp = {
     {ELogLevel::LDEBUG, "DEBUG"},
     {ELogLevel::LINFO, "INFO"},
     {ELogLevel::LWARN, "WARN"},
@@ -123,7 +123,7 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
           std::set<appender_t>{appender};
     }
   } else {
-    m_appenders[theme] = std::map<std::string, std::set<appender_t>>{
+    m_appenders[theme] = std::map<std::string, std::set<appender_t>, std::less<>>{
         {Logger::s_corresp[level], std::set<appender_t>{appender}}};
   }
 }

@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <memory>
+#include <functional>
 
 /**
  * All levels available for logs
@@ -47,8 +48,8 @@ enum class ELogLevel {
 class Logger {
 public:
   using appender_t = void (*)(const std::string &);
-  using appendersByLevel = std::map<std::string, std::set<appender_t>>;
-  using appendersByTheme = std::map<std::string, appendersByLevel>;
+  using appendersByLevel = std::map<std::string, std::set<appender_t>, std::less<>>;
+  using appendersByTheme = std::map<std::string, appendersByLevel, std::less<>>;
 
   /**
    * @brief Construct a new Logger object
@@ -133,7 +134,7 @@ public:
 
 private:
   static std::unique_ptr<Logger> s_pInstance;
-  static std::map<ELogLevel, std::string> s_corresp;
+  static std::map<ELogLevel, std::string, std::less<>> s_corresp;
   /**
    * The current log Level
    * @see LEVEL
