@@ -133,7 +133,7 @@ public:
 
 private:
   static std::unique_ptr<Logger> s_pInstance;
-  static std::map<ELogLevel, std::string> s_corresp;
+  static std::map<ELogLevel, std::string, std::less<>> s_corresp;
   /**
    * The current log Level
    * @see LEVEL
