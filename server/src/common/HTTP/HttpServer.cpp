@@ -4,6 +4,8 @@
 #include <boost/asio/signal_set.hpp>
 #include <thread>
 
+#include <exception>
+
 /**
  * @brief Construct a new Http Server:: Http Server object
  *
@@ -33,7 +35,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   }
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
   signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
-    throw "force exit";
+    throw std::exception("force exit");
   });
   // run server listeners on context
   ioc.run();
