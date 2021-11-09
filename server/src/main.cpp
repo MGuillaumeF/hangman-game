@@ -137,11 +137,11 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
-
+    const uint8_t threads = 1;
     // The io_context is required for all I/O
-    boost::asio::io_context ioc{1};
+    boost::asio::io_context ioc{threads};
 
-    auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", 1);
+    auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", threads);
 
     boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
     signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
