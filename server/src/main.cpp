@@ -171,6 +171,6 @@ auto const l_address = boost::asio::ip::make_address("0.0.0.0");
 
     g_fs.close();
   }
-  logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
+  //  logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
   return exitStatus;
 }
