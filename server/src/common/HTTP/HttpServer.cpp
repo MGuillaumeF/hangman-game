@@ -1,7 +1,6 @@
 #include "HttpServer.hpp"
 #include "../Logger/Logger.hpp"
 
-#include <boost/asio/signal_set.hpp>
 #include <thread>
 
 /**
