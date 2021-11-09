@@ -143,6 +143,17 @@ int32_t main(int argc, char *argv[]) {
 
     auto server = HttpServer(ioc, "0.0.0.0", 8080, ".", 1);
 
+    boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
+    signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
+      Logger::getInstance()->info("HTTP_CONFIGURATION", std::string("IO Context stop with ") + ec.message() + std::string(" and handler code : ") + std::to_string(n));
+      for (auto i = 0; i < threads; i++) {
+        ioc.stop();
+      }
+    });
+    // run server listeners on context
+    ioc.run();
+    Logger::getInstance()->info("HTTP_CONFIGURATION", "---------------- HERE 1 ----------------");
+
     g_fs.close();
   }
   logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
