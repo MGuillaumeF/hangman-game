@@ -169,7 +169,7 @@ auto const l_address = boost::asio::ip::make_address("0.0.0.0");
     ioc.run();
     Logger::getInstance()->info("HTTP_CONFIGURATION", "---------------- HERE 1 ----------------");
 
-    g_fs.close();
+   // g_fs.close();
   }
   //  logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
   return exitStatus;
