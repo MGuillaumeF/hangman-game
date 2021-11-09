@@ -10,6 +10,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <thread>
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
