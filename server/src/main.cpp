@@ -120,7 +120,7 @@ int32_t main(int argc, char *argv[]) {
     std::cerr << "data.json contient une données de type invalide : "
               << ex.what() << std::endl;
   }
-
+try {
   // Check command line arguments.
   if (5 != argc) {
     logger->error("HTTP_CONFIGURATION",
@@ -141,5 +141,9 @@ int32_t main(int argc, char *argv[]) {
     g_fs.close();
   }
   logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
+
+} catch (...) {
+  std::cerr << "CHE" << std::endl;
+}
   return exitStatus;
 }
