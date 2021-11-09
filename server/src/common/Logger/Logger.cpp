@@ -5,7 +5,7 @@
 
 std::unique_ptr<Logger> Logger::s_pInstance = std::make_unique<Logger>();
 
-std::map<ELogLevel, std::string> Logger::s_corresp = {
+std::map<ELogLevel, std::string, std::less<>> Logger::s_corresp = {
     {ELogLevel::LDEBUG, "DEBUG"},
     {ELogLevel::LINFO, "INFO"},
     {ELogLevel::LWARN, "WARN"},
