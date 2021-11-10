@@ -88,7 +88,7 @@ jobs:
 
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: ls -a
+      run: tree .
     #  run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
 
     - name: Archive Test report
