@@ -95,8 +95,7 @@ jobs:
 
     - name: gcov after merge
       working-directory: ${{github.workspace}}/server/bin/coverage
-      run: tree .
-      #run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov;
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
