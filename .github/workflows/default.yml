@@ -80,7 +80,7 @@ jobs:
 
     - name: Generate Unit Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/unitTests/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: mkdir ${{github.workspace}}/server/reports/unitTests;gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/unitTests/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
@@ -92,7 +92,7 @@ jobs:
 
     - name: Generate Integration Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/integrationTests/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
+      run: mkdir ${{github.workspace}}/server/reports/integrationTests; gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/integrationTests/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
 
     - name: Merge Coverage
       run: cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/coverage; gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
