@@ -88,8 +88,10 @@ jobs:
 
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: tree .
-    #  run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+
+    - name: Merge Coverage
+      run: gcov-tool merge --output ${{github.workspace}}/server/bin/coverage ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
