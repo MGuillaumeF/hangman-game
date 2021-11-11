@@ -82,6 +82,10 @@ jobs:
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
       run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
 
+    - name: Generate Unit Tests HTML report
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
       run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
@@ -92,14 +96,6 @@ jobs:
     - name: gcov after merge
       working-directory: ${{github.workspace}}/server/bin/coverage
       run: find -name '*.gcda' | xargs gcov;
-
-    - name: Generate Unit Tests HTML report
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: mkdir ${{github.workspace}}/server/reports/unitTests;gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/unitTests/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-
-    - name: Generate Integration Tests HTML report
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: mkdir ${{github.workspace}}/server/reports/integrationTests; gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/integrationTests/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
