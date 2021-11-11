@@ -1,12 +1,13 @@
 #ifndef __HTTP_SERVER_HPP__
 #define __HTTP_SERVER_HPP__
 
-#include "HttpListener.hpp"
+#include "Listener.hpp"
 
+namespace HTTP {
 /**
  * Http Server Class is to run and stop HTTP Server
  */
-class HttpServer {
+class Server {
 public:
   /**
    * @brief Construct a new Http Server:: Http Server object
@@ -16,13 +17,14 @@ public:
    * @param doc_root The path of root directory of static files
    * @param threads The number of thread of server
    */
-  HttpServer(const std::string &address, const uint16_t port,
-             const std::string &doc_root, const uint8_t threads);
+  Server(const std::string &address, const uint16_t port,
+         const std::string &doc_root, const uint8_t threads);
   /**
    * @brief Destroy the Http Server object
    *
    */
-  ~HttpServer() = default;
+  ~Server() = default;
 };
+} // namespace HTTP
 
 #endif

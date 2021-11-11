@@ -16,13 +16,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   # using Clang
   MESSAGE("Compiler used is Clang")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lgcov --coverage")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   # using GCC
   MESSAGE("Compiler used is g++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2a -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lgcov --coverage")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
   MESSAGE("Compiler used is Intel")
@@ -76,6 +74,7 @@ if (Boost_FOUND)
       C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
     )
   else ()
+    SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lgcov --coverage")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()

@@ -1,7 +1,9 @@
 
-#include "HttpSession.hpp"
+#include "Session.hpp"
 #include "../../api/HttpFruitsEndpoint.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
+
+namespace HTTP {
 
 /**
  * @brief Append an HTTP rel-path to a local filesystem path.
@@ -10,8 +12,8 @@
  * @param path The end of path to merge
  * @return std::string  The returned path is normalized for the platform.
  */
-std::string HttpSession::pathCat(const boost::beast::string_view& base,
-                                 const boost::beast::string_view& path) const {
+std::string Session::pathCat(const boost::beast::string_view &base,
+                             const boost::beast::string_view &path) const {
   std::string result(path);
   if (!base.empty()) {
     result = std::string(base);
@@ -51,19 +53,19 @@ template <class Body, class Allocator, class Send>
  * @param req The HTTP request
  * @param send The Sender to emit HTTP response
  */
-void HttpSession::handleRequest(
-    const boost::beast::string_view& doc_root,
+void Session::handleRequest(
+    const boost::beast::string_view &doc_root,
     boost::beast::http::request<
         Body, boost::beast::http::basic_fields<Allocator>> &&req,
     Send &&send) {
 
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->info("HTTP_DATA_READ",
                "request received on target " + req.target().to_string());
 
   // Returns a bad request response
-  auto const bad_request = [&req](const boost::beast::string_view& why) {
+  auto const bad_request = [&req](const boost::beast::string_view &why) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::bad_request, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -75,7 +77,7 @@ void HttpSession::handleRequest(
   };
 
   // Returns a not found response
-  auto const not_found = [&req](const boost::beast::string_view& target) {
+  auto const not_found = [&req](const boost::beast::string_view &target) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::not_found, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -87,7 +89,7 @@ void HttpSession::handleRequest(
   };
 
   // Returns a server error response
-  auto const server_error = [&req](const boost::beast::string_view& what) {
+  auto const server_error = [&req](const boost::beast::string_view &what) {
     boost::beast::http::response<boost::beast::http::string_body> res{
         boost::beast::http::status::internal_server_error, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -161,8 +163,7 @@ void HttpSession::handleRequest(
     boost::beast::http::response<boost::beast::http::empty_body> res{
         boost::beast::http::status::ok, req.version()};
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type,
-            HttpUtils::getMimeType(path));
+    res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
     res.content_length(size);
     res.keep_alive(req.keep_alive());
     return send(std::move(res));
@@ -173,8 +174,7 @@ void HttpSession::handleRequest(
       std::piecewise_construct, std::make_tuple(std::move(body)),
       std::make_tuple(boost::beast::http::status::ok, req.version())};
   res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(boost::beast::http::field::content_type,
-          HttpUtils::getMimeType(path));
+  res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
   res.content_length(size);
   res.keep_alive(req.keep_alive());
   const std::string accessLog =
@@ -191,21 +191,21 @@ void HttpSession::handleRequest(
  * @brief Start the asynchronous operation
  *
  */
-void HttpSession::run() {
+void Session::run() {
   // We need to be executing within a strand to perform async operations
   // on the I/O objects in this session. Although not strictly necessary
   // for single-threaded contexts, this example code is written to be
   // thread-safe by default.
-  boost::asio::dispatch(m_stream.get_executor(),
-                        boost::beast::bind_front_handler(&HttpSession::doRead,
-                                                         shared_from_this()));
+  boost::asio::dispatch(
+      m_stream.get_executor(),
+      boost::beast::bind_front_handler(&Session::doRead, shared_from_this()));
 }
 
 /**
  * @brief Method to start async reading of request
  *
  */
-void HttpSession::doRead() {
+void Session::doRead() {
   // Make the request empty before reading,
   // otherwise the operation behavior is undefined.
   m_req = {};
@@ -214,9 +214,9 @@ void HttpSession::doRead() {
   m_stream.expires_after(std::chrono::seconds(30));
 
   // Read a request
-  boost::beast::http::async_read(m_stream, m_buffer, m_req,
-                                 boost::beast::bind_front_handler(
-                                     &HttpSession::onRead, shared_from_this()));
+  boost::beast::http::async_read(
+      m_stream, m_buffer, m_req,
+      boost::beast::bind_front_handler(&Session::onRead, shared_from_this()));
 }
 
 /**
@@ -225,15 +225,15 @@ void HttpSession::doRead() {
  * @param ec The error code of previous step
  * @param bytes_transferred The size of bytes transferred
  */
-void HttpSession::onRead(const boost::beast::error_code& ec,
-                     const std::size_t& bytes_transferred) {
+void Session::onRead(const boost::beast::error_code &ec,
+                     const std::size_t &bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
 
   // This means they closed the connection
   if (ec == boost::beast::http::error::end_of_stream) {
     doClose();
   } else if (ec) {
-    HttpUtils::onFail(ec, "read");
+    Utils::onFail(ec, "read");
   } else {
     // Send the response
     handleRequest(*m_doc_root, std::move(m_req), m_lambda);
@@ -247,12 +247,12 @@ void HttpSession::onRead(const boost::beast::error_code& ec,
  * @param ec The error code of previous step
  * @param bytes_transferred The size of bytes transferred
  */
-void HttpSession::onWrite(const bool& close, const boost::beast::error_code& ec,
-                          const std::size_t& bytes_transferred) {
+void Session::onWrite(const bool &close, const boost::beast::error_code &ec,
+                      const std::size_t &bytes_transferred) {
   boost::ignore_unused(bytes_transferred);
 
   if (ec) {
-    HttpUtils::onFail(ec, "write");
+    Utils::onFail(ec, "write");
   } else if (close) {
     // This means we should close the connection, usually because
     // the response indicated the "Connection: close" semantic.
@@ -270,7 +270,7 @@ void HttpSession::onWrite(const bool& close, const boost::beast::error_code& ec,
  * @brief method to close TCP/IP socket
  *
  */
-void HttpSession::doClose() {
+void Session::doClose() {
   // Send a TCP shutdown
   boost::beast::error_code ec;
   m_stream.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send, ec);
@@ -284,7 +284,9 @@ void HttpSession::doClose() {
  * @param target The prefix of uri to dispatch requests
  * @param handler The handler function to call
  */
-void HttpSession::addRequestDispatcher(const std::string &target,
-                                       const requestHandler_t &handler) {
+void Session::addRequestDispatcher(const std::string &target,
+                                   const requestHandler_t &handler) {
   m_requestDispatcher.try_emplace(target, handler);
 }
+
+} // namespace HTTP

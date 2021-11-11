@@ -5,10 +5,11 @@
 #include <boost/asio/strand.hpp>
 #include <boost/beast/core.hpp>
 
+namespace HTTP {
 /**
  *  Accepts incoming connections and launches the sessions
  */
-class HttpListener : public std::enable_shared_from_this<HttpListener> {
+class Listener : public std::enable_shared_from_this<Listener> {
   boost::asio::io_context &m_ioc;
   boost::asio::ip::tcp::acceptor m_acceptor;
   std::shared_ptr<std::string const> m_doc_root;
@@ -21,9 +22,9 @@ public:
    * @param endpoint The TCP/IP endpoint
    * @param doc_root The root path of file server
    */
-  HttpListener(boost::asio::io_context &ioc,
-               const boost::asio::ip::tcp::endpoint& endpoint,
-               std::shared_ptr<std::string const> const &doc_root);
+  Listener(boost::asio::io_context &ioc,
+           const boost::asio::ip::tcp::endpoint &endpoint,
+           std::shared_ptr<std::string const> const &doc_root);
 
   /**
    * Start accepting incoming connections
@@ -42,8 +43,8 @@ private:
    * @param ec The error code of previous step
    * @param socket The TCP/IP socket
    */
-  void onAccept(const boost::beast::error_code& ec,
+  void onAccept(const boost::beast::error_code &ec,
                 boost::asio::ip::tcp::socket socket);
 };
-
+} // namespace HTTP
 #endif

@@ -1,9 +1,10 @@
-#include "HttpListener.hpp"
+#include "Listener.hpp"
 
 #include "../Logger/Logger.hpp"
-#include "HttpSession.hpp"
-#include "HttpUtils.hpp"
+#include "Session.hpp"
+#include "Utils.hpp"
 
+namespace HTTP {
 /**
  * @brief Construct a new Http Listener:: Http Listener object
  *
@@ -11,13 +12,13 @@
  * @param endpoint The TCP/IP endpoint
  * @param doc_root The root path of file server
  */
-HttpListener::HttpListener(boost::asio::io_context &ioc,
-                           const boost::asio::ip::tcp::endpoint& endpoint,
-                           std::shared_ptr<std::string const> const &doc_root)
+Listener::Listener(boost::asio::io_context &ioc,
+                   const boost::asio::ip::tcp::endpoint &endpoint,
+                   std::shared_ptr<std::string const> const &doc_root)
     : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)),
       m_doc_root(doc_root) {
 
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
   boost::beast::error_code ec;
 
   // Open the acceptor
@@ -54,16 +55,16 @@ HttpListener::HttpListener(boost::asio::io_context &ioc,
 /**
  * Start accepting incoming connections
  */
-void HttpListener::run() { doAccept(); }
+void Listener::run() { doAccept(); }
 
 /**
  * Dispatch new connection to gets its own strand
  */
-void HttpListener::doAccept() {
+void Listener::doAccept() {
   // The new connection gets its own strand
   m_acceptor.async_accept(boost::asio::make_strand(m_ioc),
-                          boost::beast::bind_front_handler(
-                              &HttpListener::onAccept, shared_from_this()));
+                          boost::beast::bind_front_handler(&Listener::onAccept,
+                                                           shared_from_this()));
 }
 /**
  * @brief Create the session for the new connection and run it
@@ -71,16 +72,17 @@ void HttpListener::doAccept() {
  * @param ec The error code of previous step
  * @param socket The TCP/IP socket
  */
-void HttpListener::onAccept(const boost::beast::error_code& ec,
-                            boost::asio::ip::tcp::socket socket) {
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+void Listener::onAccept(const boost::beast::error_code &ec,
+                        boost::asio::ip::tcp::socket socket) {
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
   if (ec) {
     logger->error("HTTP_CONFIGURATION", "onAccept error " + ec.message());
   } else {
     // Create the session and run it
-    std::make_shared<HttpSession>(std::move(socket), m_doc_root)->run();
+    std::make_shared<HTTP::Session>(std::move(socket), m_doc_root)->run();
   }
 
   // Accept another connection
   doAccept();
 }
+} // namespace HTTP

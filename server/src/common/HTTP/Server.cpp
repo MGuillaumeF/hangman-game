@@ -1,9 +1,10 @@
-#include "HttpServer.hpp"
+#include "Server.hpp"
 #include "../Logger/Logger.hpp"
 
 #include <boost/asio/signal_set.hpp>
 #include <thread>
 
+namespace HTTP {
 /**
  * @brief Construct a new Http Server:: Http Server object
  *
@@ -12,8 +13,8 @@
  * @param doc_root The path of root directory of static files
  * @param threads The number of thread of server
  */
-HttpServer::HttpServer(const std::string &address, const uint16_t port,
-                       const std::string &doc_root, const uint8_t threads) {
+Server::Server(const std::string &address, const uint16_t port,
+               const std::string &doc_root, const uint8_t threads) {
   auto const l_address = boost::asio::ip::make_address(address);
   auto const l_doc_root = std::make_shared<std::string>(doc_root);
 
@@ -21,7 +22,7 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   boost::asio::io_context ioc{threads};
 
   // Create and launch a listening port
-  std::make_shared<HttpListener>(
+  std::make_shared<Listener>(
       ioc, boost::asio::ip::tcp::endpoint{l_address, port}, l_doc_root)
       ->run();
 
@@ -31,15 +32,21 @@ HttpServer::HttpServer(const std::string &address, const uint16_t port,
   for (auto i = 0; i < threads; i++) {
     threadList.emplace_back([&ioc] { ioc.run(); });
   }
-  boost::asio::signal_set signals(ioc, SIGHUP, SIGINT, SIGTERM);
-  signals.async_wait([&threads, &ioc](const boost::system::error_code& ec, const int32_t& n){
-    Logger::getInstance()->info("HTTP_CONFIGURATION", std::string("IO Context stop with ") + ec.message() + std::string(" and handler code : ") + std::to_string(n));
-    for (auto i = 0; i < threads; i++) {
-      ioc.stop();
-    }
-    std::exit(EXIT_SUCCESS);
-  });
+  boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
+  signals.async_wait(
+      [&threads, &ioc](const boost::system::error_code &ec, const int32_t &n) {
+        Logger::getInstance()->info(
+            "HTTP_CONFIGURATION",
+            std::string("IO Context stop with ") + ec.message() +
+                std::string(" and handler code : ") + std::to_string(n));
+        for (auto i = 0; i < threads; i++) {
+          ioc.stop();
+        }
+        std::exit(EXIT_SUCCESS);
+      });
   // run server listeners on context
   ioc.run();
-  Logger::getInstance()->info("HTTP_CONFIGURATION", "---------------- HERE 1 ----------------");
+  Logger::getInstance()->info("HTTP_CONFIGURATION",
+                              "---------------- HERE 1 ----------------");
 }
+} // namespace HTTP

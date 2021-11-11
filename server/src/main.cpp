@@ -1,7 +1,7 @@
 #include "./common/Logger/Logger.hpp"
 
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
-#include "./common/HTTP/HttpServer.hpp"
+#include "./common/HTTP/Server.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -38,7 +38,7 @@ int32_t main(int argc, char *argv[]) {
   g_access_fs.open("./logs/access.log",
                    std::fstream::in | std::fstream::out | std::fstream::app);
 
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
                       Logger::defaultOutAppender);
@@ -124,8 +124,8 @@ int32_t main(int argc, char *argv[]) {
   // Check command line arguments.
   if (5 != argc) {
     logger->error("HTTP_CONFIGURATION",
-                  "Usage: HttpServer <address> <port> <doc_root> "
-                  "<threads>\nExample:\n    HttpServer 0.0.0.0 8080 . 1\n");
+                  "Usage: Server <address> <port> <doc_root> "
+                  "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1\n");
     g_fs.close();
     exitStatus = EXIT_FAILURE;
   } else {
@@ -136,10 +136,11 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
-    auto server = HttpServer("0.0.0.0", 8080, ".", 1);
+    auto server = HTTP::Server("0.0.0.0", 8080, ".", 1);
 
     g_fs.close();
   }
-  logger->info("HTTP_CONFIGURATION", "---------------- HERE 2 ----------------");
+  logger->info("HTTP_CONFIGURATION",
+               "---------------- HERE 2 ----------------");
   return exitStatus;
 }
