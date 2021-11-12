@@ -13,5 +13,13 @@
         <Status>405</Status>
       </Response>
     </Case>
+    <Case name="[PUT] Test Token - method not allowed">
+      <Request>
+        <Methode>PUT</Methode>
+      </Request>
+      <Response>
+        <Status>405</Status>
+      </Response>
+    </Case>
   </TestCases>
 </TestSuite>
