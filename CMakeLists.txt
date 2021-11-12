@@ -40,8 +40,8 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 
 # Add all tests files in TESTS_SRC_DIR variable
 file(GLOB_RECURSE TESTS_SRC_DIR CONFIGURE_DEPENDS
-     "server/test/*.hpp"
-     "server/test/*.cpp"
+     "server/test/ut/*.hpp"
+     "server/test/ut/*.cpp"
 )
 
 # Add all HTTP files in HTTP_SRC_DIR variable

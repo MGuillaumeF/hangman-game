@@ -1,6 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE testHttpUtils
-#include "../src/common/HTTP/Utils.hpp"
+#include "../../src/common/HTTP/Utils.hpp"
 #include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(testsHttpUtils)
