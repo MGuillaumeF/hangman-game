@@ -1,10 +1,10 @@
-#ifndef __HTTP_UTILS_H__
-#define __HTTP_UTILS_H__
+#ifndef __HTTP_UTILS_HPP__
+#define __HTTP_UTILS_HPP__
 
 #include <boost/beast/core.hpp>
 #include <map>
 
-namespace HTTP {
+namespace http {
 /**
  * Utilitaries functions in static class
  */
