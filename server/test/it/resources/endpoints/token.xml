@@ -1,7 +1,9 @@
 <TestSuite name="[HTTP][API] Test Token Endpoint">
   <Properties>
-    <Path>/api/Token</Path>
-    <Content-Type>application/json</Content-Type>
+    <URL>${protocol}://${hostname}:${port}${prefix}/token</URL>
+    <Headers>
+      <Content-Type>application/json</Content-Type>
+    </Headers>
     <Timeout>15000</Timeout>
   </Properties>
   <TestCases>
