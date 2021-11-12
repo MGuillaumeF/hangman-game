@@ -9,22 +9,22 @@ BOOST_AUTO_TEST_CASE(testMimeType) {
   boost::beast::string_view mimeType = HTTP::Utils::getMimeType("test.html");
   BOOST_CHECK_EQUAL(mimeType, "text/html");
 
-  mimeType = HTTP::Utils::getMimeType("./");
+  mimeType = http::Utils::getMimeType("./");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 
-  mimeType = HTTP::Utils::getMimeType("");
+  mimeType = http::Utils::getMimeType("");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 
-  mimeType = HTTP::Utils::getMimeType("file/to/image.jpe");
+  mimeType = http::Utils::getMimeType("file/to/image.jpe");
   BOOST_CHECK_EQUAL(mimeType, "image/jpeg");
 
-  mimeType = HTTP::Utils::getMimeType("file/to/textFile.txt");
+  mimeType = http::Utils::getMimeType("file/to/textFile.txt");
   BOOST_CHECK_EQUAL(mimeType, "text/plain");
 
-  mimeType = HTTP::Utils::getMimeType("file/to/image.gif");
+  mimeType = http::Utils::getMimeType("file/to/image.gif");
   BOOST_CHECK_EQUAL(mimeType, "image/gif");
 
-  mimeType = HTTP::Utils::getMimeType("file/to/file/without/extension");
+  mimeType = http::Utils::getMimeType("file/to/file/without/extension");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 }
 
