@@ -1,30 +1,30 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE testHttpUtils
-#include "../src/common/HTTP/HttpUtils.hpp"
+#include "../src/common/HTTP/Utils.hpp"
 #include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(testsHttpUtils)
 
 BOOST_AUTO_TEST_CASE(testMimeType) {
-  boost::beast::string_view mimeType = HttpUtils::getMimeType("test.html");
+  boost::beast::string_view mimeType = HTTP::Utils::getMimeType("test.html");
   BOOST_CHECK_EQUAL(mimeType, "text/html");
 
-  mimeType = HttpUtils::getMimeType("./");
+  mimeType = HTTP::Utils::getMimeType("./");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 
-  mimeType = HttpUtils::getMimeType("");
+  mimeType = HTTP::Utils::getMimeType("");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 
-  mimeType = HttpUtils::getMimeType("file/to/image.jpe");
+  mimeType = HTTP::Utils::getMimeType("file/to/image.jpe");
   BOOST_CHECK_EQUAL(mimeType, "image/jpeg");
 
-  mimeType = HttpUtils::getMimeType("file/to/textFile.txt");
+  mimeType = HTTP::Utils::getMimeType("file/to/textFile.txt");
   BOOST_CHECK_EQUAL(mimeType, "text/plain");
 
-  mimeType = HttpUtils::getMimeType("file/to/image.gif");
+  mimeType = HTTP::Utils::getMimeType("file/to/image.gif");
   BOOST_CHECK_EQUAL(mimeType, "image/gif");
 
-  mimeType = HttpUtils::getMimeType("file/to/file/without/extension");
+  mimeType = HTTP::Utils::getMimeType("file/to/file/without/extension");
   BOOST_CHECK_EQUAL(mimeType, "application/text");
 }
 

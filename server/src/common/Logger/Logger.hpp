@@ -1,5 +1,5 @@
-#ifndef __LOGGER_H__
-#define __LOGGER_H__
+#ifndef __LOGGER_HPP__
+#define __LOGGER_HPP__
 
 /**
  * The string include is to message parameters of Logger
@@ -7,6 +7,8 @@
 #include <map>
 #include <set>
 #include <string>
+#include <memory>
+#include <functional>
 
 /**
  * All levels available for logs
@@ -46,15 +48,21 @@ enum class ELogLevel {
 class Logger {
 public:
   using appender_t = void (*)(const std::string &);
-  using appendersByLevel = std::map<std::string, std::set<appender_t>>;
-  using appendersByTheme = std::map<std::string, appendersByLevel>;
+  using appendersByLevel = std::map<std::string, std::set<appender_t>, std::less<>>;
+  using appendersByTheme = std::map<std::string, appendersByLevel, std::less<>>;
+
+  /**
+   * @brief Construct a new Logger object
+   *
+   */
+  Logger() = default;
 
   /**
    * @brief Get instance of singleton logger
    *
    * @return Logger* address of logger instance
    */
-  static Logger *getInstance();
+  static std::unique_ptr<Logger>& getInstance();
   /**
    * To get the log level of Logger
    * @see LEVEL
@@ -119,9 +127,14 @@ public:
    */
   static void defaultErrAppender(const std::string &message);
 
+  Logger(Logger &) = delete;
+  Logger(Logger &&) = delete;
+  Logger &operator=(Logger &) = delete;
+  Logger &operator=(Logger &&) = delete;
+
 private:
-  static Logger *s_pInstance;
-  static std::map<ELogLevel, std::string> s_corresp;
+  static std::unique_ptr<Logger> s_pInstance;
+  static std::map<ELogLevel, std::string, std::less<>> s_corresp;
   /**
    * The current log Level
    * @see LEVEL
@@ -140,12 +153,6 @@ private:
    */
   void write(const std::string &level, const std::string &theme,
              const std::string &msg) const;
-
-  /**
-   * @brief Construct a new Logger object
-   *
-   */
-  Logger() = default;
 };
 
 #endif // __LOGGER_H__

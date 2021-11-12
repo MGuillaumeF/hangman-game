@@ -1,9 +1,10 @@
 #include "./common/Logger/Logger.hpp"
 
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
-#include "./common/HTTP/HttpServer.hpp"
+#include "./common/HTTP/Server.hpp"
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <regex>
@@ -38,7 +39,7 @@ int32_t main(int argc, char *argv[]) {
   g_access_fs.open("./logs/access.log",
                    std::fstream::in | std::fstream::out | std::fstream::app);
 
-  Logger *logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
                       Logger::defaultOutAppender);
@@ -77,13 +78,13 @@ int32_t main(int argc, char *argv[]) {
 
     boost::property_tree::read_json("../resources/data.json", pt);
 
-    const long double latitude = pt.get<long double>("point.latitude", 0);
+    const std::double_t latitude = pt.get<std::double_t>("point.latitude", 0);
 
-    const long double longitude = pt.get<long double>("point.longitude");
+    const std::double_t longitude = pt.get<std::double_t>("point.longitude");
 
-    std::cout << "Le point est : " << std::endl
-              << "Latitude : " << latitude << std::endl
-              << "Longitude : " << longitude << std::endl;
+    logger->info("HTTP_CONFIGURATION",
+                 "Le point est : \r\n Latitude : " + std::to_string(latitude) +
+                     "\r\n Longitude : " + std::to_string(longitude));
   } catch (const boost::wrapexcept<
            boost::property_tree::json_parser::json_parser_error> &ex) {
     // ERROR TYPE : ESTRUCTOBJ, object has bad JSON structure
@@ -98,43 +99,52 @@ int32_t main(int argc, char *argv[]) {
       re = std::regex("(.+): (.*)");
       std::regex_search(errorStr, m, re);
     }
-    if (m.size() == 4) {
+    if (4 == m.size()) {
       // example : "data.json(5): garbage after data"
-      std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide, ligne "
-                << m[2] << " : " << m[3] << std::endl;
-    } else if (m.size() == 3) {
+      logger->error("HTTP_CONFIGURATION",
+                    "Le fichier " + m[1].str() +
+                        " n'est pas un JSON valide, ligne " + m[2].str() +
+                        " : " + m[3].str());
+    } else if (3 == m.size()) {
       // example : data.json: cannot open file
-      std::cerr << "Le fichier " << m[1]
-                << " n'est pas un JSON valide : " << m[2] << std::endl;
+      logger->error("HTTP_CONFIGURATION",
+                    "Le fichier " + m[1].str() +
+                        " n'est pas un JSON valide : " + m[2].str());
     } else {
-      std::cerr << "Erreur de parsing du fichier " << ex.what() << std::endl;
+      logger->error("HTTP_CONFIGURATION",
+                    "Erreur de parsing du fichier " + std::string(ex.what()));
     }
   } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_path> &ex) {
     // ERROR TYPE : ENOKEY, mandatory key not found
     // FIELD : [NAME, ERROR]
-    std::cerr << "data.json ne contient pas un attribut obligatoire : "
-              << ex.what() << std::endl;
+    logger->error("HTTP_CONFIGURATION",
+                  "data.json ne contient pas un attribut obligatoire : " +
+                      std::string(ex.what()));
   } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data> &ex) {
     // ERROR TYPE : EVALUETYPE, key found with bad value type
     // FIELD : [NAME, ERROR]
-    std::cerr << "data.json contient une données de type invalide : "
-              << ex.what() << std::endl;
+    logger->error("HTTP_CONFIGURATION",
+                  "data.json contient une données de type invalide : " +
+                      std::string(ex.what()));
   }
 
   // Check command line arguments.
-  if (argc != 5) {
+  if (5 != argc) {
     logger->error("HTTP_CONFIGURATION",
-                  "Usage: HttpServer <address> <port> <doc_root> "
-                  "<threads>\nExample:\n    HttpServer 0.0.0.0 8080 . 1\n");
+                  "Usage: Server <address> <port> <doc_root> "
+                  "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1");
     g_fs.close();
+    g_access_fs.close();
     exitStatus = EXIT_FAILURE;
   } else {
     // If configuration of server is in arguments of execution
+    std::vector<std::string> arguments;
+    for (uint32_t i = 0; i < argc; i++) {
+      arguments.emplace_back(argv[i]);
+    }
     // server is started
-    auto config = ConfigurationServer(argv);
-    auto server = HttpServer("0.0.0.0", 8080, ".", 3);
-
-    g_fs.close();
+    auto config = ConfigurationServer(arguments);
+    auto server = HTTP::Server("0.0.0.0", 8080, ".", 1);
   }
   return exitStatus;
 }

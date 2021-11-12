@@ -12,7 +12,7 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit ConfigurationException(const char *message) : m_message(message) {}
+  explicit ConfigurationException(const char * const message) : m_message(message) {}
 
   /** Constructor
    *  @param message The error message.

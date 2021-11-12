@@ -25,7 +25,6 @@ public:
                                  {boost::beast::http::verb::put, false},
                                  {boost::beast::http::verb::patch, false},
                                  {boost::beast::http::verb::delete_, true}}) {
-    m_logger = Logger::getInstance();
     m_logger->setLevel(ELogLevel::LINFO);
 
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
@@ -41,7 +40,7 @@ public:
 
     if (const boost::string_view contentType =
             request.at(boost::beast::http::field::content_type);
-        contentType.compare("application/json") == 0) {
+        0 == contentType.compare("application/json")) {
       m_logger->debug(
           "HTTP_DATA_READ",
           "HttpTokenEndpoint - doPost - json body content expected");
@@ -54,7 +53,7 @@ public:
                 std::string(ex.what()));
         throw ParsingException("body has invalid structure");
       }
-    } else if (contentType.compare("application/xml") == 0) {
+    } else if (0 == contentType.compare("application/xml")) {
       m_logger->debug("HTTP_DATA_READ",
                       "HttpTokenEndpoint - doPost - xml body content expected");
       try {
@@ -112,7 +111,7 @@ public:
   }
 
 private:
-  Logger *m_logger;
+  std::unique_ptr<Logger>& m_logger = Logger::getInstance();
 
 };
 

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <streambuf>
 
-Logger *Logger::s_pInstance = nullptr;
+std::unique_ptr<Logger> Logger::s_pInstance = std::make_unique<Logger>();
 
-std::map<ELogLevel, std::string> Logger::s_corresp = {
+std::map<ELogLevel, std::string, std::less<>> Logger::s_corresp = {
     {ELogLevel::LDEBUG, "DEBUG"},
     {ELogLevel::LINFO, "INFO"},
     {ELogLevel::LWARN, "WARN"},
@@ -16,10 +16,8 @@ std::map<ELogLevel, std::string> Logger::s_corresp = {
  *
  * @return Logger* address of logger instance
  */
-Logger *Logger::getInstance() {
-  if (s_pInstance == nullptr) {
-    s_pInstance = new Logger();
-  }
+std::unique_ptr<Logger>& Logger::getInstance() {
+ 
   return s_pInstance;
 }
 
@@ -125,7 +123,7 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
           std::set<appender_t>{appender};
     }
   } else {
-    m_appenders[theme] = std::map<std::string, std::set<appender_t>>{
+    m_appenders[theme] = std::map<std::string, std::set<appender_t>, std::less<>>{
         {Logger::s_corresp[level], std::set<appender_t>{appender}}};
   }
 }

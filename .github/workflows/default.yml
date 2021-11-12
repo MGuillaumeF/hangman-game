@@ -9,7 +9,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
   BOOST_VERSION: 77
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
@@ -25,39 +25,35 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
-    - name: graphviz
-      run: sudo apt-get install -y graphviz
+    - name: Install dependencies
+      run: sudo apt-get install -y graphviz doxygen lcov gcovr build-essential llvm
 
-    - name: Install doxygen 
-      run: sudo apt-get install -y doxygen
+    # - name: Download Boost
+    #   uses: wei/wget@v1
+    #   with:
+    #.    args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
 
-    - name: Install lcov
-      run: sudo apt-get install -y lcov
+    # - name: Unzip Boost
+    #   run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
 
-    - name: Install make
-      run: sudo apt-get install -y build-essential
+    # - name: Bootstrap Boost
+    #   working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
+    #   run: |
+    #     sudo ./bootstrap.sh; \
+    #     sudo ./b2 install
 
-    - name: Install llvm 
-      run: sudo apt-get install -y llvm
-
-    - name: Download Boost
-      uses: wei/wget@v1
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.0.0
+      id: install-boost
       with:
-        args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
-
-    - name: Unzip Boost
-      run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
-
-    - name: Bootstrap Boost
-      working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
-      run: |
-        sudo ./bootstrap.sh; \
-        sudo ./b2 install
+        boost_version: 1.${{env.BOOST_VERSION}}.0
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
       # Build your program with the given configuration
@@ -72,21 +68,40 @@ jobs:
     # - name: lcov init
     #   run: lcov --no-external --capture --initial --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/base.info
 
-    - name: Test
+    - name: Unit Tests
       working-directory: ${{github.workspace}}/server/bin
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg; ./HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+
+    - name: Integration Tests
+      working-directory: ${{github.workspace}}/server/test
+      run: chmod +x ./run-ti.sh; ./run-ti.sh
+
+    - name: gcov after unit tests
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+
+    - name: Generate Unit Tests HTML report
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+
+    - name: gcov after integration tests
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
+      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+
+    - name: Merge Coverage
+      run: cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/coverage; gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+
+    - name: gcov after merge
+      working-directory: ${{github.workspace}}/server/bin/coverage
+      run: find -name '*.gcda' | xargs gcov;
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game Unit Test - Reports
         path: ${{github.workspace}}/server/reports
-
-    - name: gcov after test
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: gcov common/HTTP/HttpUtils.cpp.gcno;gcov common/Logger/Logger.cpp.gcno;gcov common/HTTP/HttpUtils.hpp.gcno;gcov common/Logger/Logger.hpp.gcno
 
     # run: lcov --no-external --capture --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/test.info
 

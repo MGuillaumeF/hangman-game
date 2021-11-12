@@ -3,34 +3,30 @@
 
 #include <boost/beast/core.hpp>
 #include <map>
+
+namespace HTTP {
 /**
  * Utilitaries functions in static class
  */
-class HttpUtils {
+class Utils {
 public:
   /**
    * The default constructor of Utils class
    */
-  HttpUtils();
+  Utils();
 
   /**
    * @brief Return a reasonable mime type based on the extension of a file.
    * @param path the path of request
    * @return the mime-type of file
    */
-  static boost::beast::string_view getMimeType(boost::beast::string_view path);
-
-  /**
-   * @brief Report a failure
-   * @param ec the error code
-   * @param what the explanation of error
-   */
-  static void onFail(boost::beast::error_code ec, char const *what);
+  static boost::beast::string_view
+  getMimeType(const boost::beast::string_view &path);
 
   /**
    * The default destructor of Utils class
    */
-  ~HttpUtils();
+  ~Utils();
 
 private:
   /**
@@ -40,4 +36,5 @@ private:
       s_extTomimtype;
 };
 
+} // namespace HTTP
 #endif

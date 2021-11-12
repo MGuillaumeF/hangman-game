@@ -1,6 +1,8 @@
 #ifndef __HTTP_SESSION_H__
 #define __HTTP_SESSION_H__
 
+#include <functional>
+
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/beast/core.hpp>
@@ -11,7 +13,9 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include "HttpUtils.hpp"
+#include "Utils.hpp"
+
+namespace HTTP {
 
 using requestHandler_t =
     boost::beast::http::response<boost::beast::http::string_body> (*)(
@@ -19,20 +23,20 @@ using requestHandler_t =
 /**
  * Handles an HTTP server connection
  */
-class HttpSession : public std::enable_shared_from_this<HttpSession> {
+class Session : public std::enable_shared_from_this<Session> {
   /**
    * @brief This is the C++11 equivalent of a generic lambda.
    * The function object is used to send an HTTP message.
    *
    */
   struct send_lambda {
-    HttpSession &self_;
+    Session &self_;
     /**
      * @brief Construct a new send lambda object
      *
      * @param self pointer on struct
      */
-    explicit send_lambda(HttpSession &self) : self_(self) {}
+    explicit send_lambda(Session &self) : self_(self) {}
 
     template <bool isRequest, class Body, class Fields>
     /**
@@ -56,7 +60,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
       boost::beast::http::async_write(
           self_.m_stream, *sp,
           boost::beast::bind_front_handler(
-              &HttpSession::onWrite, self_.shared_from_this(), sp->need_eof()));
+              &Session::onWrite, self_.shared_from_this(), sp->need_eof()));
     }
   };
 
@@ -67,7 +71,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
 
-  std::map<std::string, requestHandler_t> m_requestDispatcher;
+  std::map<std::string, requestHandler_t, std::less<>> m_requestDispatcher;
 
   /**
    * @brief Append an HTTP rel-path to a local filesystem path.
@@ -76,8 +80,8 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * @param path The end of path to merge
    * @return std::string  The returned path is normalized for the platform.
    */
-  std::string pathCat(boost::beast::string_view base,
-                      boost::beast::string_view path) const;
+  std::string pathCat(const boost::beast::string_view &base,
+                      const boost::beast::string_view &path) const;
 
   template <class Body, class Allocator, class Send>
   /**
@@ -91,7 +95,7 @@ class HttpSession : public std::enable_shared_from_this<HttpSession> {
    * @param send The Sender to emit HTTP response
    */
   void
-  handleRequest(boost::beast::string_view doc_root,
+  handleRequest(const boost::beast::string_view &doc_root,
                 boost::beast::http::request<
                     Body, boost::beast::http::basic_fields<Allocator>> &&req,
                 Send &&send);
@@ -103,8 +107,8 @@ public:
    * @param socket Take ownership of the socket's stream
    * @param doc_root The path of static files
    */
-  HttpSession(boost::asio::ip::tcp::socket &&socket,
-              std::shared_ptr<std::string const> const &doc_root)
+  Session(boost::asio::ip::tcp::socket &&socket,
+          std::shared_ptr<std::string const> const &doc_root)
       : m_stream(std::move(socket)), m_doc_root(doc_root), m_lambda(*this) {}
 
   /**
@@ -123,7 +127,8 @@ public:
    * @param ec The error code of previous step
    * @param bytes_transferred The size of bytes transferred
    */
-  void onRead(boost::beast::error_code ec, std::size_t bytes_transferred);
+  void onRead(const boost::beast::error_code &ec,
+              const std::size_t &bytes_transferred);
   /**
    * @brief Method to write response
    *
@@ -131,8 +136,8 @@ public:
    * @param ec The error code of previous step
    * @param bytes_transferred The size of bytes transferred
    */
-  void onWrite(bool close, boost::beast::error_code ec,
-               std::size_t bytes_transferred);
+  void onWrite(const bool &close, const boost::beast::error_code &ec,
+               const std::size_t &bytes_transferred);
   /**
    * @brief method to close TCP/IP socket
    *
@@ -148,4 +153,5 @@ public:
                             const requestHandler_t &handler);
 };
 
+} // namespace HTTP
 #endif
