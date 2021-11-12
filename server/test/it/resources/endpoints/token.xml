@@ -15,15 +15,7 @@
         <Status>405</Status>
       </Response>
     </Case>
-    <Case name="[PUT] Test Token - method not allowed">
-      <Request>
-        <Methode>PUT</Methode>
-      </Request>
-      <Response>
-        <Status>405</Status>
-      </Response>
-    </Case>
-    <Case name="[POST] Test Token - generate token - SUCCESS">
+    <Case name="[POST] Test Token - generate token - ok">
       <Request>
         <Methode>POST</Methode>
         <Headers>
@@ -37,6 +29,51 @@
       <Response>
         <Status>200</Status>
         <Body>token-content</Body>
+      </Response>
+    </Case>
+    <Case name="[POST] Test Token - generate token - bad request">
+      <Request>
+        <Methode>POST</Methode>
+        <Headers>
+          <Content-Type>application/xml</Content-Type>
+        </Headers>
+        <Body>
+          <Login>User_Test</Login>
+        </Body>
+      </Request>
+      <Response>
+        <Status>400</Status>
+      </Response>
+    </Case>
+    <Case name="[POST] Test Token - generate token - not found">
+      <Request>
+        <Methode>POST</Methode>
+        <Headers>
+          <Content-Type>application/xml</Content-Type>
+        </Headers>
+        <Body>
+          <Login>Unknown_User_Test</Login>
+          <Password>passwordTest</Password>
+        </Body>
+      </Request>
+      <Response>
+        <Status>404</Status>
+      </Response>
+    </Case>
+    <Case name="[PUT] Test Token - method not allowed">
+      <Request>
+        <Methode>PUT</Methode>
+      </Request>
+      <Response>
+        <Status>405</Status>
+      </Response>
+    </Case>
+    <Case name="[PATCH] Test Token - method not allowed">
+      <Request>
+        <Methode>PATCH</Methode>
+      </Request>
+      <Response>
+        <Status>405</Status>
       </Response>
     </Case>
   </TestCases>
