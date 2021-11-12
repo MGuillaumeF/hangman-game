@@ -76,5 +76,22 @@
         <Status>405</Status>
       </Response>
     </Case>
+    <Case name="[DELETE] Test Token - not found">
+      <Request>
+        <Methode>DELETE</Methode>
+        <Token>unknown_token</Token>
+      </Request>
+      <Response>
+        <Status>404</Status>
+      </Response>
+    </Case>
+    <Case name="[DELETE] Test Token - bad request">
+      <Request>
+        <Methode>DELETE</Methode>
+      </Request>
+      <Response>
+        <Status>400</Status>
+      </Response>
+    </Case>
   </TestCases>
 </TestSuite>
