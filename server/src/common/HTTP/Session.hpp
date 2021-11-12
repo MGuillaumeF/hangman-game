@@ -1,5 +1,5 @@
-#ifndef __HTTP_SESSION_H__
-#define __HTTP_SESSION_H__
+#ifndef __HTTP_SESSION_HPP__
+#define __HTTP_SESSION_HPP__
 
 #include <functional>
 
@@ -15,7 +15,7 @@
 
 #include "Utils.hpp"
 
-namespace HTTP {
+namespace http {
 
 using requestHandler_t =
     boost::beast::http::response<boost::beast::http::string_body> (*)(
