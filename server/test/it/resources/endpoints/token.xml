@@ -1,10 +1,17 @@
-<TestSuite name="TokenEndpointTest">
+<TestSuite name="[HTTP][API] Test Token Endpoint">
   <Properties>
     <Path>/api/Token</Path>
     <Content-Type>application/json</Content-Type>
-  </Properties >
+    <Timeout>15000</Timeout>
+  </Properties>
   <TestCases>
-    <Case>
+    <Case name="[GET] Test Token - method not allowed">
+      <Request>
+        <Methode>GET</Methode>
+      </Request>
+      <Response>
+        <Status>405</Status>
+      </Response>
     </Case>
   </TestCases>
 </TestSuite>
