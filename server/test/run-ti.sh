@@ -12,5 +12,5 @@ sleep 30
 echo "**** Token POST Test END"
 
 echo "Soft stop emitted"
-pkill -1 HangmanGame
+pkill -15 HangmanGame
 echo "Integration tests END"
