@@ -1,7 +1,7 @@
 #include "Utils.hpp"
 #include "../Logger/Logger.hpp"
 
-namespace HTTP {
+namespace http {
 const std::map<boost::beast::string_view, boost::beast::string_view>
     Utils::s_extTomimtype = {{".htm", "text/html"},
                              {".html", "text/html"},
