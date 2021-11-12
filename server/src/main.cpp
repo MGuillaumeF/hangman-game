@@ -4,6 +4,7 @@
 #include "./common/HTTP/Server.hpp"
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <regex>
@@ -81,9 +82,9 @@ int32_t main(int argc, char *argv[]) {
 
     const std::double_t longitude = pt.get<std::double_t>("point.longitude");
 
-    std::cout << "Le point est : " << std::endl
-              << "Latitude : " << latitude << std::endl
-              << "Longitude : " << longitude << std::endl;
+    logger->info("HTTP_CONFIGURATION",
+                 "Le point est : \r\n Latitude : " + std::to_string(latitude) +
+                     "\r\n Longitude : " + std::to_string(longitude));
   } catch (const boost::wrapexcept<
            boost::property_tree::json_parser::json_parser_error> &ex) {
     // ERROR TYPE : ESTRUCTOBJ, object has bad JSON structure
@@ -100,33 +101,40 @@ int32_t main(int argc, char *argv[]) {
     }
     if (4 == m.size()) {
       // example : "data.json(5): garbage after data"
-      std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide, ligne "
-                << m[2] << " : " << m[3] << std::endl;
+      logger->error("HTTP_CONFIGURATION",
+                    "Le fichier " + m[1].str() +
+                        " n'est pas un JSON valide, ligne " + m[2].str() +
+                        " : " + m[3].str());
     } else if (3 == m.size()) {
       // example : data.json: cannot open file
-      std::cerr << "Le fichier " << m[1]
-                << " n'est pas un JSON valide : " << m[2] << std::endl;
+      logger->error("HTTP_CONFIGURATION",
+                    "Le fichier " + m[1].str() +
+                        " n'est pas un JSON valide : " + m[2].str());
     } else {
-      std::cerr << "Erreur de parsing du fichier " << ex.what() << std::endl;
+      logger->error("HTTP_CONFIGURATION",
+                    "Erreur de parsing du fichier " + std::string(ex.what()));
     }
   } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_path> &ex) {
     // ERROR TYPE : ENOKEY, mandatory key not found
     // FIELD : [NAME, ERROR]
-    std::cerr << "data.json ne contient pas un attribut obligatoire : "
-              << ex.what() << std::endl;
+    logger->error("HTTP_CONFIGURATION",
+                  "data.json ne contient pas un attribut obligatoire : " +
+                      std::string(ex.what()));
   } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data> &ex) {
     // ERROR TYPE : EVALUETYPE, key found with bad value type
     // FIELD : [NAME, ERROR]
-    std::cerr << "data.json contient une données de type invalide : "
-              << ex.what() << std::endl;
+    logger->error("HTTP_CONFIGURATION",
+                  "data.json contient une données de type invalide : " +
+                      std::string(ex.what()));
   }
 
   // Check command line arguments.
   if (5 != argc) {
     logger->error("HTTP_CONFIGURATION",
                   "Usage: Server <address> <port> <doc_root> "
-                  "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1\n");
+                  "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1");
     g_fs.close();
+    g_access_fs.close();
     exitStatus = EXIT_FAILURE;
   } else {
     // If configuration of server is in arguments of execution
@@ -137,10 +145,6 @@ int32_t main(int argc, char *argv[]) {
     // server is started
     auto config = ConfigurationServer(arguments);
     auto server = HTTP::Server("0.0.0.0", 8080, ".", 1);
-
-    g_fs.close();
   }
-  logger->info("HTTP_CONFIGURATION",
-               "---------------- HERE 2 ----------------");
   return exitStatus;
 }

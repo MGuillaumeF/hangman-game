@@ -106,7 +106,7 @@ void Session::handleRequest(
       };
   try {
     if (0 == req.target().compare("/api/token")) {
-      std::cout << "handleRequest - /api/token" << std::endl;
+      logger->info("HTTP_ACCESS", "handleRequest - /api/token");
       HttpTokenEndpoint tokenEndpoint(req);
       tokenEndpoint.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
@@ -115,7 +115,7 @@ void Session::handleRequest(
     }
 
     if (0 == req.target().compare("/api/fruits")) {
-      std::cout << "handleRequest - /api/fruits" << std::endl;
+      logger->info("HTTP_ACCESS", "handleRequest - /api/fruits");
       HttpFruitsEndpoint fruits(req);
       fruits.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
@@ -123,7 +123,8 @@ void Session::handleRequest(
       return send(buildResponse(response));
     }
   } catch (const ParsingException &ex) {
-    std::cerr << "handleRequest - parsing error : " << ex.what() << std::endl;
+    logger->error("HTTP_DATA_READ",
+                  "handleRequest - parsing error : " + std::string(ex.what()));
 
     return send(bad_request("parsing error"));
   }
