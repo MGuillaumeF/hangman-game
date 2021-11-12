@@ -76,7 +76,16 @@
         <Status>405</Status>
       </Response>
     </Case>
-    <Case name="[DELETE] Test Token - not found">
+    <Case name="[DELETE] Test Token - remove token - ok">
+      <Request>
+        <Methode>DELETE</Methode>
+        <Token>content_token</Token>
+      </Request>
+      <Response>
+        <Status>200</Status>
+      </Response>
+    </Case>
+    <Case name="[DELETE] Test Token - remove token - not found">
       <Request>
         <Methode>DELETE</Methode>
         <Token>unknown_token</Token>
@@ -85,7 +94,7 @@
         <Status>404</Status>
       </Response>
     </Case>
-    <Case name="[DELETE] Test Token - bad request">
+    <Case name="[DELETE] Test Token - remove token - bad request">
       <Request>
         <Methode>DELETE</Methode>
       </Request>
