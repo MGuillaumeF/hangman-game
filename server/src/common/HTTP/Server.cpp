@@ -4,7 +4,7 @@
 #include <boost/asio/signal_set.hpp>
 #include <thread>
 
-namespace HTTP {
+namespace http {
 /**
  * @brief Construct a new Http Server:: Http Server object
  *
