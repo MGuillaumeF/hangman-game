@@ -1,2 +1,10 @@
-<TestSuite name="TokenEndpointTest>
+<TestSuite name="TokenEndpointTest">
+  <Properties>
+    <Path>/api/Token</Path>
+    <Content-Type>application/json</Content-Type>
+  </Properties >
+  <TestCases>
+    <Case>
+    </Case>
+  </TestCases>
 </TestSuite>
