@@ -3,7 +3,7 @@
 
 #include "Listener.hpp"
 
-namespace HTTP {
+namespace http {
 /**
  * Http Server Class is to run and stop HTTP Server
  */
