@@ -8,7 +8,7 @@ import "./index.scss";
 function App(): JSX.Element {
   return (
     <>
-      <Header title="Ceci est mon site" /> 
+      <Header title="Ceci est mon site" />
       <Main />
     </>
   );
