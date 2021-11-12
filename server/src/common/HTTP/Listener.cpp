@@ -4,7 +4,7 @@
 #include "Session.hpp"
 #include "Utils.hpp"
 
-namespace HTTP {
+namespace http {
 /**
  * @brief Construct a new Http Listener:: Http Listener object
  *
