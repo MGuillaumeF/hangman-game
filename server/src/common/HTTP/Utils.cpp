@@ -60,16 +60,6 @@ Utils::getMimeType(const boost::beast::string_view &path) {
 }
 
 /**
- * @brief Report a failure
- * @param ec the error code
- * @param what the explanation of error
- */
-void Utils::onFail(const boost::beast::error_code &ec, const char *const what) {
-  Logger::getInstance()->error("HTTP_CONFIGURATION",
-                               std::string(what) + ": " + ec.message());
-}
-
-/**
  *
  * The default destructor of Utils class
  */

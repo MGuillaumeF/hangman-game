@@ -233,7 +233,8 @@ void Session::onRead(const boost::beast::error_code &ec,
   if (ec == boost::beast::http::error::end_of_stream) {
     doClose();
   } else if (ec) {
-    Utils::onFail(ec, "read");
+    Logger::getInstance()->error("HTTP_CONFIGURATION",
+                                 " On read request error : " + ec.message());
   } else {
     // Send the response
     handleRequest(*m_doc_root, std::move(m_req), m_lambda);
@@ -252,7 +253,8 @@ void Session::onWrite(const bool &close, const boost::beast::error_code &ec,
   boost::ignore_unused(bytes_transferred);
 
   if (ec) {
-    Utils::onFail(ec, "write");
+    Logger::getInstance()->error("HTTP_CONFIGURATION",
+                                 " On write request error : " + ec.message());
   } else if (close) {
     // This means we should close the connection, usually because
     // the response indicated the "Connection: close" semantic.

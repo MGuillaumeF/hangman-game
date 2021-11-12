@@ -24,14 +24,6 @@ public:
   getMimeType(const boost::beast::string_view &path);
 
   /**
-   * @brief Report a failure
-   * @param ec the error code
-   * @param what the explanation of error
-   */
-  static void onFail(const boost::beast::error_code &ec,
-                     const char *const what);
-
-  /**
    * The default destructor of Utils class
    */
   ~Utils();
