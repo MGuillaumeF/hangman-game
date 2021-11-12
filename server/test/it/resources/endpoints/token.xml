@@ -1,6 +1,6 @@
 <TestSuite name="[HTTP][API] Test Token Endpoint">
   <Properties>
-    <URL>${protocol}://${hostname}:${port}${prefix}/token</URL>
+    <URL>${protocol}://${hostname}:${port}${prefix}/user/_token</URL>
     <Headers>
       <Content-Type>application/json</Content-Type>
     </Headers>
@@ -21,6 +21,22 @@
       </Request>
       <Response>
         <Status>405</Status>
+      </Response>
+    </Case>
+    <Case name="[POST] Test Token - generate token - SUCCESS">
+      <Request>
+        <Methode>POST</Methode>
+        <Headers>
+          <Content-Type>application/xml</Content-Type>
+        </Headers>
+        <Body>
+          <Login>User_Test</Login>
+          <Password>passwordTest</Password>
+        </Body>
+      </Request>
+      <Response>
+        <Status>200</Status>
+        <Body>token-content</Body>
       </Response>
     </Case>
   </TestCases>
