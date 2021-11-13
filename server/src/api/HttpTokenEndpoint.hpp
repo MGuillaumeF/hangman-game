@@ -1,6 +1,6 @@
 #ifndef __HTTP_TOKEN_ENDPOINT_HPP__
 #define __HTTP_TOKEN_ENDPOINT_HPP__
-#include "HttpRestrictiveEndpoint.hpp"
+#include "common/HTTP/RestrictiveEndpoint.hpp"
 
 #include <iostream>
 
