@@ -14,12 +14,12 @@
 /**
  * Http Endpoint Class ito create HTTP response
  */
-class HttpTokenEndpoint : public RestrictiveEndpoint {
+class HttpTokenEndpoint : public http::RestrictiveEndpoint {
 
 public:
   explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
-      : HttpRestrictiveEndpoint(req,
+      : http::RestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, true},
                                  {boost::beast::http::verb::get, false},
                                  {boost::beast::http::verb::put, false},
