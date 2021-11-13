@@ -75,8 +75,8 @@ jobs:
       run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg; ./HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
 
     - name: Integration Tests
-      working-directory: ${{github.workspace}}/server/bin
-      run: chmod +x ./HangmanGameITTest; ./HangmanGameITTest
+      working-directory: ${{github.workspace}}/server/test
+      run: chmod +x ./run-ti.sh; ./run-ti.sh
 
     - name: gcov after unit tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
