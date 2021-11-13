@@ -38,10 +38,17 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
      "server/src/*.cpp"
 )
 
-# Add all tests files in TESTS_SRC_DIR variable
-file(GLOB_RECURSE TESTS_SRC_DIR CONFIGURE_DEPENDS
+# Add all tests files in TESTS_SRC_UT_DIR variable
+file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
      "server/test/ut/*.hpp"
      "server/test/ut/*.cpp"
+)
+
+
+# Add all tests files in TESTS_SRC_IT_DIR variable
+file(GLOB_RECURSE TESTS_SRC_IT_DIR CONFIGURE_DEPENDS
+     "server/test/it/*.hpp"
+     "server/test/it/*.cpp"
 )
 
 # Add all HTTP files in HTTP_SRC_DIR variable
@@ -64,7 +71,8 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # Create application executable files
   add_executable(HangmanGame ${SRCS})
-  add_executable(HangmanGameTest ${TESTS_SRC_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
+  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
+  add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
   if(WIN32)
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 
       C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
@@ -73,10 +81,14 @@ if (Boost_FOUND)
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 
       C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
     )
+    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 
+      C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
+    )
   else ()
     SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lgcov --coverage")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   endif()
 else ()
   # If boost not found print fatal error message
