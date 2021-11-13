@@ -55,7 +55,7 @@ template <class Body, class Allocator, class Send>
 void Session::handleRequest(
     const boost::beast::string_view &doc_root,
     boost::beast::http::request<
-        Body, boost::beast::http::basic_fields<Allocator>> &&req,
+        Body, const boost::beast::http::basic_fields<Allocator>> &req,
     Send &&send) {
 
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
