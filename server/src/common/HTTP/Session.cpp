@@ -225,7 +225,7 @@ void Session::onRead(const boost::beast::error_code &ec,
                                  " On read request error : " + ec.message());
   } else {
     // Send the response
-    handleRequest(*m_doc_root, std::move(m_req), m_lambda);
+    handleRequest(*m_doc_root, m_req, m_lambda);
   }
 }
 
