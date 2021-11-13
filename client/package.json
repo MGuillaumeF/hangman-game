@@ -2,7 +2,7 @@
   "name": "hangman-game",
   "version": "0.1.0",
   "private": true,
-  "sideEffects" : false,
+  "sideEffects": false,
   "main": "index.ts",
   "scripts": {
     "build": "webpack --node-env production",
@@ -19,6 +19,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@babylonjs/core": "^4.2.0",
     "@babylonjs/inspector": "^4.2.0",
+    "@testing-library/jest-dom": "^5.15.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.20.13",
     "@types/react": "^17.0.8",
