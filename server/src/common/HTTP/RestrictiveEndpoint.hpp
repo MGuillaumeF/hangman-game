@@ -8,7 +8,7 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
-#include "../common/Logger/Logger.hpp"
+#include "../Logger/Logger.hpp"
 
 namespace {
 
