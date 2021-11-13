@@ -17,8 +17,9 @@ Listener::Listener(boost::asio::io_context &ioc,
                    std::shared_ptr<std::string const> const &doc_root)
     : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)),
       m_doc_root(doc_root) {
-
+  // get logger
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
+  // set error code variable to stock possibles errors 
   boost::beast::error_code ec;
 
   // Open the acceptor
