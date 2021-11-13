@@ -76,7 +76,7 @@ jobs:
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-ti.sh; ./run-ti.sh
+      run: chmod +x ./run-it.sh; ./run-it.sh
 
     - name: gcov after unit tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
