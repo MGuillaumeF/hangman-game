@@ -1,11 +1,11 @@
-#ifndef __HTTP_LISTENER_H__
-#define __HTTP_LISTENER_H__
+#ifndef __HTTP_LISTENER_HPP__
+#define __HTTP_LISTENER_HPP__
 
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/beast/core.hpp>
 
-namespace HTTP {
+namespace http {
 /**
  *  Accepts incoming connections and launches the sessions
  */

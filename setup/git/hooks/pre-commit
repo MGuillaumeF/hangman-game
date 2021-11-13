@@ -8,4 +8,13 @@ echo "$FILES" | xargs clang-format -style=file -i
 # Add back the modified/prettified files to staging
 echo "$FILES" | xargs git add
 
+FILES=$(git diff --cached --name-only --diff-filter=ACMR "*.js" "*.jsx" "*.ts" "*.tsx" "*.json" "*.md" "*.mdx" "*.html" "*.svg" "*.xml" "*.css" "*.scss" "*.sass" | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
+
+# Prettify all selected files
+echo "$FILES" | xargs ./client/node_modules/.bin/prettier --write
+
+# Add back the modified/prettified files to staging
+echo "$FILES" | xargs git add
+
 exit 0

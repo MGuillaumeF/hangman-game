@@ -3,7 +3,7 @@
 #include "../../api/HttpFruitsEndpoint.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 
-namespace HTTP {
+namespace http {
 
 /**
  * @brief Append an HTTP rel-path to a local filesystem path.

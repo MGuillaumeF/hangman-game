@@ -4,7 +4,7 @@
 #include "Session.hpp"
 #include "Utils.hpp"
 
-namespace HTTP {
+namespace http {
 /**
  * @brief Construct a new Http Listener:: Http Listener object
  *
@@ -79,7 +79,7 @@ void Listener::onAccept(const boost::beast::error_code &ec,
     logger->error("HTTP_CONFIGURATION", "onAccept error " + ec.message());
   } else {
     // Create the session and run it
-    std::make_shared<HTTP::Session>(std::move(socket), m_doc_root)->run();
+    std::make_shared<http::Session>(std::move(socket), m_doc_root)->run();
   }
 
   // Accept another connection
