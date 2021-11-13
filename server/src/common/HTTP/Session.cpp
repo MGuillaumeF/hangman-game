@@ -1,6 +1,5 @@
 
 #include "Session.hpp"
-#include "../../api/HttpFruitsEndpoint.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 
 namespace http {
@@ -114,14 +113,6 @@ void Session::handleRequest(
       return send(buildResponse(response));
     }
 
-    if (0 == req.target().compare("/api/fruits")) {
-      logger->info("HTTP_ACCESS", "handleRequest - /api/fruits");
-      HttpFruitsEndpoint fruits(req);
-      fruits.dispatchRequest();
-      boost::beast::http::response<boost::beast::http::string_body> response =
-          fruits.getResponse();
-      return send(buildResponse(response));
-    }
   } catch (const ParsingException &ex) {
     logger->error("HTTP_DATA_READ",
                   "handleRequest - parsing error : " + std::string(ex.what()));
