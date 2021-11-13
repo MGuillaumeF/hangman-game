@@ -99,10 +99,6 @@ void Session::handleRequest(
     return res;
   };
 
-  auto const buildResponse =
-      [](boost::beast::http::response<boost::beast::http::string_body> res) {
-        return res;
-      };
   try {
     if (0 == req.target().compare("/api/token")) {
       logger->info("HTTP_ACCESS", "handleRequest - /api/token");
@@ -110,7 +106,7 @@ void Session::handleRequest(
       tokenEndpoint.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
           tokenEndpoint.getResponse();
-      return send(buildResponse(response));
+      return send(std::move(response));
     }
 
   } catch (const ParsingException &ex) {
