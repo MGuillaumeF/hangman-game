@@ -32,21 +32,21 @@ Server::Server(const std::string &address, const uint16_t port,
   for (auto i = 0; i < threads; i++) {
     threadList.emplace_back([&ioc] { ioc.run(); });
   }
+  // create signal on close process order
   boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
+  // subscription on signal action to soft stop listener context
   signals.async_wait(
-      [&threads, &ioc](const boost::system::error_code &ec, const int32_t &n) {
+      [&ioc](const boost::system::error_code &ec, const int32_t &n) {
         Logger::getInstance()->info(
             "HTTP_CONFIGURATION",
             std::string("IO Context stop with ") + ec.message() +
                 std::string(" and handler code : ") + std::to_string(n));
-        for (auto i = 0; i < threads; i++) {
-          ioc.stop();
-        }
+        // stop listener context
+        ioc.stop();
+        // exit process with success state
         std::exit(EXIT_SUCCESS);
       });
   // run server listeners on context
   ioc.run();
-  Logger::getInstance()->info("HTTP_CONFIGURATION",
-                              "---------------- HERE 1 ----------------");
 }
-} // namespace HTTP
+} // namespace http
