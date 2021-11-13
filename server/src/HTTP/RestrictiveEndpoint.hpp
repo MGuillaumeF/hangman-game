@@ -15,7 +15,7 @@ namespace {
 /**
  * Http Endpoint Class to create HTTP response
  */
-class HttpRestrictiveEndpoint {
+class RestrictiveEndpoint {
 
 public:
   /**
