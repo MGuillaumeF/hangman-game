@@ -14,7 +14,7 @@
 /**
  * Http Endpoint Class ito create HTTP response
  */
-class HttpTokenEndpoint : public HttpRestrictiveEndpoint {
+class HttpTokenEndpoint : public RestrictiveEndpoint {
 
 public:
   explicit HttpTokenEndpoint(
