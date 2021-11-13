@@ -54,8 +54,8 @@ template <class Body, class Allocator, class Send>
  */
 void Session::handleRequest(
     const boost::beast::string_view &doc_root,
-    boost::beast::http::request<
-        Body, boost::beast::http::basic_fields<Allocator>> &&req,
+    const boost::beast::http::request<
+        Body, boost::beast::http::basic_fields<Allocator>> &req,
     Send &&send) {
 
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
@@ -99,10 +99,6 @@ void Session::handleRequest(
     return res;
   };
 
-  auto const buildResponse =
-      [](boost::beast::http::response<boost::beast::http::string_body> res) {
-        return res;
-      };
   try {
     if (0 == req.target().compare("/api/token")) {
       logger->info("HTTP_ACCESS", "handleRequest - /api/token");
@@ -110,7 +106,7 @@ void Session::handleRequest(
       tokenEndpoint.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
           tokenEndpoint.getResponse();
-      return send(buildResponse(response));
+      return send(std::move(response));
     }
 
   } catch (const ParsingException &ex) {
@@ -229,7 +225,7 @@ void Session::onRead(const boost::beast::error_code &ec,
                                  " On read request error : " + ec.message());
   } else {
     // Send the response
-    handleRequest(*m_doc_root, std::move(m_req), m_lambda);
+    handleRequest(*m_doc_root, m_req, m_lambda);
   }
 }
 

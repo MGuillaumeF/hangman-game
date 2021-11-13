@@ -96,8 +96,8 @@ class Session : public std::enable_shared_from_this<Session> {
    */
   void
   handleRequest(const boost::beast::string_view &doc_root,
-                boost::beast::http::request<
-                    Body, boost::beast::http::basic_fields<Allocator>> &&req,
+                const boost::beast::http::request<
+                    Body, boost::beast::http::basic_fields<Allocator>> &req,
                 Send &&send);
 
 public:
