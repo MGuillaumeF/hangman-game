@@ -10,6 +10,8 @@
 
 #include "../common/Logger/Logger.hpp"
 
+namespace {
+
 /**
  * Http Endpoint Class to create HTTP response
  */
@@ -222,4 +224,5 @@ private:
   }
 };
 
+}
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__
