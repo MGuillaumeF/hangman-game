@@ -111,13 +111,23 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
+    requestProperties.body = "{\"login\" : \"a\", \"errorKey\" : \"b\"}";
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
       std::cout << "2 : [success]" << std::endl;
       nbSuccess++;
     } else {
       std::cerr << "2 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
+    response = sendRequest(requestProperties);
+    if (response.result() == boost::beast::http::status::bad_request) {
+      std::cout << "2bis : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "2bis : [failed]" << std::endl;
       nbFailed++;
     }
 
