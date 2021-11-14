@@ -18,13 +18,7 @@ class HttpTokenEndpoint : public http::RestrictiveEndpoint {
 
 public:
   explicit HttpTokenEndpoint(
-      const boost::beast::http::request<boost::beast::http::string_body> &req)
-      : http::RestrictiveEndpoint(req,
-                                {{boost::beast::http::verb::post, true},
-                                 {boost::beast::http::verb::get, false},
-                                 {boost::beast::http::verb::put, false},
-                                 {boost::beast::http::verb::patch, false},
-                                 {boost::beast::http::verb::delete_, true}});
+      const boost::beast::http::request<boost::beast::http::string_body> &req);
   void doPost() override;
 private:
   std::unique_ptr<Logger>& m_logger = Logger::getInstance();
