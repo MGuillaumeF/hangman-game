@@ -25,7 +25,7 @@ public:
    * @param req The request received at this endpoint
    * @param allowedMethods The allowed method paramaters object
    */
-  HttpRestrictiveEndpoint(
+  RestrictiveEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const std::map<boost::beast::http::verb, bool> &allowedMethods)
       : m_request(req), m_allowedMethods(allowedMethods){};
@@ -117,7 +117,7 @@ public:
    * @brief Destroy the Http Restrictive Endpoint object
    *
    */
-  virtual ~HttpRestrictiveEndpoint() = default;
+  virtual ~ RestrictiveEndpoint() = default;
 
 protected:
   /**
