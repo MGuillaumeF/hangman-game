@@ -10,7 +10,7 @@
 
 #include "../Logger/Logger.hpp"
 
-namespace {
+namespace http {
 
 /**
  * Http Endpoint Class to create HTTP response
