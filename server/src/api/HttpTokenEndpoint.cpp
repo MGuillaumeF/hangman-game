@@ -1,6 +1,5 @@
 #include "HttpTokenEndpoint.hpp"
-
-explicit HttpTokenEndpoint::HttpTokenEndpoint(
+HttpTokenEndpoint::HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : http::RestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, true},
@@ -13,7 +12,7 @@ explicit HttpTokenEndpoint::HttpTokenEndpoint(
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
   }
 
-  void HttpTokenEndpoint::doPost() override {
+  void HttpTokenEndpoint::doPost() {
     const boost::beast::http::request<boost::beast::http::string_body> request =
         this->getRequest();
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - start");
