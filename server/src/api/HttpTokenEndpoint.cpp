@@ -1,4 +1,14 @@
 #include "HttpTokenEndpoint.hpp"
+
+#include <iostream>
+
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+
+#include "../common/HTTP/Exception/ParsingException.hpp"
+#include "../common/Logger/Logger.hpp"
+
 HttpTokenEndpoint::HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : http::RestrictiveEndpoint(req,
