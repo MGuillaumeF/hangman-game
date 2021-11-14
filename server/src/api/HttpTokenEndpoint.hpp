@@ -11,7 +11,7 @@ public:
   explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req);
   void doPost() override;
-  ~HttpTokenEndpoint();
+  ~HttpTokenEndpoint() final;
 private:
   std::unique_ptr<Logger>& m_logger = Logger::getInstance();
 
