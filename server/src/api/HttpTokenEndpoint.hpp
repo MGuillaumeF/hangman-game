@@ -2,15 +2,6 @@
 #define __HTTP_TOKEN_ENDPOINT_HPP__
 #include "../common/HTTP/RestrictiveEndpoint.hpp"
 
-#include <iostream>
-
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-
-#include "../common/HTTP/Exception/ParsingException.hpp"
-#include "../common/Logger/Logger.hpp"
-
 /**
  * Http Endpoint Class ito create HTTP response
  */
