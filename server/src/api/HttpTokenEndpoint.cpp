@@ -91,4 +91,4 @@ HttpTokenEndpoint::HttpTokenEndpoint(
     setResponse(res);
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - end");
   }
-httptokenendpoint::~HttpTokenEndpoint (){}
+HttpTokenEndpoint::~HttpTokenEndpoint (){}
