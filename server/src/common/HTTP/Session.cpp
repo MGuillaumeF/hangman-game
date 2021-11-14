@@ -1,6 +1,7 @@
 
 #include "Session.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
+#include "Exception/ParsingException.hpp"
 
 namespace http {
 

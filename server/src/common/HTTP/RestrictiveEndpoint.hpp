@@ -8,12 +8,14 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
-#include "../common/Logger/Logger.hpp"
+#include "../Logger/Logger.hpp"
+
+namespace http {
 
 /**
  * Http Endpoint Class to create HTTP response
  */
-class HttpRestrictiveEndpoint {
+class RestrictiveEndpoint {
 
 public:
   /**
@@ -23,7 +25,7 @@ public:
    * @param req The request received at this endpoint
    * @param allowedMethods The allowed method paramaters object
    */
-  HttpRestrictiveEndpoint(
+  RestrictiveEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const std::map<boost::beast::http::verb, bool> &allowedMethods)
       : m_request(req), m_allowedMethods(allowedMethods){};
@@ -115,7 +117,7 @@ public:
    * @brief Destroy the Http Restrictive Endpoint object
    *
    */
-  virtual ~HttpRestrictiveEndpoint() = default;
+  virtual ~ RestrictiveEndpoint() = default;
 
 protected:
   /**
@@ -222,4 +224,5 @@ private:
   }
 };
 
+}
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__

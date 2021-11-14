@@ -48,7 +48,7 @@ sendRequest(REQUEST requestProperties) {
               requestProperties.hostname.c_str());
   request.set(boost::beast::http::field::user_agent,
               BOOST_BEAST_VERSION_STRING);
-  request.set(boost::beast::http::field::content_type, "application/json");
+  request.set(boost::beast::http::field::content_type, requestProperties.headers.at("Content-Type"));
   request.body() = requestProperties.body.c_str();
   request.prepare_payload();
 
@@ -111,13 +111,47 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
+    requestProperties.body = "{\"login\" : \"a\", \"errorKey\" : \"b\"}";
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
       std::cout << "2 : [success]" << std::endl;
       nbSuccess++;
     } else {
       std::cerr << "2 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
+    response = sendRequest(requestProperties);
+    if (response.result() == boost::beast::http::status::bad_request) {
+      std::cout << "3 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "3 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.headers = {{"Content-Type", "application/xml"},
+                                 {"Accept", "application/xml"}};
+
+    response = sendRequest(requestProperties);
+    if (response.result() == boost::beast::http::status::bad_request) {
+      std::cout << "3 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "3 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.headers = {{"Content-Type", "text/html"},
+                                 {"Accept", "text/html"}};
+
+    response = sendRequest(requestProperties);
+    if (response.result() == boost::beast::http::status::bad_request) {
+      std::cout << "3 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "3 : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -131,6 +165,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
+    
     requestProperties.methode = boost::beast::http::verb::put;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {

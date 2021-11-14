@@ -51,6 +51,12 @@ file(GLOB_RECURSE TESTS_SRC_IT_DIR CONFIGURE_DEPENDS
      "server/test/it/*.cpp"
 )
 
+# Add all API files in API_SRC_DIR variable
+file(GLOB_RECURSE API_SRC_DIR CONFIGURE_DEPENDS
+     "server/src/api/*.hpp"
+     "server/src/api/*.cpp"
+)
+
 # Add all HTTP files in HTTP_SRC_DIR variable
 file(GLOB_RECURSE HTTP_SRC_DIR CONFIGURE_DEPENDS
      "server/src/common/HTTP/*.hpp"
@@ -71,7 +77,7 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # Create application executable files
   add_executable(HangmanGame ${SRCS})
-  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR})
+  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
   if(WIN32)
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 
