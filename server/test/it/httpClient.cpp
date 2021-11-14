@@ -188,8 +188,8 @@ int32_t main(int argc, char *argv[]) {
 
     std::cout << std::endl
               << "Report tests" << std::endl
-              << nbSuccess << " tests passing" << std::endl
-              << nbFailed << "tests failed" << std::endl;
+              << std::to_string(nbSuccess) << " tests passing" << std::endl
+              << std::to_string(nbFailed) << "tests failed" << std::endl;
   } catch (const std::exception &ec) {
 
     std::cerr << "[ERROR] " << ec.what() << std::endl;
