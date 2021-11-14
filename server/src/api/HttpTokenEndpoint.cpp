@@ -1,6 +1,6 @@
 #include "HttpTokenEndpoint.hpp"
 
-HttpTokenEndpoint::HttpTokenEndpoint(
+explicit HttpTokenEndpoint::HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req)
       : http::RestrictiveEndpoint(req,
                                 {{boost::beast::http::verb::post, true},
