@@ -168,7 +168,7 @@ void Session::handleRequest(
   res.keep_alive(req.keep_alive());
   const std::string accessLog =
       "[" + std::to_string(res.result_int()) + "] " + req.target().to_string();
-  if (res.result_int() < 400) {
+  if (boost::beast::http::to_status_class(res.result_int()) < boost::beast::http::status_class::client_error) {
     logger->info("HTTP_ACCESS", accessLog);
   } else {
     logger->error("HTTP_ACCESS", accessLog);
