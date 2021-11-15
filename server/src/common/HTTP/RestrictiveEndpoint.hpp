@@ -10,6 +10,8 @@
 
 #include "../Logger/Logger.hpp"
 
+const uint8_t HTTP_VERSION = 11;
+
 namespace http {
 
 /**
@@ -127,7 +129,7 @@ protected:
   void writeMethodNotAllowed() {
     boost::beast::http::response<boost::beast::http::string_body> res;
 
-    res.version(11); // HTTP/1.1
+    res.version(HTTP_VERSION); // HTTP/1.1
     res.result(boost::beast::http::status::method_not_allowed);
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(boost::beast::http::field::content_type, "text/html");
@@ -143,7 +145,7 @@ protected:
   void writeNotImplementedResponse() {
     boost::beast::http::response<boost::beast::http::string_body> res;
 
-    res.version(11); // HTTP/1.1
+    res.version(HTTP_VERSION); // HTTP/1.1
     res.result(boost::beast::http::status::not_implemented);
     res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(boost::beast::http::field::content_type, "text/html");
