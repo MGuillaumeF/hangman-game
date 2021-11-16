@@ -28,14 +28,14 @@ std::fstream g_access_fs;
  * To write a log message
  * @param message The message to print
  */
-auto appenderFile = [&g_fs](const std::string &message) { g_fs << message << std::endl; }
+auto const appenderFile = [&g_fs](const std::string &message) { g_fs << message << std::endl; };
 /**
  * To write a log message
  * @param message The message to print
  */
-auto appenderAccessFile = [&g_access_fs](const std::string &message) {
+auto const appenderAccessFile = [&g_access_fs](const std::string &message) {
   g_access_fs << message << std::endl;
-}
+};
 
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
