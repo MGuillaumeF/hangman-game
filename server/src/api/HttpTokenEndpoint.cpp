@@ -17,7 +17,7 @@
 HttpTokenEndpoint::HttpTokenEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req)
     : http::RestrictiveEndpoint(req,
-                                // Only POST methode is activated
+                                // Only POST and DELETE methode are allowed
                                 {{boost::beast::http::verb::post, true},
                                  {boost::beast::http::verb::get, false},
                                  {boost::beast::http::verb::put, false},
@@ -33,6 +33,7 @@ HttpTokenEndpoint::HttpTokenEndpoint(
  *
  */
 void HttpTokenEndpoint::doPost() {
+  // get HTTP request
   const boost::beast::http::request<boost::beast::http::string_body> request =
       this->getRequest();
   m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - start");
@@ -40,6 +41,7 @@ void HttpTokenEndpoint::doPost() {
   std::stringstream l_stream(request.body());
   boost::property_tree::ptree requestBodyTree;
 
+  // if content-type is JSON
   if (const boost::string_view contentType =
           request.at(boost::beast::http::field::content_type);
       0 == contentType.compare("application/json")) {
@@ -74,6 +76,7 @@ void HttpTokenEndpoint::doPost() {
                     "HttpTokenEndpoint - doPost - content type not supported");
     throw ParsingException("content type is not valid");
   }
+  // READ property tree content
   try {
     const std::string l_login = requestBodyTree.get<std::string>("login");
     m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - login :" +
