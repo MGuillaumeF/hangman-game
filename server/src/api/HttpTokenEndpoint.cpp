@@ -79,12 +79,7 @@ void HttpTokenEndpoint::doPost() {
   // READ property tree content
   try {
     const std::string l_login = requestBodyTree.get<std::string>("login");
-    m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - login :" +
-                                          std::string(l_login));
     const std::string l_pwd = requestBodyTree.get<std::string>("password");
-    m_logger->debug("HTTP_DATA_READ",
-                    "HttpTokenEndpoint - doPost - password :" +
-                        std::string(l_pwd));
   } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_path> &ex) {
     // ERROR TYPE : ENOKEY, mandatory key not found
     // FIELD : [NAME, ERROR]
@@ -93,12 +88,9 @@ void HttpTokenEndpoint::doPost() {
                     "mandatory field : " +
                         std::string(ex.what()));
     throw ParsingException("body has at least one mandatory field");
-  } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data> &ex) {
+  } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data>&) {
     // ERROR TYPE : EVALUETYPE, key found with bad value type
     // FIELD : [NAME, ERROR]
-    m_logger->error("HTTP_DATA_READ",
-                    "HttpTokenEndpoint - doPost - body has bad value type : " +
-                        std::string(ex.what()));
     throw ParsingException("body has bad value type");
   }
 
@@ -110,7 +102,6 @@ void HttpTokenEndpoint::doPost() {
   res.body() = "This is a fake token";
   res.prepare_payload();
   setResponse(res);
-  m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - end");
 }
 
 /**
