@@ -16,7 +16,8 @@ std::string HttpSession::pathCat(boost::beast::string_view base,
     return std::string(path);
   std::string result(base);
 #ifdef BOOST_MSVC
-  if (char constexpr path_separator = '\\'; result.back() == path_separator)
+  char constexpr path_separator = '\\'; 
+  if (result.back() == path_separator)
     result.resize(result.size() - 1);
   result.append(path.data(), path.size());
   for (auto &c : result)
