@@ -14,11 +14,6 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-
-int32_t main(int argc, char *argv[]) {
-  uint8_t MAX_ARGS_QUANTITY = 5;
-  int16_t exitStatus = EXIT_SUCCESS;
-
 // global streams for files loggers
 std::fstream g_fs;
 // light http access logs
@@ -28,15 +23,18 @@ std::fstream g_access_fs;
  * To write a log message
  * @param message The message to print
  */
-auto const appenderFile = [&g_fs](const std::string &message) { g_fs << message << std::endl; };
+void appenderFile(const std::string &message) { g_fs << message << std::endl; }
 /**
  * To write a log message
  * @param message The message to print
  */
-auto const appenderAccessFile = [&g_access_fs](const std::string &message) {
+void appenderAccessFile(const std::string &message) {
   g_access_fs << message << std::endl;
-};
+}
 
+int32_t main(int argc, char *argv[]) {
+  uint8_t MAX_ARGS_QUANTITY = 5;
+  int16_t exitStatus = EXIT_SUCCESS;
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
   g_access_fs.open("./logs/access.log",
