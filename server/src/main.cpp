@@ -33,6 +33,7 @@ void appenderAccessFile(const std::string &message) {
 }
 
 int32_t main(int argc, char *argv[]) {
+  uint8_t MAX_ARGS_QUANTITY = 5;
   int16_t exitStatus = EXIT_SUCCESS;
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
@@ -129,7 +130,7 @@ int32_t main(int argc, char *argv[]) {
   }
 
   // Check command line arguments.
-  if (5 != argc) {
+  if (MAX_ARGS_QUANTITY != argc) {
     logger->error("HTTP_CONFIGURATION",
                   "Usage: Server <address> <port> <doc_root> "
                   "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1");
