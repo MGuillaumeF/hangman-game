@@ -18,7 +18,8 @@ std::string Session::pathCat(const boost::beast::string_view &base,
   if (!base.empty()) {
     result = std::string(base);
 #ifdef BOOST_MSVC
-    if (char constexpr path_separator = '\\'; result.back() == path_separator) {
+    char constexpr path_separator = '\\';
+    if (result.back() == path_separator) {
       result.resize(result.size() - 1);
     }
     result.append(path.data(), path.size());
