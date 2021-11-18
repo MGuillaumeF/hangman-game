@@ -20,7 +20,7 @@ std::string HttpSession::pathCat(boost::beast::string_view base,
   if (result.back() == path_separator)
     result.resize(result.size() - 1);
   result.append(path.data(), path.size());
-  for (auto &c : result)
+  for (auto &c : result) 
     if (c == '/')
       c = path_separator;
 #else
