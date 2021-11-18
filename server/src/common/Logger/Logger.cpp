@@ -114,7 +114,7 @@ void Logger::defaultErrAppender(const std::string &message) {
  */
 void Logger::addAppender(const ELogLevel level, const std::string &theme,
                          const appender_t &appender) {
-  if (m_appenders.find(theme) != m_appenders.end()) {
+  if (m_appenders.contains(theme)) {
     if (m_appenders[theme].find(Logger::s_corresp[level]) !=
         m_appenders[theme].end()) {
       m_appenders[theme][Logger::s_corresp[level]].insert(appender);
