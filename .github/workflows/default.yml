@@ -191,7 +191,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/Debug
+        path: ${{github.workspace}}/server/bin/Debug/*.exe
 
     - name: Unit Tests
       # Execute tests defined by the CMake configuration.  
