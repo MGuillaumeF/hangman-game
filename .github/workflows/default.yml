@@ -185,7 +185,7 @@ jobs:
 
     - name: Build server windows
       # Build your program with the given configuration
-    # run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Archive Server windows 
       uses: actions/upload-artifact@v2
