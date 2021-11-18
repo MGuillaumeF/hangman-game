@@ -191,7 +191,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/Debug/HangmanGame.exe
+        path: ${{github.workspace}}/server/bin/Debug
 
     - name: Unit Tests
       working-directory: ${{github.workspace}}/server/bin/Debug
