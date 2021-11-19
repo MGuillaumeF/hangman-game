@@ -83,16 +83,10 @@ if (Boost_FOUND)
   add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
   if(WIN32)
-    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 
-     # C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
-      )
+    target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 ${DEXTERNAL_LIBS})
     #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 
-     # C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
-    )
-    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 
-      # C:/Users/miche/Desktop/boost_1_76_0/stage/lib/libboost_date_time-clangw13-mt-gd-x64-1_76.lib
-    )
+    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 ${DEXTERNAL_LIBS})
+    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 ${DEXTERNAL_LIBS})
   else ()
     SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
