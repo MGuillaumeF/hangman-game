@@ -62,7 +62,7 @@ jobs:
     - name: Archive Server
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game
+        name: Server-Hangman-Game-Linux
         path: ${{github.workspace}}/server/bin/HangmanGame
 
     # - name: lcov init
@@ -198,7 +198,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: mkdir ${{github.workspace}}/server/reports; ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
 
- build-server-OSX:
+ build-server-MacOSX:
     runs-on: macos-11
     steps:
 
@@ -224,7 +224,7 @@ jobs:
     - name: Archive Server
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game-OSX
+        name: Server-Hangman-Game-MacOSX
         path: ${{github.workspace}}/server/bin/HangmanGame
 
     - name: Unit Tests
