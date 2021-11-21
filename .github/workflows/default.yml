@@ -241,17 +241,17 @@ jobs:
 
     - name: Install nodejs
       run: sudo apt install -y nodejs
+      
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: npm install
 
-   - name: Install client's dependencies
-     working-directory: ${{github.workspace}}/client
-     run: npm install
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
 
-   - name: Build client
-     working-directory: ${{github.workspace}}/client
-     run: npm run build
-
-   - name: Archive IHM
-     uses: actions/upload-artifact@v2
-     with:
-       name: IHM-Hangman-Game
-       path: ${{github.workspace}}/client/build
+    - name: Archive IHM
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
