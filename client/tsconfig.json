@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "outDir": "./dist/",
+    "outDir": "./build/",
     "sourceMap": true,
     "module": "esnext",
     "lib": ["DOM", "ESNext"],
