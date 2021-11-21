@@ -2,6 +2,7 @@
 #define __HTTP_UTILS_HPP__
 
 #include <boost/beast/core.hpp>
+#include <functional>
 #include <map>
 namespace http {
 /**
@@ -35,7 +36,7 @@ private:
    * @brief configuration map of mimetype where key is extension, populated at
    * the first mime-type search
    */
-  static std::map<std::string, std::string> s_extTomimtype;
+  static std::map<std::string, std::string, std::less<>> s_extTomimtype;
 };
 
 } // namespace http

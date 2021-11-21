@@ -7,7 +7,7 @@ namespace http {
  * @brief configuration map of mimetype where key is extension, populated at the
  * first mime-type search
  */
-std::map<std::string, std::string> Utils::s_extTomimtype = {};
+std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
 
 /**
  * @brief The default constructor of Utils class
@@ -63,14 +63,15 @@ void Utils::loadMimTypesConfiguration() {
   boost::property_tree::read_xml("./configuration/mime-types.xml",
                                  mimeTypesConfig);
   // for each mime-type row get extension and associated mime type value
-  for (const auto &mimeType : mimeTypesConfig.get_child("mime-types")) {
+  for (const std::pair<const std::string, boost::property_tree::ptree>
+           &mimeType : mimeTypesConfig.get_child("mime-types")) {
     const std::string l_ext = mimeType.second.get<std::string>("<xmlattr>.ext");
     const std::string l_value =
         mimeType.second.get<std::string>("<xmlattr>.value");
     logger->debug("HTTP_CONFIGURATION",
                   "MimeType pair found [" + l_ext + ", " + l_value + "]");
     // insert value in configuration map
-    s_extTomimtype.insert(std::pair<std::string, std::string>(l_ext, l_value));
+    s_extTomimtype.try_emplace(l_ext, l_value);
   }
   logger->debug("HTTP_CONFIGURATION",
                 "MimeType mapper loaded for " +
