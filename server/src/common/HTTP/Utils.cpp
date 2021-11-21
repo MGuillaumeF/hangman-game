@@ -63,11 +63,10 @@ void Utils::loadMimTypesConfiguration() {
   boost::property_tree::read_xml("./configuration/mime-types.xml",
                                  mimeTypesConfig);
   // for each mime-type row get extension and associated mime type value
-  for (const std::pair<const std::string, boost::property_tree::ptree>
-           &mimeType : mimeTypesConfig.get_child("mime-types")) {
-    const std::string l_ext = mimeType.second.get<std::string>("<xmlattr>.ext");
-    const std::string l_value =
-        mimeType.second.get<std::string>("<xmlattr>.value");
+  for (const auto &[_arrayKey, mimeType] :
+       mimeTypesConfig.get_child("mime-types")) {
+    const std::string l_ext = mimeType.get<std::string>("<xmlattr>.ext");
+    const std::string l_value = mimeType.get<std::string>("<xmlattr>.value");
     logger->debug("HTTP_CONFIGURATION",
                   "MimeType pair found [" + l_ext + ", " + l_value + "]");
     // insert value in configuration map
