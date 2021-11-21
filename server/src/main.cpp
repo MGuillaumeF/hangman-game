@@ -102,15 +102,17 @@ int32_t main(int argc, char *argv[]) {
     }
     if (4 == m.size()) {
       // example : "data.json(5): garbage after data"
+      const auto& [filename, Line, message] = m;
       logger->error("HTTP_CONFIGURATION",
-                    "Le fichier " + m[1].str() +
-                        " n'est pas un JSON valide, ligne " + m[2].str() +
-                        " : " + m[3].str());
+                    "Le fichier " + filename.str() +
+                        " n'est pas un JSON valide, ligne " + Line.str() +
+                        " : " +  message.str());
     } else if (3 == m.size()) {
       // example : data.json: cannot open file
+      const auto& [filename, message] = m;
       logger->error("HTTP_CONFIGURATION",
-                    "Le fichier " + m[1].str() +
-                        " n'est pas un JSON valide : " + m[2].str());
+                    "Le fichier " + filename.str() +
+                        " n'est pas un JSON valide : " + message.str());
     } else {
       logger->error("HTTP_CONFIGURATION",
                     "Erreur de parsing du fichier " + std::string(ex.what()));
