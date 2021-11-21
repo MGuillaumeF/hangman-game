@@ -1,0 +1,24 @@
+<? xml version="1.0" ?>
+<mime-types>
+    <mime-type ext=".css" value="text/css" allowed="true"/>
+    <mime-type ext=".html" value="text/html" allowed="true"/>
+    <mime-type ext=".htm" value="text/html" allowed="true"/>
+    <mime-type ext=".php" value="text/html" allowed="true"/>
+    <mime-type ext=".txt" value="text/plain" allowed="true"/>
+    <mime-type ext=".js" value="application/javascript" allowed="true"/>
+    <mime-type ext=".json" value="application/json" allowed="true"/>
+    <mime-type ext=".xml" value="application/xml" allowed="true"/>
+    <mime-type ext=".swf" value="application/x-shockwave-flash" allowed="true"/>
+    <mime-type ext=".flv" value="video/x-flv" allowed="true"/>
+    <mime-type ext=".png" value="image/png" allowed="true"/>
+    <mime-type ext=".jpe" value="image/jpeg" allowed="true"/>
+    <mime-type ext=".jpeg" value="image/jpeg" allowed="true"/>
+    <mime-type ext=".jpg" value="image/jpeg" allowed="true"/>
+    <mime-type ext=".gif" value="image/gif" allowed="true"/>
+    <mime-type ext=".bmp" value="image/bmp" allowed="true"/>
+    <mime-type ext=".ico" value="image/vnd.microsoft.icon" allowed="true"/>
+    <mime-type ext=".tiff" value="image/tiff" allowed="true"/>
+    <mime-type ext=".tif" value="image/tiff" allowed="true"/>
+    <mime-type ext=".svg" value="image/svg+xml" allowed="true"/>
+    <mime-type ext=".svgz" value="image/svg+xml" allowed="true"/>
+</mime-types>

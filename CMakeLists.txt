@@ -80,8 +80,10 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # Create application executable files
   add_executable(HangmanGame ${SRCS})
+  add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/server/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
+  
   if(WIN32)
   add_definitions("-D_WIN32_WINNT=0x0601")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})

@@ -3,18 +3,12 @@
 
 #include <boost/beast/core.hpp>
 #include <map>
-
 namespace http {
 /**
- * Utilitaries functions in static class
+ * @brief Utilitaries functions in static class
  */
 class Utils {
 public:
-  /**
-   * The default constructor of Utils class
-   */
-  Utils();
-
   /**
    * @brief Return a reasonable mime type based on the extension of a file.
    * @param path the path of request
@@ -24,17 +18,25 @@ public:
   getMimeType(const boost::beast::string_view &path);
 
   /**
-   * The default destructor of Utils class
+   * @brief Load Mim Types Configuration map
    */
-  ~Utils();
+  static void loadMimTypesConfiguration();
 
 private:
   /**
-   * Output file path
+   * @brief The default constructor of Utils class
    */
-  static const std::map<boost::beast::string_view, boost::beast::string_view>
-      s_extTomimtype;
+  Utils();
+  /**
+   * @brief The default destructor of Utils class
+   */
+  ~Utils();
+  /**
+   * @brief configuration map of mimetype where key is extension, populated at
+   * the first mime-type search
+   */
+  static std::map<std::string, std::string> s_extTomimtype;
 };
 
-} // namespace HTTP
+} // namespace http
 #endif
