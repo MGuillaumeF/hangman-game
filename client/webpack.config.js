@@ -96,10 +96,9 @@ module.exports = (env, args) => {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js"
     },
-
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js", ".scss", '.svg', '.png', '.gif', '.jpg', '.jpeg']
     },
     module: {
       rules: [
@@ -140,16 +139,39 @@ module.exports = (env, args) => {
                 ]
               }
             },
-            {
-              loader: "ts-loader"
-            }
+             {
+               loader: "ts-loader"
+             }
           ],
           exclude: [
             path.resolve(__dirname, "node_modules"),
             path.resolve(__dirname, "dist"),
             path.resolve(__dirname, "test")
           ]
-        }
+        },
+        
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          use: [
+            
+            {
+              loader: "babel-loader"
+            },
+            {
+              loader: 'file-loader',
+              options : {
+                // publicPath : 'public',
+                name: '[contenthash].[ext]'
+              }
+            },
+            {
+              loader: 'url-loader',
+              options: {
+                limit: 8192,
+              },
+            },
+          ],
+        },
       ]
     },
     plugins: [
@@ -173,7 +195,9 @@ module.exports = (env, args) => {
         ]
       }),
       new StylelintPlugin({
-        exclude: ["node_modules/**/*", "dist/**/*", "test/**/*"]
+        exclude: ["node_modules/**/*", "dist/**/*", "test/**/*"],
+        extensions : ['scss'],
+        customSyntax : 'postcss-scss'
       }),
       new PostBuildPlugin()
     ]

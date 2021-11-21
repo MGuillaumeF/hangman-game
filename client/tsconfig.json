@@ -6,7 +6,7 @@
     "module": "esnext",
     "lib": ["DOM", "ESNext"],
     "skipLibCheck": true,
-    "target": "es3",
+    "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
