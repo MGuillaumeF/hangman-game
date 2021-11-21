@@ -196,7 +196,13 @@ jobs:
     - name: Unit Tests
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: mkdir ${{github.workspace}}/server/reports; ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: mkdir ${{github.workspace}}/server/reports; ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+
+    - name: Archive Test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game Unit Test (win - temp) - Reports
+        path: ${{github.workspace}}/server/reports
 
  build-server-MacOSX:
     runs-on: macos-11
@@ -238,7 +244,7 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
-
+    
     - name: Install nodejs
       run: sudo apt install -y nodejs
       
