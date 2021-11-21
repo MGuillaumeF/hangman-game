@@ -2,7 +2,7 @@
 #define __HTTP_RESTRICTIVE_ENDPOINT_HPP__
 
 #include <iostream>
-#include <map>
+#include <set>
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -29,7 +29,7 @@ public:
    */
   RestrictiveEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      const std::map<boost::beast::http::verb, bool> &allowedMethods)
+      const std::set<boost::beast::http::verb> &allowedMethods)
       : m_request(req), m_allowedMethods(allowedMethods){};
   /**
    * @brief Method to dispatch work by HTTP method
@@ -37,7 +37,7 @@ public:
    */
   void dispatchRequest() {
     try {
-      if (m_allowedMethods.at(m_request.method())) {
+      if (m_allowedMethods.contains(m_request.method())) {
         switch (m_request.method()) {
         case boost::beast::http::verb::post:
           doPost();
@@ -112,14 +112,14 @@ public:
    * @return false - The HTTP method is not allowed
    */
   bool methodIsAllowed(const boost::beast::http::verb &method) const {
-    return m_allowedMethods.at(method);
+    return m_allowedMethods.contains(method);
   }
 
   /**
    * @brief Destroy the Http Restrictive Endpoint object
    *
    */
-  virtual ~ RestrictiveEndpoint() = default;
+  virtual ~RestrictiveEndpoint() = default;
 
 protected:
   /**
@@ -160,7 +160,7 @@ private:
    * @brief logger singleton instance
    *
    */
-   const std::unique_ptr<Logger>& m_logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &m_logger = Logger::getInstance();
 
   /**
    * @brief The HTTP Request
@@ -177,7 +177,7 @@ private:
    * @brief The Map of HTTP Allowed Method
    *
    */
-  std::map<boost::beast::http::verb, bool> m_allowedMethods;
+  std::set<boost::beast::http::verb> m_allowedMethods;
 
   /**
    * @brief DEFAULT - GET - HTTP Method not implemented for endpoind
@@ -226,5 +226,5 @@ private:
   }
 };
 
-}
+} // namespace http
 #endif // __HTTP_RESTRICTIVE_ENDPOINT_HPP__

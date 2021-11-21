@@ -16,13 +16,10 @@
  */
 HttpTokenEndpoint::HttpTokenEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req)
-    : http::RestrictiveEndpoint(req,
-                                // Only POST and DELETE methode are allowed
-                                {{boost::beast::http::verb::post, true},
-                                 {boost::beast::http::verb::get, false},
-                                 {boost::beast::http::verb::put, false},
-                                 {boost::beast::http::verb::patch, false},
-                                 {boost::beast::http::verb::delete_, true}}) {
+    : http::RestrictiveEndpoint(
+          req,
+          // Only POST and DELETE methode are allowed
+          {boost::beast::http::verb::post, boost::beast::http::verb::delete_}) {
   m_logger->setLevel(ELogLevel::LINFO);
 
   m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
@@ -88,7 +85,7 @@ void HttpTokenEndpoint::doPost() {
                     "mandatory field : " +
                         std::string(ex.what()));
     throw ParsingException("body has at least one mandatory field");
-  } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data>&) {
+  } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data> &) {
     // ERROR TYPE : EVALUETYPE, key found with bad value type
     // FIELD : [NAME, ERROR]
     throw ParsingException("body has bad value type");
