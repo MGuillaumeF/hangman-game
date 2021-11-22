@@ -1,4 +1,4 @@
-# mini-game-cpp
+# Hangman Game [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MGuillaumeF_hangman-game&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=MGuillaumeF_hangman-game)
 
 mini jeux avec API HTTP Boost/C++ et IHM Web React
 
