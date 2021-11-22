@@ -162,6 +162,13 @@ jobs:
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
 
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
  build-server-win:
     runs-on: windows-latest
     steps:
