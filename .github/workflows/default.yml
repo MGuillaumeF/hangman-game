@@ -268,3 +268,7 @@ jobs:
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: npm run cy:run
