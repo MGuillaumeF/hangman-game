@@ -269,6 +269,10 @@ jobs:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
 
+    - name: Client adjust
+      working-directory: ${{github.workspace}}/client
+      run: npm install --save-dev wait-on npm-run-all
+
     - name: Client tests
       working-directory: ${{github.workspace}}/client
-      run: npm install --save-dev wait-on; npm start & npm run cy:run
+      run: npm run test
