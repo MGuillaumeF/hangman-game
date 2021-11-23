@@ -271,4 +271,4 @@ jobs:
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
-      run: npm install --save-dev wait-on && npm run cy:run
+      run: npm install --save-dev wait-on; npm start & npm run cy:run
