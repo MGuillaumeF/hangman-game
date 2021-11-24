@@ -299,4 +299,4 @@ jobs:
         name: CPP-Coverage
 
     - name: Display structure of downloaded files
-      run: ls -R
+      run: tree .
