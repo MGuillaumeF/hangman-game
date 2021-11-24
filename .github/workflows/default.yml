@@ -157,24 +157,6 @@ jobs:
         name: CPP-Coverage
         path: ${{github.workspace}}/server/bin/coverage
 
-    - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v3
-    - name: Run SonarQube
-      if: github.actor!= 'dependabot[bot]'
-      env:
-        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-      run: sonar-scanner
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.verbose=false
-
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      # Force to fail step after specific time
-      timeout-minutes: 5
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
  build-server-win:
     runs-on: windows-latest
     steps:
@@ -306,3 +288,22 @@ jobs:
 
     - name: Display structure of downloaded files
       run: tree ${{github.workspace}}/server
+
+    - name: Setup sonarqube
+      uses: warchant/setup-sonar-scanner@v3
+
+    - name: Run SonarQube
+      if: github.actor!= 'dependabot[bot]'
+      env:
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+      run: sonar-scanner
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.verbose=false
+
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
