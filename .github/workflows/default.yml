@@ -151,6 +151,12 @@ jobs:
         name: Compilation-Database
         path: ${{github.workspace}}/server/bin/compile_commands.json
 
+    - name: Archive CPP Coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
+
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
     - name: Run SonarQube
