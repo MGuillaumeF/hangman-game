@@ -295,9 +295,9 @@ jobs:
     - name: Display structure of downloaded files
       run: tree ${{github.workspace}}/server
 
-   - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v2
       with:
-        name: IHM-Hangman-Game-Coverages
+        name: IHM-Hangman-Game-Coverage
         path: ${{github.workspace}}/client/coverage
 
     - name: Setup sonarqube
