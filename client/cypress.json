@@ -1,7 +1,7 @@
 {
   "projectId": "tdfyudugbuy11",
-  "baseUrl": "/",
-  "port": 3000,
+  "baseUrl": "http://localhost:3000/",
+  "port": 9090,
   "video": true,
   "testFiles": "**/*.specs.ts"
 }
