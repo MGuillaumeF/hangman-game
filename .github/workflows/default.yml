@@ -297,6 +297,12 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: Compilation-Database
+        path: ${{github.workspace}}/server/bin
 
     - name: Display structure of downloaded files
-      run: tree .
+      run: tree ${{github.workspace}}/server
