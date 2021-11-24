@@ -276,3 +276,7 @@ jobs:
     - name: Client tests
       working-directory: ${{github.workspace}}/client
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov; npx nyc report --reporter=text-summary
