@@ -268,3 +268,15 @@ jobs:
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
+
+    - name: Client adjust
+      working-directory: ${{github.workspace}}/client
+      run: npm install --save-dev wait-on npm-run-all @cypress/code-coverage babel-plugin-istanbul
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov; npx nyc report --reporter=text-summary
