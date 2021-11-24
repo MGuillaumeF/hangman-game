@@ -10,4 +10,3 @@ b2 toolset=clang-win
 ```
 
 [Lien vers l'analyse SonaCloud](https://sonarcloud.io/project/overview?id=MGuillaumeF_hangman-game)
- 
