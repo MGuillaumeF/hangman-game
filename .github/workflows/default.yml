@@ -271,7 +271,7 @@ jobs:
 
     - name: Client adjust
       working-directory: ${{github.workspace}}/client
-      run: npm install --save-dev wait-on npm-run-all @cypress/code-coverage
+      run: npm install --save-dev wait-on npm-run-all @cypress/code-coverage babel-plugin-istanbul
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
