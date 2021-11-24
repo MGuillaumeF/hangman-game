@@ -296,7 +296,7 @@ jobs:
     
     - uses: actions/download-artifact@v2
       with:
-      name: CPP-Coverage
+        name: CPP-Coverage
 
     - name: Display structure of downloaded files
       run: ls -R
