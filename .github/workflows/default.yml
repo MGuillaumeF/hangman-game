@@ -287,7 +287,7 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov; npx nyc report --reporter=text-summary
 
-  sonarcloud-analyse:
+ sonarcloud-analyse:
     needs: [build-server-linux, build-client]
     runs-on: ubuntu-latest
     steps:
