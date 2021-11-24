@@ -269,10 +269,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
 
-    - name: Archive IHM Coverages
+    - name: Archive IHM Coverage
       uses: actions/upload-artifact@v2
       with:
-        name: IHM-Hangman-Game-Coverages
+        name: IHM-Hangman-Game-Coverage
         path: ${{github.workspace}}/client/coverage
 
  sonarcloud-analyse:
