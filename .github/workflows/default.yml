@@ -151,23 +151,11 @@ jobs:
         name: Compilation-Database
         path: ${{github.workspace}}/server/bin/compile_commands.json
 
-    - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v3
-    - name: Run SonarQube
-      if: github.actor!= 'dependabot[bot]'
-      env:
-        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-      run: sonar-scanner
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.verbose=false
-
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      # Force to fail step after specific time
-      timeout-minutes: 5
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Archive CPP Coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
 
  build-server-win:
     runs-on: windows-latest
@@ -279,4 +267,54 @@ jobs:
 
     - name: Print summary coverage
       working-directory: ${{github.workspace}}/client
-      run: npx nyc report --reporter=lcov; npx nyc report --reporter=text-summary
+      run: npx nyc report --reporter=lcov --reporter=text-summary
+
+    - name: Archive IHM Coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Coverage
+        path: ${{github.workspace}}/client/coverage
+
+ sonarcloud-analyse:
+    needs: [build-server-linux, build-client]
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: Compilation-Database
+        path: ${{github.workspace}}/server/bin
+
+    - name: Display structure of downloaded files
+      run: tree ${{github.workspace}}/server
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Coverage
+        path: ${{github.workspace}}/client/coverage
+
+    - name: Setup sonarqube
+      uses: warchant/setup-sonar-scanner@v3
+
+    - name: Run SonarQube
+      if: github.actor!= 'dependabot[bot]'
+      env:
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+      run: sonar-scanner
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.verbose=false
+
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
