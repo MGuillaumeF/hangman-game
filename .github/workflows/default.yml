@@ -80,7 +80,7 @@ jobs:
 
     - name: gcov after unit tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov;
 
    # - name: Generate Unit Tests HTML report
     #  working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
@@ -88,7 +88,7 @@ jobs:
 
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov;
 
     - name: Merge Coverage
       run: cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/coverage; gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
