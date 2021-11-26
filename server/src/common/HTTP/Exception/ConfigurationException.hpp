@@ -17,7 +17,7 @@ public:
   /** Constructor
    *  @param message The error message.
    */
-  explicit ConfigurationException(std::string_view message)
+  explicit ConfigurationException(const std::string_view& message)
       : m_message(message) {}
 
 private:
