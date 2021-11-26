@@ -265,6 +265,12 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
 
+    - name: Archive IHM Tests videos 
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Tests-Videos 
+        path: ${{github.workspace}}/client/cypress/videos
+
     - name: Print summary coverage
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
