@@ -21,3 +21,5 @@ import "./commands";
 
 // coverage support
 import '@cypress/code-coverage/support'
+
+import 'cypress-movie/commands'

@@ -3,5 +3,17 @@
   "baseUrl": "http://localhost:3000/",
   "port": 9090,
   "video": true,
-  "testFiles": "**/*.specs.ts"
+  "testFiles": "**/*.specs.ts",
+  "nodeVersion": "system",
+  "env": {
+    "cypress-movie": {
+      "enabled": true,
+      "cursorTracking": {
+        "enabled": false,
+        "shape": "arrow"
+      },
+      "width": 1920,
+      "height": 640
+    }
+  }
 }
