@@ -247,9 +247,13 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
-    - name: ESlint analyze
+    - name: ESlint analyze json
       working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json;npm run lint:eslint
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
 
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
