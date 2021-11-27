@@ -11,7 +11,7 @@ env:
 permissions: write-all
 
 jobs:
- build-server-linux:
+ clang-tidy-analyze:
     runs-on: ubuntu-latest
     steps:
 
