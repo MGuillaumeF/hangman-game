@@ -1,10 +1,8 @@
-
 #include "Session.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 #include "Exception/ParsingException.hpp"
 
 const uint8_t MAXIMUM_STREAM_TIME = 30;
-
 
 namespace http {
 

@@ -2,10 +2,10 @@ name: HANGMAN-GAME - CLANG-TIDY
 
 on:
   pull_request:
-    branches: [ disabled ]
+    branches: [ main ]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
   BOOST_VERSION: 77
 
 permissions: write-all
@@ -17,49 +17,26 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: Install make
-      run: sudo apt-get install -y build-essential
-
-    - name: Install llvm 
-      run: sudo apt-get install -y llvm
-
-    - name: Download Boost
-      uses: wei/wget@v1
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.0.0
+      id: install-boost
       with:
-        args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
-
-    - name: Unzip Boost
-      run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
-
-    - name: Bootstrap Boost
-      run: |
-        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0;
-        sudo ./bootstrap.sh; \
-        sudo ./b2 install;   \
-        sudo ./b2 install --prefix= ${{github.workspace}}/server; \
-        sudo ./b2 install --prefix= ${{github.workspace}}; 
+        boost_version: 1.${{env.BOOST_VERSION}}.0
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=ON -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
-
-    - name: Tree Server
-      run: tree ${{github.workspace}}/server/bin;
-
-    - name: Bootstrap Boost bis
-      run: |
-        cd ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0;
-        sudo ./b2 install --prefix= ${{github.workspace}}/server/bin; 
 
     - name: Run clang-tidy
       uses: ZedThree/clang-tidy-review@v0.6.1
       id: review
       with:
         build_dir: server/bin
-        exclude: boost
  
