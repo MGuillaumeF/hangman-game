@@ -5,7 +5,7 @@ sleep 15
 echo "Integration tests START"
 
 ./HangmanGameITTest
-sleep 15
+sleep 20
 
 echo "Soft stop emitted"
 pkill -15 HangmanGame
