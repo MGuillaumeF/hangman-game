@@ -42,6 +42,18 @@ jobs:
     #     sudo ./bootstrap.sh; \
     #     sudo ./b2 install
 
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports; 
+
+    - name: Analyze CPPCheck
+      uses: deep5050/cppcheck-action@main
+      with:
+        github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+        force_language: c++
+        std: c++20
+        output_file: ${{github.workspace}}/server/reports/cppcheck_report.xml
+        other_options: --xml
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -67,7 +79,7 @@ jobs:
 
     - name: Unit Tests Graph
       working-directory: ${{github.workspace}}/server/bin
-      run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+      run: ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
    
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
