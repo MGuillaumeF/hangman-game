@@ -8,10 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Analyze CPPCheck
+        working-directory: ${{github.workspace}}
         uses: deep5050/cppcheck-action@main
         with:
           github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-          entryPoint: server/src
+          entryPoint: ./server/src
           force_language: c++
           std: c++20
           output_file: ${{github.workspace}}/server/cppcheck_report.txt
