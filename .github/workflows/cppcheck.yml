@@ -3,11 +3,11 @@ on: [push]
 
 jobs:
   build:
-    name: cppcheck
+    name: Analyze CPPCheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: cppcheck
+      - name: Analyze CPPCheck
         uses: deep5050/cppcheck-action@main
         with:
           github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
@@ -19,11 +19,5 @@ jobs:
       - name: Archive CPPCheck report
         uses: actions/upload-artifact@v2
         with:
-          name: IHM-Hangman-Game-Coverage
+          name: Server-Hangman-Game-CPPCheck
           path: ${{github.workspace}}/server/cppcheck_report.txt
-
-      - name: publish report    
-        uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-          BRANCH_NAME: 'main'
