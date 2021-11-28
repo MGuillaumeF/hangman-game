@@ -12,6 +12,9 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add name on project 
 project(HangmanGame)
 
+# activate test on project
+enable_testing()
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   # using Clang
   MESSAGE("Compiler used is Clang")
@@ -82,6 +85,7 @@ if (Boost_FOUND)
   add_executable(HangmanGame ${SRCS})
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/server/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
+  add_test(HangmanGameUnitTests HangmanGameTest) 
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
   
   if(WIN32)
