@@ -13,10 +13,8 @@ jobs:
           github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
           force_language: c++
           std: c++20
-          output_file: ${{github.workspace}}/server/cppcheck_report.txt
-          args:
-            filter_file: server/**/*
-            xml: true
+          output_file: ${{github.workspace}}/server/cppcheck_report.xml
+          args: --filter_file=server/**/* --xml
 
       - name: Archive CPPCheck report
         uses: actions/upload-artifact@v2
