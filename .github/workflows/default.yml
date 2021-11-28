@@ -65,8 +65,9 @@ jobs:
         name: Server-Hangman-Game-Linux
         path: ${{github.workspace}}/server/bin/HangmanGame
 
-    # - name: lcov init
-    #   run: lcov --no-external --capture --initial --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/base.info
+    - name: Unit Tests ctest
+      working-directory: ${{github.workspace}}/server/bin
+      run: ctest
 
     - name: Unit Tests
       working-directory: ${{github.workspace}}/server/bin
