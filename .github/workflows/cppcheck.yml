@@ -20,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Server-Hangman-Game-CPPCheck
-          path: ${{github.workspace}}/server/cppcheck_report.txt
+          path: ${{github.workspace}}/server/cppcheck_report.xml
