@@ -59,7 +59,7 @@ private:
    * @return std::string  The returned path is normalized for the platform.
    */
   static std::string pathCat(const boost::beast::string_view &base,
-                      const boost::beast::string_view &path) const;
+                      const boost::beast::string_view &path);
 };
 
 #endif // __HTTP_LOCATION_ENDPOINT_HPP__
