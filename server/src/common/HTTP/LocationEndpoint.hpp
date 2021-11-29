@@ -58,7 +58,7 @@ private:
    * @param path The end of path to merge
    * @return std::string  The returned path is normalized for the platform.
    */
-  std::string pathCat(const boost::beast::string_view &base,
+  static std::string pathCat(const boost::beast::string_view &base,
                       const boost::beast::string_view &path) const;
 };
 
