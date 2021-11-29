@@ -12,12 +12,13 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit ConfigurationException(const char * const message) : m_message(message) {}
+  explicit ConfigurationException(const char *const message)
+      : m_message(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
-  explicit ConfigurationException(const std::string &message)
+  explicit ConfigurationException(const std::string_view &message)
       : m_message(message) {}
 
 private:

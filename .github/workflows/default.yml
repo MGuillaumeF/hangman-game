@@ -42,6 +42,18 @@ jobs:
     #     sudo ./bootstrap.sh; \
     #     sudo ./b2 install
 
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports; 
+
+    - name: Analyze CPPCheck
+      uses: deep5050/cppcheck-action@main
+      with:
+        github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+        force_language: c++
+        std: c++20
+        output_file: ${{github.workspace}}/server/reports/cppcheck_report.xml
+        other_options: --xml
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -65,14 +77,13 @@ jobs:
         name: Server-Hangman-Game-Linux
         path: ${{github.workspace}}/server/bin/HangmanGame
 
-    # - name: lcov init
-    #   run: lcov --no-external --capture --initial --directory ${{github.workspace}}/server --output-file ${{github.workspace}}/.lcov/server/base.info
-
-    - name: Unit Tests
+    - name: Unit Tests Graph
       working-directory: ${{github.workspace}}/server/bin
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg; ./HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+   
+    - name: Unit Tests ctest
+      working-directory: ${{github.workspace}}/server/bin
+      run: ctest
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
@@ -80,15 +91,15 @@ jobs:
 
     - name: gcov after unit tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov;
 
-    - name: Generate Unit Tests HTML report
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
-      run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+   # - name: Generate Unit Tests HTML report
+    #  working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
+   #   run: gcovr --root ${{github.workspace}}/server/src --use-gcov-files --keep --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
 
     - name: gcov after integration tests
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src
-      run: find -name '*.gcno' | xargs gcov; find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov;
 
     - name: Merge Coverage
       run: cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/coverage; gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/server/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/server/src
@@ -151,16 +162,11 @@ jobs:
         name: Compilation-Database
         path: ${{github.workspace}}/server/bin/compile_commands.json
 
-    - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v3
-    - name: Run SonarQube
-      if: github.actor!= 'dependabot[bot]'
-      env:
-        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-      run: sonar-scanner
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.verbose=false
+    - name: Archive CPP Coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
 
  build-server-win:
     runs-on: windows-latest
@@ -254,6 +260,24 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
@@ -263,3 +287,76 @@ jobs:
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
+
+    - name: Client adjust
+      working-directory: ${{github.workspace}}/client
+      run: npm install --save-dev wait-on npm-run-all @cypress/code-coverage babel-plugin-istanbul cypress-movie
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
+    - name: Archive IHM Tests videos 
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Tests-Videos 
+        path: ${{github.workspace}}/client/cypress/videos
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov --reporter=text-summary
+
+    - name: Archive IHM Coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Coverage
+        path: ${{github.workspace}}/client/coverage
+
+ sonarcloud-analyse:
+    needs: [build-server-linux, build-client]
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: CPP-Coverage
+        path: ${{github.workspace}}/server/bin/coverage
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: Compilation-Database
+        path: ${{github.workspace}}/server/bin
+
+    - name: Display structure of downloaded files
+      run: tree ${{github.workspace}}/server
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Coverage
+        path: ${{github.workspace}}/client/coverage
+
+    - name: Setup sonarqube
+      uses: warchant/setup-sonar-scanner@v3
+
+    - name: Run SonarQube
+      if: github.actor!= 'dependabot[bot]'
+      env:
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+      run: sonar-scanner
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.verbose=false
+
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

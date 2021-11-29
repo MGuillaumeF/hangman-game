@@ -102,17 +102,24 @@ int32_t main(int argc, char *argv[]) {
       re = std::regex("(.+): (.*)");
       std::regex_search(errorStr, m, re);
     }
-    if (4 == m.size()) {
+    const uint8_t jsonStructErrorSize = 4;
+    const uint8_t accessFileErrorSize = 3;
+    if (jsonStructErrorSize == m.size()) {
       // example : "data.json(5): garbage after data"
+      const uint8_t filenameIndex = 1;
+      const uint8_t lineIndex = 2;
+      const uint8_t messageIndex = 3;
       logger->error("HTTP_CONFIGURATION",
-                    "Le fichier " + m[1].str() +
-                        " n'est pas un JSON valide, ligne " + m[2].str() +
-                        " : " + m[3].str());
-    } else if (3 == m.size()) {
+                    "Le fichier " + m[filenameIndex].str() +
+                        " n'est pas un JSON valide, ligne " +
+                        m[lineIndex].str() + " : " + m[messageIndex].str());
+    } else if (accessFileErrorSize == m.size()) {
       // example : data.json: cannot open file
+      const uint8_t filenameIndex = 1;
+      const uint8_t messageIndex = 2;
       logger->error("HTTP_CONFIGURATION",
-                    "Le fichier " + m[1].str() +
-                        " n'est pas un JSON valide : " + m[2].str());
+                    "Le fichier " + m[filenameIndex].str() +
+                        " n'est pas un JSON valide : " + m[messageIndex].str());
     } else {
       logger->error("HTTP_CONFIGURATION",
                     "Erreur de parsing du fichier " + std::string(ex.what()));

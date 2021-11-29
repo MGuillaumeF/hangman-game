@@ -1,8 +1,9 @@
-
 #include "Session.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 #include "Exception/ParsingException.hpp"
 #include "LocationEndpoint.hpp"
+
+const uint8_t MAXIMUM_STREAM_TIME = 30;
 
 namespace http {
 
@@ -113,7 +114,7 @@ void Session::doRead() {
   m_req = {};
 
   // Set the timeout.
-  m_stream.expires_after(std::chrono::seconds(30));
+  m_stream.expires_after(std::chrono::seconds(MAXIMUM_STREAM_TIME));
 
   // Read a request
   boost::beast::http::async_read(
