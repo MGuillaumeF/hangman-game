@@ -34,6 +34,8 @@ void Session::handleRequest(
   logger->info("HTTP_DATA_READ",
                "request received on target " + req.target().to_string());
 
+  bool responseDefined = false;
+
   // Returns a bad request response
   auto const bad_request = [&req](const boost::beast::string_view &why) {
     boost::beast::http::response<boost::beast::http::string_body> res{
@@ -77,17 +79,22 @@ void Session::handleRequest(
       tokenEndpoint.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
           tokenEndpoint.getResponse();
-      return send(std::move(response));
+      send(std::move(response));
+      responseDefined = true;
     }
 
   } catch (const ParsingException &ex) {
     logger->error("HTTP_DATA_READ",
                   "handleRequest - parsing error : " + std::string(ex.what()));
 
-    return send(bad_request("parsing error"));
+    send(bad_request("parsing error"));
+    responseDefined = true;
   }
-
-  return send(std::move(LocationEndpoint(req, ".").getResponse()));
+  if (!responseDefined) {
+    LocationEndpoint rootDirectoryEndpoint(req, ".");
+    rootDirectoryEndpoint.dispatchRequest();
+    send(std::move(rootDirectoryEndpoint.getResponse()));
+  }
 }
 
 /**

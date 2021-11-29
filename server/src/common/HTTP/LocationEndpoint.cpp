@@ -18,10 +18,11 @@
 LocationEndpoint::LocationEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const std::string &rootDirectory)
-    : http::RestrictiveEndpoint(
-          req,
-          // Only POST and DELETE methode are allowed
-          {boost::beast::http::verb::post, boost::beast::http::verb::delete_}) {
+    : http::RestrictiveEndpoint(req,
+                                // Only POST and DELETE methode are allowed
+                                {boost::beast::http::verb::get,
+                                 boost::beast::http::verb::post,
+                                 boost::beast::http::verb::delete_}) {
   m_rootDirectory = rootDirectory;
 }
 
@@ -145,6 +146,7 @@ void LocationEndpoint::doGet() {
       res.keep_alive(request.keep_alive());
       char *buffer = new char[size];
       body.file().read(buffer, size, ec);
+
       std::string fileContent(buffer);
       delete[] buffer;
       res.body() = fileContent;
