@@ -1,6 +1,7 @@
 #include "LocationEndpoint.hpp"
 
 #include <iostream>
+#include <vector>
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -144,11 +145,10 @@ void LocationEndpoint::doGet() {
               http::Utils::getMimeType(path));
       res.content_length(size);
       res.keep_alive(request.keep_alive());
-      char * const buffer = new char[size];
-      body.file().read(buffer, size, ec);
-
-      const std::string fileContent(buffer);
-      delete[] buffer;
+      std::vector<char> buffer;
+      buffer.resize(size);
+      body.file().read(&buffer[0], size, ec);
+      const std::string fileContent(buffer.begin(), buffer.end());
       res.body() = fileContent;
       res.prepare_payload();
       setResponse(res);
