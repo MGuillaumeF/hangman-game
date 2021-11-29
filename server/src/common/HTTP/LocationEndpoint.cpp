@@ -144,10 +144,10 @@ void LocationEndpoint::doGet() {
               http::Utils::getMimeType(path));
       res.content_length(size);
       res.keep_alive(request.keep_alive());
-      char *buffer = new char[size];
+      char * const buffer = new char[size];
       body.file().read(buffer, size, ec);
 
-      std::string fileContent(buffer);
+      const std::string fileContent(buffer);
       delete[] buffer;
       res.body() = fileContent;
       res.prepare_payload();
