@@ -72,16 +72,7 @@ class Session : public std::enable_shared_from_this<Session> {
   send_lambda m_lambda;
 
   std::map<std::string, requestHandler_t, std::less<>> m_requestDispatcher;
-
-  /**
-   * @brief Append an HTTP rel-path to a local filesystem path.
-   *
-   * @param base The base of path to merge
-   * @param path The end of path to merge
-   * @return std::string  The returned path is normalized for the platform.
-   */
-  std::string pathCat(const boost::beast::string_view &base,
-                      const boost::beast::string_view &path) const;
+  std::map<std::string, std::string, std::less<>> m_locationDispatcher;
 
   template <class Body, class Allocator, class Send>
   /**
@@ -151,7 +142,16 @@ public:
    */
   void addRequestDispatcher(const std::string &target,
                             const requestHandler_t &handler);
+
+  /**
+   * @brief methode to add route location for prefix uri
+   *
+   * @param target The prefix of uri to dispatch requests
+   * @param rootDirectory The root directory linked with url
+   */
+  void addLocationDispatcher(const std::string &target,
+                             const std::string &rootDirectory);
 };
 
-} // namespace HTTP
+} // namespace http
 #endif

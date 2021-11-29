@@ -2,41 +2,9 @@
 #include "Session.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 #include "Exception/ParsingException.hpp"
+#include "LocationEndpoint.hpp"
 
 namespace http {
-
-/**
- * @brief Append an HTTP rel-path to a local filesystem path.
- *
- * @param base The base of path to merge
- * @param path The end of path to merge
- * @return std::string  The returned path is normalized for the platform.
- */
-std::string Session::pathCat(const boost::beast::string_view &base,
-                             const boost::beast::string_view &path) const {
-  std::string result(path);
-  if (!base.empty()) {
-    result = std::string(base);
-#ifdef BOOST_MSVC
-    char constexpr path_separator = '\\';
-    if (result.back() == path_separator) {
-      result.resize(result.size() - 1);
-    }
-    result.append(path.data(), path.size());
-    for (auto &c : result) {
-      if (c == '/') {
-        c = path_separator;
-      }
-    }
-#else
-    if (char constexpr path_separator = '/'; result.back() == path_separator) {
-      result.resize(result.size() - 1);
-    }
-    result.append(path.data(), path.size());
-#endif
-  }
-  return result;
-}
 
 /** This function produces an HTTP response for the given
  * request. The type of the response object depends on the
@@ -117,64 +85,8 @@ void Session::handleRequest(
 
     return send(bad_request("parsing error"));
   }
-  // Make sure we can handle the method
-  if (req.method() != boost::beast::http::verb::get &&
-      req.method() != boost::beast::http::verb::head)
-    return send(bad_request("Unknown HTTP-method"));
 
-  // Request path must be absolute and not contain "..".
-  if (req.target().empty() || '/' != req.target()[0] ||
-      req.target().find("..") != boost::beast::string_view::npos)
-    return send(bad_request("Illegal request-target"));
-
-  // Build the path to the requested file
-  std::string path = pathCat(doc_root, req.target());
-  if ('/' == req.target().back())
-    path.append("index.html");
-
-  // Attempt to open the file
-  boost::beast::error_code ec;
-  boost::beast::http::file_body::value_type body;
-  body.open(path.c_str(), boost::beast::file_mode::scan, ec);
-
-  // Handle the case where the file doesn't exist
-  if (ec == boost::beast::errc::no_such_file_or_directory)
-    return send(not_found(req.target()));
-
-  // Handle an unknown error
-  if (ec)
-    return send(server_error(ec.message()));
-
-  // Cache the size since we need it after the move
-  auto const size = body.size();
-
-  // Respond to HEAD request
-  if (req.method() == boost::beast::http::verb::head) {
-    boost::beast::http::response<boost::beast::http::empty_body> res{
-        boost::beast::http::status::ok, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
-    res.content_length(size);
-    res.keep_alive(req.keep_alive());
-    return send(std::move(res));
-  }
-
-  // Respond to GET request
-  boost::beast::http::response<boost::beast::http::file_body> res{
-      std::piecewise_construct, std::make_tuple(std::move(body)),
-      std::make_tuple(boost::beast::http::status::ok, req.version())};
-  res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
-  res.content_length(size);
-  res.keep_alive(req.keep_alive());
-  const std::string accessLog =
-      "[" + std::to_string(res.result_int()) + "] " + req.target().to_string();
-  if (boost::beast::http::to_status_class(res.result_int()) < boost::beast::http::status_class::client_error) {
-    logger->info("HTTP_ACCESS", accessLog);
-  } else {
-    logger->error("HTTP_ACCESS", accessLog);
-  }
-  return send(std::move(res));
+  return send(std::move(LocationEndpoint(req, ".").getResponse()));
 }
 
 /**
@@ -281,4 +193,15 @@ void Session::addRequestDispatcher(const std::string &target,
   m_requestDispatcher.try_emplace(target, handler);
 }
 
-} // namespace HTTP
+/**
+ * @brief methode to add route location for prefix uri
+ *
+ * @param target The prefix of uri to dispatch requests
+ * @param rootDirectory The root directory linked with url
+ */
+void Session::addLocationDispatcher(const std::string &target,
+                                    const std::string &rootDirectory) {
+  m_locationDispatcher.try_emplace(target, rootDirectory);
+}
+
+} // namespace http

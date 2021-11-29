@@ -16,14 +16,10 @@
  */
 HttpTokenEndpoint::HttpTokenEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req)
-    : http::RestrictiveEndpoint(
-          req,
-          // Only POST and DELETE methode are allowed
-          {boost::beast::http::verb::post, boost::beast::http::verb::delete_}) {
-  m_logger->setLevel(ELogLevel::LINFO);
-
-  m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - constructor");
-}
+    : http::RestrictiveEndpoint(req,
+                                // Only POST and DELETE methode are allowed
+                                {boost::beast::http::verb::post,
+                                 boost::beast::http::verb::delete_}) {}
 
 /**
  * @brief Methode to overwrite POST methode
@@ -33,7 +29,6 @@ void HttpTokenEndpoint::doPost() {
   // get HTTP request
   const boost::beast::http::request<boost::beast::http::string_body> request =
       this->getRequest();
-  m_logger->debug("HTTP_DATA_READ", "HttpTokenEndpoint - doPost - start");
 
   std::stringstream l_stream(request.body());
   boost::property_tree::ptree requestBodyTree;

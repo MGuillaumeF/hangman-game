@@ -74,6 +74,8 @@ int32_t main(int argc, char *argv[]) {
   logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
 
+  logger->setLevel(ELogLevel::LDEBUG);
+
   boost::property_tree::ptree pt;
   try {
 
