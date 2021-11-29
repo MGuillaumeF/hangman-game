@@ -35,7 +35,7 @@ LocationEndpoint::LocationEndpoint(
  */
 std::string
 LocationEndpoint::pathCat(const boost::beast::string_view &base,
-                          const boost::beast::string_view &path) const {
+                          const boost::beast::string_view &path) {
   std::string result(path);
   if (!base.empty()) {
     result = std::string(base);
