@@ -189,7 +189,7 @@ int32_t main(int argc, char *argv[]) {
     }
 
     // ********************************** file path test
-    requestProperties.target = "/bin/configuration/mime-types.xml";
+    requestProperties.target = "/configuration/mime-types.xml";
     requestProperties.headers = {};
 
     requestProperties.methode = boost::beast::http::verb::get;
