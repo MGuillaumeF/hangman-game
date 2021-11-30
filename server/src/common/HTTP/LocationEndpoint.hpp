@@ -14,7 +14,7 @@ public:
    */
   explicit LocationEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      const std::string &rootDirectory);
+      const std::string_view &rootDirectory);
   /**
    * @brief Methode to read file with GET methode
    *

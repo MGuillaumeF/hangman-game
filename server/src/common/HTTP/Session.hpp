@@ -94,7 +94,7 @@ public:
    *
    * @param socket Take ownership of the socket's stream
    */
-  Session(boost::asio::ip::tcp::socket &&socket)
+  explicit Session(boost::asio::ip::tcp::socket &&socket)
       : m_stream(std::move(socket)), m_lambda(*this) {}
 
   /**
