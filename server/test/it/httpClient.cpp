@@ -238,7 +238,7 @@ int32_t main(int argc, char *argv[]) {
       std::cerr << "9 : [failed]" << std::endl;
       nbFailed++;
     }
-    } catch(const std::exception& ec) {
+    } catch(const std::exception& ex) {
       std::cerr << "Get file test has error " << ex.what() << std::endl;
     }
 
