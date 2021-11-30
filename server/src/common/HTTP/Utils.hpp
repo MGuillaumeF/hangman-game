@@ -2,8 +2,10 @@
 #define __HTTP_UTILS_HPP__
 
 #include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
 #include <functional>
 #include <map>
+#include <string>
 namespace http {
 /**
  * @brief Utilitaries functions in static class
@@ -22,6 +24,59 @@ public:
    * @brief Load Mim Types Configuration map
    */
   static void loadMimTypesConfiguration();
+
+  /**
+   * @brief static method of default bad_request response
+   *
+   * @param req The request of client
+   * @param why The reason of bad request
+   * @return boost::beast::http::response<boost::beast::http::string_body> The
+   * body response
+   */
+  static boost::beast::http::response<boost::beast::http::string_body>
+  bad_request(
+      const boost::beast::http::request<boost::beast::http::string_body> &req,
+      const boost::beast::string_view &why);
+
+  /**
+   * @brief static method of default not_found response
+   *
+   * @param req The request of client
+   * @param target The target not found
+   * @return boost::beast::http::response<boost::beast::http::string_body> The
+   * body response
+   */
+  static boost::beast::http::response<boost::beast::http::string_body>
+  not_found(
+      const boost::beast::http::request<boost::beast::http::string_body> &req,
+      const boost::beast::string_view &target);
+
+  /**
+   * @brief static method of default server_error response
+   *
+   * @param req The request of client
+   * @param what The server error message
+   * @return boost::beast::http::response<boost::beast::http::string_body> The
+   * body response
+   */
+  static boost::beast::http::response<boost::beast::http::string_body>
+  server_error(
+      const boost::beast::http::request<boost::beast::http::string_body> &req,
+      const boost::beast::string_view &what);
+
+  /**
+   * @brief The response writer wrapper
+   *
+   * @param req The request of client
+   * @param body The body of response
+   * @return boost::beast::http::response<boost::beast::http::string_body>
+   */
+  static boost::beast::http::response<boost::beast::http::string_body>
+  wrapper_response(
+      const boost::beast::http::request<boost::beast::http::string_body> &req,
+      const boost::beast::http::status &status,
+      const boost::beast::string_view &body,
+      const std::string_view &contentType = "text/html");
 
 private:
   /**

@@ -24,7 +24,6 @@ template <class Body, class Allocator, class Send>
  * @param send The Sender to emit HTTP response
  */
 void Session::handleRequest(
-    const boost::beast::string_view &doc_root,
     const boost::beast::http::request<
         Body, boost::beast::http::basic_fields<Allocator>> &req,
     Send &&send) {
@@ -35,42 +34,6 @@ void Session::handleRequest(
                "request received on target " + req.target().to_string());
 
   bool responseDefined = false;
-
-  // Returns a bad request response
-  auto const bad_request = [&req](const boost::beast::string_view &why) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::bad_request, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = std::string(why);
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a not found response
-  auto const not_found = [&req](const boost::beast::string_view &target) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::not_found, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = "The resource '" + std::string(target) + "' was not found.";
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a server error response
-  auto const server_error = [&req](const boost::beast::string_view &what) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::internal_server_error, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = "An error occurred: '" + std::string(what) + "'";
-    res.prepare_payload();
-    return res;
-  };
 
   try {
     if (0 == req.target().compare("/api/token")) {
@@ -87,7 +50,7 @@ void Session::handleRequest(
     logger->error("HTTP_DATA_READ",
                   "handleRequest - parsing error : " + std::string(ex.what()));
 
-    send(bad_request("parsing error"));
+    send(Utils::bad_request(req, "parsing error"));
     responseDefined = true;
   }
   if (!responseDefined) {
@@ -147,7 +110,7 @@ void Session::onRead(const boost::beast::error_code &ec,
                                  " On read request error : " + ec.message());
   } else {
     // Send the response
-    handleRequest(*m_doc_root, m_req, m_lambda);
+    handleRequest(m_req, m_lambda);
   }
 }
 

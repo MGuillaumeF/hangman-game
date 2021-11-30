@@ -66,7 +66,6 @@ class Session : public std::enable_shared_from_this<Session> {
 
   boost::beast::tcp_stream m_stream;
   boost::beast::flat_buffer m_buffer;
-  std::shared_ptr<std::string const> m_doc_root;
   boost::beast::http::request<boost::beast::http::string_body> m_req;
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
@@ -81,13 +80,11 @@ class Session : public std::enable_shared_from_this<Session> {
    * contents of the request, so the interface requires the
    * caller to pass a generic lambda for receiving the response.
    *
-   * @param doc_root The path of static files of file server
    * @param req The HTTP request
    * @param send The Sender to emit HTTP response
    */
   void
-  handleRequest(const boost::beast::string_view &doc_root,
-                const boost::beast::http::request<
+  handleRequest(const boost::beast::http::request<
                     Body, boost::beast::http::basic_fields<Allocator>> &req,
                 Send &&send);
 
@@ -96,11 +93,9 @@ public:
    * @brief Construct a new Http Session object
    *
    * @param socket Take ownership of the socket's stream
-   * @param doc_root The path of static files
    */
-  Session(boost::asio::ip::tcp::socket &&socket,
-          std::shared_ptr<std::string const> const &doc_root)
-      : m_stream(std::move(socket)), m_doc_root(doc_root), m_lambda(*this) {}
+  Session(boost::asio::ip::tcp::socket &&socket)
+      : m_stream(std::move(socket)), m_lambda(*this) {}
 
   /**
    * @brief Start the asynchronous operation

@@ -12,7 +12,6 @@ namespace http {
 class Listener : public std::enable_shared_from_this<Listener> {
   boost::asio::io_context &m_ioc;
   boost::asio::ip::tcp::acceptor m_acceptor;
-  std::shared_ptr<std::string const> m_doc_root;
 
 public:
   /**
@@ -23,8 +22,7 @@ public:
    * @param doc_root The root path of file server
    */
   Listener(boost::asio::io_context &ioc,
-           const boost::asio::ip::tcp::endpoint &endpoint,
-           std::shared_ptr<std::string const> const &doc_root);
+           const boost::asio::ip::tcp::endpoint &endpoint);
 
   /**
    * Start accepting incoming connections
@@ -46,5 +44,5 @@ private:
   void onAccept(const boost::beast::error_code &ec,
                 boost::asio::ip::tcp::socket socket);
 };
-} // namespace HTTP
+} // namespace http
 #endif

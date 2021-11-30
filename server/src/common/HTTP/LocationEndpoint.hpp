@@ -22,18 +22,6 @@ public:
   void doGet() override;
 
   /**
-   * @brief Methode to upload file with POST methode
-   *
-   */
-  void doPost() override;
-
-  /**
-   * @brief Methode to replace file with PUT methode
-   *
-   */
-  void doPut() override;
-
-  /**
    * @brief Methode to delete file with DELETE methode
    *
    */
@@ -59,7 +47,7 @@ private:
    * @return std::string  The returned path is normalized for the platform.
    */
   static std::string pathCat(const boost::beast::string_view &base,
-                      const boost::beast::string_view &path);
+                             const boost::beast::string_view &path);
 };
 
 #endif // __HTTP_LOCATION_ENDPOINT_HPP__

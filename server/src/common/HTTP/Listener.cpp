@@ -13,13 +13,11 @@ namespace http {
  * @param doc_root The root path of file server
  */
 Listener::Listener(boost::asio::io_context &ioc,
-                   const boost::asio::ip::tcp::endpoint &endpoint,
-                   std::shared_ptr<std::string const> const &doc_root)
-    : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)),
-      m_doc_root(doc_root) {
+                   const boost::asio::ip::tcp::endpoint &endpoint)
+    : m_ioc(ioc), m_acceptor(boost::asio::make_strand(ioc)) {
   // get logger
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
-  // set error code variable to stock possibles errors 
+  // set error code variable to stock possibles errors
   boost::beast::error_code ec;
 
   // Open the acceptor
@@ -80,10 +78,10 @@ void Listener::onAccept(const boost::beast::error_code &ec,
     logger->error("HTTP_CONFIGURATION", "onAccept error " + ec.message());
   } else {
     // Create the session and run it
-    std::make_shared<http::Session>(std::move(socket), m_doc_root)->run();
+    std::make_shared<http::Session>(std::move(socket))->run();
   }
 
   // Accept another connection
   doAccept();
 }
-} // namespace HTTP
+} // namespace http

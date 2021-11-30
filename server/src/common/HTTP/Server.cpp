@@ -14,16 +14,15 @@ namespace http {
  * @param threads The number of thread of server
  */
 Server::Server(const std::string &address, const uint16_t port,
-               const std::string &doc_root, const uint8_t threads) {
+               const uint8_t threads) {
   auto const l_address = boost::asio::ip::make_address(address);
-  auto const l_doc_root = std::make_shared<std::string>(doc_root);
 
   // The io_context is required for all I/O
   boost::asio::io_context ioc{threads};
 
   // Create and launch a listening port
-  std::make_shared<Listener>(
-      ioc, boost::asio::ip::tcp::endpoint{l_address, port}, l_doc_root)
+  std::make_shared<Listener>(ioc,
+                             boost::asio::ip::tcp::endpoint{l_address, port})
       ->run();
 
   // Run the I/O service on the requested number of threads

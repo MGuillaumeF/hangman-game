@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/filesystem.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -19,11 +20,10 @@
 LocationEndpoint::LocationEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const std::string &rootDirectory)
-    : http::RestrictiveEndpoint(req,
-                                // Only POST and DELETE methode are allowed
-                                {boost::beast::http::verb::get,
-                                 boost::beast::http::verb::post,
-                                 boost::beast::http::verb::delete_}) {
+    : http::RestrictiveEndpoint(
+          req,
+          // Only POST and DELETE methode are allowed
+          {boost::beast::http::verb::get, boost::beast::http::verb::delete_}) {
   m_rootDirectory = rootDirectory;
 }
 
@@ -34,9 +34,8 @@ LocationEndpoint::LocationEndpoint(
  * @param path The end of path to merge
  * @return std::string  The returned path is normalized for the platform.
  */
-std::string
-LocationEndpoint::pathCat(const boost::beast::string_view &base,
-                          const boost::beast::string_view &path) {
+std::string LocationEndpoint::pathCat(const boost::beast::string_view &base,
+                                      const boost::beast::string_view &path) {
   std::string result(path);
   if (!base.empty()) {
     result = std::string(base);
@@ -71,47 +70,11 @@ void LocationEndpoint::doGet() {
   const boost::beast::http::request<boost::beast::http::string_body> request =
       this->getRequest();
 
-  // Returns a bad request response
-  auto const bad_request = [&request](const boost::beast::string_view &why) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::bad_request, request.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(request.keep_alive());
-    res.body() = std::string(why);
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a not found response
-  auto const not_found = [&request](const boost::beast::string_view &target) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::not_found, request.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(request.keep_alive());
-    res.body() = "The resource '" + std::string(target) + "' was not found.";
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a server error response
-  auto const server_error = [&request](const boost::beast::string_view &what) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::internal_server_error, request.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(request.keep_alive());
-    res.body() = "An error occurred: '" + std::string(what) + "'";
-    res.prepare_payload();
-    return res;
-  };
-
   // Request path must be absolute and not contain "..".
   if (request.target().empty() || '/' != request.target()[0] ||
       request.target().find("..") != boost::beast::string_view::npos) {
 
-    setResponse(bad_request("Illegal request-target"));
+    setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
     // Build the path to the requested file
     std::string path = pathCat(m_rootDirectory, request.target());
@@ -127,10 +90,10 @@ void LocationEndpoint::doGet() {
     // Handle the case where the file doesn't exist
     if (ec == boost::beast::errc::no_such_file_or_directory) {
 
-      setResponse(not_found(request.target()));
+      setResponse(http::Utils::not_found(request, request.target()));
     } else if (ec) {
       // Handle an unknown error
-      setResponse(server_error(ec.message()));
+      setResponse(http::Utils::server_error(request, ec.message()));
 
     } else {
 
@@ -169,22 +132,29 @@ void LocationEndpoint::doGet() {
 }
 
 /**
- * @brief Methode to upload file with POST methode
- *
- */
-void LocationEndpoint::doPost() {}
-
-/**
- * @brief Methode to replace file with PUT methode
- *
- */
-void LocationEndpoint::doPut() {}
-
-/**
  * @brief Methode to delete file with DELETE methode
  *
  */
-void LocationEndpoint::doDelete() {}
+void LocationEndpoint::doDelete() {
+
+  // get HTTP request
+  const boost::beast::http::request<boost::beast::http::string_body> request =
+      this->getRequest();
+  // default response is not found
+  setResponse(http::Utils::not_found(request, request.target()));
+
+  // Request path must be absolute and not contain "..".
+  if (!(request.target().empty() || '/' != request.target()[0] ||
+        request.target().find("..") != boost::beast::string_view::npos)) {
+    // Build the path to the requested file
+    const std::string path = pathCat(m_rootDirectory, request.target());
+    if (boost::filesystem::exists(path)) {
+      boost::filesystem::remove(path);
+      setResponse(http::Utils::wrapper_response(
+          request, boost::beast::http::status::ok, request.target(), ""));
+    }
+  }
+}
 
 /**
  * @brief Destroy the Http Location Endpoint:: Http Location Endpoint object

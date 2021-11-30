@@ -1,5 +1,6 @@
 #include "Utils.hpp"
 #include "../Logger/Logger.hpp"
+#include <boost/beast/version.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 namespace http {
@@ -76,6 +77,77 @@ void Utils::loadMimTypesConfiguration() {
                 "MimeType mapper loaded for " +
                     std::to_string(Utils::s_extTomimtype.size()) +
                     " extensions");
+}
+
+/**
+ * @brief static method of default bad_request response
+ *
+ * @param req The request of client
+ * @param why The reason of bad request
+ * @return boost::beast::http::response<boost::beast::http::string_body> The
+ * body response
+ */
+boost::beast::http::response<boost::beast::http::string_body>
+Utils::bad_request(
+    const boost::beast::http::request<boost::beast::http::string_body> &req,
+    const boost::beast::string_view &why) {
+  return wrapper_response(req, boost::beast::http::status::bad_request, why);
+}
+
+/**
+ * @brief static method of default not_found response
+ *
+ * @param req The request of client
+ * @param target The target not found
+ * @return boost::beast::http::response<boost::beast::http::string_body> The
+ * body response
+ */
+boost::beast::http::response<boost::beast::http::string_body> Utils::not_found(
+    const boost::beast::http::request<boost::beast::http::string_body> &req,
+    const boost::beast::string_view &target) {
+  return wrapper_response(req, boost::beast::http::status::not_found,
+                          "The resource '" + std::string(target) +
+                              "' was not found.");
+}
+
+/**
+ * @brief static method of default server_error response
+ *
+ * @param req The request of client
+ * @param what The server error message
+ * @return boost::beast::http::response<boost::beast::http::string_body> The
+ * body response
+ */
+boost::beast::http::response<boost::beast::http::string_body>
+Utils::server_error(
+    const boost::beast::http::request<boost::beast::http::string_body> &req,
+    const boost::beast::string_view &what) {
+  return wrapper_response(req,
+                          boost::beast::http::status::internal_server_error,
+                          "An error occurred: '" + std::string(what) + "'");
+}
+
+/**
+ * @brief The response writer wrapper
+ *
+ * @param req The request of client
+ * @param body The body of response
+ * @return boost::beast::http::response<boost::beast::http::string_body>
+ */
+boost::beast::http::response<boost::beast::http::string_body>
+Utils::wrapper_response(
+    const boost::beast::http::request<boost::beast::http::string_body> &req,
+    const boost::beast::http::status &status,
+    const boost::beast::string_view &body,
+    const std::string_view &contentType) {
+  boost::beast::http::response<boost::beast::http::string_body> res{
+      status, req.version()};
+  res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+  res.set(boost::beast::http::field::content_type, std::string(contentType));
+  res.keep_alive(req.keep_alive());
+  res.body() = std::string(body);
+  res.prepare_payload();
+  return res;
 }
 
 /**

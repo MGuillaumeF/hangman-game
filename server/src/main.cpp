@@ -154,7 +154,7 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
-    auto server = http::Server("0.0.0.0", 8080, ".", 1);
+    auto server = http::Server("0.0.0.0", 8080, 1);
   }
   return exitStatus;
 }
