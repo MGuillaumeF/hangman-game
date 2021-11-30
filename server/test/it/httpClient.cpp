@@ -137,10 +137,10 @@ int32_t main(int argc, char *argv[]) {
 
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "3 : [success]" << std::endl;
+      std::cout << "4 : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "3 : [failed]" << std::endl;
+      std::cerr << "4 : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -149,40 +149,89 @@ int32_t main(int argc, char *argv[]) {
 
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "3 : [success]" << std::endl;
+      std::cout << "5 : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "3 : [failed]" << std::endl;
+      std::cerr << "5 : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.methode = boost::beast::http::verb::get;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "3 : [success]" << std::endl;
+      std::cout << "6 : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "3 : [failed]" << std::endl;
+      std::cerr << "6 : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.methode = boost::beast::http::verb::put;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "4 : [success]" << std::endl;
+      std::cout << "7 : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "4 : [failed]" << std::endl;
+      std::cerr << "7 : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.methode = boost::beast::http::verb::patch;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "5 : [success]" << std::endl;
+      std::cout << "8 : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "5 : [failed]" << std::endl;
+      std::cerr << "8 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    // ********************************** file path test
+    requestProperties.target = "/bin/configuration/mime-types.xml";
+    requestProperties.headers = {};
+
+    requestProperties.methode = boost::beast::http::verb::get;
+    requestProperties.body = "";
+    response = sendRequest(requestProperties);
+
+    if (response.result() == boost::beast::http::status::ok) {
+      std::cout << "9 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "9 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.target = "/bin/configuration/mime-types.xml-old";
+    response = sendRequest(requestProperties);
+
+    if (response.result() == boost::beast::http::status::not_found) {
+      std::cout << "10 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "10 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.target = "../../../../bin/configuration/mime-types.xml";
+    response = sendRequest(requestProperties);
+
+    if (response.result() == boost::beast::http::status::bad_request) {
+      std::cout << "10 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "10 : [failed]" << std::endl;
+      nbFailed++;
+    }
+
+    requestProperties.methode = boost::beast::http::verb::patch;
+    response = sendRequest(requestProperties);
+
+    if (response.result() == boost::beast::http::status::method_not_allowed) {
+      std::cout << "11 : [success]" << std::endl;
+      nbSuccess++;
+    } else {
+      std::cerr << "11 : [failed]" << std::endl;
       nbFailed++;
     }
 
