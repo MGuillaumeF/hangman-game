@@ -1,9 +1,9 @@
 #include "LocationEndpoint.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <vector>
 
-#include <boost/filesystem.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -148,8 +148,8 @@ void LocationEndpoint::doDelete() {
         request.target().find("..") != boost::beast::string_view::npos)) {
     // Build the path to the requested file
     const std::string path = pathCat(m_rootDirectory, request.target());
-    if (boost::filesystem::is_regular_file(path)) {
-      boost::filesystem::remove(path);
+    if (std::filesystem::exists(path)) {
+      std::filesystem::remove(path);
       setResponse(http::Utils::wrapper_response(
           request, boost::beast::http::status::ok, request.target(), ""));
     }
