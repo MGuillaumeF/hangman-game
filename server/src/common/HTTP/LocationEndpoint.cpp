@@ -148,7 +148,7 @@ void LocationEndpoint::doDelete() {
         request.target().find("..") != boost::beast::string_view::npos)) {
     // Build the path to the requested file
     const std::string path = pathCat(m_rootDirectory, request.target());
-    if (boost::filesystem::exists(path)) {
+    if (boost::filesystem::is_regular_file(path)) {
       boost::filesystem::remove(path);
       setResponse(http::Utils::wrapper_response(
           request, boost::beast::http::status::ok, request.target(), ""));
