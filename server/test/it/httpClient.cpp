@@ -194,7 +194,7 @@ int32_t main(int argc, char *argv[]) {
 
     requestProperties.methode = boost::beast::http::verb::get;
     requestProperties.body = "";
-    response = sendRequest(requestProperties);
+    /*response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::ok) {
       std::cout << "9 : [success]" << std::endl;
@@ -202,7 +202,7 @@ int32_t main(int argc, char *argv[]) {
     } else {
       std::cerr << "9 : [failed]" << std::endl;
       nbFailed++;
-    }
+    }*/
 
     requestProperties.target = "/bin/configuration/mime-types.xml-old";
     response = sendRequest(requestProperties);
