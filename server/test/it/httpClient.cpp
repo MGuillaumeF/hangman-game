@@ -48,8 +48,10 @@ sendRequest(REQUEST requestProperties) {
               requestProperties.hostname.c_str());
   request.set(boost::beast::http::field::user_agent,
               BOOST_BEAST_VERSION_STRING);
-  request.set(boost::beast::http::field::content_type,
-              requestProperties.headers.at("Content-Type"));
+  if (requestProperties.headers.contains("Content-Type")) {
+    request.set(boost::beast::http::field::content_type,
+                requestProperties.headers.at("Content-Type"));
+  }
   request.body() = requestProperties.body.c_str();
   request.prepare_payload();
 
