@@ -1,5 +1,5 @@
 cd ../bin
-./HangmanGame 0.0.0.0 8080 . 1 2>&1 > ../server/reports/integration-tests-report.log &
+./HangmanGame 0.0.0.0 8080 . 1 2>&1 > ./integration-tests-report.log &
 sleep 15
 
 echo "Integration tests START"
