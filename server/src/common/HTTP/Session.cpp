@@ -1,43 +1,11 @@
 #include "Session.hpp"
 #include "../../api/HttpTokenEndpoint.hpp"
 #include "Exception/ParsingException.hpp"
+#include "LocationEndpoint.hpp"
 
 const uint8_t MAXIMUM_STREAM_TIME = 30;
 
 namespace http {
-
-/**
- * @brief Append an HTTP rel-path to a local filesystem path.
- *
- * @param base The base of path to merge
- * @param path The end of path to merge
- * @return std::string  The returned path is normalized for the platform.
- */
-std::string Session::pathCat(const boost::beast::string_view &base,
-                             const boost::beast::string_view &path) const {
-  std::string result(path);
-  if (!base.empty()) {
-    result = std::string(base);
-#ifdef BOOST_MSVC
-    char constexpr path_separator = '\\';
-    if (result.back() == path_separator) {
-      result.resize(result.size() - 1);
-    }
-    result.append(path.data(), path.size());
-    for (auto &c : result) {
-      if (c == '/') {
-        c = path_separator;
-      }
-    }
-#else
-    if (char constexpr path_separator = '/'; result.back() == path_separator) {
-      result.resize(result.size() - 1);
-    }
-    result.append(path.data(), path.size());
-#endif
-  }
-  return result;
-}
 
 /** This function produces an HTTP response for the given
  * request. The type of the response object depends on the
@@ -56,7 +24,6 @@ template <class Body, class Allocator, class Send>
  * @param send The Sender to emit HTTP response
  */
 void Session::handleRequest(
-    const boost::beast::string_view &doc_root,
     const boost::beast::http::request<
         Body, boost::beast::http::basic_fields<Allocator>> &req,
     Send &&send) {
@@ -66,41 +33,7 @@ void Session::handleRequest(
   logger->info("HTTP_DATA_READ",
                "request received on target " + req.target().to_string());
 
-  // Returns a bad request response
-  auto const bad_request = [&req](const boost::beast::string_view &why) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::bad_request, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = std::string(why);
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a not found response
-  auto const not_found = [&req](const boost::beast::string_view &target) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::not_found, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = "The resource '" + std::string(target) + "' was not found.";
-    res.prepare_payload();
-    return res;
-  };
-
-  // Returns a server error response
-  auto const server_error = [&req](const boost::beast::string_view &what) {
-    boost::beast::http::response<boost::beast::http::string_body> res{
-        boost::beast::http::status::internal_server_error, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, "text/html");
-    res.keep_alive(req.keep_alive());
-    res.body() = "An error occurred: '" + std::string(what) + "'";
-    res.prepare_payload();
-    return res;
-  };
+  bool responseDefined = false;
 
   try {
     if (0 == req.target().compare("/api/token")) {
@@ -109,73 +42,22 @@ void Session::handleRequest(
       tokenEndpoint.dispatchRequest();
       boost::beast::http::response<boost::beast::http::string_body> response =
           tokenEndpoint.getResponse();
-      return send(std::move(response));
+      send(std::move(response));
+      responseDefined = true;
     }
 
   } catch (const ParsingException &ex) {
     logger->error("HTTP_DATA_READ",
                   "handleRequest - parsing error : " + std::string(ex.what()));
 
-    return send(bad_request("parsing error"));
+    send(Utils::bad_request(req, "parsing error"));
+    responseDefined = true;
   }
-  // Make sure we can handle the method
-  if (req.method() != boost::beast::http::verb::get &&
-      req.method() != boost::beast::http::verb::head)
-    return send(bad_request("Unknown HTTP-method"));
-
-  // Request path must be absolute and not contain "..".
-  if (req.target().empty() || '/' != req.target()[0] ||
-      req.target().find("..") != boost::beast::string_view::npos)
-    return send(bad_request("Illegal request-target"));
-
-  // Build the path to the requested file
-  std::string path = pathCat(doc_root, req.target());
-  if ('/' == req.target().back())
-    path.append("index.html");
-
-  // Attempt to open the file
-  boost::beast::error_code ec;
-  boost::beast::http::file_body::value_type body;
-  body.open(path.c_str(), boost::beast::file_mode::scan, ec);
-
-  // Handle the case where the file doesn't exist
-  if (ec == boost::beast::errc::no_such_file_or_directory)
-    return send(not_found(req.target()));
-
-  // Handle an unknown error
-  if (ec)
-    return send(server_error(ec.message()));
-
-  // Cache the size since we need it after the move
-  auto const size = body.size();
-
-  // Respond to HEAD request
-  if (req.method() == boost::beast::http::verb::head) {
-    boost::beast::http::response<boost::beast::http::empty_body> res{
-        boost::beast::http::status::ok, req.version()};
-    res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-    res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
-    res.content_length(size);
-    res.keep_alive(req.keep_alive());
-    return send(std::move(res));
+  if (!responseDefined) {
+    LocationEndpoint rootDirectoryEndpoint(req, ".");
+    rootDirectoryEndpoint.dispatchRequest();
+    send(std::move(rootDirectoryEndpoint.getResponse()));
   }
-
-  // Respond to GET request
-  boost::beast::http::response<boost::beast::http::file_body> res{
-      std::piecewise_construct, std::make_tuple(std::move(body)),
-      std::make_tuple(boost::beast::http::status::ok, req.version())};
-  res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(boost::beast::http::field::content_type, Utils::getMimeType(path));
-  res.content_length(size);
-  res.keep_alive(req.keep_alive());
-  const std::string accessLog =
-      "[" + std::to_string(res.result_int()) + "] " + req.target().to_string();
-  if (boost::beast::http::to_status_class(res.result_int()) < boost::beast::http::status_class::client_error) {
-    logger->info("HTTP_ACCESS", accessLog);
-  } else {
-    logger->error("HTTP_ACCESS", accessLog);
-  }
-  return send(std::move(res));
 }
 
 /**
@@ -228,7 +110,7 @@ void Session::onRead(const boost::beast::error_code &ec,
                                  " On read request error : " + ec.message());
   } else {
     // Send the response
-    handleRequest(*m_doc_root, m_req, m_lambda);
+    handleRequest(m_req, m_lambda);
   }
 }
 
@@ -282,4 +164,15 @@ void Session::addRequestDispatcher(const std::string &target,
   m_requestDispatcher.try_emplace(target, handler);
 }
 
-} // namespace HTTP
+/**
+ * @brief methode to add route location for prefix uri
+ *
+ * @param target The prefix of uri to dispatch requests
+ * @param rootDirectory The root directory linked with url
+ */
+void Session::addLocationDispatcher(const std::string &target,
+                                    const std::string &rootDirectory) {
+  m_locationDispatcher.try_emplace(target, rootDirectory);
+}
+
+} // namespace http

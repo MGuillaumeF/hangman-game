@@ -33,46 +33,45 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
   MESSAGE("Compiler used is Microsoft Visual Studio C++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}  /EHsc /MD")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
 endif()
 
 add_definitions("-Wall")
 
 # Add all srcs files in SRCS variable
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
-     "server/src/*.hpp"
-     "server/src/*.cpp"
+     "src/*.hpp"
+     "src/*.cpp"
 )
 
 # Add all tests files in TESTS_SRC_UT_DIR variable
 file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
-     "server/test/ut/*.hpp"
-     "server/test/ut/*.cpp"
+     "test/ut/*.hpp"
+     "test/ut/*.cpp"
 )
-
 
 # Add all tests files in TESTS_SRC_IT_DIR variable
 file(GLOB_RECURSE TESTS_SRC_IT_DIR CONFIGURE_DEPENDS
-     "server/test/it/*.hpp"
-     "server/test/it/*.cpp"
+     "test/it/*.hpp"
+     "test/it/*.cpp"
 )
 
 # Add all API files in API_SRC_DIR variable
 file(GLOB_RECURSE API_SRC_DIR CONFIGURE_DEPENDS
-     "server/src/api/*.hpp"
-     "server/src/api/*.cpp"
+     "src/api/*.hpp"
+     "src/api/*.cpp"
 )
 
 # Add all HTTP files in HTTP_SRC_DIR variable
 file(GLOB_RECURSE HTTP_SRC_DIR CONFIGURE_DEPENDS
-     "server/src/common/HTTP/*.hpp"
-     "server/src/common/HTTP/*.cpp"
+     "src/common/HTTP/*.hpp"
+     "src/common/HTTP/*.cpp"
 )
 
 # Add all Logger files in LOGGER_SRC_DIR variable
 file(GLOB_RECURSE LOGGER_SRC_DIR CONFIGURE_DEPENDS
-     "server/src/common/Logger/*.hpp"
-     "server/src/common/Logger/*.cpp"
+     "src/common/Logger/*.hpp"
+     "src/common/Logger/*.cpp"
 )
 
 find_package (Threads)
@@ -83,7 +82,7 @@ if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) 
   # Create application executable files
   add_executable(HangmanGame ${SRCS})
-  add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/server/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
+  add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml) 
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
@@ -91,7 +90,6 @@ if (Boost_FOUND)
   if(WIN32)
   add_definitions("-D_WIN32_WINNT=0x0601")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
-    #option(CMAKE_USE_PTHREADS_INIT "using WIN32 threads" ON)
     target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
     target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
   else ()

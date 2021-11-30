@@ -18,13 +18,13 @@ public:
    * @param threads The number of thread of server
    */
   Server(const std::string &address, const uint16_t port,
-         const std::string &doc_root, const uint8_t threads);
+         const uint8_t threads);
   /**
    * @brief Destroy the Http Server object
    *
    */
   ~Server() = default;
 };
-} // namespace HTTP
+} // namespace http
 
 #endif

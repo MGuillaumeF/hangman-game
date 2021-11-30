@@ -10,26 +10,22 @@ class HttpTokenEndpoint : public http::RestrictiveEndpoint {
 public:
   /**
    * @brief Construct a new Http Token Endpoint object
-   *
    * @param req The request to handle
    */
   explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req);
   /**
    * @brief Methode to overwrite POST methode
-   *
    */
   void doPost() override;
   /**
    * @brief Destroy the Http Token Endpoint object
-   *
    */
   ~HttpTokenEndpoint() final;
 
 private:
   /**
    * @brief Get logger
-   *
    */
   std::unique_ptr<Logger> &m_logger = Logger::getInstance();
 };

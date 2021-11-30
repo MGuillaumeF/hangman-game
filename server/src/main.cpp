@@ -74,6 +74,8 @@ int32_t main(int argc, char *argv[]) {
   logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
                       Logger::defaultErrAppender);
 
+  logger->setLevel(ELogLevel::LDEBUG);
+
   boost::property_tree::ptree pt;
   try {
 
@@ -100,17 +102,17 @@ int32_t main(int argc, char *argv[]) {
       re = std::regex("(.+): (.*)");
       std::regex_search(errorStr, m, re);
     }
-    const uint8_t jsonStructErrorSize= 4;
-    const uint8_t accessFileErrorSize= 3;
+    const uint8_t jsonStructErrorSize = 4;
+    const uint8_t accessFileErrorSize = 3;
     if (jsonStructErrorSize == m.size()) {
       // example : "data.json(5): garbage after data"
       const uint8_t filenameIndex = 1;
       const uint8_t lineIndex = 2;
-            const uint8_t messageIndex = 3;
+      const uint8_t messageIndex = 3;
       logger->error("HTTP_CONFIGURATION",
                     "Le fichier " + m[filenameIndex].str() +
-                        " n'est pas un JSON valide, ligne " + m[lineIndex].str() +
-                        " : " +  m[messageIndex].str());
+                        " n'est pas un JSON valide, ligne " +
+                        m[lineIndex].str() + " : " + m[messageIndex].str());
     } else if (accessFileErrorSize == m.size()) {
       // example : data.json: cannot open file
       const uint8_t filenameIndex = 1;
@@ -152,7 +154,7 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
-    auto server = http::Server("0.0.0.0", 8080, ".", 1);
+    auto server = http::Server("0.0.0.0", 8080, 1);
   }
   return exitStatus;
 }
