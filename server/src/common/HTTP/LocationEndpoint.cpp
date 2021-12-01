@@ -13,9 +13,10 @@
 #include "Exception/ParsingException.hpp"
 
 /**
- * @brief Construct a new Http Location Endpoint:: Http Location Endpoint object
+ * @brief Construct a new Location Endpoint object
  *
  * @param req The request to handle
+ * @param rootDirectory The start directory of static files hosting
  */
 LocationEndpoint::LocationEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
