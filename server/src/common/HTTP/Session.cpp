@@ -167,8 +167,7 @@ void Session::doClose() {
  */
 void Session::addRequestDispatcher(const std::string &target,
                                    const requestHandler_t &handler) {
-  m_requestDispatcher.emplace_back(
-      std::pair<std::string, requestHandler_t>(target, handler));
+  m_requestDispatcher.emplace_back(target, handler);
 }
 
 } // namespace http
