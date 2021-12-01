@@ -39,9 +39,7 @@ void Session::handleRequest(
   bool responseDefined = false;
 
   try {
-    for (const auto &dispacher : m_requestDispatcher) {
-      std::cerr << "HERE -------------------------- " << dispacher.first
-                << "  --  -- " << req.target() << std::endl;
+    for (const std::pair<std::string, requestHandler_t> &dispacher : m_requestDispatcher) {
       if ((0 == req.target().compare(dispacher.first)) ||
           req.target().starts_with(dispacher.first)) {
         logger->info("HTTP_ACCESS", "handleRequest - " + dispacher.first);
