@@ -131,7 +131,9 @@ Utils::server_error(
  * @brief The response writer wrapper
  *
  * @param req The request of client
+ * @param status The status of response HTTP
  * @param body The body of response
+ * @param contentType Thé content type of body response
  * @return boost::beast::http::response<boost::beast::http::string_body>
  */
 boost::beast::http::response<boost::beast::http::string_body>
