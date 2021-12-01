@@ -77,7 +77,7 @@ void LocationEndpoint::doGet() {
 
   // Request path must be absolute and not contain "..".
   if (request.target().empty() || '/' != request.target()[0] ||
-      request.target().contains("..")) {
+      request.target().find("..") != boost::beast::string_view::npos) {
 
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
@@ -143,7 +143,7 @@ void LocationEndpoint::doDelete() {
 
   // Request path must be absolute and not contain "..".
   if (request.target().empty() || '/' != request.target()[0] ||
-      request.target().contains("..")) {
+      request.target().find("..") != boost::beast::string_view::npos) {
 
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
@@ -152,7 +152,7 @@ void LocationEndpoint::doDelete() {
 
     // Request path must be absolute and not contain "..".
     if (!(request.target().empty() || '/' != request.target()[0] ||
-          request.target().contains("..")) {
+          request.target().find("..") != boost::beast::string_view::npos) {
       // Build the path to the requested file
       const std::filesystem::path path =
           pathCat(m_rootDirectory, request.target());
