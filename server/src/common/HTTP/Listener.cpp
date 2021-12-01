@@ -10,7 +10,6 @@ namespace http {
  *
  * @param ioc The context to listen
  * @param endpoint The TCP/IP endpoint
- * @param doc_root The root path of file server
  */
 Listener::Listener(boost::asio::io_context &ioc,
                    const boost::asio::ip::tcp::endpoint &endpoint)

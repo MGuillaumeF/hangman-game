@@ -1,7 +1,10 @@
 #include "./common/Logger/Logger.hpp"
 
+#include "./api/HttpTokenEndpoint.hpp"
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
+#include "./common/HTTP/LocationEndpoint.hpp"
 #include "./common/HTTP/Server.hpp"
+#include "./common/HTTP/Session.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -33,7 +36,7 @@ void appenderAccessFile(const std::string &message) {
 }
 
 int32_t main(int argc, char *argv[]) {
-  uint8_t MAX_ARGS_QUANTITY = 5;
+  uint8_t MAX_ARGS_QUANTITY = 4;
   int16_t exitStatus = EXIT_SUCCESS;
   g_fs.open("./logs/logfile.log",
             std::fstream::in | std::fstream::out | std::fstream::app);
@@ -141,8 +144,8 @@ int32_t main(int argc, char *argv[]) {
   // Check command line arguments.
   if (MAX_ARGS_QUANTITY != argc) {
     logger->error("HTTP_CONFIGURATION",
-                  "Usage: Server <address> <port> <doc_root> "
-                  "<threads>\nExample:\n    Server 0.0.0.0 8080 . 1");
+                  "Usage: Server <address> <port> "
+                  "<threads>\nExample:\n    Server 0.0.0.0 8080 1");
     g_fs.close();
     g_access_fs.close();
     exitStatus = EXIT_FAILURE;
@@ -154,6 +157,23 @@ int32_t main(int argc, char *argv[]) {
     }
     // server is started
     auto config = ConfigurationServer(arguments);
+
+    http::Session::addRequestDispatcher(
+        "/api/token",
+        [](const boost::beast::http::request<boost::beast::http::string_body>
+               &req) {
+          HttpTokenEndpoint tokenEndpoint(req);
+          tokenEndpoint.dispatchRequest();
+          return tokenEndpoint.getResponse();
+        });
+    http::Session::addRequestDispatcher(
+        "/",
+        [](const boost::beast::http::request<boost::beast::http::string_body>
+               &req) {
+          LocationEndpoint rootDirectoryEndpoint(req, ".");
+          rootDirectoryEndpoint.dispatchRequest();
+          return rootDirectoryEndpoint.getResponse();
+        });
     auto server = http::Server("0.0.0.0", 8080, 1);
   }
   return exitStatus;

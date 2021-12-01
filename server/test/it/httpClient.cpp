@@ -205,7 +205,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.target = "../../../../bin/configuration/mime-types.xml";
+    requestProperties.target = "/../../../../bin/configuration/mime-types.xml";
     response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::bad_request) {
@@ -216,6 +216,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
+    requestProperties.target = "/configuration/mime-types.xml";
     requestProperties.methode = boost::beast::http::verb::patch;
     response = sendRequest(requestProperties);
 
@@ -228,18 +229,18 @@ int32_t main(int argc, char *argv[]) {
     }
 
     try {
-    requestProperties.target = "/configuration/mime-types.xml";
-    requestProperties.methode = boost::beast::http::verb::get;
-    response = sendRequest(requestProperties);
+      requestProperties.target = "/configuration/mime-types.xml";
+      requestProperties.methode = boost::beast::http::verb::get;
+      response = sendRequest(requestProperties);
 
-    if (response.result() == boost::beast::http::status::ok) {
-      std::cout << "9 : [success]" << std::endl;
-      nbSuccess++;
-    } else {
-      std::cerr << "9 : [failed]" << std::endl;
-      nbFailed++;
-    }
-    } catch(const std::exception& ex) {
+      if (response.result() == boost::beast::http::status::ok) {
+        std::cout << "9 : [success]" << std::endl;
+        nbSuccess++;
+      } else {
+        std::cerr << "9 : [failed]" << std::endl;
+        nbFailed++;
+      }
+    } catch (const std::exception &ex) {
       std::cerr << "Get file test has error " << ex.what() << std::endl;
     }
 

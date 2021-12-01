@@ -14,7 +14,6 @@ public:
    *
    * @param address The IP address of server
    * @param port The Port of server
-   * @param doc_root The path of root directory of static files
    * @param threads The number of thread of server
    */
   Server(const std::string &address, const uint16_t port,
