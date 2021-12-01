@@ -2,6 +2,7 @@
 #define __HTTP_SESSION_HPP__
 
 #include <functional>
+#include <list>
 
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
