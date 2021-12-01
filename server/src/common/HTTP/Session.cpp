@@ -39,7 +39,7 @@ void Session::handleRequest(
   bool responseDefined = false;
 
   try {
-    for (const auto [endpointEntry, endpointHandler] : m_requestDispatcher) {
+    for (const auto &[endpointEntry, endpointHandler] : m_requestDispatcher) {
       if ((0 == req.target().compare(endpointEntry)) ||
           req.target().starts_with(endpointEntry)) {
         logger->info("HTTP_ACCESS", "handleRequest - " + endpointEntry);
