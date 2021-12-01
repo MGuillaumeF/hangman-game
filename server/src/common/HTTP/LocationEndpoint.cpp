@@ -139,20 +139,28 @@ void LocationEndpoint::doDelete() {
   // get HTTP request
   const boost::beast::http::request<boost::beast::http::string_body> request =
       this->getRequest();
-  // default response is not found
-  setResponse(http::Utils::not_found(request, request.target()));
 
   // Request path must be absolute and not contain "..".
-  if (!(request.target().empty() || '/' != request.target()[0] ||
-        request.target().find("..") != boost::beast::string_view::npos)) {
-    // Build the path to the requested file
-    const std::filesystem::path path =
-        pathCat(m_rootDirectory, request.target());
-    // if file exist remove it
-    if (std::filesystem::exists(path)) {
-      std::filesystem::remove(path);
-      setResponse(http::Utils::wrapper_response(
-          request, boost::beast::http::status::ok, request.target(), ""));
+  if (request.target().empty() || '/' != request.target()[0] ||
+      request.target().find("..") != boost::beast::string_view::npos) {
+
+    setResponse(http::Utils::bad_request(request, "Illegal request-target"));
+  } else {
+    // default response is not found
+    setResponse(http::Utils::not_found(request, request.target()));
+
+    // Request path must be absolute and not contain "..".
+    if (!(request.target().empty() || '/' != request.target()[0] ||
+          request.target().find("..") != boost::beast::string_view::npos)) {
+      // Build the path to the requested file
+      const std::filesystem::path path =
+          pathCat(m_rootDirectory, request.target());
+      // if file exist remove it
+      if (std::filesystem::exists(path)) {
+        std::filesystem::remove(path);
+        setResponse(http::Utils::wrapper_response(
+            request, boost::beast::http::status::ok, request.target(), ""));
+      }
     }
   }
 }

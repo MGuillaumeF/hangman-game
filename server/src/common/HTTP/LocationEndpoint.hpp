@@ -9,8 +9,10 @@ class LocationEndpoint : public http::RestrictiveEndpoint {
 
 public:
   /**
-   * @brief Construct a new Http Token Endpoint object
+   * @brief Construct a new Location Endpoint object
+   *
    * @param req The request to handle
+   * @param rootDirectory The start directory of static files hosting
    */
   explicit LocationEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
