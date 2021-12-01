@@ -70,8 +70,8 @@ class Session : public std::enable_shared_from_this<Session> {
   std::shared_ptr<void> m_res;
   send_lambda m_lambda;
 
-  std::map<std::string, requestHandler_t, std::less<>> m_requestDispatcher;
-  std::map<std::string, std::string, std::less<>> m_locationDispatcher;
+  static std::list<std::pair<std::string, requestHandler_t>>
+      m_requestDispatcher;
 
   template <class Body, class Allocator, class Send>
   /**
@@ -86,7 +86,7 @@ class Session : public std::enable_shared_from_this<Session> {
   void
   handleRequest(const boost::beast::http::request<
                     Body, boost::beast::http::basic_fields<Allocator>> &req,
-                Send &&send);
+                Send &&send) const;
 
 public:
   /**
@@ -135,17 +135,8 @@ public:
    * @param target The prefix of uri to dispatch requests
    * @param handler The handler function to call
    */
-  void addRequestDispatcher(const std::string &target,
-                            const requestHandler_t &handler);
-
-  /**
-   * @brief methode to add route location for prefix uri
-   *
-   * @param target The prefix of uri to dispatch requests
-   * @param rootDirectory The root directory linked with url
-   */
-  void addLocationDispatcher(const std::string &target,
-                             const std::string &rootDirectory);
+  static void addRequestDispatcher(const std::string &target,
+                                   const requestHandler_t &handler);
 };
 
 } // namespace http

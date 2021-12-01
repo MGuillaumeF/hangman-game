@@ -2,10 +2,14 @@
 #include "../../api/HttpTokenEndpoint.hpp"
 #include "Exception/ParsingException.hpp"
 #include "LocationEndpoint.hpp"
-
+#include <iostream>
 const uint8_t MAXIMUM_STREAM_TIME = 30;
 
 namespace http {
+
+// request dispatcher storage
+std::list<std::pair<std::string, requestHandler_t>>
+    Session::m_requestDispatcher = {};
 
 /** This function produces an HTTP response for the given
  * request. The type of the response object depends on the
@@ -19,14 +23,13 @@ template <class Body, class Allocator, class Send>
  * contents of the request, so the interface requires the
  * caller to pass a generic lambda for receiving the response.
  *
- * @param doc_root The path of static files of file server
  * @param req The HTTP request
  * @param send The Sender to emit HTTP response
  */
 void Session::handleRequest(
     const boost::beast::http::request<
         Body, boost::beast::http::basic_fields<Allocator>> &req,
-    Send &&send) {
+    Send &&send) const {
 
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
@@ -36,27 +39,32 @@ void Session::handleRequest(
   bool responseDefined = false;
 
   try {
-    if (0 == req.target().compare("/api/token")) {
-      logger->info("HTTP_ACCESS", "handleRequest - /api/token");
-      HttpTokenEndpoint tokenEndpoint(req);
-      tokenEndpoint.dispatchRequest();
-      boost::beast::http::response<boost::beast::http::string_body> response =
-          tokenEndpoint.getResponse();
-      send(std::move(response));
-      responseDefined = true;
+    for (const auto &dispacher : m_requestDispatcher) {
+      std::cerr << "HERE -------------------------- " << dispacher.first
+                << "  --  -- " << req.target() << std::endl;
+      if ((0 == req.target().compare(dispacher.first)) ||
+          req.target().starts_with(dispacher.first)) {
+        logger->info("HTTP_ACCESS", "handleRequest - " + dispacher.first);
+        send(std::move(dispacher.second(req)));
+        responseDefined = true;
+        break;
+      }
     }
-
   } catch (const ParsingException &ex) {
     logger->error("HTTP_DATA_READ",
                   "handleRequest - parsing error : " + std::string(ex.what()));
 
     send(Utils::bad_request(req, "parsing error"));
     responseDefined = true;
+  } catch (const std::exception &ex) {
+    logger->error("HTTP_DATA_READ",
+                  "handleRequest - parsing error : " + std::string(ex.what()));
+
+    send(Utils::server_error(req, "api call error"));
+    responseDefined = true;
   }
   if (!responseDefined) {
-    LocationEndpoint rootDirectoryEndpoint(req, ".");
-    rootDirectoryEndpoint.dispatchRequest();
-    send(std::move(rootDirectoryEndpoint.getResponse()));
+    send(std::move(Utils::not_found(req, req.target())));
   }
 }
 
@@ -161,18 +169,8 @@ void Session::doClose() {
  */
 void Session::addRequestDispatcher(const std::string &target,
                                    const requestHandler_t &handler) {
-  m_requestDispatcher.try_emplace(target, handler);
-}
-
-/**
- * @brief methode to add route location for prefix uri
- *
- * @param target The prefix of uri to dispatch requests
- * @param rootDirectory The root directory linked with url
- */
-void Session::addLocationDispatcher(const std::string &target,
-                                    const std::string &rootDirectory) {
-  m_locationDispatcher.try_emplace(target, rootDirectory);
+  m_requestDispatcher.emplace_back(
+      std::pair<std::string, requestHandler_t>(target, handler));
 }
 
 } // namespace http
