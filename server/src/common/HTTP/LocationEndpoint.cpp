@@ -152,7 +152,7 @@ void LocationEndpoint::doDelete() {
 
     // Request path must be absolute and not contain "..".
     if (!(request.target().empty() || '/' != request.target()[0] ||
-          request.target().find("..") != boost::beast::string_view::npos) {
+          request.target().find("..") != boost::beast::string_view::npos)) {
       // Build the path to the requested file
       const std::filesystem::path path =
           pathCat(m_rootDirectory, request.target());
