@@ -39,11 +39,11 @@ void Session::handleRequest(
   bool responseDefined = false;
 
   try {
-    for (const std::pair<std::string, requestHandler_t> &dispacher : m_requestDispatcher) {
-      if ((0 == req.target().compare(dispacher.first)) ||
-          req.target().starts_with(dispacher.first)) {
-        logger->info("HTTP_ACCESS", "handleRequest - " + dispacher.first);
-        send(std::move(dispacher.second(req)));
+    for (const auto [endpointEntry, endpointHandler] : m_requestDispatcher) {
+      if ((0 == req.target().compare(endpointEntry)) ||
+          req.target().starts_with(endpointEntry)) {
+        logger->info("HTTP_ACCESS", "handleRequest - " + endpointEntry);
+        send(std::move(endpointHandler(req)));
         responseDefined = true;
         break;
       }
