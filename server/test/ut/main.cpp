@@ -4,7 +4,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-book init_function() {
+bool init_function() {
   // before all
   boost::unit_test::framework::master_test_suite().p_name.value = "HangmanGameTestSuite";
   return true;
