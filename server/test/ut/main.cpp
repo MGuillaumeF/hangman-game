@@ -2,7 +2,7 @@
 #define BOOST_TEST_MODULE HangmanGameTest
 #define BOOST_TEST_NO_NAME
 
-#include <boost/test/init_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 book init_function() {
   // before all
