@@ -1,6 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE testHttpConfigurationServer
-#include "../../src/common/HTTP/testHttpConfigurationServer.hpp"
+#include "../../src/common/HTTP/Configuration/ConfigurationServer.hpp"
 #include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(testConfigurationServer)
