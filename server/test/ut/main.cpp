@@ -10,7 +10,7 @@ bool init_function() {
   return true;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
   int all_test_result = ::boost::unit_test::unit_test_main(&init_function, argc, argv);
   return all_test_result;
 }
