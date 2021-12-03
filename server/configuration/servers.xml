@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<servers>
+  <server>
+    <description>example of server 1 configuration</description>
+    <hostname>localhost</hostname>
+    <schema>HTTP</schema>
+    <port>80</port>
+    <thread>1</thread>
+    <enpoints>
+      <endpoint type="static-files" target="/" keep-prefix="false">
+        <root-directory>.</root-directory>
+      </endpoint>
+    </endpoints>
+  </server>
+</server>

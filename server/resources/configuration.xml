@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<server>
-    <description>example of server 1 configuration</description>
-    <hostname>localhost</hostname>
-    <port>80</port>
-    <root>.</root>
-    <thread>1</thread>
-</server>
