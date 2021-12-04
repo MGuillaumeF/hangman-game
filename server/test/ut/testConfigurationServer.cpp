@@ -1,6 +1,6 @@
 #include "../../src/common/HTTP/Configuration/ConfigurationServer.hpp"
 // #include <boost/test/included/unit_test.hpp>
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(testConfigurationServer)
 
