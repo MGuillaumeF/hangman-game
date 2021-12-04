@@ -1,6 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE HangmanGameTest
-#define BOOST_TEST_NO_NAME
+#define BOOST_TEST_NO_MAIN
 
 #include <boost/test/unit_test.hpp>
 
