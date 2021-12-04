@@ -1,9 +1,9 @@
-#define BOOST_TEST_DYN_LINK
-//#define BOOST_TEST_NO_MAIN
-#define BOOST_TEST_MAIN
+// #define BOOST_TEST_DYN_LINK
+// #define BOOST_TEST_NO_MAIN
+// #define BOOST_TEST_MAIN
 #define BOOST_TEST_MODULE HangmanGameTest
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 /*
 bool init_function() {
   // before all
