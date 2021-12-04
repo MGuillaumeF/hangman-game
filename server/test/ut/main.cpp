@@ -1,9 +1,11 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE HangmanGameTest
-#define BOOST_TEST_NO_MAIN
+//#define BOOST_TEST_NO_MAIN
+
+#define BOOST_TEST_MAIN
 
 #include <boost/test/unit_test.hpp>
-
+/*
 bool init_function() {
   // before all
   boost::unit_test::framework::master_test_suite().p_name.value = "HangmanGameTestSuite";
@@ -15,3 +17,4 @@ int main(int argc, char* argv[]) {
   return all_test_result;
 }
 
+*/
