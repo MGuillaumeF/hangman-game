@@ -1,4 +1,4 @@
-// #define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_DYN_LINK
 
 #include "../../src/common/HTTP/Configuration/ConfigurationServer.hpp"
 // #include <boost/test/included/unit_test.hpp>
