@@ -16,17 +16,17 @@ ConfigurationServer::ConfigurationServer(const std::vector<std::string>& argv) {
   const std::unique_ptr<Logger>& logger = Logger::getInstance();
   // if arguments list is empty, read configuration file
   if (argv.empty()) {
-    boost::property_tree::ptree pt;
+    boost::property_tree::ptree configuration_properties;
     // read default configuration file
-    boost::property_tree::read_xml("../resources/configuration.xml", pt);
+    boost::property_tree::read_xml("./configuration/servers.xml", configuration_properties);
 
     try {
       // save configuration of server
-      m_description = pt.get<std::string>("server.description");
-      m_hostname = pt.get<std::string>("server.hostname");
-      m_root = pt.get<std::string>("server.root");
-      m_thread = pt.get<uint8_t>("server.thread");
-      m_port = pt.get<uint16_t>("server.port");
+      m_description = configuration_properties.get<std::string>("servers.server.description");
+      m_hostname = configuration_properties.get<std::string>("servers.server.hostname");
+      m_root = configuration_properties.get<std::string>("servers.server.endpoints.endpoint.root-directory");
+      m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
+      m_port = configuration_properties.get<uint16_t>("servers.server.port");
 
       logger->info("HTTP_CONFIGURATION",
                    "Configuration reading : "
