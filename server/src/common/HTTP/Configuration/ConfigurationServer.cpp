@@ -26,7 +26,7 @@ ConfigurationServer::ConfigurationServer(const std::vector<std::string>& argv) {
       // save configuration of server
       m_description = pt.get<std::string>("server.description");
       m_hostname = pt.get<std::string>("server.hostname");
-      m_root = pt.get<std::string>("server.root-directory");
+      m_root = pt.get<std::string>("server.endpoints.endpoint.root-directory");
       m_thread = pt.get<uint8_t>("server.thread");
       m_port = pt.get<uint16_t>("server.port");
 
