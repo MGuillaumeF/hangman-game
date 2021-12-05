@@ -20,18 +20,13 @@ ConfigurationServer::ConfigurationServer(const std::vector<std::string>& argv) {
     // read default configuration file
     boost::property_tree::read_xml("./configuration/servers.xml", configuration_properties);
 
-   // boost::property_tree::ptree pt = configuration_properties.get_child("servers");
-
     try {
       // save configuration of server
- //     m_description = pt.get<std::string>("server.description");
-      m_hostname = "";// pt.get<std::string>("server.hostname");
-      m_root = ".";//pt.get<std::string>("server.endpoints.endpoint.root-directory");
-      m_thread = 1;//pt.get<uint8_t>("server.thread");
-      m_port = 80;// pt.get<uint16_t>("server.port");
-
-
-m_description = "example of server 1 configuration";
+      m_description = configuration_properties.get<std::string>("servers.server.description");
+      m_hostname = configuration_properties.get<std::string>("servers.server.hostname");
+      m_root = configuration_properties.get<std::string>("servers.server.endpoints.endpoint.root-directory");
+      m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
+      m_port = configuration_properties.get<uint16_t>("servers.server.port");
 
       logger->info("HTTP_CONFIGURATION",
                    "Configuration reading : "
