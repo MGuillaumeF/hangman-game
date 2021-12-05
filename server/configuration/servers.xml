@@ -6,7 +6,7 @@
     <schema>HTTP</schema>
     <port>80</port>
     <thread>1</thread>
-    <enpoints>
+    <endpoints>
       <endpoint type="static-files" target="/" keep-prefix="false">
         <root-directory>.</root-directory>
       </endpoint>
