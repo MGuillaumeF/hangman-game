@@ -82,7 +82,7 @@ jobs:
    
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest || echo 'FAILES'
+      run: ctest
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
@@ -269,13 +269,7 @@ jobs:
     - name: Print summary coverage
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
-
-    - name: Archive IHM Coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Coverage
-        path: ${{github.workspace}}/client/coverage
-
+      
  sonarcloud-analyse:
     needs: [build-server-linux, build-client]
     runs-on: ubuntu-latest
@@ -333,10 +327,55 @@ jobs:
         name: Server-Hangman-Game Unit Test - Reports
         path: ${{github.workspace}}/server/reports
 
-    - uses: actions/download-artifact@v2
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: npm install
+
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Analyses-report
         path: ${{github.workspace}}/client/dist
+
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
+
+    - name: Archive IHM
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Client adjust
+      working-directory: ${{github.workspace}}/client
+      run: npm install --save-dev wait-on npm-run-all @cypress/code-coverage babel-plugin-istanbul cypress-movie
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
+    - name: Archive IHM Tests videos 
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Tests-Videos 
+        path: ${{github.workspace}}/client/cypress/videos
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov --reporter=text-summary
 
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
