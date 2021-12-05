@@ -271,7 +271,7 @@ jobs:
       run: npx nyc report --reporter=lcov --reporter=text-summary
       
  sonarcloud-analyse:
-    needs: [build-server-linux, build-client]
+    # needs: [build-server-linux, build-client]
     runs-on: ubuntu-latest
     steps:
 
