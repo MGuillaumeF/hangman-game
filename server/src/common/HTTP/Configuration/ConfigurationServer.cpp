@@ -16,7 +16,7 @@ ConfigurationServer::ConfigurationServer()
 /**
  * @brief Construct a new Configuration Server:: Configuration Server object
  *
- * @param argv arguments list of server configuration
+ * @param filename path of server configuration file
  */
 ConfigurationServer::ConfigurationServer(const std::string &filename) {
 
