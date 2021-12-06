@@ -38,8 +38,7 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
     m_port = configuration_properties.get<uint16_t>("servers.server.port");
 
     logger->info("HTTP_CONFIGURATION",
-                 "Configuration reading : " +
-                 // the description of server goal
+                 "Configuration reading : "
                  "\n -> Description  : " + m_description +
                  "\n -> Hostname     : " + m_hostname +
                  "\n -> Port         : " + std::to_string(m_port) +
