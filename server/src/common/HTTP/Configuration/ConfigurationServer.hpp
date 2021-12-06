@@ -19,7 +19,7 @@ public:
   /**
    * @brief Construct a new Configuration Server object
    *
-   * @ param filename path of server configuration file
+   * @param filename path of server configuration file
    */
   explicit ConfigurationServer(const std::string &filename);
 
