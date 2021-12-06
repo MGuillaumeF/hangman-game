@@ -156,7 +156,7 @@ int32_t main(int argc, char *argv[]) {
       arguments.emplace_back(argv[i]);
     }
     // server is started
-    auto config = ConfigurationServer(arguments);
+    auto config = ConfigurationServer();
 
     http::Session::addRequestDispatcher(
         "/api/token",

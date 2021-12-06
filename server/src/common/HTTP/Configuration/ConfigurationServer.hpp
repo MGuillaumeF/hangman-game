@@ -2,8 +2,8 @@
 #define __CONFIGURATION_SERVER_HPP__
 
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * Configuration HTTP Server Class is to manage configuration of server
@@ -13,9 +13,16 @@ public:
   /**
    * @brief Construct a new Configuration Server object
    *
+   */
+  ConfigurationServer();
+
+  /**
+   * @brief Construct a new Configuration Server object
+   *
    * @param argv arguments list of server configuration
    */
-  explicit ConfigurationServer(const std::vector<std::string>& argv);
+  explicit ConfigurationServer(const std::string &filename);
+
   /**
    * @brief Destroy the Configuration Server object
    *
@@ -52,7 +59,7 @@ private:
   std::string m_hostname;
   std::string m_root;
   uint8_t m_thread;
-  uint16_t  m_port;
+  uint16_t m_port;
 };
 
 #endif

@@ -164,15 +164,12 @@ void LocationEndpoint::doDelete() {
 /**
  * @brief Function to test if targat of request is a valid path
  *
- * @param boost::beast::http::header<true, boost::beast::http::fields>::target
+ * @param boost::beast::string_view The target of request
  * @return true The target of request is valid relative path (desc)
  * @return false The target have bad structure of want to go up on file tree and
  * it's forbidden
  */
-bool LocationEndpoint::isValidFileTarget(
-    boost::beast::string_view
-        boost::beast::http::header<true, boost::beast::http::fields>::target()
-            target) {
+bool LocationEndpoint::isValidFileTarget(boost::beast::string_view target) {
   // a valid target is not empty
   // a valid target start with '/'
   // a valid target haven't '..' in content
