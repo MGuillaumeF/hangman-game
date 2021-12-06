@@ -50,6 +50,19 @@ private:
    */
   static std::string pathCat(const boost::beast::string_view &base,
                              const boost::beast::string_view &path);
+
+  /**
+   * @brief Function to test if targat of request is a valid path
+   *
+   * @param boost::beast::http::header<true, boost::beast::http::fields>::target
+   * @return true The target of request is valid relative path (desc)
+   * @return false The target have bad structure of want to go up on file tree
+   * and it's forbidden
+   */
+  static bool isValidFileTarget(
+      boost::beast::string_view
+          boost::beast::http::header<true, boost::beast::http::fields>::target()
+              target);
 };
 
 #endif // __HTTP_LOCATION_ENDPOINT_HPP__
