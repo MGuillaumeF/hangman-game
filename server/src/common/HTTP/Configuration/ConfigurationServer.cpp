@@ -38,12 +38,13 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
     m_port = configuration_properties.get<uint16_t>("servers.server.port");
 
     logger->info("HTTP_CONFIGURATION",
-                 "Configuration reading : "
-                 "\n -> Description  : " +
-                     m_description + "\n -> Hostname     : " + m_hostname +
-                     "\n -> Port         : " + std::to_string(m_port) +
-                     "\n -> Root         : " + m_root +
-                     "\n -> Thread       : " + std::to_string(m_thread));
+                 "Configuration reading : " +
+                 // the description of server goal
+                 "\n -> Description  : " + m_description +
+                 "\n -> Hostname     : " + m_hostname +
+                 "\n -> Port         : " + std::to_string(m_port) +
+                 "\n -> Root         : " + m_root +
+                 "\n -> Thread       : " + std::to_string(m_thread));
 
   } catch (const boost::property_tree::ptree_error &e) {
     logger->error("HTTP_CONFIGURATION",
