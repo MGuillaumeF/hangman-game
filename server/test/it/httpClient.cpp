@@ -1,5 +1,6 @@
+// #define BOOST_TEST_MODULE HangmanGameITTest
 // #define BOOST_TEST_DYN_LINK
-// #define BOOST_TEST_MODULE testsTokenHttpAPI
+
 // #include <boost/test/included/unit_test.hpp>
 
 #include <boost/asio/connect.hpp>
