@@ -59,7 +59,7 @@ private:
    * @return false The target have bad structure of want to go up on file tree
    * and it's forbidden
    */
-  static bool isValidFileTarget(boost::beast::string_view target);
+  static bool isValidFileTarget(const boost::beast::string_view& target);
 };
 
 #endif // __HTTP_LOCATION_ENDPOINT_HPP__
