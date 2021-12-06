@@ -76,8 +76,7 @@ void LocationEndpoint::doGet() {
   setResponse(http::Utils::not_found(request, request.target()));
 
   // Request path must be absolute and not contain "..".
-  if (request.target().empty() || '/' != request.target()[0] ||
-      request.target().find("..") != boost::beast::string_view::npos) {
+  if (!isValidFileTarget(request.target())) {
 
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
@@ -113,7 +112,9 @@ void LocationEndpoint::doGet() {
           http::Utils::wrapper_response(
               request, boost::beast::http::status::ok, fileContent,
               std::string(http::Utils::getMimeType(path)));
+      // add length of body in meta data of request
       res.content_length(size);
+      // prepare response body
       res.prepare_payload();
       setResponse(res);
     }
@@ -140,30 +141,40 @@ void LocationEndpoint::doDelete() {
   // get HTTP request
   const boost::beast::http::request<boost::beast::http::string_body> request =
       this->getRequest();
-
   // Request path must be absolute and not contain "..".
-  if (request.target().empty() || '/' != request.target()[0] ||
-      request.target().find("..") != boost::beast::string_view::npos) {
-
+  if (!isValidFileTarget(request.target())) {
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
     // default response is not found
     setResponse(http::Utils::not_found(request, request.target()));
 
     // Request path must be absolute and not contain "..".
-    if (!(request.target().empty() || '/' != request.target()[0] ||
-          request.target().find("..") != boost::beast::string_view::npos)) {
-      // Build the path to the requested file
-      const std::filesystem::path path =
-          pathCat(m_rootDirectory, request.target());
-      // if file exist remove it
-      if (std::filesystem::exists(path)) {
-        std::filesystem::remove(path);
-        setResponse(http::Utils::wrapper_response(
-            request, boost::beast::http::status::ok, request.target(), ""));
-      }
+    // Build the path to the requested file
+    const std::filesystem::path path =
+        pathCat(m_rootDirectory, request.target());
+    // if file exist remove it
+    if (std::filesystem::exists(path)) {
+      std::filesystem::remove(path);
+      setResponse(http::Utils::wrapper_response(
+          request, boost::beast::http::status::ok, request.target(), ""));
     }
   }
+}
+
+/**
+ * @brief Function to test if targat of request is a valid path
+ *
+ * @param boost::beast::string_view The target of request
+ * @return true The target of request is valid relative path (desc)
+ * @return false The target have bad structure of want to go up on file tree and
+ * it's forbidden
+ */
+bool LocationEndpoint::isValidFileTarget(const boost::beast::string_view& target) {
+  // a valid target is not empty
+  // a valid target start with '/'
+  // a valid target haven't '..' in content
+  return !(target.empty() || '/' != target[0] ||
+           target.find("..") != boost::beast::string_view::npos);
 }
 
 /**

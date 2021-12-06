@@ -7,41 +7,49 @@
 #include "../Exception/ConfigurationException.hpp"
 
 /**
+ * @brief Construct a new Configuration Server object
+ *
+ */
+ConfigurationServer::ConfigurationServer()
+    : ConfigurationServer("./configuration/servers.xml"){};
+
+/**
  * @brief Construct a new Configuration Server:: Configuration Server object
  *
- * @param argv arguments list of server configuration
+ * @param filename path of server configuration file
  */
-ConfigurationServer::ConfigurationServer(const std::vector<std::string>& argv) {
+ConfigurationServer::ConfigurationServer(const std::string &filename) {
 
-  const std::unique_ptr<Logger>& logger = Logger::getInstance();
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
   // if arguments list is empty, read configuration file
-  if (argv.empty()) {
-    boost::property_tree::ptree configuration_properties;
-    // read default configuration file
-    boost::property_tree::read_xml("./configuration/servers.xml", configuration_properties);
+  boost::property_tree::ptree configuration_properties;
+  // read default configuration file
+  boost::property_tree::read_xml(filename, configuration_properties);
 
-    try {
-      // save configuration of server
-      m_description = configuration_properties.get<std::string>("servers.server.description");
-      m_hostname = configuration_properties.get<std::string>("servers.server.hostname");
-      m_root = configuration_properties.get<std::string>("servers.server.endpoints.endpoint.root-directory");
-      m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
-      m_port = configuration_properties.get<uint16_t>("servers.server.port");
+  try {
+    // save configuration of server
+    m_description =
+        configuration_properties.get<std::string>("servers.server.description");
+    m_hostname =
+        configuration_properties.get<std::string>("servers.server.hostname");
+    m_root = configuration_properties.get<std::string>(
+        "servers.server.endpoints.endpoint.root-directory");
+    m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
+    m_port = configuration_properties.get<uint16_t>("servers.server.port");
 
-      logger->info("HTTP_CONFIGURATION",
-                   "Configuration reading : "
-                   "\n -> Description  : " +
-                       m_description + "\n -> Hostname     : " + m_hostname +
-                       "\n -> Port         : " + std::to_string(m_port) +
-                       "\n -> Root         : " + m_root +
-                       "\n -> Thread       : " + std::to_string(m_thread));
+    logger->info("HTTP_CONFIGURATION",
+                 "Configuration reading : "
+                 "\n -> Description  : " +
+                     m_description + "\n -> Hostname     : " + m_hostname +
+                     "\n -> Port         : " + std::to_string(m_port) +
+                     "\n -> Root         : " + m_root +
+                     "\n -> Thread       : " + std::to_string(m_thread));
 
-    } catch (const boost::property_tree::ptree_error &e) {
-      logger->error("HTTP_CONFIGURATION",
+  } catch (const boost::property_tree::ptree_error &e) {
+    logger->error("HTTP_CONFIGURATION",
                   std::string("Configuration reading error") +
                       std::string(e.what()));
-      throw ConfigurationException("HTTP Configuration file is invalid");
-    }
+    throw ConfigurationException("HTTP Configuration file is invalid");
   }
 }
 /**
