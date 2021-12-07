@@ -3,8 +3,10 @@
 #include "../Logger/Logger.hpp"
 #include "Session.hpp"
 #include "Utils.hpp"
+#include <list>
 
 namespace http {
+
 /**
  * @brief Construct a new Http Listener:: Http Listener object
  *
@@ -19,33 +21,26 @@ Listener::Listener(boost::asio::io_context &ioc,
   // set error code variable to stock possibles errors
   boost::beast::error_code ec;
 
-  // Open the acceptor
-  m_acceptor.open(endpoint.protocol(), ec);
-  if (ec) {
-    logger->error("HTTP_CONFIGURATION",
-                  "Acceptor opening failed " + ec.message());
-  } else {
-    // Allow address reuse
-    m_acceptor.set_option(boost::asio::socket_base::reuse_address(true), ec);
+  const std::list<std::pair<std::string, std::function<void(void)>>> acceptorProcessing = {
+   // Open the acceptor
+   { "opening", [this, &ec, &endpoint](){m_acceptor.open(endpoint.protocol(), ec);}},
+   // Allow address reuse
+   { "option settings", [this, &ec](){m_acceptor.set_option(boost::asio::socket_base::reuse_address(true), ec);}},
+   // Bind to the server address
+   { "binding", [this, &ec, &endpoint](){m_acceptor.bind(endpoint, ec);}},
+   // Start listening for connections
+   { "listening", [this, &ec](){m_acceptor.listen(boost::asio::socket_base::max_listen_connections, ec);}}
+  };
+
+  for (const auto& [stepName, stepAction] : acceptorProcessing) {
+    stepAction();
     if (ec) {
       logger->error("HTTP_CONFIGURATION",
-                    "Acceptor option settings failed " + ec.message());
+                  "Acceptor " + stepName + " step failed " + ec.message());
+      break;
     } else {
-      // Bind to the server address
-      m_acceptor.bind(endpoint, ec);
-      if (ec) {
-        logger->error("HTTP_CONFIGURATION",
-                      "Acceptor binding failed " + ec.message());
-      } else {
-        // Start listening for connections
-        m_acceptor.listen(boost::asio::socket_base::max_listen_connections, ec);
-        if (ec) {
-          logger->error("HTTP_CONFIGURATION",
-                        "Acceptor listening failed " + ec.message());
-        } else {
-          logger->info("HTTP_CONFIGURATION", "Acceptor listening");
-        }
-      }
+      logger->error("HTTP_CONFIGURATION",
+                  "Acceptor " + stepName + " step passed");
     }
   }
 }
