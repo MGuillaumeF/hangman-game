@@ -37,6 +37,7 @@ Listener::Listener(boost::asio::io_context &ioc,
     if (ec) {
       logger->error("HTTP_CONFIGURATION",
                   "Acceptor " + stepName + " step failed " + ec.message());
+      break;
     } else {
       logger->error("HTTP_CONFIGURATION",
                   "Acceptor " + stepName + " step passed");
