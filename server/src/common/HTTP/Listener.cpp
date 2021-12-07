@@ -7,8 +7,6 @@
 
 namespace http {
 
-using acceptor_step_t = void (*)(void);
-
 /**
  * @brief Construct a new Http Listener:: Http Listener object
  *
@@ -23,8 +21,8 @@ Listener::Listener(boost::asio::io_context &ioc,
   // set error code variable to stock possibles errors
   boost::beast::error_code ec;
 
-  std::list<std::pair<std::string, acceptor_step_t>> acceptorProcessing = {
-    "opening", [this, &ec, &endpoint](){m_acceptor.open(endpoint.protocol(), ec);}
+  std::list<std::pair<std::string, std::function<void(void)>>> acceptorProcessing = {
+   { "opening", [this, &ec, &endpoint](){m_acceptor.open(endpoint.protocol(), ec);}}
   };
 
   // Open the acceptor
