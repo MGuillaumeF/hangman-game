@@ -24,7 +24,7 @@ Listener::Listener(boost::asio::io_context &ioc,
   boost::beast::error_code ec;
 
   std::list<std::pair<std::string, acceptor_step_t>> acceptorProcessing = {
-    "opening", [&ec, & m_acceptor, &endpoint](){m_acceptor.open(endpoint.protocol(), ec);}
+    {"opening", [&ec, this, &m_acceptor, &endpoint](){m_acceptor.open(endpoint.protocol(), ec);}}
   };
 
   // Open the acceptor
