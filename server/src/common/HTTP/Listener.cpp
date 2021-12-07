@@ -23,7 +23,7 @@ Listener::Listener(boost::asio::io_context &ioc,
   // set error code variable to stock possibles errors
   boost::beast::error_code ec;
 
-  std::list<std::pair<std::string, acceptor_step_t>> = {
+  std::list<std::pair<std::string, acceptor_step_t>> acceptorProcessing = {
     "opening", [&ec, & m_acceptor](){m_acceptor.open(endpoint.protocol(), ec);}
   };
 
