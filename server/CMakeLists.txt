@@ -103,3 +103,15 @@ else ()
   # If boost not found print fatal error message
   message(FATAL_ERROR "Boost not found")
 endif ()
+
+# CPACK DEFINITION
+include(InstallRequiredSystemLibraries)
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Hangman game, Backend server")
+set(CPACK_PACKAGE_VENDOR "MGuillaumeF")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/docs/README.txt")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/docs/Copyright.txt")
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}.${CMake_VERSION_PATCH}")
