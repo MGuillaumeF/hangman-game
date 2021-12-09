@@ -73,7 +73,7 @@ jobs:
     - name: Package server
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
-      run: cpack
+      run: cpack -G "ZIP;DEB"
 
     - name: Archive Server
       uses: actions/upload-artifact@v2
