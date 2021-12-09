@@ -70,6 +70,11 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
+    - name: Package server
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cpack
+
     - name: Archive Server
       uses: actions/upload-artifact@v2
       with:
