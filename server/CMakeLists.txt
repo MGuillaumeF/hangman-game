@@ -107,6 +107,7 @@ endif ()
 # CPACK DEFINITION
 include(InstallRequiredSystemLibraries)
 
+set(CPACK_PACKAGE_NAME "HangmanGame")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Hangman game, Backend server")
 set(CPACK_PACKAGE_VENDOR "MGuillaumeF")
 # set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/docs/README.txt")
