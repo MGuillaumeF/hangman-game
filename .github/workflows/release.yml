@@ -16,7 +16,29 @@ env:
 permissions: write-all
 
 jobs:
+
+ build-client:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: npm install
+
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
+
+    - name: Archive IHM
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
  build-server-linux:
+    needs: [build-client]
     runs-on: ubuntu-latest
     steps:
 
@@ -53,6 +75,7 @@ jobs:
         path: ${{github.workspace}}/server/bin/HangmanGame
 
  build-server-win:
+    needs: [build-client]
     runs-on: windows-latest
     steps:
 
@@ -90,6 +113,7 @@ jobs:
         path: ${{github.workspace}}/server/bin/Debug/*.exe
 
  build-server-MacOSX:
+    needs: [build-client]
     runs-on: macos-11
     steps:
 
@@ -123,23 +147,3 @@ jobs:
       with:
         name: Server-Hangman-Game-MacOSX
         path: ${{github.workspace}}/server/bin/HangmanGame
-
- build-client:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v2
-      
-    - name: Install client's dependencies
-      working-directory: ${{github.workspace}}/client
-      run: npm install
-
-    - name: Build client
-      working-directory: ${{github.workspace}}/client
-      run: npm run build
-
-    - name: Archive IHM
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
