@@ -83,6 +83,7 @@ if (Boost_FOUND)
   # Create application executable files
   add_executable(HangmanGame ${SRCS})
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
+  install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "configuration")
   add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
   add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml) 
