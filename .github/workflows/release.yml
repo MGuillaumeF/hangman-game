@@ -85,6 +85,21 @@ jobs:
         name: Server-Hangman-Game-Linux
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
 
+install-server-linux:
+    needs: [build-server-linux]
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: Server-Hangman-Game-Linux
+
+    - name: install
+      run: sudo dpkg -i HangmanGame-0.1.0-Linux.deb
+
+    - name: display tree
+      run: tree .
+
  build-server-win:
     needs: [build-client]
     runs-on: windows-latest
