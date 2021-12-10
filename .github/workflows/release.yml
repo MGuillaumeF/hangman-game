@@ -98,7 +98,7 @@ jobs:
       run: sudo dpkg -i HangmanGame-0.1.0-Linux.deb
 
     - name: display tree
-      run: tree .
+      run: tree /usr/
 
     - name: try run
       run: HangmanGame
