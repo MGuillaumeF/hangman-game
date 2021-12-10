@@ -100,6 +100,9 @@ jobs:
     - name: display tree
       run: tree .
 
+    - name: try run
+      run: HangmanGame
+
  build-server-win:
     needs: [build-client]
     runs-on: windows-latest
