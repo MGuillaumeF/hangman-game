@@ -70,11 +70,6 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
-    - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
-      # Build your program with the given configuration
-      run: cpack -G "ZIP;DEB"
-
     - name: Archive Server
       uses: actions/upload-artifact@v2
       with:
@@ -163,11 +158,6 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
-    - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
-      # Build your program with the given configuration
-      run: cpack -G "ZIP;NSIS"
-
     - name: Archive Server windows 
       uses: actions/upload-artifact@v2
       with:
@@ -208,11 +198,6 @@ jobs:
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
-
-    - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
-      # Build your program with the given configuration
-      run: cpack -G "ZIP"
 
     - name: Archive Server
       uses: actions/upload-artifact@v2
