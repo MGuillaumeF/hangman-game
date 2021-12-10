@@ -85,7 +85,7 @@ jobs:
         name: Server-Hangman-Game-Linux
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
 
-install-server-linux:
+ install-server-linux:
     needs: [build-server-linux]
     runs-on: ubuntu-latest
     steps:
