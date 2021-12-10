@@ -97,11 +97,12 @@ jobs:
     - name: install
       run: sudo dpkg -i HangmanGame-0.1.0-Linux.deb
 
-    - name: display tree
-      run: tree /usr/
+    - name: display installation tree
+      run: tree /usr/HangmanGame
 
     - name: try run
-      run: HangmanGame
+      working-directory: /usr/HangmanGame
+      run: ./HangmanGame
 
  build-server-win:
     needs: [build-client]
