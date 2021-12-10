@@ -101,7 +101,7 @@ jobs:
       run: tree .
 
     - name: try run
-      run: hangmangame
+      run: HangmanGame
 
  build-server-win:
     needs: [build-client]
