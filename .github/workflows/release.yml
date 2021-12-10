@@ -47,6 +47,11 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -68,11 +73,17 @@ jobs:
       # Build your program with the given configuration
       run: cpack -G "ZIP;DEB"
 
-    - name: Archive Server
+    - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game-Linux
-        path: ${{github.workspace}}/server/bin/HangmanGame
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
+
+    - name: Archive Server DEB
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game-Linux
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
 
  build-server-win:
     needs: [build-client]
@@ -80,6 +91,11 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -106,11 +122,17 @@ jobs:
       # Build your program with the given configuration
       run: cpack -G "ZIP;NSIS"
 
-    - name: Archive Server windows 
+    - name: Archive Server windows ZIP
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/Debug/*.exe
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
+
+    - name: Archive Server windows NSIS
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game-Win
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
 
  build-server-MacOSX:
     needs: [build-client]
@@ -118,6 +140,11 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -142,8 +169,8 @@ jobs:
       # Build your program with the given configuration
       run: cpack -G "ZIP"
 
-    - name: Archive Server
+    - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game-MacOSX
-        path: ${{github.workspace}}/server/bin/HangmanGame
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Darwin.zip
