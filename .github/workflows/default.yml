@@ -216,6 +216,9 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports; 
