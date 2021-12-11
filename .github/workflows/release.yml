@@ -136,22 +136,22 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
-    - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
-      # Build your program with the given configuration
-      run: cpack -G "ZIP;NSIS"
+    # - name: Package server
+    #   working-directory: ${{github.workspace}}/server/bin
+    #   # Build your program with the given configuration
+    #   run: cpack -G "ZIP;NSIS"
 
-    - name: Archive Server windows ZIP
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
+    # - name: Archive Server windows ZIP
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: Server-Hangman-Game-Win
+    #     path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
 
-    - name: Archive Server windows NSIS
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
+    # - name: Archive Server windows NSIS
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: Server-Hangman-Game-Win
+    #     path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-win64.exe
 
  build-server-MacOSX:
     needs: [build-client]
