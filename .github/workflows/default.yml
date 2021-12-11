@@ -210,64 +210,8 @@ jobs:
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
-
- build-client:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v2
-    
-    - name: Install nodejs
-      run: sudo apt install -y nodejs
-      
-    - name: Install client's dependencies
-      working-directory: ${{github.workspace}}/client
-      run: npm install
-
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint || echo FAILED
-
-    - name: Stylelint analyze
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:stylelint
-
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
-
-    - name: Build client
-      working-directory: ${{github.workspace}}/client
-      run: npm run build
-
-    - name: Archive IHM
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Client tests
-      working-directory: ${{github.workspace}}/client
-      run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
-
-    - name: Archive IHM Tests videos 
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Tests-Videos 
-        path: ${{github.workspace}}/client/cypress/videos
-
-    - name: Print summary coverage
-      working-directory: ${{github.workspace}}/client
-      run: npx nyc report --reporter=lcov --reporter=text-summary
       
  sonarcloud-analyse:
-    # needs: [build-server-linux, build-client]
     runs-on: ubuntu-latest
     steps:
 
@@ -323,7 +267,7 @@ jobs:
         name: Server-Hangman-Game Unit Test - Reports
         path: ${{github.workspace}}/server/reports
 
-    - name: Install client's dependencies
+     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: npm install
 
