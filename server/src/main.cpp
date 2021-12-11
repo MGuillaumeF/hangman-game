@@ -23,7 +23,7 @@
  * @param message The message to print
  */
 void appenderFile(const std::string &filename, const std::string &message) {
-  std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
+  const std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
   file->write(message.c_str(), message.size());
   file->write("\n", 1);
 }
