@@ -134,7 +134,7 @@ jobs:
     - name: Build server windows
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin --target ALL_BUILD --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
 
     - name: Package server
       working-directory: ${{github.workspace}}/server/bin
