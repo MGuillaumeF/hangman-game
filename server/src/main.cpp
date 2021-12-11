@@ -17,31 +17,37 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-// global streams for files loggers
-std::fstream g_fs;
-// light http access logs
-std::fstream g_access_fs;
+/**
+ * To write a log message
+ * @param message The message to print
+ */
+void appenderFile(const std::string &filename, const std::string &message) {
+  std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
+  file->write(message.c_str(), message.size());
+  file->write("\n", 1);
+}
 
 /**
  * To write a log message
  * @param message The message to print
  */
-void appenderFile(const std::string &message) { g_fs << message << std::endl; }
+void appenderAuditFile(const std::string &message) {
+  // global streams for files loggers
+  appenderFile("AUDIT", message);
+}
+
 /**
  * To write a log message
  * @param message The message to print
  */
 void appenderAccessFile(const std::string &message) {
-  g_access_fs << message << std::endl;
+  // light http access logs
+  appenderFile("ACCESS", message);
 }
 
 int32_t main(int argc, char *argv[]) {
   uint8_t MAX_ARGS_QUANTITY = 4;
   int16_t exitStatus = EXIT_SUCCESS;
-  g_fs.open("./logs/logfile.log",
-            std::fstream::in | std::fstream::out | std::fstream::app);
-  g_access_fs.open("./logs/access.log",
-                   std::fstream::in | std::fstream::out | std::fstream::app);
 
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
@@ -51,13 +57,16 @@ int32_t main(int argc, char *argv[]) {
   logger->addAppender(ELogLevel::LWARN, "HTTP_ACCESS", appenderAccessFile);
   logger->addAppender(ELogLevel::LERROR, "HTTP_ACCESS", appenderAccessFile);
 
-  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ", appenderFile);
-  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ", appenderFile);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ", appenderAuditFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ", appenderAuditFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ", appenderAuditFile);
 
-  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION", appenderFile);
-  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION", appenderFile);
-  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION", appenderFile);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_DATA_READ",
                       Logger::defaultOutAppender);
@@ -146,8 +155,6 @@ int32_t main(int argc, char *argv[]) {
     logger->error("HTTP_CONFIGURATION",
                   "Usage: Server <address> <port> "
                   "<threads>\nExample:\n    Server 0.0.0.0 8080 1");
-    g_fs.close();
-    g_access_fs.close();
     exitStatus = EXIT_FAILURE;
   } else {
     // If configuration of server is in arguments of execution

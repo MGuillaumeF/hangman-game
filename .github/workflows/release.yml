@@ -100,9 +100,9 @@ jobs:
     - name: display installation tree
       run: tree /usr/HangmanGame
 
-    - name: try run
-      working-directory: /usr/HangmanGame
-      run: ./HangmanGame
+    # - name: try run
+    #   working-directory: /usr/HangmanGame
+    #   run: ./HangmanGame
 
  build-server-win:
     needs: [build-client]
@@ -127,14 +127,14 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server windows
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Package server
       working-directory: ${{github.workspace}}/server/bin
