@@ -1,5 +1,6 @@
 
 #include "Logger.hpp"
+#include <fstream>
 #include <iostream>
 #include <streambuf>
 
@@ -11,15 +12,15 @@ std::map<ELogLevel, std::string, std::less<>> Logger::s_corresp = {
     {ELogLevel::LWARN, "WARN"},
     {ELogLevel::LERROR, "ERROR"}};
 
+std::map<std::string, std::unique_ptr<std::ofstream>, std::less<>>
+    Logger::s_files = {};
+
 /**
  * @brief Get instance of singleton logger
  *
  * @return Logger* address of logger instance
  */
-std::unique_ptr<Logger>& Logger::getInstance() {
- 
-  return s_pInstance;
-}
+std::unique_ptr<Logger> &Logger::getInstance() { return s_pInstance; }
 
 /**
  * @brief To get the log level of Logger
@@ -107,6 +108,21 @@ void Logger::defaultErrAppender(const std::string &message) {
 }
 
 /**
+ * @brief Get the Logger File object
+ *
+ * @param filename The name of logger file
+ * @return std::fstream The stream of file
+ */
+std::unique_ptr<std::ofstream> &
+Logger::getLoggerFile(const std::string &filename) {
+  if (!Logger::s_files.contains(filename)) {
+    Logger::s_files[filename] =
+        std::make_unique<std::ofstream>("./logs/" + filename + ".log");
+  }
+  return Logger::s_files[filename];
+}
+
+/**
  * To write a log message
  * @param level The level of message
  * @param theme The theme of message
@@ -122,8 +138,9 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
           std::set<appender_t>{appender};
     }
   } else {
-    m_appenders[theme] = std::map<std::string, std::set<appender_t>, std::less<>>{
-        {Logger::s_corresp[level], std::set<appender_t>{appender}}};
+    m_appenders[theme] =
+        std::map<std::string, std::set<appender_t>, std::less<>>{
+            {Logger::s_corresp[level], std::set<appender_t>{appender}}};
   }
 }
 
@@ -133,8 +150,7 @@ void Logger::addAppender(const ELogLevel level, const std::string &theme,
  */
 void Logger::write(const std::string &level, const std::string &theme,
                    const std::string &msg) const {
-  if (m_appenders.contains(theme) &&
-      m_appenders.at(theme).contains(level)) {
+  if (m_appenders.contains(theme) && m_appenders.at(theme).contains(level)) {
     const std::string message = getLog(level, theme, msg);
     const std::set<appender_t> appenders = m_appenders.at(theme).at(level);
     for (const appender_t &appender : appenders) {

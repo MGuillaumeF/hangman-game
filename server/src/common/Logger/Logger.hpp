@@ -4,11 +4,11 @@
 /**
  * The string include is to message parameters of Logger
  */
+#include <functional>
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
-#include <memory>
-#include <functional>
 
 /**
  * All levels available for logs
@@ -48,7 +48,8 @@ enum class ELogLevel {
 class Logger {
 public:
   using appender_t = void (*)(const std::string &);
-  using appendersByLevel = std::map<std::string, std::set<appender_t>, std::less<>>;
+  using appendersByLevel =
+      std::map<std::string, std::set<appender_t>, std::less<>>;
   using appendersByTheme = std::map<std::string, appendersByLevel, std::less<>>;
 
   /**
@@ -62,7 +63,7 @@ public:
    *
    * @return Logger* address of logger instance
    */
-  static std::unique_ptr<Logger>& getInstance();
+  static std::unique_ptr<Logger> &getInstance();
   /**
    * To get the log level of Logger
    * @see LEVEL
@@ -121,11 +122,21 @@ public:
    * @param message The message to print
    */
   static void defaultOutAppender(const std::string &message);
+
   /**
    * Function of default std:cerr appender
    * @param message The message to print
    */
   static void defaultErrAppender(const std::string &message);
+
+  /**
+   * @brief Get the Logger File object
+   *
+   * @param filename The name of logger file
+   * @return std::fstream The stream of file
+   */
+  static std::unique_ptr<std::ofstream> &
+  getLoggerFile(const std::string &filename);
 
   Logger(Logger &) = delete;
   Logger(Logger &&) = delete;
@@ -135,6 +146,8 @@ public:
 private:
   static std::unique_ptr<Logger> s_pInstance;
   static std::map<ELogLevel, std::string, std::less<>> s_corresp;
+  static std::map<std::string, std::unique_ptr<std::ofstream>, std::less<>>
+      s_files;
   /**
    * The current log Level
    * @see LEVEL
