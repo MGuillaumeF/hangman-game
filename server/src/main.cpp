@@ -19,6 +19,7 @@
 
 /**
  * To write a log message
+ * @param filename The name of log file 
  * @param message The message to print
  */
 void appenderFile(const std::string &filename, const std::string &message) {
