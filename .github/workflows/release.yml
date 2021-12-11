@@ -127,14 +127,14 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_CONFIGURATION_TYPES="Release|x64"
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server windows
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/server/bin --target ALL_BUILD --config ${{env.BUILD_TYPE}}
 
     - name: Package server
       working-directory: ${{github.workspace}}/server/bin

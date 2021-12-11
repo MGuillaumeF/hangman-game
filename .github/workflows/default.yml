@@ -267,7 +267,7 @@ jobs:
         name: Server-Hangman-Game Unit Test - Reports
         path: ${{github.workspace}}/server/reports
 
-     - name: Install client's dependencies
+    - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: npm install
 
