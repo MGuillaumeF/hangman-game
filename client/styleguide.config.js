@@ -66,7 +66,7 @@ module.exports = {
     {
       name: "Live Demo",
       external: true,
-      href: "https://github.com/MGuillaumeF/MOCOR#readme"
+      href: "https://github.com/MGuillaumeF/hangman-game#readme"
     }
   ]
 };

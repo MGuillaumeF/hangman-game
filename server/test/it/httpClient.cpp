@@ -108,30 +108,30 @@ int32_t main(int argc, char *argv[]) {
         sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::ok) {
-      std::cout << "1 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "1 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.body = "{\"login\" : \"a\", \"errorKey\" : \"b\"}";
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "2 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "2 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "3 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "3 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -140,10 +140,10 @@ int32_t main(int argc, char *argv[]) {
 
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "4 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "4 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -152,40 +152,40 @@ int32_t main(int argc, char *argv[]) {
 
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "5 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "5 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.method = boost::beast::http::verb::get;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "6 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "6 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.method = boost::beast::http::verb::put;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "7 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "7 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
     requestProperties.method = boost::beast::http::verb::patch;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "8 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "8 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -199,10 +199,10 @@ int32_t main(int argc, char *argv[]) {
     response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::not_found) {
-      std::cout << "10 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "10 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -210,10 +210,10 @@ int32_t main(int argc, char *argv[]) {
     response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::bad_request) {
-      std::cout << "10 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "10 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -222,10 +222,10 @@ int32_t main(int argc, char *argv[]) {
     response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::method_not_allowed) {
-      std::cout << "11 : [success]" << std::endl;
+      std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
       nbSuccess++;
     } else {
-      std::cerr << "11 : [failed]" << std::endl;
+      std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
       nbFailed++;
     }
 
@@ -235,12 +235,35 @@ int32_t main(int argc, char *argv[]) {
       response = sendRequest(requestProperties);
 
       if (response.result() == boost::beast::http::status::ok) {
-        std::cout << "9 : [success]" << std::endl;
+        std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
         nbSuccess++;
       } else {
-        std::cerr << "9 : [failed]" << std::endl;
+        std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
         nbFailed++;
       }
+
+      requestProperties.methode = boost::beast::http::verb::delete_;
+      response = sendRequest(requestProperties);
+
+      if (response.result() == boost::beast::http::status::ok) {
+        std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
+        nbSuccess++;
+      } else {
+        std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
+        nbFailed++;
+      }
+
+      requestProperties.methode = boost::beast::http::verb::get;
+      response = sendRequest(requestProperties);
+
+      if (response.result() == boost::beast::http::status::not_found) {
+        std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
+        nbSuccess++;
+      } else {
+        std::cerr << (nbSuccess + nbFailed + 1) << " : [failed]" << std::endl;
+        nbFailed++;
+      }
+
     } catch (const std::exception &ex) {
       std::cerr << "Get file test has error " << ex.what() << std::endl;
     }

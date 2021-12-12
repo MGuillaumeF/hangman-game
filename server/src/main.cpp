@@ -17,13 +17,13 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-/**function to print data in files
- *
- * @param filename The file name where push the message
+/**
+ * To write a log message
+ * @param filename The name of log file
  * @param message The message to print
  */
 void appenderFile(const std::string &filename, const std::string &message) {
-  std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
+  const std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
   file->write(message.c_str(), message.size());
   file->write("\n", 1);
 }
@@ -46,10 +46,7 @@ void appenderAccessFile(const std::string &message) {
   appenderFile("ACCESS", message);
 }
 
-int32_t main(int argc, char *argv[]) {
-  uint8_t MAX_ARGS_QUANTITY = 4;
-  int16_t exitStatus = EXIT_SUCCESS;
-
+void loadLoggerConfiguration() {
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
@@ -88,6 +85,14 @@ int32_t main(int argc, char *argv[]) {
                       Logger::defaultErrAppender);
 
   logger->setLevel(ELogLevel::LDEBUG);
+}
+
+int32_t main(int argc, char *argv[]) {
+  int16_t exitStatus = EXIT_SUCCESS;
+
+  loadLoggerConfiguration();
+
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   boost::property_tree::ptree pt;
   try {
@@ -151,38 +156,25 @@ int32_t main(int argc, char *argv[]) {
                       std::string(ex.what()));
   }
 
-  // Check command line arguments.
-  if (MAX_ARGS_QUANTITY != argc) {
-    logger->error("HTTP_CONFIGURATION",
-                  "Usage: Server <address> <port> "
-                  "<threads>\nExample:\n    Server 0.0.0.0 8080 1");
-    exitStatus = EXIT_FAILURE;
-  } else {
-    // If configuration of server is in arguments of execution
-    std::vector<std::string> arguments;
-    for (uint32_t i = 0; i < argc; i++) {
-      arguments.emplace_back(argv[i]);
-    }
-    // server is started
-    auto config = ConfigurationServer();
+  // get server configuration
+  auto config = ConfigurationServer();
 
-    http::Session::addRequestDispatcher(
-        "/api/token",
-        [](const boost::beast::http::request<boost::beast::http::string_body>
-               &req) {
-          HttpTokenEndpoint tokenEndpoint(req);
-          tokenEndpoint.dispatchRequest();
-          return tokenEndpoint.getResponse();
-        });
-    http::Session::addRequestDispatcher(
-        "/",
-        [](const boost::beast::http::request<boost::beast::http::string_body>
-               &req) {
-          LocationEndpoint rootDirectoryEndpoint(req, ".");
-          rootDirectoryEndpoint.dispatchRequest();
-          return rootDirectoryEndpoint.getResponse();
-        });
-    auto server = http::Server("0.0.0.0", 8080, 1);
-  }
+  http::Session::addRequestDispatcher(
+      "/api/token",
+      [](const boost::beast::http::request<boost::beast::http::string_body>
+             &req) {
+        HttpTokenEndpoint tokenEndpoint(req);
+        tokenEndpoint.dispatchRequest();
+        return tokenEndpoint.getResponse();
+      });
+  http::Session::addRequestDispatcher(
+      "/", [](const boost::beast::http::request<boost::beast::http::string_body>
+                  &req) {
+        LocationEndpoint rootDirectoryEndpoint(req, ".");
+        rootDirectoryEndpoint.dispatchRequest();
+        return rootDirectoryEndpoint.getResponse();
+      });
+  auto server = http::Server("0.0.0.0", 8080, 1);
+
   return exitStatus;
 }
