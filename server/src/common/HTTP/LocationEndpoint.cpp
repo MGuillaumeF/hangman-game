@@ -114,8 +114,6 @@ void LocationEndpoint::doGet() {
               std::string(http::Utils::getMimeType(path)));
       // add length of body in meta data of request
       res.content_length(size);
-      // prepare response body
-      res.prepare_payload();
       setResponse(res);
     }
   }
