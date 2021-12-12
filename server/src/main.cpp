@@ -46,7 +46,7 @@ void appenderAccessFile(const std::string &message) {
   appenderFile("ACCESS", message);
 }
 
-vois loadLoggerConfiguration() {
+void loadLoggerConfiguration() {
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
