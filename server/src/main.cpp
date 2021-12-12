@@ -19,7 +19,7 @@
 
 /**
  * To write a log message
- * @param filename The name of log file 
+ * @param filename The name of log file
  * @param message The message to print
  */
 void appenderFile(const std::string &filename, const std::string &message) {
@@ -89,7 +89,7 @@ void loadLoggerConfiguration() {
 
 int32_t main(int argc, char *argv[]) {
   int16_t exitStatus = EXIT_SUCCESS;
-  
+
   loadLoggerConfiguration();
 
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
@@ -156,26 +156,25 @@ int32_t main(int argc, char *argv[]) {
                       std::string(ex.what()));
   }
 
-    // get server configuration
-    auto config = ConfigurationServer();
+  // get server configuration
+  auto config = ConfigurationServer();
 
-    http::Session::addRequestDispatcher(
-        "/api/token",
-        [](const boost::beast::http::request<boost::beast::http::string_body>
-               &req) {
-          HttpTokenEndpoint tokenEndpoint(req);
-          tokenEndpoint.dispatchRequest();
-          return tokenEndpoint.getResponse();
-        });
-    http::Session::addRequestDispatcher(
-        "/",
-        [](const boost::beast::http::request<boost::beast::http::string_body>
-               &req) {
-          LocationEndpoint rootDirectoryEndpoint(req, ".");
-          rootDirectoryEndpoint.dispatchRequest();
-          return rootDirectoryEndpoint.getResponse();
-        });
-    auto server = http::Server("0.0.0.0", 8080, 1);
- 
+  http::Session::addRequestDispatcher(
+      "/api/token",
+      [](const boost::beast::http::request<boost::beast::http::string_body>
+             &req) {
+        HttpTokenEndpoint tokenEndpoint(req);
+        tokenEndpoint.dispatchRequest();
+        return tokenEndpoint.getResponse();
+      });
+  http::Session::addRequestDispatcher(
+      "/", [](const boost::beast::http::request<boost::beast::http::string_body>
+                  &req) {
+        LocationEndpoint rootDirectoryEndpoint(req, ".");
+        rootDirectoryEndpoint.dispatchRequest();
+        return rootDirectoryEndpoint.getResponse();
+      });
+  auto server = http::Server("0.0.0.0", 8080, 1);
+
   return exitStatus;
 }
