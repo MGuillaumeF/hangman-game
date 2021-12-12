@@ -242,7 +242,7 @@ int32_t main(int argc, char *argv[]) {
         nbFailed++;
       }
 
-      requestProperties.methode = boost::beast::http::verb::delete_;
+      requestProperties.method = boost::beast::http::verb::delete_;
       response = sendRequest(requestProperties);
 
       if (response.result() == boost::beast::http::status::ok) {
@@ -253,7 +253,7 @@ int32_t main(int argc, char *argv[]) {
         nbFailed++;
       }
 
-      requestProperties.methode = boost::beast::http::verb::get;
+      requestProperties.method = boost::beast::http::verb::get;
       response = sendRequest(requestProperties);
 
       if (response.result() == boost::beast::http::status::not_found) {
