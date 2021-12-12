@@ -46,10 +46,7 @@ void appenderAccessFile(const std::string &message) {
   appenderFile("ACCESS", message);
 }
 
-int32_t main(int argc, char *argv[]) {
-  uint8_t MAX_ARGS_QUANTITY = 4;
-  int16_t exitStatus = EXIT_SUCCESS;
-
+vois loadLoggerConfiguration() {
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
@@ -88,6 +85,14 @@ int32_t main(int argc, char *argv[]) {
                       Logger::defaultErrAppender);
 
   logger->setLevel(ELogLevel::LDEBUG);
+}
+
+int32_t main(int argc, char *argv[]) {
+  int16_t exitStatus = EXIT_SUCCESS;
+  
+  loadLoggerConfiguration();
+
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   boost::property_tree::ptree pt;
   try {
@@ -151,19 +156,7 @@ int32_t main(int argc, char *argv[]) {
                       std::string(ex.what()));
   }
 
-  // Check command line arguments.
-  if (MAX_ARGS_QUANTITY != argc) {
-    logger->error("HTTP_CONFIGURATION",
-                  "Usage: Server <address> <port> "
-                  "<threads>\nExample:\n    Server 0.0.0.0 8080 1");
-    exitStatus = EXIT_FAILURE;
-  } else {
-    // If configuration of server is in arguments of execution
-    std::vector<std::string> arguments;
-    for (uint32_t i = 0; i < argc; i++) {
-      arguments.emplace_back(argv[i]);
-    }
-    // server is started
+    // get server configuration
     auto config = ConfigurationServer();
 
     http::Session::addRequestDispatcher(
@@ -183,6 +176,6 @@ int32_t main(int argc, char *argv[]) {
           return rootDirectoryEndpoint.getResponse();
         });
     auto server = http::Server("0.0.0.0", 8080, 1);
-  }
+ 
   return exitStatus;
 }
