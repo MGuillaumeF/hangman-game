@@ -15,7 +15,7 @@ public:
   explicit HttpTokenEndpoint(
       const boost::beast::http::request<boost::beast::http::string_body> &req);
   /**
-   * @brief Methode to overwrite POST methode
+   * @brief Method to overwrite POST method
    */
   void doPost() override;
   /**

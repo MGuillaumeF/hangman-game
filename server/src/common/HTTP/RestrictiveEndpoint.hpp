@@ -105,7 +105,7 @@ public:
   }
 
   /**
-   * @brief Method to check if HTTP methode is allowed
+   * @brief Method to check if HTTP method is allowed
    *
    * @param method The HTTP method to test
    * @return true - The HTTP method is allowed

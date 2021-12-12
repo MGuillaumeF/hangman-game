@@ -17,12 +17,12 @@
 HttpTokenEndpoint::HttpTokenEndpoint(
     const boost::beast::http::request<boost::beast::http::string_body> &req)
     : http::RestrictiveEndpoint(req,
-                                // Only POST and DELETE methode are allowed
+                                // Only POST and DELETE method are allowed
                                 {boost::beast::http::verb::post,
                                  boost::beast::http::verb::delete_}) {}
 
 /**
- * @brief Methode to overwrite POST methode
+ * @brief Method to overwrite POST method
  *
  */
 void HttpTokenEndpoint::doPost() {

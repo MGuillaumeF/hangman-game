@@ -131,7 +131,7 @@ public:
    */
   void doClose();
   /**
-   * @brief methode to add route for prefix uri
+   * @brief method to add route for prefix uri
    *
    * @param target The prefix of uri to dispatch requests
    * @param handler The handler function to call

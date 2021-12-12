@@ -23,7 +23,7 @@ LocationEndpoint::LocationEndpoint(
     const std::string_view &rootDirectory)
     : http::RestrictiveEndpoint(
           req,
-          // Only GET and DELETE methode are allowed
+          // Only GET and DELETE method are allowed
           {boost::beast::http::verb::get, boost::beast::http::verb::delete_}),
       m_rootDirectory(rootDirectory) {}
 
@@ -62,7 +62,7 @@ std::string LocationEndpoint::pathCat(const boost::beast::string_view &base,
 }
 
 /**
- * @brief Methode to read file with GET methode
+ * @brief Method to read file with GET method
  *
  */
 void LocationEndpoint::doGet() {
@@ -133,7 +133,7 @@ void LocationEndpoint::doGet() {
 }
 
 /**
- * @brief Methode to delete file with DELETE methode
+ * @brief Method to delete file with DELETE method
  *
  */
 void LocationEndpoint::doDelete() {
@@ -169,7 +169,8 @@ void LocationEndpoint::doDelete() {
  * @return false The target have bad structure of want to go up on file tree and
  * it's forbidden
  */
-bool LocationEndpoint::isValidFileTarget(const boost::beast::string_view& target) {
+bool LocationEndpoint::isValidFileTarget(
+    const boost::beast::string_view &target) {
   // a valid target is not empty
   // a valid target start with '/'
   // a valid target haven't '..' in content

@@ -18,13 +18,13 @@ public:
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const std::string_view &rootDirectory);
   /**
-   * @brief Methode to read file with GET methode
+   * @brief Method to read file with GET method
    *
    */
   void doGet() override;
 
   /**
-   * @brief Methode to delete file with DELETE methode
+   * @brief Method to delete file with DELETE method
    *
    */
   void doDelete() override;
@@ -59,7 +59,7 @@ private:
    * @return false The target have bad structure of want to go up on file tree
    * and it's forbidden
    */
-  static bool isValidFileTarget(const boost::beast::string_view& target);
+  static bool isValidFileTarget(const boost::beast::string_view &target);
 };
 
 #endif // __HTTP_LOCATION_ENDPOINT_HPP__

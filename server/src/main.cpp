@@ -17,8 +17,9 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-/**
- * To write a log message
+/**function to print data in files
+ *
+ * @param filename The file name where push the message
  * @param message The message to print
  */
 void appenderFile(const std::string &filename, const std::string &message) {

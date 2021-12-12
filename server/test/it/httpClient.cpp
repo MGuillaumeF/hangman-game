@@ -21,7 +21,7 @@ struct REQUEST {
   uint16_t port = 8000;
   uint8_t version = 11;
   std::string body = "";
-  boost::beast::http::verb methode = boost::beast::http::verb::post;
+  boost::beast::http::verb method = boost::beast::http::verb::post;
 };
 
 boost::beast::http::response<boost::beast::http::dynamic_body>
@@ -43,7 +43,7 @@ sendRequest(REQUEST requestProperties) {
 
   // Set up an HTTP GET request message
   boost::beast::http::request<boost::beast::http::string_body> request{
-      requestProperties.methode, requestProperties.target,
+      requestProperties.method, requestProperties.target,
       requestProperties.version};
   request.set(boost::beast::http::field::host,
               requestProperties.hostname.c_str());
@@ -102,7 +102,7 @@ int32_t main(int argc, char *argv[]) {
     requestProperties.headers = {{"Content-Type", "application/json"},
                                  {"Accept", "application/json"}};
 
-    requestProperties.methode = boost::beast::http::verb::post;
+    requestProperties.method = boost::beast::http::verb::post;
     requestProperties.body = "{\"login\" : \"a\", \"password\" : \"b\"}";
     boost::beast::http::response<boost::beast::http::dynamic_body> response =
         sendRequest(requestProperties);
@@ -159,7 +159,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.methode = boost::beast::http::verb::get;
+    requestProperties.method = boost::beast::http::verb::get;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
       std::cout << "6 : [success]" << std::endl;
@@ -169,7 +169,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.methode = boost::beast::http::verb::put;
+    requestProperties.method = boost::beast::http::verb::put;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
       std::cout << "7 : [success]" << std::endl;
@@ -179,7 +179,7 @@ int32_t main(int argc, char *argv[]) {
       nbFailed++;
     }
 
-    requestProperties.methode = boost::beast::http::verb::patch;
+    requestProperties.method = boost::beast::http::verb::patch;
     response = sendRequest(requestProperties);
     if (response.result() == boost::beast::http::status::method_not_allowed) {
       std::cout << "8 : [success]" << std::endl;
@@ -192,7 +192,7 @@ int32_t main(int argc, char *argv[]) {
     // ********************************** file path test
     requestProperties.headers = {};
 
-    requestProperties.methode = boost::beast::http::verb::get;
+    requestProperties.method = boost::beast::http::verb::get;
     requestProperties.body = "";
 
     requestProperties.target = "/bin/configuration/mime-types.xml-old";
@@ -218,7 +218,7 @@ int32_t main(int argc, char *argv[]) {
     }
 
     requestProperties.target = "/configuration/mime-types.xml";
-    requestProperties.methode = boost::beast::http::verb::patch;
+    requestProperties.method = boost::beast::http::verb::patch;
     response = sendRequest(requestProperties);
 
     if (response.result() == boost::beast::http::status::method_not_allowed) {
@@ -231,7 +231,7 @@ int32_t main(int argc, char *argv[]) {
 
     try {
       requestProperties.target = "/configuration/mime-types.xml";
-      requestProperties.methode = boost::beast::http::verb::get;
+      requestProperties.method = boost::beast::http::verb::get;
       response = sendRequest(requestProperties);
 
       if (response.result() == boost::beast::http::status::ok) {
