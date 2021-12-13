@@ -5,7 +5,7 @@
 /**
  * Http Endpoint Class to create HTTP response
  */
-class LocationEndpoint : public http::RestrictiveEndpoint {
+class LocationEndpoint final : public http::RestrictiveEndpoint {
 
 public:
   /**
@@ -21,13 +21,13 @@ public:
    * @brief Method to read file with GET method
    *
    */
-  void doGet() override;
+  void doGet() override final;
 
   /**
    * @brief Method to delete file with DELETE method
    *
    */
-  void doDelete() override;
+  void doDelete() override final;
 
   /**
    * @brief Destroy the Http Token Endpoint object

@@ -5,7 +5,7 @@
 /**
  * Http Endpoint Class ito create HTTP response
  */
-class HttpTokenEndpoint : public http::RestrictiveEndpoint {
+class HttpTokenEndpoint final : public http::RestrictiveEndpoint {
 
 public:
   /**
@@ -17,7 +17,7 @@ public:
   /**
    * @brief Method to overwrite POST method
    */
-  void doPost() override;
+  void doPost() override final;
   /**
    * @brief Destroy the Http Token Endpoint object
    */
