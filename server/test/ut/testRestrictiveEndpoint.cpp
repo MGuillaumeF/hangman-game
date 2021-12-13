@@ -17,36 +17,26 @@ struct request_test {
 };
 
 std::list<request_test> requests_tests = {
-    {
-      message : "RestrictiveEndpoint test POST not implemented method",
-      method : boost::beast::http::verb::post,
-      expected_status : 501U,
-      expected_body_content : expected_body_content_501
-    },
-    {
-      message : "RestrictiveEndpoint test GET not implemented method",
-      method : boost::beast::http::verb::get,
-      expected_status : 501U,
-      expected_body_content : expected_body_content_501
-    },
-    {
-      message : "RestrictiveEndpoint test PUT not implemented method",
-      method : boost::beast::http::verb::put,
-      expected_status : 501U,
-      expected_body_content : expected_body_content_501
-    },
-    {
-      message : "RestrictiveEndpoint test PATCH not allowed method",
-      method : boost::beast::http::verb::patch,
-      expected_status : 405U,
-      expected_body_content : expected_body_content_405
-    },
-    {
-      message : "RestrictiveEndpoint test DELETE not implemented method",
-      method : boost::beast::http::verb::delete_,
-      expected_status : 501U,
-      expected_body_content : expected_body_content_501
-    }};
+    {.message = "RestrictiveEndpoint test POST not implemented method",
+     .method = boost::beast::http::verb::post,
+     .expected_status = 501U,
+     .expected_body_content = expected_body_content_501},
+    {.message = "RestrictiveEndpoint test GET not implemented method",
+     .method = boost::beast::http::verb::get,
+     .expected_status = 501U,
+     .expected_body_content = expected_body_content_501},
+    {.message = "RestrictiveEndpoint test PUT not implemented method",
+     .method = boost::beast::http::verb::put,
+     .expected_status = 501U,
+     .expected_body_content = expected_body_content_501},
+    {.message = "RestrictiveEndpoint test PATCH not allowed method",
+     .method = boost::beast::http::verb::patch,
+     .expected_status = 405U,
+     .expected_body_content = expected_body_content_405},
+    {.message = "RestrictiveEndpoint test DELETE not implemented method",
+     .method = boost::beast::http::verb::delete_,
+     .expected_status = 501U,
+     .expected_body_content = expected_body_content_501}};
 
 BOOST_AUTO_TEST_SUITE(testsRestrictiveEndpoint)
 
