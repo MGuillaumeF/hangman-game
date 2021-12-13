@@ -39,7 +39,7 @@ std::list<request_test> requests_tests = {
       message : "RestrictiveEndpoint test PATCH not allowed method",
       method : boost::beast::http::verb::patch,
       expected_status : 405U,
-      expected_body_content : expected_body_content_501
+      expected_body_content : expected_body_content_405
     },
     {
       message : "RestrictiveEndpoint test DELETE not implemented method",
@@ -55,13 +55,13 @@ BOOST_AUTO_TEST_CASE(testsRestrictiveEndpointMethods) {
   request.target("/");
   for (const request_test &rt : requests_tests) {
 
+    request.method(rt.method);
     http::RestrictiveEndpoint restrictiveEndpoint(
         request,
         {boost::beast::http::verb::post, boost::beast::http::verb::get,
          boost::beast::http::verb::put, boost::beast::http::verb::delete_});
 
     std::cout << "TEST CASE : " << rt.message << std::endl;
-    request.method(rt.method);
     restrictiveEndpoint.dispatchRequest();
     BOOST_CHECK_EQUAL(restrictiveEndpoint.getResponse().result_int(),
                       rt.expected_status);
