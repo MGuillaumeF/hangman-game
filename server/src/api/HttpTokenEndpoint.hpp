@@ -17,11 +17,11 @@ public:
   /**
    * @brief Method to overwrite POST method
    */
-  void doPost() override final;
+  void doPost() override;
   /**
    * @brief Destroy the Http Token Endpoint object
    */
-  ~HttpTokenEndpoint() final;
+  ~HttpTokenEndpoint() override;
 
 private:
   /**

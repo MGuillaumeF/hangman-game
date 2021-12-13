@@ -21,18 +21,18 @@ public:
    * @brief Method to read file with GET method
    *
    */
-  void doGet() override final;
+  void doGet() override;
 
   /**
    * @brief Method to delete file with DELETE method
    *
    */
-  void doDelete() override final;
+  void doDelete() override;
 
   /**
    * @brief Destroy the Http Token Endpoint object
    */
-  ~LocationEndpoint() final;
+  ~LocationEndpoint() override;
 
 private:
   /**

@@ -21,6 +21,8 @@ Listener::Listener(boost::asio::io_context &ioc,
   // set error code variable to stock possibles errors
   boost::beast::error_code ec;
 
+  // each lambda is a step method of ecceptor operation at the start up of
+  // listener
   const std::list<std::pair<std::string, std::function<void(void)>>>
       acceptorProcessing = {
           // Open the acceptor
