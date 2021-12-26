@@ -1,6 +1,5 @@
 #define BOOST_TEST_DYN_LINK
 #define DATABASE_MYSQL
-#define throw(...)
 
 #include <boost/test/unit_test.hpp>
 
@@ -37,9 +36,9 @@ BOOST_AUTO_TEST_CASE(testCreate) {
     user john;
     john.setLogin("John");
     john.setPassword("password_1");
-    jhon.setSaltUser("salt_user_1");
-    jhon.setSaltSession("salt_session_1");
-    jhon.setToken("token_1");
+    john.setSaltUser("salt_user_1");
+    john.setSaltSession("salt_session_1");
+    john.setToken("token_1");
 
     user jane;
     jane.setLogin("Jane");
