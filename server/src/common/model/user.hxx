@@ -8,7 +8,7 @@
 #pragma db object
 class user {
 public:
-  user=default;
+  user();
 
   const std::string& getLogin () const;
   void setLogin(const std::string& login);
@@ -29,7 +29,7 @@ private:
   friend class odb::access;
 
   #pragma db id auto
-  uint64_t id_;
+  std::uint64_t id_;
 
   std::string login_;
   std::string password_;
