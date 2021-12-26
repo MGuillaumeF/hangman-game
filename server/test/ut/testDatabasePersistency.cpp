@@ -1,5 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define DATABASE_MYSQL
+#define throw(...)
 
 #include <boost/test/unit_test.hpp>
 
@@ -22,11 +23,11 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace std;
 
   try {
-    char **argv = {"./HangmanGameTest", "--user", "odb_test", "--database",
-                   "odb_test"};
+    char **argv = ;
     int argc = 3;
-    std::unique_ptr<odb::mysql::database> db =
-        std::make_unique<odb::mysql::database>(create_database(argc, argv));
+    auto_ptr<database> db(
+        create_database(argc, {"./HangmanGameTest", "--user", "odb_test",
+                               "--database", "odb_test"}));
 
     unsigned long john_id;
     unsigned long joe_id;
@@ -37,21 +38,21 @@ BOOST_AUTO_TEST_CASE(testCreate) {
     john.setLogin("John");
     john.setPassword("password_1");
     jhon.setSaltUser("salt_user_1");
-    jhon.setSessionUser("salt_session_1");
+    jhon.setSaltSession("salt_session_1");
     jhon.setToken("token_1");
 
     user jane;
     jane.setLogin("Jane");
     jane.setPassword("password_2");
     jane.setSaltUser("salt_user_2");
-    jane.setSessionUser("salt_session_2");
+    jane.setSaltSession("salt_session_2");
     jane.setToken("token_2");
 
     user joe;
     joe.setLogin("Joe");
     joe.setPassword("password_3");
     joe.setSaltUser("salt_user_3");
-    joe.setSessionUser("salt_session_3");
+    joe.setSaltSession("salt_session_3");
     joe.setToken("token_3");
 
     transaction t(db->begin());
@@ -141,8 +142,8 @@ BOOST_AUTO_TEST_CASE(testCreate) {
       t.commit();
     }
   } catch (const odb::exception &e) {
-    cerr << e.what() << endl;
-    return 1;
+    std::cerr << "The test failed with cause : " << e.what() << std::endl;
+    throw e;
   }
 }
 
