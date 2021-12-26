@@ -29,7 +29,7 @@ private:
   friend class odb::access;
 
   #pragma db id auto
-  std::uint64_t id_;
+  unsigned long id_;
 
   std::string login_;
   std::string password_;
