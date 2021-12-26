@@ -69,7 +69,7 @@ jobs:
 
     - name: Update database schema
       working-directory: ${{github.workspace}}/server/src/common/odb
-      run: sudo mysql -e 'CREATE USER odb_test@%;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
+      run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
 
     - name: Update database schema
       working-directory: ${{github.workspace}}/server/src/common/model
