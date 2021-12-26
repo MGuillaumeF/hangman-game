@@ -58,15 +58,19 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   joe.setSaltSession("salt_session_3");
   joe.setToken("token_3");
 
-  transaction t(db->begin());
+ 
 
   // Make objects persistent and save their ids for later use.
   //
-  john_id = db->persist(john);
-  db->persist(jane);
-  joe_id = db->persist(joe);
+  {
+    transaction t(db->begin());
 
-  t.commit();
+    john_id = db->persist(john);
+    db->persist(jane);
+    joe_id = db->persist(joe);
+
+    t.commit();
+  }
 
   typedef odb::query<user> query;
   typedef odb::result<user> result;
