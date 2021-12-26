@@ -39,7 +39,6 @@ private:
 };
 
 #pragma db object(user)
-#pragma db member(user:login_) id
 
 #pragma db view object(user)
 struct user_stat
