@@ -6,7 +6,6 @@
 #include <iostream>
 #include <memory> // std::auto_ptr
 
-#include <odb/database.hxx>
 #include <odb/transaction.hxx>
 
 #include "../../src/common/odb/database.hxx" // create database access
