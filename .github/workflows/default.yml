@@ -69,7 +69,7 @@ jobs:
 
     - name: Update database schema
       working-directory: ${{github.workspace}}/server/src/common/odb
-      run:  mysql --user=root < database.sql
+      run:  mysql --user=root -p=root < database.sql
 
     - name: Update database schema
       working-directory: ${{github.workspace}}/server/src/common/model
