@@ -9,6 +9,9 @@ set (HangmanGame_VERSION_MINOR 0)
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# target_compile_definitions(odbTarget throw(...))
+add_compile_definitions(throw(...))
+
 # Add name on project 
 project(HangmanGame)
 
