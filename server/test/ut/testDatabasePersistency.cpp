@@ -23,11 +23,11 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace std;
 
   try {
-    char **argv = ;
+    char *argv[] = {"./HangmanGameTest", "--user", "odb_test",
+                               "--database", "odb_test"};
     int argc = 3;
     auto_ptr<database> db(
-        create_database(argc, {"./HangmanGameTest", "--user", "odb_test",
-                               "--database", "odb_test"}));
+        create_database(argc,argv));
 
     unsigned long john_id;
     unsigned long joe_id;
