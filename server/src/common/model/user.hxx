@@ -39,7 +39,7 @@ private:
 };
 
 #pragma db object(user)
-#pragma db ember(user:login_) id
+#pragma db member(user:login_) id
 
 #pragma db view object(user)
 struct user_stat
