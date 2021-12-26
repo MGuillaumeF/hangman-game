@@ -21,80 +21,84 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace odb::core;
   using namespace std;
 
-  try {
-    char *argv[] = {"./HangmanGameTest", "--user", "odb_test",
-                               "--database", "odb_test"};
-    int argc = 3;
-    auto_ptr<database> db(
+  const std::string exec_name = "./HangmanGameTest";
+  char* user_key = "--user";
+  char* user_value = "odb_test";
+  char* database_key = "--database";
+  char* database_value = "odb_test";
+  char *argv[] = {exec_name.c_str(), user_key.c_str(), user_value.c_str(),
+                               database_key.c_str(), database_value.c_str()};
+  int argc = 3;
+  auto_ptr<database> db(
         create_database(argc,argv));
 
-    unsigned long john_id;
-    unsigned long joe_id;
+  unsigned long john_id;
+  unsigned long joe_id;
 
-    // Create a few persistent user objects.
-    //
-    user john;
-    john.setLogin("John");
-    john.setPassword("password_1");
-    john.setSaltUser("salt_user_1");
-    john.setSaltSession("salt_session_1");
-    john.setToken("token_1");
+  // Create a few persistent user objects.
+  //
+  user john;
+  john.setLogin("John");
+  john.setPassword("password_1");
+  john.setSaltUser("salt_user_1");
+  john.setSaltSession("salt_session_1");
+  john.setToken("token_1");
 
-    user jane;
-    jane.setLogin("Jane");
-    jane.setPassword("password_2");
-    jane.setSaltUser("salt_user_2");
-    jane.setSaltSession("salt_session_2");
-    jane.setToken("token_2");
+  user jane;
+  jane.setLogin("Jane");
+  jane.setPassword("password_2");
+  jane.setSaltUser("salt_user_2");
+  jane.setSaltSession("salt_session_2");
+  jane.setToken("token_2");
 
-    user joe;
-    joe.setLogin("Joe");
-    joe.setPassword("password_3");
-    joe.setSaltUser("salt_user_3");
-    joe.setSaltSession("salt_session_3");
-    joe.setToken("token_3");
+  user joe;
+  joe.setLogin("Joe");
+  joe.setPassword("password_3");
+  joe.setSaltUser("salt_user_3");
+  joe.setSaltSession("salt_session_3");
+  joe.setToken("token_3");
 
+  transaction t(db->begin());
+
+  // Make objects persistent and save their ids for later use.
+  //
+  john_id = db->persist(john);
+  db->persist(jane);
+  joe_id = db->persist(joe);
+
+  t.commit();
+
+  typedef odb::query<user> query;
+  typedef odb::result<user> result;
+
+  // Say hello to those have id under 2.
+  //
+  {
     transaction t(db->begin());
 
-    // Make objects persistent and save their ids for later use.
-    //
-    john_id = db->persist(john);
-    db->persist(jane);
-    joe_id = db->persist(joe);
+    result r(db->query<user>(query::id < 3));
+
+    BOOST_CHECK_EQUAL(2, r.size());
+
+    for (result::iterator i(r.begin()); i != r.end(); ++i) {
+        std::cout << "Hello, " << i->getLogin() << " " << i->getPassword() << "!"
+             << std::endl;
+    }
 
     t.commit();
+  }
 
-    typedef odb::query<user> query;
-    typedef odb::result<user> result;
+  // Joe is logged, so update his token.
+  //
+  {
+    transaction t(db->begin());
 
-    // Say hello to those have id under 2.
-    //
-    {
-      transaction t(db->begin());
+    auto_ptr<user> joe(db->load<user>(joe_id));
+    joe->setToken("new token");
+    db->update(*joe);
 
-      result r(db->query<user>(query::id < 3));
-
-      BOOST_CHECK_EQUAL(2, r.size());
-
-      for (result::iterator i(r.begin()); i != r.end(); ++i) {
-        cout << "Hello, " << i->getLogin() << " " << i->getPassword() << "!"
-             << endl;
-      }
-
-      t.commit();
-    }
-
-    // Joe is logged, so update his token.
-    //
-    {
-      transaction t(db->begin());
-
-      auto_ptr<user> joe(db->load<user>(joe_id));
-      joe->setToken("new token");
-      db->update(*joe);
-
-      t.commit();
-    }
+    t.commit();
+  }
 
     // Alternative implementation without using the id.
     //
@@ -117,32 +121,28 @@ BOOST_AUTO_TEST_CASE(testCreate) {
     }
     */
 
-    // Print some statistics about all the people in our database.
+  // Print some statistics about all the people in our database.
+  //
+  {
+    transaction t(db->begin());
+
+    // The result of this (aggregate) query always has exactly one element
+    // so use the query_value() shortcut.
     //
-    {
-      transaction t(db->begin());
+    user_stat ps(db->query_value<user_stat>());
 
-      // The result of this (aggregate) query always has exactly one element
-      // so use the query_value() shortcut.
-      //
-      user_stat ps(db->query_value<user_stat>());
+    std::cout << std::endl << "count  : " << ps.count << std::endl;
 
-      cout << endl << "count  : " << ps.count << endl;
+    t.commit();
+    BOOST_CHECK_EQUAL(3, ps.count);
+  }
 
-      t.commit();
-      BOOST_CHECK_EQUAL(3, ps.count);
-    }
-
-    // John Doe is no longer in our database.
-    //
-    {
-      transaction t(db->begin());
-      db->erase<user>(john_id);
-      t.commit();
-    }
-  } catch (const odb::exception &e) {
-    std::cerr << "The test failed with cause : " << e.what() << std::endl;
-    throw e;
+  // John Doe is no longer in our database.
+  //
+  {
+    transaction t(db->begin());
+    db->erase<user>(john_id);
+    t.commit();
   }
 }
 
