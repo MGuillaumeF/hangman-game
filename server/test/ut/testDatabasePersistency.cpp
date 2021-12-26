@@ -22,10 +22,10 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace std;
 
   const std::string exec_name = "./HangmanGameTest";
-  char* user_key = "--user";
-  char* user_value = "odb_test";
-  char* database_key = "--database";
-  char* database_value = "odb_test";
+  const std::string user_key = "--user";
+  const std::string user_value = "odb_test";
+  const std::string database_key = "--database";
+  const std::string database_value = "odb_test";
   char *argv[] = {exec_name.c_str(), user_key.c_str(), user_value.c_str(),
                                database_key.c_str(), database_value.c_str()};
   int argc = 3;
