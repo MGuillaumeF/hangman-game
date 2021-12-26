@@ -22,48 +22,45 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace std;
 
   try {
-    auto_ptr<database> db(create_database(5, [
-      "./HangmanGameTest", "--user", "odb_test", "--database", "odb_test"
-    ]));
+    auto_ptr<database> db(
+        create_database(5, {"./HangmanGameTest", "--user", "odb_test",
+                            "--database", "odb_test"}));
 
     unsigned long john_id;
     unsigned long joe_id;
 
     // Create a few persistent user objects.
     //
-    {
+    user john();
+    john.setLogin("John");
+    john.setPassword("password_1");
+    jhon.setSaltUser("salt_user_1");
+    jhon.setSessionUser("salt_session_1");
+    jhon.setToken("token_1");
 
-      user john();
-      john.setLogin("John");
-      john.setPassword("password_1");
-      jhon.setSaltUser("salt_user_1");
-      jhon.setSessionUser("salt_session_1");
-      jhon.setToken('token_1');
+    user jane();
+    jane.setLogin("Jane");
+    jane.setPassword("password_2");
+    jane.setSaltUser("salt_user_2");
+    jane.setSessionUser("salt_session_2");
+    jane.setToken("token_2");
 
-      user jane();
-      jane.setLogin("Jane");
-      jane.setPassword("password_2");
-      jane.setSaltUser("salt_user_2");
-      jane.setSessionUser("salt_session_2");
-      jane.setToken('token_2');
+    user joe();
+    joe.setLogin("Joe");
+    joe.setPassword("password_3");
+    joe.setSaltUser("salt_user_3");
+    joe.setSessionUser("salt_session_3");
+    joe.setToken("token_3");
 
-      user joe();
-      joe.setLogin("Joe");
-      joe.setPassword("password_3");
-      joe.setSaltUser("salt_user_3");
-      joe.setSessionUser("salt_session_3");
-      joe.setToken('token_3');
+    transaction t(db->begin());
 
-      transaction t(db->begin());
+    // Make objects persistent and save their ids for later use.
+    //
+    john_id = db->persist(john);
+    db->persist(jane);
+    joe_id = db->persist(joe);
 
-      // Make objects persistent and save their ids for later use.
-      //
-      john_id = db->persist(john);
-      db->persist(jane);
-      joe_id = db->persist(joe);
-
-      t.commit();
-    }
+    t.commit();
 
     typedef odb::query<user> query;
     typedef odb::result<user> result;
