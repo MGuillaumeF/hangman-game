@@ -21,12 +21,12 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace odb::core;
   using namespace std;
 
-  char const *exec_name = "./HangmanGameTest";
-  char const *user_key = "--user";
-  char const *user_value = "odb_test";
-  char const *database_key = "--database";
-  char const *database_value = "odb_test";
-  char const *argv[] = {exec_name, user_key, user_value,
+  char *exec_name = "./HangmanGameTest";
+  char *user_key = "--user";
+  char *user_value = "odb_test";
+  char *database_key = "--database";
+  char *database_value = "odb_test";
+  char *argv[] = {exec_name, user_key, user_value,
                                database_key, database_value};
   int argc = 3;
   auto_ptr<database> db(
