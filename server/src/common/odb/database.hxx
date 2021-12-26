@@ -60,7 +60,7 @@ create_database (int& argc, char* argv[])
   }
 
 #if defined(DATABASE_MYSQL)
-  auto_ptr<database> db (new odb::mysql::database (argc, argv));
+  std::unique_ptr<odb::mysql::database> &db = std::make_unique<odb::mysql::database>(argc, argv));
 #elif defined(DATABASE_SQLITE)
   auto_ptr<database> db (
     new odb::sqlite::database (

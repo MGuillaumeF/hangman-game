@@ -22,30 +22,32 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   using namespace std;
 
   try {
-    auto_ptr<database> db(
-        create_database(5, {"./HangmanGameTest", "--user", "odb_test",
-                            "--database", "odb_test"}));
+    char **argv = {"./HangmanGameTest", "--user", "odb_test", "--database",
+                   "odb_test"};
+    int argc = 3;
+    std::unique_ptr<odb::mysql::database> db =
+        std::make_unique<odb::mysql::database>(create_database(argc, argv));
 
     unsigned long john_id;
     unsigned long joe_id;
 
     // Create a few persistent user objects.
     //
-    user john();
+    user john;
     john.setLogin("John");
     john.setPassword("password_1");
     jhon.setSaltUser("salt_user_1");
     jhon.setSessionUser("salt_session_1");
     jhon.setToken("token_1");
 
-    user jane();
+    user jane;
     jane.setLogin("Jane");
     jane.setPassword("password_2");
     jane.setSaltUser("salt_user_2");
     jane.setSessionUser("salt_session_2");
     jane.setToken("token_2");
 
-    user joe();
+    user joe;
     joe.setLogin("Joe");
     joe.setPassword("password_3");
     joe.setSaltUser("salt_user_3");
