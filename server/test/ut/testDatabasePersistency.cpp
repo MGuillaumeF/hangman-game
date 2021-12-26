@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   char const *user_value = "odb_test";
   char const *database_key = "--database";
   char const *database_value = "odb_test";
-  char *argv[] = {exec_name, user_key, user_value,
+  char const *argv[] = {exec_name, user_key, user_value,
                                database_key, database_value};
   int argc = 3;
   auto_ptr<database> db(
