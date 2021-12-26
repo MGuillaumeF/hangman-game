@@ -9,6 +9,8 @@
 #ifndef DATABASE_HXX
 #define DATABASE_HXX
 
+#define throw(...)
+
 #include <string>
 #include <memory>   // std::auto_ptr
 #include <cstdlib>  // std::exit
