@@ -19,13 +19,13 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   # using Clang
   MESSAGE("Compiler used is Clang")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage") #-stdlib=libc++ -lc++abi
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage -lodb-mysql -lodb") #-stdlib=libc++ -lc++abi
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   # using GCC
   MESSAGE("Compiler used is g++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2a -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage -lodb-mysql -lodb")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
   MESSAGE("Compiler used is Intel")
@@ -33,7 +33,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
   MESSAGE("Compiler used is Microsoft Visual Studio C++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD -lodb-mysql -lodb")
 endif()
 
 add_definitions("-Wall")
@@ -74,6 +74,14 @@ file(GLOB_RECURSE LOGGER_SRC_DIR CONFIGURE_DEPENDS
      "src/common/Logger/*.cpp"
 )
 
+# Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
+file(GLOB_RECURSE COMMON_MODEL_SRC_DIR CONFIGURE_DEPENDS
+     "src/common/model/*-odb.cxx"
+     "src/common/model/*-odb.hxx"
+     "src/common/odb/*.hxx"
+)
+
+
 find_package (Threads)
 # search external dependence BOOST
 find_package (Boost)
@@ -85,7 +93,7 @@ if (Boost_FOUND)
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   install(TARGETS HangmanGame DESTINATION HangmanGame)
   install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "HangmanGame/configuration")
-  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
+  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR} ${COMMON_MODEL_SRC_DIR})
   add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
   add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml) 
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
