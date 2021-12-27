@@ -37,6 +37,10 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
 
+    - name: Generate Model Sources
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+
     - name: Generate target (data management)
       run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
