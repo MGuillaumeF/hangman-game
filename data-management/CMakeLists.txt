@@ -66,6 +66,7 @@ if (ODB_FOUND)
   # Create application executable files
   add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
   add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
+  add_test(DataManagementUnitTests DataManagement)
   # install(TARGETS DataManagement DESTINATION DataManagement)
   # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
   # add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
