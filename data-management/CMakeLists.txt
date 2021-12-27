@@ -54,18 +54,29 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
      "src/connector/*.hxx"
 )
 
-# Create application executable files
-add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
-add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
-# install(TARGETS DataManagement DESTINATION DataManagement)
-# install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
-# add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
-# add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
-# add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
+# search external dependence ODB
+find_package (ODB REQUIRED COMPONENTS mysql)
+if (ODB_FOUND)
+  include_directories(${ODB_INCLUDE_DIRS}) 
 
-if(WIN32)
-add_definitions("-D_WIN32_WINNT=0x0601")
-  # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
-  target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
+  # Create application executable files
+  add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
+  add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
+  # install(TARGETS DataManagement DESTINATION DataManagement)
+  # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
+  # add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
+  # add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
+  # add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
+
+  if(WIN32)
+  add_definitions("-D_WIN32_WINNT=0x0601")
+    # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
+    target_link_libraries(DataManagement ${ODB_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+  else ()
+    target_link_libraries(DataManagement ${ODB_LIBRARIES} ${EXTERNAL_LIBS})
+  endif()
+else ()
+  # If ODB not found print fatal error message
+  message(FATAL_ERROR "ODB not found")
 endif()
 
