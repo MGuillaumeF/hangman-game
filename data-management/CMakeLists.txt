@@ -58,10 +58,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 # search external dependence ODB
 find_package (ODB REQUIRED COMPONENTS mysql)
+find_package (Boost)
 include(${ODB_USE_FILE})
 
 if (ODB_FOUND)
-  include_directories(${ODB_INCLUDE_DIRS}) 
+  include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDES}) 
 
   # Create application executable files
   add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
@@ -76,9 +77,9 @@ if (ODB_FOUND)
   if(WIN32)
   add_definitions("-D_WIN32_WINNT=0x0601")
     # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
-    target_link_libraries(DataManagement ${ODB_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+    target_link_libraries(DataManagement ${ODB_LIBRARIES} ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
   else ()
-    target_link_libraries(DataManagement ${ODB_LIBRARIES} ${EXTERNAL_LIBS})
+    target_link_libraries(DataManagement ${ODB_LIBRARIES}  ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
   endif()
 else ()
   # If ODB not found print fatal error message
