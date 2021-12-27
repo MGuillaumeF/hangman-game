@@ -61,18 +61,17 @@ jobs:
         boost_version: 1.${{env.BOOST_VERSION}}.0
 
     - name: Generate Model Sources
-      working-directory: ${{github.workspace}}/server/src/common/model
+      working-directory: ${{github.workspace}}/data-management/src/model
       run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
 
     - name: Start MySQL server
       run: sudo service mysql start 
 
     - name: Update database schema
-      working-directory: ${{github.workspace}}/server/src/common/odb
       run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
 
     - name: Update database schema
-      working-directory: ${{github.workspace}}/server/src/common/model
+      working-directory: ${{github.workspace}}/data-management/src/model
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
     - name: Generate target (data management)
