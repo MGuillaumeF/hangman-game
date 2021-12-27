@@ -20,10 +20,10 @@ int32_t main(int argc, char *argv[]) {
   char *user_value = "odb_test";
   char *database_key = "--database";
   char *database_value = "odb_test";
-  char *argv[] = {exec_name, user_key, user_value, database_key,
-                  database_value};
-  int argc = 3;
-  auto_ptr<database> db(create_database(argc, argv));
+  char *tempArgv[] = {exec_name, user_key, user_value, database_key,
+                      database_value};
+  int tempArgc = 5;
+  auto_ptr<database> db(create_database(tempArgc, tempArgv));
 
   unsigned long john_id;
   unsigned long joe_id;
