@@ -55,13 +55,13 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 )
 
 # Create application executable files
-# add_executable(DataManagement ${SRCS})
-# add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
+add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
+add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
 # install(TARGETS DataManagement DESTINATION DataManagement)
 # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
-add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
-add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
-add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
+# add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
+# add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
+# add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
 
 if(WIN32)
 add_definitions("-D_WIN32_WINNT=0x0601")
