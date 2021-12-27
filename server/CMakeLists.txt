@@ -9,9 +9,6 @@ set (HangmanGame_VERSION_MINOR 0)
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# target_compile_definitions(odbTarget throw(...))
-add_compile_definitions(throw(...))
-
 # Add name on project 
 project(HangmanGame)
 
@@ -77,14 +74,6 @@ file(GLOB_RECURSE LOGGER_SRC_DIR CONFIGURE_DEPENDS
      "src/common/Logger/*.cpp"
 )
 
-# Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
-file(GLOB_RECURSE COMMON_MODEL_SRC_DIR CONFIGURE_DEPENDS
-     "src/common/model/*-odb.cxx"
-     "src/common/model/*-odb.hxx"
-     "src/common/odb/*.hxx"
-)
-
-
 find_package (Threads)
 # search external dependence BOOST
 find_package (Boost)
@@ -96,7 +85,7 @@ if (Boost_FOUND)
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   install(TARGETS HangmanGame DESTINATION HangmanGame)
   install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "HangmanGame/configuration")
-  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR} ${COMMON_MODEL_SRC_DIR})
+  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
   add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
   add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml) 
   add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})

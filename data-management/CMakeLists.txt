@@ -1,0 +1,71 @@
+# minimum CMake version (minimum feature)
+cmake_minimum_required(VERSION 3.12)
+
+# version setting for main app
+set (DataManagement_VERSION_MAJOR 1)
+set (DataManagement_VERSION_MINOR 0)
+
+# define C++ version on standard
+set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# target_compile_definitions(DATABASE_MYSQL)
+# add_compile_definitions(DATABASE_MYSQL)
+
+# Add name on project
+project(DataManagement)
+
+# activate test on project
+enable_testing()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  # using Clang
+  MESSAGE("Compiler used is Clang")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage -lodb-mysql -lodb") #-stdlib=libc++ -lc++abi
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  MESSAGE("Compiler used is g++")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage -lodb-mysql -lodb")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+  MESSAGE("Compiler used is Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
+  MESSAGE("Compiler used is Microsoft Visual Studio C++")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++11")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD -lodb-mysql -lodb")
+endif()
+
+add_definitions("-Wall")
+
+# Add all tests files in TESTS_SRC_UT_DIR variable
+file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
+     "test/ut/*.hpp"
+     "test/ut/*.cpp"
+)
+
+# Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
+file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
+     "src/model/*-odb.cxx"
+     "src/model/*-odb.hxx"
+     "src/connector/*.hxx"
+)
+
+# Create application executable files
+# add_executable(DataManagement ${SRCS})
+# add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
+# install(TARGETS DataManagement DESTINATION DataManagement)
+# install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
+add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
+add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
+add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
+
+if(WIN32)
+add_definitions("-D_WIN32_WINNT=0x0601")
+  # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
+  target_link_libraries(DataManagementTest wsock32 ws2_32 ${EXTERNAL_LIBS})
+endif()
+

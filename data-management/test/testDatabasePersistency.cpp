@@ -8,10 +8,10 @@
 
 #include <odb/transaction.hxx>
 
-#include "../../src/common/odb/database.hxx" // create database access
+#include "../../src/connector/database.hxx" // create database access
 
-#include "../../src/common/model/user-odb.hxx"
-#include "../../src/common/model/user.hxx"
+#include "../../src/model/user-odb.hxx"
+#include "../../src/model/user.hxx"
 
 BOOST_AUTO_TEST_SUITE(testDatabasePersistency)
 
@@ -25,11 +25,10 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   char *user_value = "odb_test";
   char *database_key = "--database";
   char *database_value = "odb_test";
-  char *argv[] = {exec_name, user_key, user_value,
-                               database_key, database_value};
+  char *argv[] = {exec_name, user_key, user_value, database_key,
+                  database_value};
   int argc = 3;
-  auto_ptr<database> db(
-        create_database(argc,argv));
+  auto_ptr<database> db(create_database(argc, argv));
 
   unsigned long john_id;
   unsigned long joe_id;
@@ -57,8 +56,6 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   joe.setSaltSession("salt_session_3");
   joe.setToken("token_3");
 
- 
-
   // Make objects persistent and save their ids for later use.
   //
   {
@@ -84,8 +81,8 @@ BOOST_AUTO_TEST_CASE(testCreate) {
     BOOST_CHECK_EQUAL(2, r.size());
 
     for (result::iterator i(r.begin()); i != r.end(); ++i) {
-        std::cout << "Hello, " << i->getLogin() << " " << i->getPassword() << "!"
-             << std::endl;
+      std::cout << "Hello, " << i->getLogin() << " " << i->getPassword() << "!"
+                << std::endl;
     }
 
     t.commit();
@@ -103,26 +100,26 @@ BOOST_AUTO_TEST_CASE(testCreate) {
     t.commit();
   }
 
-    // Alternative implementation without using the id.
+  // Alternative implementation without using the id.
+  //
+  /*
+  {
+    transaction t (db->begin ());
+    // Here we know that there can be only one Joe  in our
+    // database so we use the query_one() shortcut instead of
+    // manually iterating over the result returned by query().
     //
-    /*
+    auto_ptr<user> joe (
+      db->query_one<user> (query::login == "Joe" &&
+                             query::password == "password_3"));
+    if (joe.get () != 0)
     {
-      transaction t (db->begin ());
-      // Here we know that there can be only one Joe  in our
-      // database so we use the query_one() shortcut instead of
-      // manually iterating over the result returned by query().
-      //
-      auto_ptr<user> joe (
-        db->query_one<user> (query::login == "Joe" &&
-                               query::password == "password_3"));
-      if (joe.get () != 0)
-      {
-        joe->setToken ("new token");
-        db->update (*joe);
-      }
-      t.commit ();
+      joe->setToken ("new token");
+      db->update (*joe);
     }
-    */
+    t.commit ();
+  }
+  */
 
   // Print some statistics about all the people in our database.
   //
