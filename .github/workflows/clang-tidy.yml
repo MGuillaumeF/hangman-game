@@ -55,5 +55,5 @@ jobs:
       id: review
       with:
          build_dir: data-management/bin
-         apt_packages: default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
+         apt_packages: default-libmysqlclient-dev,odb,libodb-dev,libodb-mysql-2.4,mysql-community-client-plugins,mysql-common
  
