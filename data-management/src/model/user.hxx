@@ -8,22 +8,101 @@
 #pragma db object
 class user {
 public:
-  user();
+  /**
+   * @brief Construct a new user object
+   * 
+   */
+  user() {};
 
-  const std::string& getLogin () const;
-  void setLogin(const std::string& login);
+  /**
+   * @brief Get the Login object
+   * 
+   * @return const std::string& 
+   */
+  const std::string& getLogin () const {
+    return login_;
+  };
 
-  const std::string& getPassword () const;
-  void setPassword(const std::string& password);
+  /**
+   * @brief Set the Login object
+   * 
+   * @param login 
+   */
+  void setLogin(const std::string& login) {
+    login_ = login; 
+  };
 
-  const std::string& getSaltUser () const;
-  void setSaltUser(const std::string& saltUser);
+  /**
+   * @brief Get the Password object
+   * 
+   * @return const std::string& 
+   */
+  const std::string& getPassword () const {
+    return password_;
+  };
 
-  const std::string& getSaltSession () const;
-  void setSaltSession(const std::string& saltSession);
+  /**
+   * @brief Set the Password object
+   * 
+   * @param password 
+   */
+  void setPassword(const std::string& password) {
+    password_ = password;
+  };
 
-  const std::string& getToken () const;
-  void setToken(const std::string& saltToken);
+  /**
+   * @brief Get the Salt User object
+   * 
+   * @return const std::string& 
+   */
+  const std::string& getSaltUser () const {
+    return saltUser_;
+  };
+
+  /**
+   * @brief Set the Salt User object
+   * 
+   * @param saltUser 
+   */
+  void setSaltUser(const std::string& saltUser) {
+    saltUser_ = saltUser;
+  };
+
+  /**
+   * @brief Get the Salt Session object
+   * 
+   * @return const std::string& 
+   */
+  const std::string& getSaltSession () const {
+    return saltSession_;
+  };
+
+  /**
+   * @brief Set the Salt Session object
+   * 
+   * @param saltSession 
+   */
+  void setSaltSession(const std::string& saltSession) {
+    saltSession_ = saltSession;
+  };
+
+  /**
+   * @brief Get the Token object
+   * 
+   * @return const std::string& 
+   */
+  const std::string& getToken () const {
+    return token_;
+  };
+
+  /**
+   * @brief Set the Token object
+   * 
+   * @param token 
+   */
+  void setToken(const std::string& token) {
+    token_ = token;
+  };
 
 private:
   friend class odb::access;
