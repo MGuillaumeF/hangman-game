@@ -56,7 +56,7 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 
 # Create application executable files
 add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
-add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
+add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
 # install(TARGETS DataManagement DESTINATION DataManagement)
 # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
 # add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
@@ -66,6 +66,6 @@ add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E c
 if(WIN32)
 add_definitions("-D_WIN32_WINNT=0x0601")
   # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
-  target_link_libraries(DataManagementTest wsock32 ws2_32 ${EXTERNAL_LIBS})
+  target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
 endif()
 
