@@ -150,7 +150,7 @@ jobs:
         name: API-Docs-Hangman-Game
         path: ${{github.workspace}}/swagger-ui
 
-    - name: Docs
+    - name: Doxygen Docs
       run: doxygen docg.conf
 
     - name: Archive Docs
@@ -301,24 +301,6 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint || echo FAILED
-
-    - name: Stylelint analyze
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:stylelint
-
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
-
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
@@ -342,6 +324,24 @@ jobs:
     - name: Print summary coverage
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
+
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
 
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
