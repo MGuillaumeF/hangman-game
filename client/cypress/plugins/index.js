@@ -1,4 +1,4 @@
-import registerCodeCoverageTasks from '@cypress/code-coverage/task';
+const registerCodeCoverageTasks = require('@cypress/code-coverage/task');
 module.exports = (on, config) => {
   registerCodeCoverageTasks(on, config);
   // include any other plugin code...
