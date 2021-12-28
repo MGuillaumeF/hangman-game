@@ -67,10 +67,10 @@ jobs:
     - name: Start MySQL server
       run: sudo service mysql start 
 
-    - name: Update database schema
+    - name: Update Database schema
       run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
 
-    - name: Update database schema
+    - name: Update Database schema
       working-directory: ${{github.workspace}}/data-management/src/model
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
@@ -79,11 +79,11 @@ jobs:
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
-    - name: Build data management
+    - name: Build Data Management
       working-directory: ${{github.workspace}}/data-management
       run: cmake --build ${{github.workspace}}/data-management/bin
 
-    - name: Test data management
+    - name: Test Data Management
       working-directory: ${{github.workspace}}/data-management/bin
       run: ctest
 
