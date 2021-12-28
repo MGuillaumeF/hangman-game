@@ -26,7 +26,7 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y graphviz doxygen lcov gcovr build-essential llvm
+      run: sudo apt-get install -y graphviz doxygen lcov gcovr build-essential llvm default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common; odb --version; mysql --version
 
     # - name: Download Boost
     #   uses: wei/wget@v1
@@ -59,6 +59,33 @@ jobs:
       id: install-boost
       with:
         boost_version: 1.${{env.BOOST_VERSION}}.0
+
+    - name: Generate Model Sources
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+
+    - name: Start MySQL server
+      run: sudo service mysql start 
+
+    - name: Update database schema
+      run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
+
+    - name: Update database schema
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run:  mysql --user=odb_test --database=odb_test < user.sql
+
+    - name: Generate target (data management)
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build data management
+      working-directory: ${{github.workspace}}/data-management
+      run: cmake --build ${{github.workspace}}/data-management/bin
+
+    - name: Test data management
+      working-directory: ${{github.workspace}}/data-management/bin
+      run: ctest
 
     - name: Generate target
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
