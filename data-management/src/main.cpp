@@ -1,6 +1,7 @@
-#define throw(...)
 #define DATABASE_MYSQL
 
+#include <exception>
+#include <cstdlib>
 #include <iostream>
 #include <memory> // std::auto_ptr
 
@@ -13,6 +14,10 @@
 
 int32_t main(int argc, char *argv[]) {
 
+  std::set_unexpected([] {
+    std::cout << "That was unexpected!" << std::endl; // flush needed
+    std::abort();
+  });
   using namespace odb::core;
   using namespace std;
 
