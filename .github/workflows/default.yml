@@ -150,7 +150,7 @@ jobs:
         name: API-Docs-Hangman-Game
         path: ${{github.workspace}}/swagger-ui
 
-    - name: Docs
+    - name: Doxygen Docs
       run: doxygen docg.conf
 
     - name: Archive Docs
