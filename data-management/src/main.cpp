@@ -1,3 +1,4 @@
+#define throw(...)
 #define DATABASE_MYSQL
 
 #include <iostream>
