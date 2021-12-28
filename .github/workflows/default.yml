@@ -313,12 +313,6 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
 
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
-
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
@@ -354,6 +348,12 @@ jobs:
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
 
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@master
