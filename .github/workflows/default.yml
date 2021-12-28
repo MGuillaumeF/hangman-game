@@ -301,18 +301,6 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint || echo FAILED
-
-    - name: Stylelint analyze
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:stylelint
-
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
@@ -337,6 +325,24 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
 
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
 
@@ -348,12 +354,6 @@ jobs:
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
-
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
 
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@master
