@@ -259,9 +259,6 @@ jobs:
       with:
         boost_version: 1.${{env.BOOST_VERSION}}.0
 
-    - name: Lint Clang-Tidy
-      run: clang-tidy -checks='*' -header-filter="^include" -p . src/*.*pp
-
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -273,6 +270,9 @@ jobs:
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Lint Clang-Tidy
+      run: clang-tidy -checks='*' -header-filter="^include" -p . server/**/*.*pp
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
