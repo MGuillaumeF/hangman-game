@@ -19,7 +19,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.13.0",
     "@cypress/code-coverage": "^3.9.12",
-    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
