@@ -247,6 +247,9 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
+    - name: Install dependencies
+      run: sudo apt-get install -y clang-tidy
+
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports; 
 
@@ -267,6 +270,9 @@ jobs:
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Lint Clang-Tidy
+      run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
