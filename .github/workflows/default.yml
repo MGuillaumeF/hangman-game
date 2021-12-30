@@ -377,7 +377,7 @@ jobs:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
  dependabot:
-    needs: [sonarcloud-analyse,build-server-MacOSX, build-server-win,build-server-linux]
+    needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
