@@ -17,6 +17,7 @@ permissions: write-all
 
 jobs:
  build-server-linux:
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
 
@@ -160,6 +161,7 @@ jobs:
         path: ${{github.workspace}}/docs
 
  build-server-win:
+    if: github.actor == 'dependabot[bot]'
     runs-on: windows-latest
     steps:
 
@@ -203,6 +205,7 @@ jobs:
         path: ${{github.workspace}}/server/reports
 
  build-server-MacOSX:
+    if: github.actor == 'dependabot[bot]'
     runs-on: macos-11
     steps:
 
@@ -353,6 +356,7 @@ jobs:
         path: ${{github.workspace}}/client/dist
 
     - name: Setup sonarqube
+      if: github.actor == 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
 
     - name: Run SonarQube
@@ -365,8 +369,26 @@ jobs:
         -Dsonar.verbose=false
 
     - name: SonarQube Quality Gate check
+      if: github.actor == 'dependabot[bot]'
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
       timeout-minutes: 5
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+ dependabot:
+    needs: [sonarcloud-analyse]
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.1.1
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Enable auto-merge for Dependabot PRs
+        if: ${{contains(steps.metadata.outputs.dependency-names, 'my-dependency') && steps.metadata.outputs.update-type == 'version-update:semver-patch'}}
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

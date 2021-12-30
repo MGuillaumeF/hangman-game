@@ -12,6 +12,7 @@ permissions: write-all
 
 jobs:
  clang-tidy-analyze:
+    if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
 
