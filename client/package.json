@@ -81,7 +81,7 @@
     "url-loader": "^4.1.1",
     "wait-on": "^6.0.0",
     "web-vitals": "^2.1.2",
-    "webpack": "^5.64.2",
+    "webpack": "^5.65.0",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2",
     "yargs-parser": "^21.0.0"
