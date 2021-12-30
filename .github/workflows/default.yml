@@ -17,7 +17,7 @@ permissions: write-all
 
 jobs:
  build-server-linux:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
 
@@ -161,7 +161,7 @@ jobs:
         path: ${{github.workspace}}/docs
 
  build-server-win:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]'
     runs-on: windows-latest
     steps:
 
@@ -205,7 +205,7 @@ jobs:
         path: ${{github.workspace}}/server/reports
 
  build-server-MacOSX:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]'
     runs-on: macos-11
     steps:
 
@@ -356,11 +356,11 @@ jobs:
         path: ${{github.workspace}}/client/dist
 
     - name: Setup sonarqube
-      if: github.actor == 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
 
     - name: Run SonarQube
-      if: github.actor!= 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
       run: sonar-scanner
@@ -369,7 +369,7 @@ jobs:
         -Dsonar.verbose=false
 
     - name: SonarQube Quality Gate check
-      if: github.actor == 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]'
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
       timeout-minutes: 5
