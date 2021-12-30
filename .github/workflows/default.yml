@@ -253,6 +253,9 @@ jobs:
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports; 
 
+    - name: Lint Cpp Check
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=/github/workspace/server/reports/cppcheck_report.xml .
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -273,9 +276,6 @@ jobs:
 
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
-
-    - name: Lint Cpp Check
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=/github/workspace/server/reports/cppcheck_report.xml .
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
