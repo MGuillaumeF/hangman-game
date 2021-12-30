@@ -25,7 +25,7 @@
     "@types/node": "^16.11.11",
     "@types/react": "^17.0.35",
     "@types/react-dom": "^17.0.11",
-    "@types/stylelint": "^9.10.1",
+    "@types/stylelint": "^14.0.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "acorn": "^8.6.0",
