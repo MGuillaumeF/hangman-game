@@ -40,7 +40,7 @@
     "compression-webpack-plugin": "^9.0.1",
     "css-loader": "^5.2.5",
     "css-minimizer-webpack-plugin": "^3.3.1",
-    "cypress": "^9.1.0",
+    "cypress": "^9.2.0",
     "cypress-movie": "^3.0.20",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
