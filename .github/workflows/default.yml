@@ -51,7 +51,7 @@ jobs:
         github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
         force_language: c++
         std: c++20
-        output_file: ${{github.workspace}}/server/reports/cppcheck_report.xml
+        output_file: ${{github.workspace}}/server/reports/cppcheck_report_actions.xml
         other_options: --xml
 
     - name: Install boost
@@ -248,7 +248,7 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y clang-tidy
+      run: sudo apt-get install -y clang-tidy cppcheck
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports; 
@@ -273,6 +273,9 @@ jobs:
 
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
+
+    - name: Lint Cpp Check
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=/github/workspace/server/reports/cppcheck_report.xml .
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
