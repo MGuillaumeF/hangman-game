@@ -225,10 +225,10 @@ module.exports = (env, args) => {
       //compress: true,
       port: 3000,
       hot: true,
-      before: function (app, server, compiler) {
+      onBeforeSetupMiddleware: function (app, server, compiler) {
         trace("INFO", "DEV_SERVER", "Before start webpack server...");
       },
-      after: function (app, server, compiler) {
+      onAfterSetupMiddleware: function (app, server, compiler) {
         trace("INFO", "DEV_SERVER", "After start webpack server...");
       }
     };
