@@ -220,7 +220,10 @@ module.exports = (env, args) => {
     config.devtool = "cheap-module-source-map";
     trace("INFO", "DEV_SERVER", "Define webpack server configuration");
     config.devServer = {
-      contentBase: path.join(__dirname, "dist"),
+      client: {
+        overlay: true
+      },
+      static: [path.join(__dirname, "dist")],
       //compress: true,
       port: 3000,
       hot: true,
