@@ -221,7 +221,6 @@ module.exports = (env, args) => {
     trace("INFO", "DEV_SERVER", "Define webpack server configuration");
     config.devServer = {
       contentBase: path.join(__dirname, "dist"),
-      overlay: true,
       //compress: true,
       port: 3000,
       hot: true,
