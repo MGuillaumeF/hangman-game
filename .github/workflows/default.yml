@@ -110,7 +110,7 @@ jobs:
    
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest
+      run: ctest --verbose
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
@@ -167,6 +167,9 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports; 
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -193,10 +196,9 @@ jobs:
         name: Server-Hangman-Game-Win
         path: ${{github.workspace}}/server/bin/Debug/*.exe
 
-    - name: Unit Tests
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: mkdir ${{github.workspace}}/server/reports; ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+    - name: Unit Tests ctest
+      working-directory: ${{github.workspace}}/server/bin
+      run: ctest --verbose
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
@@ -210,6 +212,9 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports; 
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -235,11 +240,9 @@ jobs:
         name: Server-Hangman-Game-MacOSX
         path: ${{github.workspace}}/server/bin/HangmanGame
 
-    - name: Unit Tests
+    - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: mkdir ${{github.workspace}}/server/reports; ./HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: ctest --verbose
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -282,7 +285,7 @@ jobs:
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest || (cat ./Testing/Temporary/LastTest.log && exit 1)
+      run: ctest --verbose
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/server/test
