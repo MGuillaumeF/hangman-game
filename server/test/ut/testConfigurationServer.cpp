@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(testHttpConfigurationServer) {
                        "example of server 1 configuration"));
   BOOST_CHECK(0 == config.getHostname().compare("localhost"));
   BOOST_CHECK(0 == config.getRoot().compare("."));
-  BOOST_CHECK_EQUAL(80, config.getPort());
+  BOOST_CHECK_EQUAL(8080, config.getPort());
   BOOST_CHECK_EQUAL(1, config.getThreads());
 }
 
