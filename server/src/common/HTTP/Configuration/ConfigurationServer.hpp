@@ -51,6 +51,13 @@ public:
   std::string getHostname() const;
 
   /**
+    * @brief Get the Root object
+    *
+    * @return std::string
+    */
+   std::string getRoot() const;
+
+  /**
    * @brief Get the ipAddress object
    *
    * @return std::string
