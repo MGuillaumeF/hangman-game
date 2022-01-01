@@ -1,7 +1,11 @@
 #include "Utils.hpp"
 #include "../Logger/Logger.hpp"
 #include <boost/beast/version.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include "./Exception/ParsingException.hpp"
 
 namespace http {
 /**
@@ -77,6 +81,67 @@ void Utils::loadMimTypesConfiguration() {
                 "MimeType mapper loaded for " +
                     std::to_string(Utils::s_extTomimtype.size()) +
                     " extensions");
+}
+
+/**
+ * @brief Get the Tree object of Body request
+ *
+ * @param req The request of client
+ * @return boost::property_tree::ptree The property tree of body content
+ */
+boost::property_tree::ptree Utils::getBodyTree(
+    const boost::beast::http::request<boost::beast::http::string_body> &req) {
+  // get logger for trace
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
+
+  std::stringstream l_stream(req.body());
+  boost::property_tree::ptree requestBodyTree;
+
+  if (req.find(boost::beast::http::field::content_type) != req.end()) {
+
+    // if content-type is JSON
+    const boost::string_view contentType =
+        req.at(boost::beast::http::field::content_type);
+    if (0 == contentType.compare("application/json")) {
+      logger->debug("HTTP_DATA_READ",
+                    "getBodyTree - json body content expected");
+      try {
+        // read JSON request body in string stream
+        boost::property_tree::read_json(l_stream, requestBodyTree);
+      } catch (const std::exception &ex) {
+        // request body tree is invalid
+        logger->error("HTTP_DATA_READ",
+                      "getBodyTree - JSON body has invalid structure" +
+                          std::string(ex.what()));
+        throw ParsingException("body has invalid structure");
+      }
+      // parse as XML body
+    } else if (0 == contentType.compare("application/xml")) {
+      logger->debug("HTTP_DATA_READ",
+                    "getBodyTree - xml body content expected");
+      try {
+        // read XML request body in string stream
+        boost::property_tree::read_xml(l_stream, requestBodyTree);
+      } catch (const std::exception &ex) {
+        // if xml nota valid throw parse error
+        logger->error("HTTP_DATA_READ",
+                      "getBodyTree - XML body has invalid structure" +
+                          std::string(ex.what()));
+        throw ParsingException("body has invalid structure");
+      }
+    } else {
+      // content type header value is unknown
+      logger->error("HTTP_DATA_READ",
+                    "getBodyTree - content type not supported");
+      throw ParsingException("content type is not valid");
+    }
+  } else {
+    // content type header not found
+    logger->error("HTTP_DATA_READ",
+                  "getBodyTree - content type header not found");
+    throw ParsingException("content type is not present");
+  }
+  return requestBodyTree;
 }
 
 /**
