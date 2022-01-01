@@ -8,7 +8,6 @@
     "build": "webpack --node-env production",
     "start": "webpack serve --open --node-env development",
     "cy:open": "cypress open",
-    "precy:run" : "npx browserslist@latest --update-db",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
     "prettier": "prettier --write . --ignore-path ./.gitignore",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",

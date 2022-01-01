@@ -42,5 +42,5 @@ jobs:
       id: review
       with:
          build_dir: server/bin
-         exclude: data-management/**/*.[ch]xx,data-management/**/*.[ch]pp,cppcheck-to-sonarqube/**/*.[ch]xx,cppcheck-to-sonarqube/**/*.[ch]pp
+         exclude: data-management/**/*.[ch]xx,data-management/**/*.[ch]pp,tools/cppcheck-to-sonarqube/**/*.[ch]xx,tools/cppcheck-to-sonarqube/**/*.[ch]pp
  
