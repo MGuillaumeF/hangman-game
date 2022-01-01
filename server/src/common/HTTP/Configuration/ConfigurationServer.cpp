@@ -33,7 +33,7 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
     m_hostname =
         configuration_properties.get<std::string>("servers.server.hostname");
     m_ipAddress =
-        configuration_properties.get<std::string>("servers.server.ipAddress");
+        configuration_properties.get<std::string>("servers.server.ip-address");
     m_root = configuration_properties.get<std::string>(
         "servers.server.endpoints.endpoint.root-directory");
     m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
