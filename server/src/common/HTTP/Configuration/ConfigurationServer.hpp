@@ -37,13 +37,6 @@ public:
   std::string getDescription() const;
 
   /**
-   * @brief Get the Root object
-   *
-   * @return std::string
-   */
-  std::string getRoot() const;
-
-  /**
    * @brief Get the Hostname object
    *
    * @return std::string
