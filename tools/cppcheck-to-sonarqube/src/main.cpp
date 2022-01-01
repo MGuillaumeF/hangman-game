@@ -1,6 +1,7 @@
 #include "report/convertor.hpp"
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <fstream>
 #include <iostream>
 
 /**
@@ -17,7 +18,14 @@ int main(int argc, char *argv[]) {
           Convertor::readCppCheckReport(argv[1]);
       boost::property_tree::ptree sonarqubeReport =
           Convertor::cppCheckReportToSonarqubeReportTree(cppCheckReport);
-      boost::property_tree::write_json(argv[2], sonarqubeReport);
+      if (sonarqubeReport.get_child("issues").size() > 0) {
+        boost::property_tree::write_json(argv[2], sonarqubeReport);
+      } else {
+        std::ofstream emptyJsonFile;
+        emptyJsonFile.open(argv[2]);
+        emptyJsonFile << "{\"issues\": []}";
+        emptyJsonFile.close();
+      }
     } else {
       std::cerr << "Bad usage of tool : " << std::endl
                 << "  example of expected usage : cppcheck-to-sonarqube "
