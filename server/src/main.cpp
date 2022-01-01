@@ -168,7 +168,7 @@ int32_t main(int argc, char *argv[]) {
         return tokenEndpoint.getResponse();
       });
   http::Session::addRequestDispatcher(
-      config.getRoot(), [](const boost::beast::http::request<boost::beast::http::string_body>
+     "/", [](const boost::beast::http::request<boost::beast::http::string_body>
                   &req) {
         LocationEndpoint rootDirectoryEndpoint(req, ".");
         rootDirectoryEndpoint.dispatchRequest();
