@@ -177,8 +177,9 @@ module.exports = (env, args) => {
     plugins: [
       new HtmlWebpackPlugin({
         inject: "head",
-        title: "Game test",
-        template: path.resolve(__dirname, "public/index.html")
+        title: "Hangman Game",
+        template: path.resolve(__dirname, "public/index.html"),
+        favicon: path.resolve(__dirname, "public/favicon.ico")
       }),
       new CleanWebpackPlugin(),
       new ESLintPlugin({
@@ -226,13 +227,7 @@ module.exports = (env, args) => {
       static: [path.join(__dirname, "dist")],
       //compress: true,
       port: 3000,
-      hot: true,
-      onBeforeSetupMiddleware: function (app, server, compiler) {
-        trace("INFO", "DEV_SERVER", "Before start webpack server...");
-      },
-      onAfterSetupMiddleware: function (app, server, compiler) {
-        trace("INFO", "DEV_SERVER", "After start webpack server...");
-      }
+      hot: true
     };
   }
   /**
