@@ -174,7 +174,7 @@ int32_t main(int argc, char *argv[]) {
         rootDirectoryEndpoint.dispatchRequest();
         return rootDirectoryEndpoint.getResponse();
       });
-  auto server = http::Server(config.getHostname(), config.getPort(), config.getThreads());
+  auto server = http::Server(config.getIpAddress(), config.getPort(), config.getThreads());
 
   return exitStatus;
 }
