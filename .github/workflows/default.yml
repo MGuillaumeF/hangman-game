@@ -196,9 +196,9 @@ jobs:
         name: Server-Hangman-Game-Win
         path: ${{github.workspace}}/server/bin/Debug/*.exe
 
-    - name: Unit Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+    - name: Unit Tests
+      working-directory: ${{github.workspace}}/server/bin/Debug
+      run: HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml  --report_sink=${{github.workspace}}/server/reports/reportUT.xml
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
