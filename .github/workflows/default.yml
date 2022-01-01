@@ -259,7 +259,7 @@ jobs:
       run: mkdir ${{github.workspace}}/server/reports; 
 
     - name: Lint Cpp Check
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml .
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/cppcheck_report.xml ${{github.workspace}}/server
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -278,7 +278,7 @@ jobs:
 
     - name: Convert Lint Cpp Check to sonarqube format
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/cppcheck-sonarqube-report.json
+      run: ./cppcheck-to-sonarqube ${{github.workspace}}/server/cppcheck_report.xml ${{github.workspace}}/server/cppcheck-sonarqube-report.json
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
