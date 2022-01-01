@@ -5,7 +5,7 @@
     <hostname>localhost</hostname>
     <ip-address>0.0.0.0</ip-address>
     <schema>HTTP</schema>
-    <port>80</port>
+    <port>8080</port>
     <thread>1</thread>
     <endpoints>
       <endpoint type="static-files" target="/" keep-prefix="false">
