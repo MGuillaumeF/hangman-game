@@ -43,6 +43,7 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
                  "Configuration reading : "
                  "\n -> Description  : " + m_description +
                  "\n -> Hostname     : " + m_hostname +
+                 "\n -> Ip Address   : " + m_ipAddress +
                  "\n -> Port         : " + std::to_string(m_port) +
                  "\n -> Root         : " + m_root +
                  "\n -> Thread       : " + std::to_string(m_thread));
