@@ -92,7 +92,6 @@ sendRequest(REQUEST requestProperties) {
 // ADD ASSERT ON RESULT EXPECTED
 
 int32_t main(int argc, char *argv[]) {
-  uint8_t nbSuccess = 0;
   uint8_t nbFailed = 0;
   try {
 
@@ -106,6 +105,7 @@ int32_t main(int argc, char *argv[]) {
     requestProperties.body = "{\"login\" : \"a\", \"password\" : \"b\"}";
     boost::beast::http::response<boost::beast::http::dynamic_body> response =
         sendRequest(requestProperties);
+    uint8_t nbSuccess = 0;
 
     if (response.result() == boost::beast::http::status::ok) {
       std::cout << (nbSuccess + nbFailed + 1) << " : [success]" << std::endl;
