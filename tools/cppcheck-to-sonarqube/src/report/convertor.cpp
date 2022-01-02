@@ -1,6 +1,10 @@
 #include "convertor.hpp"
 #include <boost/property_tree/xml_parser.hpp>
+#include <fstream>
+#include <iostream>
 #include <map>
+#include <regex>
+#include <sstream>
 
 /**
  * @brief SonarCloud severity levels of issues
@@ -134,5 +138,62 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
 
   sonarQubeReport.add_child("issues", issues);
 
+  return sonarQubeReport;
+}
+
+/**
+ * @brief method to convert the clang-tidy report
+ *
+ * @param filename The input clang-tidy report path
+ * @return boost::property_tree::ptree The converted ptree
+ */
+boost::property_tree::ptree
+Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
+
+  boost::property_tree::ptree sonarQubeReport;
+  std::ifstream inFile;
+  // open the input file
+  inFile.open(filename);
+
+  std::stringstream strStream;
+  // read the file
+  strStream << inFile.rdbuf();
+  // str holds the content of the file
+  const std::string reportContent = strStream.str();
+
+  const std::regex regex("(.+\\.[ch]pp):(\\d+):(\\d+):(.+):(.+)\\[(.+)\\]");
+
+  // std::smatch match;
+  // if (regex_search(reportContent, match, regex) == true) {
+
+  //       std::cout << "Match size = " << match.size() << std::endl;
+
+  //       std::cout << "Whole match : " << match.str(0) << std::endl;
+  //       std::cout << "Filename is :" << match.str(1)  << std::endl
+  //            << "Line :" <<  match.str(2)  << std::endl
+  //            << "Column :" <<  match.str(3)  << std::endl
+  //            << "Severity :" <<  match.str(4)  << std::endl
+  //            << "Message :" <<  match.str(5)  << std::endl
+  //            << "ruleId :" <<  match.str(6)
+  //            << std::endl;
+  //   }
+  //   else {
+  //      std::cout << "No match is found" << std::endl;
+  //   }
+
+  for (std::sregex_iterator i = std::sregex_iterator(
+           reportContent.begin(), reportContent.end(), regex);
+       i != std::sregex_iterator(); ++i) {
+    std::smatch match = *i;
+    std::cout << "Match size = " << match.size() << std::endl;
+
+    std::cout << "Whole match : " << match.str(0) << std::endl;
+    std::cout << "Filename is :" << match.str(1) << std::endl
+              << "Line :" << match.str(2) << std::endl
+              << "Column :" << match.str(3) << std::endl
+              << "Severity :" << match.str(4) << std::endl
+              << "Message :" << match.str(5) << std::endl
+              << "ruleId :" << match.str(6) << std::endl;
+  }
   return sonarQubeReport;
 }

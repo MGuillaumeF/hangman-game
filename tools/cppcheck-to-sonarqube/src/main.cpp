@@ -13,18 +13,24 @@
  */
 int main(int argc, char *argv[]) {
   try {
-    if (argc == 3) {
-      boost::property_tree::ptree cppCheckReport =
-          Convertor::readCppCheckReport(argv[1]);
-      boost::property_tree::ptree sonarqubeReport =
-          Convertor::cppCheckReportToSonarqubeReportTree(cppCheckReport);
-      if (sonarqubeReport.get_child("issues").size() > 0) {
-        boost::property_tree::write_json(argv[2], sonarqubeReport);
-      } else {
-        std::ofstream emptyJsonFile;
-        emptyJsonFile.open(argv[2]);
-        emptyJsonFile << "{\"issues\": []}";
-        emptyJsonFile.close();
+    if (argc == 4) {
+      if (0 == std::string("cppcheck").compare(argv[1])) {
+        boost::property_tree::ptree cppCheckReport =
+            Convertor::readCppCheckReport(argv[2]);
+        boost::property_tree::ptree sonarqubeReport =
+            Convertor::cppCheckReportToSonarqubeReportTree(cppCheckReport);
+        if (sonarqubeReport.get_child("issues").size() > 0) {
+          boost::property_tree::write_json(argv[3], sonarqubeReport);
+        } else {
+          std::ofstream emptyJsonFile;
+          emptyJsonFile.open(argv[3]);
+          emptyJsonFile << "{\"issues\": []}";
+          emptyJsonFile.close();
+        }
+      } else if (0 == std::string("clang-tidy").compare(argv[1])) {
+        boost::property_tree::ptree sonarqubeReport =
+            Convertor::clangTidyReportToSonarqubeReportTree(argv[2]);
+        boost::property_tree::write_json(argv[3], sonarqubeReport);
       }
     } else {
       std::cerr << "Bad usage of tool : " << std::endl
