@@ -124,7 +124,6 @@ jobs:
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
       run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
       
-
     - name: Generate Integration Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
       run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
