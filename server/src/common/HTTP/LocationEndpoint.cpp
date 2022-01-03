@@ -47,7 +47,7 @@ std::string LocationEndpoint::pathCat(const boost::beast::string_view &base,
       result.resize(result.size() - 1);
     }
     result.append(path.data(), path.size());
-    std::replace_if(result.begin(), result.end(), '/', path_separator);
+    std::replace(result.begin(), result.end(), '/', path_separator);
 #else
     if (char constexpr path_separator = '/'; result.back() == path_separator) {
       result.resize(result.size() - 1);
