@@ -107,7 +107,7 @@ public:
    * @param appender The tracer function to manage printing of message
    */
   void addAppender(const ELogLevel level, const std::string &theme,
-                   const appender_t &tracer);
+                   const appender_t &appender);
 
   /**
    * Function to get formated message
