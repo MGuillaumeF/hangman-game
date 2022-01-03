@@ -35,35 +35,34 @@ public:
    *
    */
   void dispatchRequest() {
-    try {
-      if (m_allowedMethods.contains(m_request.method())) {
-        switch (m_request.method()) {
-        case boost::beast::http::verb::post:
-          doPost();
-          break;
-        case boost::beast::http::verb::get:
-          doGet();
-          break;
-        case boost::beast::http::verb::put:
-          doPut();
-          break;
-        case boost::beast::http::verb::patch:
-          doPatch();
-          break;
-        case boost::beast::http::verb::delete_:
-          doDelete();
-          break;
-        default:
-          writeNotImplementedResponse();
-        }
-      } else {
-        writeMethodNotAllowed();
+    if (m_allowedMethods.contains(m_request.method())) {
+      switch (m_request.method()) {
+      case boost::beast::http::verb::post:
+        // method is POST
+        doPost();
+        break;
+      case boost::beast::http::verb::get:
+        // method is GET
+        doGet();
+        break;
+      case boost::beast::http::verb::put:
+        // method is PUT
+        doPut();
+        break;
+      case boost::beast::http::verb::patch:
+        // method is PATCH
+        doPatch();
+        break;
+      case boost::beast::http::verb::delete_:
+        // method is DELETE
+        doDelete();
+        break;
+      default:
+        // not possible
+        writeNotImplementedResponse();
       }
-    } catch (const std::out_of_range &e) {
-      m_logger->error(
-          "HTTP_DATA_READ",
-          "HttpRestrictiveEndpoint - dispatchRequest - out of range of method" +
-              std::string(e.what()));
+    } else {
+      // if method is unknown
       writeMethodNotAllowed();
     }
   }
@@ -119,6 +118,7 @@ protected:
    *
    */
   void writeMethodNotAllowed() {
+    // write method is not allowed http response
     boost::beast::http::response<boost::beast::http::string_body> res;
 
     res.version(HTTP_VERSION); // HTTP/1.1
@@ -135,6 +135,7 @@ protected:
    *
    */
   void writeNotImplementedResponse() {
+    // write not implemented http response
     boost::beast::http::response<boost::beast::http::string_body> res;
 
     res.version(HTTP_VERSION); // HTTP/1.1
