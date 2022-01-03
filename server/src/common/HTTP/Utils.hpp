@@ -3,6 +3,7 @@
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <functional>
 #include <map>
 #include <string>
@@ -24,6 +25,15 @@ public:
    * @brief Load Mim Types Configuration map
    */
   static void loadMimTypesConfiguration();
+
+  /**
+   * @brief Get the Tree object of Body request
+   *
+   * @param req The request of client
+   * @return boost::property_tree::ptree The property tree of body content
+   */
+  static boost::property_tree::ptree getBodyTree(
+      const boost::beast::http::request<boost::beast::http::string_body> &req);
 
   /**
    * @brief static method of default bad_request response
@@ -64,15 +74,15 @@ public:
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const boost::beast::string_view &what);
 
- /**
-  * @brief The response writer wrapper
-  *
-  * @param req The request of client
-  * @param status The status of response HTTP
-  * @param body The body of response
-  * @param contentType Thé content type of body response
-  * @return boost::beast::http::response<boost::beast::http::string_body>
-  */
+  /**
+   * @brief The response writer wrapper
+   *
+   * @param req The request of client
+   * @param status The status of response HTTP
+   * @param body The body of response
+   * @param contentType Thé content type of body response
+   * @return boost::beast::http::response<boost::beast::http::string_body>
+   */
   static boost::beast::http::response<boost::beast::http::string_body>
   wrapper_response(
       const boost::beast::http::request<boost::beast::http::string_body> &req,

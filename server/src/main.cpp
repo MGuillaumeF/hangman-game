@@ -168,13 +168,13 @@ int32_t main(int argc, char *argv[]) {
         return tokenEndpoint.getResponse();
       });
   http::Session::addRequestDispatcher(
-      "/", [](const boost::beast::http::request<boost::beast::http::string_body>
+     "/", [](const boost::beast::http::request<boost::beast::http::string_body>
                   &req) {
         LocationEndpoint rootDirectoryEndpoint(req, ".");
         rootDirectoryEndpoint.dispatchRequest();
         return rootDirectoryEndpoint.getResponse();
       });
-  auto server = http::Server("0.0.0.0", 8080, 1);
+  auto server = http::Server(config.getIpAddress(), config.getPort(), config.getThreads());
 
   return exitStatus;
 }

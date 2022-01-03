@@ -32,6 +32,8 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
         configuration_properties.get<std::string>("servers.server.description");
     m_hostname =
         configuration_properties.get<std::string>("servers.server.hostname");
+    m_ipAddress =
+        configuration_properties.get<std::string>("servers.server.ip-address");
     m_root = configuration_properties.get<std::string>(
         "servers.server.endpoints.endpoint.root-directory");
     m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
@@ -41,6 +43,7 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
                  "Configuration reading : "
                  "\n -> Description  : " + m_description +
                  "\n -> Hostname     : " + m_hostname +
+                 "\n -> Ip Address   : " + m_ipAddress +
                  "\n -> Port         : " + std::to_string(m_port) +
                  "\n -> Root         : " + m_root +
                  "\n -> Thread       : " + std::to_string(m_thread));
@@ -52,6 +55,7 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
     throw ConfigurationException("HTTP Configuration file is invalid");
   }
 }
+
 /**
  * @brief  Get the Description object
  *
@@ -60,6 +64,14 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
 std::string ConfigurationServer::getDescription() const {
   return m_description;
 };
+
+/**
+ * @brief Get the IpAddress object
+ *
+ * @return std::string
+ */
+std::string ConfigurationServer::getIpAddress() const { return m_ipAddress; };
+
 /**
  * @brief Get the Hostname object
  *
