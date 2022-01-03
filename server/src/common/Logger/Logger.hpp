@@ -115,7 +115,7 @@ public:
    * @param theme The theme of message
    * @param msg The message body
    */
-  std::string getLog(const std::string &level, const std::string &theme,
+  static std::string getLog(const std::string &level, const std::string &theme,
                      const std::string &msg) const;
   /**
    * Function of default std:cout appender
