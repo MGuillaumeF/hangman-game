@@ -1,7 +1,6 @@
 #ifndef __HTTP_RESTRICTIVE_ENDPOINT_HPP__
 #define __HTTP_RESTRICTIVE_ENDPOINT_HPP__
 
-#include <iostream>
 #include <set>
 
 #include <boost/beast/core.hpp>
@@ -85,13 +84,6 @@ public:
    */
   boost::beast::http::response<boost::beast::http::string_body>
   getResponse() const {
-    m_logger->debug("HTTP_DATA_READ",
-                    "HttpRestrictiveEndpoint - getResponse - start");
-    m_logger->debug("HTTP_DATA_READ",
-                    "HttpRestrictiveEndpoint - readResponse body " +
-                        m_response.body());
-    m_logger->debug("HTTP_DATA_READ",
-                    "HttpRestrictiveEndpoint - getResponse - end");
     return m_response;
   }
   /**
@@ -183,46 +175,40 @@ private:
    * @brief DEFAULT - GET - HTTP Method not implemented for endpoind
    */
   virtual void doGet() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - start");
+    // if doGet is not overwrited return not implemented response
     writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doGet - end");
   }
 
   /**
    * @brief DEFAULT - POST - HTTP Method not implemented for endpoind
    */
   virtual void doPost() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - start");
+    // if doPost is not overwrited return not implemented response
     writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPost - end");
   }
 
   /**
    * @brief DEFAULT - PUT - HTTP Method not implemented for endpoind
    */
   virtual void doPut() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - start");
+    // if doPut is not overwrited return not implemented response
     writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPut - end");
   }
 
   /**
    * @brief DEFAULT - DELETE - HTTP Method not implemented for endpoind
    */
   virtual void doDelete() {
-    m_logger->debug("HTTP_ACCESS",
-                    "HttpRestrictiveEndpoint - doDelete - start");
+    // if doDelete is not overwrited return not implemented response
     writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doDelete - end");
   }
 
   /**
    * @brief DEFAULT - PATCH - HTTP Method not implemented for endpoind
    */
   virtual void doPatch() {
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - start");
+    // if doPatch is not overwrited return not implemented response
     writeNotImplementedResponse();
-    m_logger->debug("HTTP_ACCESS", "HttpRestrictiveEndpoint - doPatch - end");
   }
 };
 
