@@ -32,7 +32,7 @@ void HttpTokenEndpoint::doPost() {
       this->getRequest();
 
   // get ptree of body by content-type parsing
-  boost::property_tree::ptree requestBodyTree =
+  const boost::property_tree::ptree requestBodyTree =
       http::Utils::getBodyTree(request);
 
   // READ property tree content
