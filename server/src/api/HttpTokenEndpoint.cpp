@@ -1,10 +1,6 @@
 #include "HttpTokenEndpoint.hpp"
 
-#include <iostream>
-
-#include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 
 #include "../common/HTTP/Exception/ParsingException.hpp"
 #include "../common/HTTP/Utils.hpp"
@@ -53,6 +49,7 @@ void HttpTokenEndpoint::doPost() {
     throw ParsingException("body has bad value type");
   }
 
+  // create http response of token
   boost::beast::http::response<boost::beast::http::string_body> res{
       boost::beast::http::status::ok, request.version()};
   res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
@@ -60,6 +57,7 @@ void HttpTokenEndpoint::doPost() {
   res.keep_alive(request.keep_alive());
   res.body() = "This is a fake token";
   res.prepare_payload();
+  // set generated response
   setResponse(res);
 }
 
