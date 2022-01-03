@@ -24,12 +24,6 @@ public:
   explicit ConfigurationServer(const std::string &filename);
 
   /**
-   * @brief Destroy the Configuration Server object
-   *
-   */
-  ~ConfigurationServer() = default;
-
-  /**
    * @brief Get the Description object
    *
    * @return std::string
