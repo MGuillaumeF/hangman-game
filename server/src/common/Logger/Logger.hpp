@@ -116,7 +116,7 @@ public:
    * @param msg The message body
    */
   static std::string getLog(const std::string &level, const std::string &theme,
-                     const std::string &msg) const;
+                     const std::string &msg);
   /**
    * Function of default std:cout appender
    * @param message The message to print
