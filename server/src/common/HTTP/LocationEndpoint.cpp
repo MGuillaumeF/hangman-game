@@ -82,11 +82,12 @@ void LocationEndpoint::doGet() {
     if ('/' == request.target().back()) {
       path.append("index.html");
     }
-
+/*
     // Attempt to open the file
     boost::beast::error_code ec;
     boost::beast::http::file_body::value_type body;
     body.open(path.c_str(), boost::beast::file_mode::scan, ec);
+
 
     // Handle the case where the file doesn't exist
     if (ec && ec != boost::beast::errc::no_such_file_or_directory) {
@@ -94,7 +95,7 @@ void LocationEndpoint::doGet() {
       setResponse(http::Utils::server_error(request, ec.message()));
 
     } else if (!ec) {
-/*
+
       // Cache the size since we need it after the move
       auto const size = body.size();
       // read file with dynamic buffer (vector)
@@ -120,7 +121,7 @@ void LocationEndpoint::doGet() {
       // prepare response body
       res.prepare_payload();
       setResponse(res);
-    }
+ //   }
   }
   // trace access log with adapted level
   const std::string accessLog = "[" +
@@ -165,7 +166,7 @@ void LocationEndpoint::doDelete() {
 }
 
 /**
- * @brief Function to test if targat of request is a valid path
+ * @brief Function to test if target of request is a valid path
  *
  * @param boost::beast::string_view The target of request
  * @return true The target of request is valid relative path (desc)
