@@ -156,7 +156,7 @@ boost::beast::http::response<boost::beast::http::string_body>
 Utils::bad_request(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const boost::beast::string_view &why) {
-  return wrapper_response(req, boost::beast::http::status::bad_request, std::string(why));
+  return wrapper_response(req, boost::beast::http::status::bad_request, why);
 }
 
 /**
@@ -205,14 +205,14 @@ boost::beast::http::response<boost::beast::http::string_body>
 Utils::wrapper_response(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const boost::beast::http::status &status,
-    const std::string &body,
-    const std::string &contentType) {
+    const std::string_view &body,
+    const std::string_view &contentType) {
   boost::beast::http::response<boost::beast::http::string_body> res{
       status, req.version()};
   res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(boost::beast::http::field::content_type, contentType);
+  res.set(boost::beast::http::field::content_type, std::string(contentType));
   res.keep_alive(req.keep_alive());
-  res.body() = body;
+  res.body() = std::string(body);
   res.prepare_payload();
   return res;
 }
