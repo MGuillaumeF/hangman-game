@@ -198,21 +198,21 @@ Utils::server_error(
  * @param req The request of client
  * @param status The status of response HTTP
  * @param body The body of response
- * @param contentType Thé content type of body response
+ * @param contentType The content type of body response
  * @return boost::beast::http::response<boost::beast::http::string_body>
  */
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::wrapper_response(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const boost::beast::http::status &status,
-    const boost::beast::string_view &body,
-    const std::string_view &contentType) {
+    const std::string &body,
+    const std::string &contentType) {
   boost::beast::http::response<boost::beast::http::string_body> res{
       status, req.version()};
   res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-  res.set(boost::beast::http::field::content_type, std::string(contentType));
+  res.set(boost::beast::http::field::content_type, contentType);
   res.keep_alive(req.keep_alive());
-  res.body() = std::string(body);
+  res.body() = body;
   res.prepare_payload();
   return res;
 }
