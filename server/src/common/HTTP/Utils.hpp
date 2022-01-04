@@ -18,8 +18,8 @@ public:
    * @param path the path of request
    * @return the mime-type of file
    */
-  static boost::beast::string_view
-  getMimeType(const boost::beast::string_view &path);
+  static std::string_view
+  getMimeType(const std::string_view &path);
 
   /**
    * @brief Load Mim Types Configuration map
