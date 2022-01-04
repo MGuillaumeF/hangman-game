@@ -26,10 +26,7 @@ Utils::Utils() = default;
  * @param path the path of request
  * @return the mime-type of file
  */
-std::string
-Utils::getMimeType(const std::string_view &path) {
-  using boost::beast::iequals;
-
+std::string Utils::getMimeType(const std::string &path) {
   const std::filesystem::path filePath = path;
   const std::string ext = filePath.extension();
 
