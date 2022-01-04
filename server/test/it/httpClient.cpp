@@ -1,14 +1,13 @@
-// #define BOOST_TEST_MODULE HangmanGameITTest
-// #define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_DYN_LINK
 
-// #include <boost/test/included/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
-// #include <cstdlib>
+
 #include <exception>
 #include <iostream>
 #include <map>
@@ -91,7 +90,11 @@ sendRequest(REQUEST requestProperties) {
 // CREATE FUNCTION TO EMIT REQUEST WITH BODY AND METHOD
 // ADD ASSERT ON RESULT EXPECTED
 
-int32_t main(int argc, char *argv[]) {
+
+BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
+
+BOOST_AUTO_TEST_CASE(testEndpoints) {
+ 
   uint8_t nbFailed = 0;
   try {
 
@@ -277,5 +280,7 @@ int32_t main(int argc, char *argv[]) {
 
     std::cerr << "[ERROR] " << ec.what() << std::endl;
   }
-  return nbFailed > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
+  BOOST_CHECK(nbFailed == 0);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
