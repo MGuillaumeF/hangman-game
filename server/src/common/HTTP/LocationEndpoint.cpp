@@ -116,7 +116,7 @@ void LocationEndpoint::doGet() {
               request, boost::beast::http::status::ok, fileContent,
               std::string(http::Utils::getMimeType(path)));
       // add length of body in meta data of request
-      res.content_length(size);
+      res.content_length(fileContent.size());
       // prepare response body
       res.prepare_payload();
       setResponse(res);
