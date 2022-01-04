@@ -18,8 +18,7 @@ public:
    * @param path the path of request
    * @return the mime-type of file
    */
-  static std::string
-  getMimeType(const std::string_view &path);
+  static std::string getMimeType(const std::string &path);
 
   /**
    * @brief Load Mim Types Configuration map
