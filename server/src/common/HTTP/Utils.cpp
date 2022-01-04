@@ -5,6 +5,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+#include <filesystem>
+
 #include "./Exception/ParsingException.hpp"
 
 namespace http {
@@ -25,14 +27,11 @@ Utils::Utils() = default;
  * @return the mime-type of file
  */
 boost::beast::string_view
-Utils::getMimeType(const boost::beast::string_view &path) {
+Utils::getMimeType(const std::string_view &path) {
   using boost::beast::iequals;
-  auto const ext = [&path] {
-    auto const pos = path.rfind(".");
-    return (pos == boost::beast::string_view::npos)
-               ? boost::beast::string_view{}
-               : path.substr(pos);
-  }();
+
+  const std::filesystem::path filePath = path;
+  const std::string ext = filePath.extension();
 
   // set default mime type
   std::string l_sMimeType = "application/text";
@@ -44,12 +43,12 @@ Utils::getMimeType(const boost::beast::string_view &path) {
   }
   // get the mime type from configuration if ext is found in loaded
   // configuration
-  if (Utils::s_extTomimtype.contains(ext.to_string())) {
-    l_sMimeType = Utils::s_extTomimtype.at(ext.to_string());
+  if (Utils::s_extTomimtype.contains(ext)) {
+    l_sMimeType = Utils::s_extTomimtype.at(ext);
   } else {
     logger->warn("HTTP_CONFIGURATION",
                  "MimeType of File not found for extension : " +
-                     ext.to_string());
+                     ext);
   }
   logger->debug("HTTP_CONFIGURATION", "MimeType of File used : " + l_sMimeType);
   return l_sMimeType;
