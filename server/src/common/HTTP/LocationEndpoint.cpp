@@ -119,7 +119,7 @@ void LocationEndpoint::doGet() {
       // add length of body in meta data of request
      // res.content_length(fileContent.size());
       // prepare response body
-      res.prepare_payload();
+      // res.prepare_payload();
       setResponse(res);
  //   }
   }
