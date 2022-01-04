@@ -94,7 +94,7 @@ void LocationEndpoint::doGet() {
       setResponse(http::Utils::server_error(request, ec.message()));
 
     } else if (!ec) {
-
+/*
       // Cache the size since we need it after the move
       auto const size = body.size();
       // read file with dynamic buffer (vector)
@@ -103,6 +103,12 @@ void LocationEndpoint::doGet() {
       body.file().read(&buffer[0], size, ec);
       // convert vector to string
       const std::string fileContent(buffer.begin(), buffer.end());
+*/
+
+      std::ifstream stream(path);
+      std::stringstream buffer;
+      buffer << stream.rdbuf();
+      const std::string fileContent(buffer.str());
 
       // Respond to GET request
       boost::beast::http::response<boost::beast::http::string_body> res =
