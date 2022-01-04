@@ -160,7 +160,7 @@ void LocationEndpoint::doDelete() {
     if (std::filesystem::exists(path)) {
       std::filesystem::remove(path);
       setResponse(http::Utils::wrapper_response(
-          request, boost::beast::http::status::ok, request.target(), ""));
+          request, boost::beast::http::status::ok, std::string(request.target()), ""));
     }
   }
 }
