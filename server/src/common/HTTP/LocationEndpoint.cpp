@@ -89,13 +89,10 @@ void LocationEndpoint::doGet() {
       buffer << stream.rdbuf();
       const std::string fileContent = buffer.str();
 
-      const std::string_view mimeType = http::Utils::getMimeType(path);
-
       // Respond to GET request
       boost::beast::http::response<boost::beast::http::string_body> res =
         http::Utils::wrapper_response(
-            request, boost::beast::http::status::ok, fileContent,
-          mimeType);
+            request, boost::beast::http::status::ok, fileContent, http::Utils::getMimeType(path));
       // add length of body in meta data of request
       res.content_length(fileContent.size());
       // prepare response body
