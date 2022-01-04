@@ -71,7 +71,7 @@ void LocationEndpoint::doGet() {
 
   // default response is 404 error message when page is not found
   setResponse(http::Utils::not_found(request, request.target()));
-
+return;
   // Request path must be absolute and not contain "..".
   if (!isValidFileTarget(request.target())) {
 
