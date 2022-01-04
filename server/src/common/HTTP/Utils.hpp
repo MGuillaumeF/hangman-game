@@ -46,7 +46,7 @@ public:
   static boost::beast::http::response<boost::beast::http::string_body>
   bad_request(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      const boost::beast::string_view &why);
+      const std::string_view &why);
 
   /**
    * @brief static method of default not_found response
