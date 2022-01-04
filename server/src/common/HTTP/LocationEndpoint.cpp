@@ -83,21 +83,23 @@ void LocationEndpoint::doGet() {
       path.append("index.html");
     }
 
-    const std::ifstream stream(path);
-    std::stringstream buffer;
-    buffer << stream.rdbuf();
-    const std::string fileContent = buffer.str();
+    if (std::filesystem::exists(path)) {
+      const std::ifstream stream(path);
+      std::stringstream buffer;
+      buffer << stream.rdbuf();
+      const std::string fileContent = buffer.str();
 
-    // Respond to GET request
-    boost::beast::http::response<boost::beast::http::string_body> res =
+      // Respond to GET request
+      boost::beast::http::response<boost::beast::http::string_body> res =
         http::Utils::wrapper_response(
             request, boost::beast::http::status::ok, fileContent,
            "application/xml");//std::string(http::Utils::getMimeType(path))
-    // add length of body in meta data of request
-    res.content_length(fileContent.size());
-    // prepare response body
-    res.prepare_payload();
-    setResponse(res);
+      // add length of body in meta data of request
+      res.content_length(fileContent.size());
+      // prepare response body
+      res.prepare_payload();
+      setResponse(res);
+    }
   }
   // trace access log with adapted level
   const std::string accessLog = "[" +
