@@ -155,7 +155,7 @@ boost::property_tree::ptree Utils::getBodyTree(
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::bad_request(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
-    const boost::beast::string_view &why) {
+    const std::string_view &why) {
   return wrapper_response(req, boost::beast::http::status::bad_request, why);
 }
 
