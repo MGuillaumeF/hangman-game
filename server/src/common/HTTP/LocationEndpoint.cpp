@@ -82,8 +82,6 @@ void LocationEndpoint::doGet() {
       path.append("index.html");
     }
 
-return;
-
 /*
     // Attempt to open the file
     boost::beast::error_code ec;
@@ -111,7 +109,7 @@ return;
       std::ifstream stream(path);
       std::stringstream buffer;
       buffer << stream.rdbuf();
-      const std::string fileContent(buffer.str());
+      const std::string fileContent = "test"; //(buffer.str());
 
       // Respond to GET request
       boost::beast::http::response<boost::beast::http::string_body> res =
