@@ -4,7 +4,7 @@ sleep 15
 
 echo "Integration tests START"
 
-./HangmanGameITTest
+./HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logIT.xml  --report_sink=../reports/reportIT.xml
 sleep 60
 
 echo "Soft stop emitted"

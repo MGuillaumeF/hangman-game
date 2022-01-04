@@ -155,7 +155,7 @@ boost::property_tree::ptree Utils::getBodyTree(
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::bad_request(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
-    const boost::beast::string_view &why) {
+    const std::string_view &why) {
   return wrapper_response(req, boost::beast::http::status::bad_request, why);
 }
 
@@ -198,14 +198,14 @@ Utils::server_error(
  * @param req The request of client
  * @param status The status of response HTTP
  * @param body The body of response
- * @param contentType Thé content type of body response
+ * @param contentType The content type of body response
  * @return boost::beast::http::response<boost::beast::http::string_body>
  */
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::wrapper_response(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const boost::beast::http::status &status,
-    const boost::beast::string_view &body,
+    const std::string_view &body,
     const std::string_view &contentType) {
   boost::beast::http::response<boost::beast::http::string_body> res{
       status, req.version()};
