@@ -6,7 +6,7 @@
 BOOST_AUTO_TEST_SUITE(testsHttpUtils)
 
 BOOST_AUTO_TEST_CASE(testMimeType) {
-  boost::beast::string_view mimeType = http::Utils::getMimeType("test.html");
+  std::string_view mimeType = http::Utils::getMimeType("test.html");
   BOOST_CHECK(mimeType.compare("text/html"));
 
   mimeType = http::Utils::getMimeType("./");
