@@ -9,7 +9,6 @@ BOOST_AUTO_TEST_CASE(testMimeType) {
   std::string mimeType = http::Utils::getMimeType("test.html");
   BOOST_CHECK_EQUAL("text/html", mimeType);
 
-);
 /*
   mimeType = http::Utils::getMimeType("./");
   BOOST_CHECK(mimeType.compare("application/text"));
