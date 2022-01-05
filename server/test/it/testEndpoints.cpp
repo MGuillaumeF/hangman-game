@@ -12,6 +12,14 @@
 #include <map>
 #include <string>
 
+#include "boost/process.hpp"
+
+std::string child_process_name = "HangmanGame";
+
+boost::process::child child (child_process_name);
+
+// child.join();
+
 struct REQUEST {
   std::string hostname = "localhost";
   std::string target = "/";
@@ -180,3 +188,4 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+child.terminate();
