@@ -14,12 +14,6 @@
 
 #include "boost/process.hpp"
 
-std::string child_process_name = "HangmanGame";
-
-boost::process::child child (child_process_name);
-
-// child.join();
-
 struct REQUEST {
   std::string hostname = "localhost";
   std::string target = "/";
@@ -101,6 +95,9 @@ sendRequest(REQUEST requestProperties) {
 BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
 
 BOOST_AUTO_TEST_CASE(testEndpoints) {
+
+    std::string child_process_name = "HangmanGame";
+    boost::process::child child (child_process_name);
 
     REQUEST requestProperties;
     requestProperties.port = 8080;
@@ -185,7 +182,7 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
     response = sendRequest(requestProperties);
 
     BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
+    child.terminate();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-child.terminate();
