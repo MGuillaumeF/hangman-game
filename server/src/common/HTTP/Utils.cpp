@@ -26,7 +26,7 @@ Utils::Utils() = default;
  * @return the mime-type of file
  */
 std::string Utils::getMimeType(const std::string &path) {
-  const std::string ext = boost::filesystem::extension(path);
+  const std::string ext = boost::filesystem::path(path).extension();
 
   // set default mime type
   std::string l_sMimeType = "application/text";
