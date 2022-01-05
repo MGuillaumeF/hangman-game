@@ -110,7 +110,7 @@ jobs:
    
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+      run: ctest --verbose || (cat Testing/Temporary/LastTest.log && exit 1)
 
     # - name: gcov after unit tests
     #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -236,7 +236,7 @@ jobs:
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+      run: ctest --verbose || (cat Testing/Temporary/LastTest.log && exit 1)
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -292,7 +292,7 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+      run: ctest --verbose || (cat Testing/Temporary/LastTest.log && exit 1)
 
     - name: gcov after unit tests
       if: github.actor != 'dependabot[bot]'
