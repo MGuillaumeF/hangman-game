@@ -4,8 +4,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
-#include <filesystem>
+#include <boost/filesystem.hpp>
 
 #include "./Exception/ParsingException.hpp"
 
@@ -27,8 +26,7 @@ Utils::Utils() = default;
  * @return the mime-type of file
  */
 std::string Utils::getMimeType(const std::string &path) {
-  const std::filesystem::path filePath = path;
-  const std::string ext = filePath.extension();
+  const std::string ext = boost::filesystem::extension(path);
 
   // set default mime type
   std::string l_sMimeType = "application/text";
