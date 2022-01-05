@@ -26,7 +26,7 @@ Utils::Utils() = default;
  * @return the mime-type of file
  */
 std::string Utils::getMimeType(const std::string &path) {
-  const std::string ext = path.find(".") != std::string::npos ? path.substr(path.rfind(".")) : "";
+  const std::string ext = path.find('.') != std::string::npos ? path.substr(path.rfind('.')) : "";
 
   // set default mime type
   std::string l_sMimeType = "application/text";
