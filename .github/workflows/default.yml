@@ -109,8 +109,8 @@ jobs:
       run: ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
    
     - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose || (cat ../reports/logUT.xml && cat ../reports/logIT.xml && cat Testing/Temporary/LastTest.log && exit 1)
+      working-directory: ${{github.workspace}}/server/test
+      run: ./run-tests.sh
 
     # - name: gcov after unit tests
     #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -236,7 +236,7 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose || (cat ../reports/logUT.xml && cat ../reports/logIT.xml && cat Testing/Temporary/LastTest.log && exit 1)
+      run: run: ./run-tests.sh
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -292,7 +292,7 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose || (cat ../reports/logUT.xml && cat ../reports/logIT.xml && cat Testing/Temporary/LastTest.log && exit 1)
+      run: run: ./run-tests.sh
 
     - name: gcov after unit tests
       if: github.actor != 'dependabot[bot]'
