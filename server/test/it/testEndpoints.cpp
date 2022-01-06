@@ -97,7 +97,8 @@ BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
 BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     std::string child_process_name = "./HangmanGame";
-    boost::process::child child (child_process_name);
+    boost::process::child child (child_process_name, bp::std_out > std::cout, bp::std_err > std::cerr);
+
     BOOST_CHECK(child.running());
 
     REQUEST requestProperties;
