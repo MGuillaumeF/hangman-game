@@ -12,7 +12,7 @@
 #include <map>
 #include <string>
 
-#include "boost/process.hpp"
+#include "boost/process/child.hpp"
 
 struct REQUEST {
   std::string hostname = "localhost";
@@ -98,6 +98,7 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     std::string child_process_name = "./HangmanGame";
     boost::process::child child (child_process_name);
+    BOOST_CHECK(child.running());
 
     REQUEST requestProperties;
     requestProperties.port = 8080;
@@ -183,6 +184,7 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
     child.terminate();
+    BOOST_CHECK(!child.running());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
