@@ -236,7 +236,7 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: run: ./run-tests.sh
+      run: ./run-tests.sh
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -292,7 +292,7 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/bin
-      run: run: ./run-tests.sh
+      run: ./run-tests.sh
 
     - name: gcov after unit tests
       if: github.actor != 'dependabot[bot]'
