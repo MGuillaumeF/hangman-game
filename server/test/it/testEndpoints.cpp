@@ -17,6 +17,7 @@
 
 #include <boost/process/child.hpp>
 #include <boost/process/io.hpp>
+#include <boost/process/search_path.hpp>
 
 struct REQUEST {
   std::string hostname = "localhost";
