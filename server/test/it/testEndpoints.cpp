@@ -15,9 +15,7 @@
 #include <chrono>
 #include <thread>
 
-#include <boost/process/child.hpp>
-#include <boost/process/io.hpp>
-#include <boost/process/search_path.hpp>
+#include <boost/process.hpp>
 
 struct REQUEST {
   std::string hostname = "localhost";
