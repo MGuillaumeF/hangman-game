@@ -11,11 +11,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <vector>
-#include <chrono>
-#include <thread>
-
-#include <boost/process.hpp>
 
 struct REQUEST {
   std::string hostname = "localhost";
@@ -98,13 +93,6 @@ sendRequest(REQUEST requestProperties) {
 BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
 
 BOOST_AUTO_TEST_CASE(testEndpoints) {
-
-    std::string child_process_name = "./HangmanGame";
-    boost::process::child child(child_process_name, std::vector<std::string>{});
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(15000));
-
-    BOOST_CHECK(child.running());
 
     REQUEST requestProperties;
     requestProperties.port = 8080;
@@ -189,11 +177,6 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
     response = sendRequest(requestProperties);
 
     BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
-
-    boost::process::child stop(boost::process::search_path("sh"), std::vector<std::string>{"pkill", "-15", "HangmanGame"});
-    std::this_thread::sleep_for(std::chrono::milliseconds(15000));
-    
-    BOOST_CHECK(!child.running());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
