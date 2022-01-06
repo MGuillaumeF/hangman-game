@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
 
-    boost::process::child stop(boost::process::search_path("cmd"), std::vector<std::string>{"pkill", "-15", "HangmanGame"});
+    boost::process::child stop(boost::process::search_path("sh"), std::vector<std::string>{"pkill", "-15", "HangmanGame"});
     std::this_thread::sleep_for(std::chrono::milliseconds(15000));
     
     BOOST_CHECK(!child.running());
