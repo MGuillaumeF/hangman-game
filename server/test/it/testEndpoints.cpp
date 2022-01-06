@@ -101,9 +101,9 @@ BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
 BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     std::string child_process_name = "./HangmanGame";
-    boost::process::child child (child_process_name);//, boost::process::std_out > std::cout, boost::process::std_err > std::cerr);
+    boost::process::child child (child_process_name);
 
-std::this_thread::sleep_for(std::chrono::milliseconds(15000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(15000));
 
     BOOST_CHECK(child.running());
 
