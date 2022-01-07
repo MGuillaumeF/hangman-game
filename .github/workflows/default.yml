@@ -108,13 +108,9 @@ jobs:
       working-directory: ${{github.workspace}}/server/bin
       run: ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
    
-    - name: Unit Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
-
-    - name: Integration Tests
+    - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-it.sh; ./run-it.sh
+      run: chmod +x ./run-tests.sh; ./run-tests.sh
 
     # - name: gcov after unit tests
     #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -238,9 +234,9 @@ jobs:
         name: Server-Hangman-Game-MacOSX
         path: ${{github.workspace}}/server/bin/HangmanGame
 
-    - name: Unit Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+    - name: Server Tests ctest
+      working-directory: ${{github.workspace}}/server/test
+      run: chmod +x ./run-tests.sh; ./run-tests.sh
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -294,13 +290,9 @@ jobs:
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
 
-    - name: Unit Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
-
-    - name: Integration Tests
+    - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-it.sh; ./run-it.sh
+      run: chmod +x ./run-tests.sh; ./run-tests.sh
 
     - name: gcov after unit tests
       if: github.actor != 'dependabot[bot]'
