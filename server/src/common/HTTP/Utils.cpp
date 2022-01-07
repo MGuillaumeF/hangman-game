@@ -9,15 +9,15 @@
 
 namespace http {
 /**
+ * @brief The default constructor of Utils class
+ */
+Utils::Utils() = delete;
+
+/**
  * @brief configuration map of mimetype where key is extension, populated at the
  * first mime-type search
  */
 std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
-
-/**
- * @brief The default constructor of Utils class
- */
-Utils::Utils() = delete;
 
 /**
  * @brief Return a reasonable mime type based on the extension of a file.
