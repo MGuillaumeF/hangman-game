@@ -91,9 +91,9 @@ public:
 
 private:
   /**
-   * @brief The default constructor of Utils class
+   * @brief The default constructor of Utils class is deleted
    */
-  Utils();
+  Utils() = delete;
   /**
    * @brief configuration map of mimetype where key is extension, populated at
    * the first mime-type search
