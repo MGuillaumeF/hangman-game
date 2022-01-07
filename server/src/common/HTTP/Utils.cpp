@@ -8,16 +8,12 @@
 #include "./Exception/ParsingException.hpp"
 
 namespace http {
+
 /**
  * @brief configuration map of mimetype where key is extension, populated at the
  * first mime-type search
  */
 std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
-
-/**
- * @brief The default constructor of Utils class
- */
-Utils::Utils() = default;
 
 /**
  * @brief Return a reasonable mime type based on the extension of a file.
@@ -209,10 +205,5 @@ Utils::wrapper_response(
   res.prepare_payload();
   return res;
 }
-
-/**
- * @brief The default destructor of Utils class
- */
-Utils::~Utils() = default;
 
 } // namespace http
