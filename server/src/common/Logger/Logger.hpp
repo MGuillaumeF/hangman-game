@@ -107,7 +107,7 @@ public:
    * @param appender The tracer function to manage printing of message
    */
   void addAppender(const ELogLevel level, const std::string &theme,
-                   const appender_t &tracer);
+                   const appender_t &appender);
 
   /**
    * Function to get formated message
@@ -115,8 +115,8 @@ public:
    * @param theme The theme of message
    * @param msg The message body
    */
-  std::string getLog(const std::string &level, const std::string &theme,
-                     const std::string &msg) const;
+  static std::string getLog(const std::string &level, const std::string &theme,
+                     const std::string &msg);
   /**
    * Function of default std:cout appender
    * @param message The message to print

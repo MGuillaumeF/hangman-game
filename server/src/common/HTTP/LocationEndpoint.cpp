@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -46,11 +47,7 @@ std::string LocationEndpoint::pathCat(const boost::beast::string_view &base,
       result.resize(result.size() - 1);
     }
     result.append(path.data(), path.size());
-    for (auto &c : result) {
-      if (c == '/') {
-        c = path_separator;
-      }
-    }
+    std::replace(result.begin(), result.end(), '/', path_separator);
 #else
     if (char constexpr path_separator = '/'; result.back() == path_separator) {
       result.resize(result.size() - 1);
@@ -86,34 +83,18 @@ void LocationEndpoint::doGet() {
       path.append("index.html");
     }
 
-    // Attempt to open the file
-    boost::beast::error_code ec;
-    boost::beast::http::file_body::value_type body;
-    body.open(path.c_str(), boost::beast::file_mode::scan, ec);
-
-    // Handle the case where the file doesn't exist
-    if (ec && ec != boost::beast::errc::no_such_file_or_directory) {
-      // Handle an unknown error
-      setResponse(http::Utils::server_error(request, ec.message()));
-
-    } else if (!ec) {
-
-      // Cache the size since we need it after the move
-      auto const size = body.size();
-      // read file with dynamic buffer (vector)
-      std::vector<char> buffer;
-      buffer.resize(size);
-      body.file().read(&buffer[0], size, ec);
-      // convert vector to string
-      const std::string fileContent(buffer.begin(), buffer.end());
+    if (std::filesystem::exists(path)) {
+      const std::ifstream stream(path);
+      std::stringstream buffer;
+      buffer << stream.rdbuf();
+      const std::string fileContent = buffer.str();
 
       // Respond to GET request
       boost::beast::http::response<boost::beast::http::string_body> res =
-          http::Utils::wrapper_response(
-              request, boost::beast::http::status::ok, fileContent,
-              std::string(http::Utils::getMimeType(path)));
+        http::Utils::wrapper_response(
+            request, boost::beast::http::status::ok, fileContent, http::Utils::getMimeType(path));
       // add length of body in meta data of request
-      res.content_length(size);
+      res.content_length(fileContent.size());
       // prepare response body
       res.prepare_payload();
       setResponse(res);
@@ -146,7 +127,7 @@ void LocationEndpoint::doDelete() {
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
     // default response is not found
-    setResponse(http::Utils::not_found(request, request.target()));
+    setResponse(http::Utils::not_found(request, request.target().to_string()));
 
     // Request path must be absolute and not contain "..".
     // Build the path to the requested file
@@ -156,13 +137,13 @@ void LocationEndpoint::doDelete() {
     if (std::filesystem::exists(path)) {
       std::filesystem::remove(path);
       setResponse(http::Utils::wrapper_response(
-          request, boost::beast::http::status::ok, request.target(), ""));
+          request, boost::beast::http::status::ok, request.target().to_string(), ""));
     }
   }
 }
 
 /**
- * @brief Function to test if targat of request is a valid path
+ * @brief Function to test if target of request is a valid path
  *
  * @param boost::beast::string_view The target of request
  * @return true The target of request is valid relative path (desc)

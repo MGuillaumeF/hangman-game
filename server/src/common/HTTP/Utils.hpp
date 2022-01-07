@@ -3,6 +3,7 @@
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <functional>
 #include <map>
 #include <string>
@@ -17,13 +18,21 @@ public:
    * @param path the path of request
    * @return the mime-type of file
    */
-  static boost::beast::string_view
-  getMimeType(const boost::beast::string_view &path);
+  static std::string getMimeType(const std::string &path);
 
   /**
    * @brief Load Mim Types Configuration map
    */
   static void loadMimTypesConfiguration();
+
+  /**
+   * @brief Get the Tree object of Body request
+   *
+   * @param req The request of client
+   * @return boost::property_tree::ptree The property tree of body content
+   */
+  static boost::property_tree::ptree getBodyTree(
+      const boost::beast::http::request<boost::beast::http::string_body> &req);
 
   /**
    * @brief static method of default bad_request response
@@ -36,7 +45,7 @@ public:
   static boost::beast::http::response<boost::beast::http::string_body>
   bad_request(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      const boost::beast::string_view &why);
+      const std::string_view &why);
 
   /**
    * @brief static method of default not_found response
@@ -64,31 +73,27 @@ public:
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const boost::beast::string_view &what);
 
- /**
-  * @brief The response writer wrapper
-  *
-  * @param req The request of client
-  * @param status The status of response HTTP
-  * @param body The body of response
-  * @param contentType Thé content type of body response
-  * @return boost::beast::http::response<boost::beast::http::string_body>
-  */
+  /**
+   * @brief The response writer wrapper
+   *
+   * @param req The request of client
+   * @param status The status of response HTTP
+   * @param body The body of response
+   * @param contentType The content type of body response
+   * @return boost::beast::http::response<boost::beast::http::string_body>
+   */
   static boost::beast::http::response<boost::beast::http::string_body>
   wrapper_response(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
       const boost::beast::http::status &status,
-      const boost::beast::string_view &body,
+      const std::string_view &body,
       const std::string_view &contentType = "text/html");
 
 private:
   /**
-   * @brief The default constructor of Utils class
+   * @brief The default constructor of Utils class is deleted
    */
-  Utils();
-  /**
-   * @brief The default destructor of Utils class
-   */
-  ~Utils();
+  Utils() = delete;
   /**
    * @brief configuration map of mimetype where key is extension, populated at
    * the first mime-type search

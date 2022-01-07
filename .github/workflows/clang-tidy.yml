@@ -6,7 +6,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  BOOST_VERSION: 77
+  BOOST_VERSION: 78
 
 permissions: write-all
 

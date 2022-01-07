@@ -1,9 +1,14 @@
 #include "Utils.hpp"
 #include "../Logger/Logger.hpp"
 #include <boost/beast/version.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+#include "./Exception/ParsingException.hpp"
+
 namespace http {
+
 /**
  * @brief configuration map of mimetype where key is extension, populated at the
  * first mime-type search
@@ -11,24 +16,12 @@ namespace http {
 std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
 
 /**
- * @brief The default constructor of Utils class
- */
-Utils::Utils() = default;
-
-/**
  * @brief Return a reasonable mime type based on the extension of a file.
  * @param path the path of request
  * @return the mime-type of file
  */
-boost::beast::string_view
-Utils::getMimeType(const boost::beast::string_view &path) {
-  using boost::beast::iequals;
-  auto const ext = [&path] {
-    auto const pos = path.rfind(".");
-    return (pos == boost::beast::string_view::npos)
-               ? boost::beast::string_view{}
-               : path.substr(pos);
-  }();
+std::string Utils::getMimeType(const std::string &path) {
+  const std::string ext = path.find('.') != std::string::npos ? path.substr(path.rfind('.')) : "";
 
   // set default mime type
   std::string l_sMimeType = "application/text";
@@ -40,12 +33,12 @@ Utils::getMimeType(const boost::beast::string_view &path) {
   }
   // get the mime type from configuration if ext is found in loaded
   // configuration
-  if (Utils::s_extTomimtype.contains(ext.to_string())) {
-    l_sMimeType = Utils::s_extTomimtype.at(ext.to_string());
+  if (Utils::s_extTomimtype.contains(ext)) {
+    l_sMimeType = Utils::s_extTomimtype.at(ext);
   } else {
     logger->warn("HTTP_CONFIGURATION",
                  "MimeType of File not found for extension : " +
-                     ext.to_string());
+                     ext);
   }
   logger->debug("HTTP_CONFIGURATION", "MimeType of File used : " + l_sMimeType);
   return l_sMimeType;
@@ -80,6 +73,67 @@ void Utils::loadMimTypesConfiguration() {
 }
 
 /**
+ * @brief Get the Tree object of Body request
+ *
+ * @param req The request of client
+ * @return boost::property_tree::ptree The property tree of body content
+ */
+boost::property_tree::ptree Utils::getBodyTree(
+    const boost::beast::http::request<boost::beast::http::string_body> &req) {
+  // get logger for trace
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
+
+  std::stringstream l_stream(req.body());
+  boost::property_tree::ptree requestBodyTree;
+
+  if (req.find(boost::beast::http::field::content_type) != req.end()) {
+
+    // if content-type is JSON
+    const boost::string_view contentType =
+        req.at(boost::beast::http::field::content_type);
+    if (0 == contentType.compare("application/json")) {
+      logger->debug("HTTP_DATA_READ",
+                    "getBodyTree - json body content expected");
+      try {
+        // read JSON request body in string stream
+        boost::property_tree::read_json(l_stream, requestBodyTree);
+      } catch (const std::exception &ex) {
+        // request body tree is invalid
+        logger->error("HTTP_DATA_READ",
+                      "getBodyTree - JSON body has invalid structure" +
+                          std::string(ex.what()));
+        throw ParsingException("body has invalid structure");
+      }
+      // parse as XML body
+    } else if (0 == contentType.compare("application/xml")) {
+      logger->debug("HTTP_DATA_READ",
+                    "getBodyTree - xml body content expected");
+      try {
+        // read XML request body in string stream
+        boost::property_tree::read_xml(l_stream, requestBodyTree);
+      } catch (const std::exception &ex) {
+        // if xml nota valid throw parse error
+        logger->error("HTTP_DATA_READ",
+                      "getBodyTree - XML body has invalid structure" +
+                          std::string(ex.what()));
+        throw ParsingException("body has invalid structure");
+      }
+    } else {
+      // content type header value is unknown
+      logger->error("HTTP_DATA_READ",
+                    "getBodyTree - content type not supported");
+      throw ParsingException("content type is not valid");
+    }
+  } else {
+    // content type header not found
+    logger->error("HTTP_DATA_READ",
+                  "getBodyTree - content type header not found");
+    throw ParsingException("content type is not present");
+  }
+  return requestBodyTree;
+}
+
+/**
  * @brief static method of default bad_request response
  *
  * @param req The request of client
@@ -90,7 +144,7 @@ void Utils::loadMimTypesConfiguration() {
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::bad_request(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
-    const boost::beast::string_view &why) {
+    const std::string_view &why) {
   return wrapper_response(req, boost::beast::http::status::bad_request, why);
 }
 
@@ -133,14 +187,14 @@ Utils::server_error(
  * @param req The request of client
  * @param status The status of response HTTP
  * @param body The body of response
- * @param contentType Thé content type of body response
+ * @param contentType The content type of body response
  * @return boost::beast::http::response<boost::beast::http::string_body>
  */
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::wrapper_response(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
     const boost::beast::http::status &status,
-    const boost::beast::string_view &body,
+    const std::string_view &body,
     const std::string_view &contentType) {
   boost::beast::http::response<boost::beast::http::string_body> res{
       status, req.version()};
@@ -151,10 +205,5 @@ Utils::wrapper_response(
   res.prepare_payload();
   return res;
 }
-
-/**
- * @brief The default destructor of Utils class
- */
-Utils::~Utils() = default;
 
 } // namespace http

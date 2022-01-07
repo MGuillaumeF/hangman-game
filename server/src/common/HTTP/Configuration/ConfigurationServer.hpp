@@ -24,29 +24,40 @@ public:
   explicit ConfigurationServer(const std::string &filename);
 
   /**
-   * @brief Destroy the Configuration Server object
+   * @brief Get the Description object
    *
+   * @return std::string
    */
-  ~ConfigurationServer() = default;
   std::string getDescription() const;
+
   /**
    * @brief Get the Hostname object
    *
    * @return std::string
    */
   std::string getHostname() const;
+
   /**
-   * @brief Get the Root object
+    * @brief Get the Root object
+    *
+    * @return std::string
+    */
+   std::string getRoot() const;
+
+  /**
+   * @brief Get the ipAddress object
    *
    * @return std::string
    */
-  std::string getRoot() const;
+  std::string getIpAddress() const;
+
   /**
    * @brief Get the Threads object
    *
    * @return uint8_t
    */
   uint8_t getThreads() const;
+
   /**
    * @brief Get the Port object
    *
@@ -57,6 +68,7 @@ public:
 private:
   std::string m_description;
   std::string m_hostname;
+  std::string m_ipAddress;
   std::string m_root;
   uint8_t m_thread;
   uint16_t m_port;
