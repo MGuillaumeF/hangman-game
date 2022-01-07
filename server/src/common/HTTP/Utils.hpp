@@ -95,10 +95,6 @@ private:
    */
   Utils();
   /**
-   * @brief The default destructor of Utils class
-   */
-  ~Utils();
-  /**
    * @brief configuration map of mimetype where key is extension, populated at
    * the first mime-type search
    */
