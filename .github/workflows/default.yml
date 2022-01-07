@@ -235,7 +235,7 @@ jobs:
         path: ${{github.workspace}}/server/bin/HangmanGame
 
     - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/server/test
       run: chmod +x ./run-tests.sh; ./run-tests.sh
 
  sonarcloud-analyse:
@@ -291,7 +291,7 @@ jobs:
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
 
     - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/server/test
       run: chmod +x ./run-tests.sh; ./run-tests.sh
 
     - name: gcov after unit tests
