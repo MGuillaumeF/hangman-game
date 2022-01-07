@@ -276,7 +276,7 @@ jobs:
 
     - name: Convert Lint Cpp Check to sonarqube format
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server/reports/cppcheck-sonarqube-report.json
+      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server/reports/cppcheck-sonarqube-report.json
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -292,6 +292,10 @@ jobs:
 
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
+
+    - name: Convert Lint Clang-Tidy to sonarqube format
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.xml ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests ctest
       working-directory: ${{github.workspace}}/server/bin
