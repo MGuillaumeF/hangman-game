@@ -2,6 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../../src/common/HTTP/Configuration/ConfigurationServer.hpp"
+#include "../../src/common/HTTP/Exception/ConfigurationException.hpp"
 
 BOOST_AUTO_TEST_SUITE(testConfigurationServer)
 
