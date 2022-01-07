@@ -8,10 +8,6 @@
 #include "./Exception/ParsingException.hpp"
 
 namespace http {
-/**
- * @brief The default constructor of Utils class
- */
-Utils::Utils() = delete;
 
 /**
  * @brief configuration map of mimetype where key is extension, populated at the
