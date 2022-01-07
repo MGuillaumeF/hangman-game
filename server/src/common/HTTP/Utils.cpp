@@ -17,7 +17,7 @@ std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
 /**
  * @brief The default constructor of Utils class
  */
-Utils::Utils() = default;
+Utils::Utils() = delete;
 
 /**
  * @brief Return a reasonable mime type based on the extension of a file.
@@ -209,10 +209,5 @@ Utils::wrapper_response(
   res.prepare_payload();
   return res;
 }
-
-/**
- * @brief The default destructor of Utils class
- */
-Utils::~Utils() = default;
 
 } // namespace http
