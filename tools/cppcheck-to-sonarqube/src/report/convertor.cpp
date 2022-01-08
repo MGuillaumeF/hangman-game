@@ -103,8 +103,8 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
 
         // add text range to get location of error
         boost::property_tree::ptree textRange;
-        const uint16_t line = errorChild.second.get<uint16_t>("<xmlattr>.line");
-        textRange.put<std::string>("startLine", line == 0 ? 1 : line);
+        const std::string line = errorChild.second.get<std::string>("<xmlattr>.line");
+        textRange.put<std::string>("startLine", line == "0" ? "1" : line);
         textRange.put<std::string>(
             "startColumn",
             errorChild.second.get<std::string>("<xmlattr>.column"));
