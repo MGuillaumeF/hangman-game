@@ -383,6 +383,16 @@ jobs:
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
 
+    - name: Run SonarQube data-management
+      working-directory: ${{github.workspace}}/data-management
+      if: github.actor != 'dependabot[bot]'
+      env:
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+      run: sonar-scanner
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.verbose=false
+
     - name: Run SonarQube
       if: github.actor != 'dependabot[bot]'
       env:
