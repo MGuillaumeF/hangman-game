@@ -181,19 +181,28 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   //      std::cout << "No match is found" << std::endl;
   //   }
 
+  const std::string engineId = "clang-tidy";
+
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
        i != std::sregex_iterator(); ++i) {
     std::smatch match = *i;
     std::cout << "Match size = " << match.size() << std::endl;
 
-    std::cout << "Whole match : " << match.str(0) << std::endl;
-    std::cout << "Filename is :" << match.str(1) << std::endl
-              << "Line :" << match.str(2) << std::endl
-              << "Column :" << match.str(3) << std::endl
-              << "Severity :" << match.str(4) << std::endl
-              << "Message :" << match.str(5) << std::endl
-              << "ruleId :" << match.str(6) << std::endl;
+    const std::string filename = match.str(1);
+    const std::string line = match.str(2);
+    const std::string column = match.str(3);
+    const std::string severity = match.str(4);
+    const std::string message = match.str(5);
+    const std::string ruleId = match.str(6);
+    
+    std::cout << "Whole match : " << match.str(0) << std::endl
+              << "Filename is :" << filename << std::endl
+              << "Line :" << line << std::endl
+              << "Column :" << column << std::endl
+              << "Severity :" << severity << std::endl
+              << "Message :" << message << std::endl
+              << "ruleId :" << ruleId << std::endl;
   }
   return sonarQubeReport;
 }
