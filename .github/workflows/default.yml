@@ -322,6 +322,18 @@ jobs:
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
       run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck_report.xml ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck-sonarqube-report.json
 
+    - name: Archive tools report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Tools-Hangman-Game - Reports
+        path: ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports
+
+    - name: Archive data-management report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Data-Management-Hangman-Game - Reports
+        path: ${{github.workspace}}/data-management/reports
+
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
