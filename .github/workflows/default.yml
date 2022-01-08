@@ -248,7 +248,7 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y clang-tidy cppcheck
+      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports; 
@@ -261,6 +261,33 @@ jobs:
       id: install-boost
       with:
         boost_version: 1.${{env.BOOST_VERSION}}.0
+
+    - name: Generate Model Sources
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+
+    - name: Start MySQL server
+      run: sudo service mysql start 
+
+    - name: Update Database schema
+      run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
+
+    - name: Update Database schema
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run:  mysql --user=odb_test --database=odb_test < user.sql
+
+    - name: Generate target (data management)
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build Data Management
+      working-directory: ${{github.workspace}}/data-management
+      run: cmake --build ${{github.workspace}}/data-management/bin
+
+    - name: Test Data Management
+      working-directory: ${{github.workspace}}/data-management/bin
+      run: ctest --verbose
 
     - name: Generate target cppcheck-to-sonarqube
       run: cmake -S ${{github.workspace}}/tools/cppcheck-to-sonarqube -B ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
