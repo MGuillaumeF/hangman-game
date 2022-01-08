@@ -373,6 +373,16 @@ jobs:
       if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
 
+    - name: Run SonarQube Tools
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube
+      if: github.actor != 'dependabot[bot]'
+      env:
+        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
+      run: sonar-scanner
+        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        -Dsonar.verbose=false
+
     - name: Run SonarQube
       if: github.actor != 'dependabot[bot]'
       env:
