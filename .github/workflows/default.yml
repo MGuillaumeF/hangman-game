@@ -250,11 +250,17 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
 
-    - name: Create reports directory
+    - name: Create reports directory (server)
       run: mkdir ${{github.workspace}}/server/reports; 
 
-    - name: Lint Cpp Check
+    - name: Lint Cpp Check (server)
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server
+
+    - name: Create reports directory (tools)
+      run: mkdir ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports; 
+
+    - name: Lint Cpp Check (tools)
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck_report.xml ${{github.workspace}}/tools/cppcheck-to-sonarqube
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -265,6 +271,12 @@ jobs:
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
       run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/data-management/reports; 
+
+    - name: Lint Cpp Check
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management
 
     - name: Start MySQL server
       run: sudo service mysql start 
@@ -301,6 +313,14 @@ jobs:
     - name: Convert Lint Cpp Check to sonarqube format
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
       run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server/reports/cppcheck-sonarqube-report.json
+
+    - name: Convert Lint Cpp Check to sonarqube format (data-management)
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management/reports/cppcheck-sonarqube-report.json
+
+    - name: Convert Lint Cpp Check to sonarqube format (tools)
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck_report.xml ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck-sonarqube-report.json
 
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
