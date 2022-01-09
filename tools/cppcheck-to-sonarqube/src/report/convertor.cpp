@@ -199,6 +199,8 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   const std::string engineId = "clang-tidy";
   const std::string type = "CODE_SMELL";
 
+  std::map<std::string, boost::property_tree::ptree> issuesMap;
+
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
        i != std::sregex_iterator(); ++i) {
@@ -220,8 +222,6 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
               << "Message :" << message << std::endl
               << "ruleId :" << ruleId << std::endl;
 
-    std::map<std::string, boost::property_tree::ptree> issuesMap;
-
     if (!issuesMap.contains(ruleId)) {
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
@@ -231,7 +231,15 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
 
       issuesMap.emplace(ruleId, newRule);
     }
-    issuesMap.at(ruleId);
   }
+  
+  boost::property_tree::ptree issues;
+
+  for (const auto& [ruleId, issue] : issuesMap) {
+    issues.push_back(
+          std::pair<const std::string, boost::property_tree::ptree>("", issue)); 
+  }
+
+  sonarQubeReport.add_child("issues", issues);
   return sonarQubeReport;
 }
