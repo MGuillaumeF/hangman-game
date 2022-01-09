@@ -27,6 +27,21 @@ const std::map<std::string, SonarCloudSeverity> cppcheckToSonarCloudSeverity = {
     {"error", BLOCKER}};
 
 /**
+ * @brief map to convert clang-tidy severity to sonacloud severity
+ *
+ */
+const std::map<std::string, SonarCloudSeverity> clangTidyToSonarCloudSeverity = {
+    {"none", INFO},
+    {"debug", INFO},
+    {"information", INFO},
+    {"note", MINOR},
+    {"style", MINOR},
+    {"warning", MAJOR},
+    {"portability", MAJOR},
+    {"performance", CRITICAL},
+    {"error", BLOCKER}};
+
+/**
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
@@ -182,6 +197,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   //   }
 
   const std::string engineId = "clang-tidy";
+  const std::string type = "CODE_SMELL";
 
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
@@ -192,7 +208,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
     const std::string filename = match.str(1);
     const std::string line = match.str(2);
     const std::string column = match.str(3);
-    const std::string severity = match.str(4);
+    const std::string severity = clangTidyToSonarCloudSeverity.at(match.str(4));
     const std::string message = match.str(5);
     const std::string ruleId = match.str(6);
     
@@ -203,6 +219,19 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
               << "Severity :" << severity << std::endl
               << "Message :" << message << std::endl
               << "ruleId :" << ruleId << std::endl;
+
+    std::map<std::string, boost::property_tree::ptree> issuesMap;
+
+    if (!issuesMap.contains(ruleId)) {
+      boost::property_tree::ptree newRule;
+      newRule.put<std::string>("engineId", engineId);
+      newRule.put<std::string>("ruleId", ruleId);
+      newRule.put<std::string>("severity", severity);
+      newRule.put<std::string>("type", type);
+
+      issuesMap.put(ruleId, newRule);
+    }
+    issuesMap.at(ruleId)
   }
   return sonarQubeReport;
 }
