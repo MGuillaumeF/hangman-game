@@ -208,7 +208,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
     const std::string filename = match.str(1);
     const std::string line = match.str(2);
     const std::string column = match.str(3);
-    const std::string severity = clangTidyToSonarCloudSeverity.at(match.str(4));
+    const std::string severity = match.str(4);
     const std::string message = match.str(5);
     const std::string ruleId = match.str(6);
     
@@ -226,12 +226,12 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
       newRule.put<std::string>("ruleId", ruleId);
-      newRule.put<std::string>("severity", severity);
+      newRule.put<std::string>("severity", clangTidyToSonarCloudSeverity.at(severity));
       newRule.put<std::string>("type", type);
 
-      issuesMap.put(ruleId, newRule);
+      issuesMap.emplace(ruleId, newRule);
     }
-    issuesMap.at(ruleId)
+    issuesMap.at(ruleId);
   }
   return sonarQubeReport;
 }
