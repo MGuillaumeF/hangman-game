@@ -99,7 +99,7 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
     // The severity is calculated and translated
     issue.put<std::string>(
         "severity",
-        SonarCloudSeverityValue.at(cppcheckToSonarCloudSeverity.at(severity)));
+        SonarCloudSeverityValued.at(cppcheckToSonarCloudSeverity.at(severity)));
 
     // all issues have type CODE_SMELL
     issue.put<std::string>("type", "CODE_SMELL");
@@ -226,7 +226,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
       newRule.put<std::string>("ruleId", ruleId);
-      newRule.put<std::string>("severity", clangTidyToSonarCloudSeverity.at(severity));
+      newRule.put<std::string>("severity", SonarCloudSeverityValued.at(clangTidyToSonarCloudSeverity.at(severity)));
       newRule.put<std::string>("type", type);
 
       issuesMap.emplace(ruleId, newRule);
