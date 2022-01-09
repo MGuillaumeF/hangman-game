@@ -226,7 +226,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
       newRule.put<std::string>("ruleId", ruleId);
-      newRule.put<std::string>("severity", SonarCloudSeverityValued.at(clangTidyToSonarCloudSeverity.at(severity)));
+      newRule.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
       newRule.put<std::string>("type", type);
 
       issuesMap.emplace(ruleId, newRule);
