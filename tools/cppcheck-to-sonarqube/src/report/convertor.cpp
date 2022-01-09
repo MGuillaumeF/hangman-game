@@ -99,7 +99,7 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
     // The severity is calculated and translated
     issue.put<std::string>(
         "severity",
-        SonarCloudSeverityValued.at(cppcheckToSonarCloudSeverity.at(severity)));
+        SonarCloudSeverityValue.at(cppcheckToSonarCloudSeverity.at(severity)));
 
     // all issues have type CODE_SMELL
     issue.put<std::string>("type", "CODE_SMELL");
