@@ -243,6 +243,10 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
       newRule.put<std::string>("ruleId", ruleId);
+      if (!clangTidyToSonarCloudSeverity.contains(severity)) {
+        std::cerr << "Map error : unknown severity " << severity << std::endl;
+        std::exception("Map error : unknown severity");
+      }
       newRule.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
       newRule.put<std::string>("type", type);
 
