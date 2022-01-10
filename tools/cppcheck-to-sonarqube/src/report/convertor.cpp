@@ -240,6 +240,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
               << "ruleId :" << ruleId << std::endl;
 
     if (!issuesMap.contains(ruleId)) {
+      std::cout << "new rule added in map : " << ruleId << std::endl;
       boost::property_tree::ptree newRule;
       newRule.put<std::string>("engineId", engineId);
       newRule.put<std::string>("ruleId", ruleId);
@@ -261,8 +262,10 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   boost::property_tree::ptree issues;
 
   for (auto& [ruleId, issue] : issuesMap) {
+    std::cout << "rule added is result file : " << ruleId << std::endl;
     if (!locationMap.at(ruleId).empty()) {
       std::list<boost::property_tree::ptree> locations = locationMap.at(ruleId);
+      std::cout << "rule added with location : " << locations.size() << std::endl;
       boost::property_tree::ptree frontLocation = locations.front();
       issue.add_child("primaryLocation", frontLocation);
       locations.pop_front();
