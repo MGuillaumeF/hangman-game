@@ -52,6 +52,21 @@ const std::map<SonarCloudSeverity, std::string> SonarCloudSeverityValue = {
     {CRITICAL, "CRITICAL"},
     {BLOCKER, "BLOCKER"}};
 
+boost::property_tree::ptree buildLocationTree(const std::string& message, const std::string& filePath, const std::string& line, const std::string& column) {
+  boost::property_tree::ptree location;
+
+  location.put<std::string>("message", message);
+  location.put<std::string>("filePath", filePath);
+
+  // add text range to get location of error
+  boost::property_tree::ptree textRange;
+  textRange.put<std::string>("startLine", line == "0" ? "1" : line);
+  textRange.put<std::string>("startColumn", column);
+  location.add_child("textRange", textRange);
+
+  return location;
+}
+
 /**
  * @brief Method to read cppcheck file
  *
@@ -200,6 +215,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   const std::string type = "CODE_SMELL";
 
   std::map<std::string, boost::property_tree::ptree> issuesMap;
+  std::map<std::string, boost::property_tree::ptree> locationMap;
 
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
@@ -230,16 +246,24 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       newRule.put<std::string>("type", type);
 
       issuesMap.emplace(ruleId, newRule);
+      locationMap.emplace(ruleId, std::list<boost::property_tree::ptree>);
     }
+    locationMap.at(ruleId).add(buildLocationTree(message, filename, line, column));
   }
   
   boost::property_tree::ptree issues;
 
   for (const auto& [ruleId, issue] : issuesMap) {
-    issues.push_back(
-          std::pair<const std::string, boost::property_tree::ptree>("", issue)); 
+    if (!locationMap.at(ruleId).empty()) {
+      issue.add_child("primaryLocation", locationMap.at(ruleId).front());
+      locationMap.at(ruleId).pop_front();
+      issues.push_back(
+          std::pair<const std::string, boost::property_tree::ptree>("", issue));
+    } 
   }
 
   sonarQubeReport.add_child("issues", issues);
   return sonarQubeReport;
 }
+
+
