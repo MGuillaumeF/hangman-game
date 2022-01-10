@@ -256,7 +256,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   
   boost::property_tree::ptree issues;
 
-  for (const auto& [ruleId, issue] : issuesMap) {
+  for (auto& [ruleId, issue] : issuesMap) {
     if (!locationMap.at(ruleId).empty()) {
       std::list<boost::property_tree::ptree> locations = locationMap.at(ruleId);
       boost::property_tree::ptree frontLocation = locations.front();
