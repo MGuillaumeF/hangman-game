@@ -216,7 +216,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   const std::string type = "CODE_SMELL";
 
   std::map<std::string, boost::property_tree::ptree> issuesMap;
-  std::map<std::string, boost::property_tree::ptree> locationMap;
+  std::map<std::string, std::list<boost::property_tree::ptree>> locationMap;
 
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
