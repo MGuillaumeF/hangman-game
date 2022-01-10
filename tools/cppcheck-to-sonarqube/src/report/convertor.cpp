@@ -249,7 +249,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       issuesMap.emplace(ruleId, newRule);
       locationMap.emplace(ruleId, std::list<boost::property_tree::ptree>());
     }
-    locationMap.at(ruleId).emplace(buildLocationTree(message, filename, line, column));
+    locationMap.at(ruleId).insert(buildLocationTree(message, filename, line, column));
   }
   
   boost::property_tree::ptree issues;
