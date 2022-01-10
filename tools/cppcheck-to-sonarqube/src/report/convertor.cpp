@@ -245,7 +245,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       newRule.put<std::string>("ruleId", ruleId);
       if (!clangTidyToSonarCloudSeverity.contains(severity)) {
         std::cerr << "Map error : unknown severity " << severity << std::endl;
-        throw std::exception("Map error : unknown severity");
+        throw std::runtime_error("Map error : unknown severity");
       }
       newRule.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
       newRule.put<std::string>("type", type);
