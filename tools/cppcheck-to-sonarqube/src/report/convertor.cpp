@@ -192,7 +192,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   // str holds the content of the file
   const std::string reportContent = strStream.str();
 
-  const std::regex regex("(.+\\.[ch]pp):(\\d+):(\\d+):\\s(.+):(.+)\\[(.+)\\]", std::regex_constants::ECMAScript);
+  const std::regex regex("(.+\\.[ch]pp):(\\d+):(\\d+):\\s([a-z]+):(.+)\\[(.+)\\]", std::regex_constants::ECMAScript);
 
   // std::smatch match;
   // if (regex_search(reportContent, match, regex) == true) {
