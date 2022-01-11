@@ -11,8 +11,8 @@
  * @param argv The process launch command arguments array
  * @return int The process exit code
  */
-int16_t main(int argc, char *argv[]) {
-  int16_t exitStatus = EXIT_SUCCESS;
+int32_t main(int argc, char *argv[]) {
+  int32_t exitStatus = EXIT_SUCCESS;
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
