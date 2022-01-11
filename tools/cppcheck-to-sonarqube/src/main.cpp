@@ -11,7 +11,8 @@
  * @param argv The process launch command arguments array
  * @return int The process exit code
  */
-int main(int argc, char *argv[]) {
+int16_t main(int argc, char *argv[]) {
+  int16_t exitStatus = EXIT_SUCCESS;
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
@@ -39,7 +40,8 @@ int main(int argc, char *argv[]) {
       emptyJsonFile.close();
     }
   } catch (const std::exception &ex) {
-    std::cerr << "Error : " << ex.what() << std::endl;
-    throw ex;
+    std::cerr << "Unexpected Fatal Error : " << ex.what() << std::endl;
+    exitStatus = EXIT_FAILURE;
   }
+  return exitStatus;
 }
