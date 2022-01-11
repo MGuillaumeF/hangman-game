@@ -33,6 +33,15 @@ public:
    */
   static boost::property_tree::ptree cppCheckReportToSonarqubeReportTree(
       const boost::property_tree::ptree &cppCheckTree);
+
+  /**
+   * @brief method to convert the clang-tidy report
+   *
+   * @param filename The input clang-tidy report path
+   * @return boost::property_tree::ptree The converted ptree
+   */
+  static boost::property_tree::ptree
+  clangTidyReportToSonarqubeReportTree(const std::string &filename);
 };
 
 #endif
