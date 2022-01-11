@@ -215,8 +215,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   const std::string engineId = "clang-tidy";
   const std::string type = "CODE_SMELL";
 
-  std::map<std::string, boost::property_tree::ptree> issuesMap;
-  std::map<std::string, std::list<boost::property_tree::ptree>> locationMap;
+  boost::property_tree::ptree issues;
 
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
@@ -239,47 +238,21 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
               << "Message :" << message << std::endl
               << "ruleId :" << ruleId << std::endl;
 
-    if (!issuesMap.contains(ruleId)) {
-      std::cout << "new rule added in map : " << ruleId << std::endl;
-      boost::property_tree::ptree newRule;
-      newRule.put<std::string>("engineId", engineId);
-      newRule.put<std::string>("ruleId", ruleId);
-      if (!clangTidyToSonarCloudSeverity.contains(severity)) {
-        std::cerr << "Map error : unknown severity '" << severity << "' " << std::endl;
-        throw std::runtime_error("Map error : unknown severity");
-      }
-      newRule.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
-      newRule.put<std::string>("type", type);
-
-      issuesMap.emplace(ruleId, newRule);
-      locationMap.emplace(ruleId, std::list<boost::property_tree::ptree>());
+    std::cout << "new rule added in map : " << ruleId << std::endl;
+    boost::property_tree::ptree issue;
+    issue.put<std::string>("engineId", engineId);
+    issue.put<std::string>("ruleId", ruleId);
+    if (!clangTidyToSonarCloudSeverity.contains(severity)) {
+      std::cerr << "Map error : unknown severity '" << severity << "' " << std::endl;
+      throw std::runtime_error("Map error : unknown severity");
     }
-    std::list<boost::property_tree::ptree>& locations = locationMap.at(ruleId);
-    boost::property_tree::ptree location = buildLocationTree(message, filename, line, column);
-    locations.push_back(location);
-  }
-  
-  boost::property_tree::ptree issues;
+    issue.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
+    issue.put<std::string>("type", type);
 
-  for (auto& [ruleId, issue] : issuesMap) {
-    std::cout << "rule added is result file : " << ruleId << std::endl;
-    if (!locationMap.at(ruleId).empty()) {
-      std::list<boost::property_tree::ptree> locations = locationMap.at(ruleId);
-      std::cout << "rule added with location : " << locations.size() << std::endl;
-      boost::property_tree::ptree frontLocation = locations.front();
-      issue.add_child("primaryLocation", frontLocation);
-      locations.pop_front();
-      boost::property_tree::ptree secondariesLocations;
-      for (const boost::property_tree::ptree& secondariesIssue : locations) {
-        secondariesLocations.push_back(
-          std::pair<const std::string, boost::property_tree::ptree>("", secondariesIssue));
-      }
-      if (!secondariesLocations.empty()) {
-        issue.add_child("secondaryLocations",  secondariesLocations);
-      }
-      issues.push_back(
+    boost::property_tree::ptree location = buildLocationTree(message, filename, line, column);
+    issue.add_child("primaryLocation", location);
+    issues.push_back(
           std::pair<const std::string, boost::property_tree::ptree>("", issue));
-    } 
   }
 
   sonarQubeReport.add_child("issues", issues);
