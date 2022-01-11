@@ -314,7 +314,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
-      working-directory: ${{github.workspace}}/data-management/bin
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
       run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
 
     - name: Lint Clang-Tidy (tools)
