@@ -269,6 +269,14 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
       boost::property_tree::ptree frontLocation = locations.front();
       issue.add_child("primaryLocation", frontLocation);
       locations.pop_front();
+      boost::property_tree::ptree secondariesLocations;
+      for (const boost::property_tree::ptree& secondariesIssue : locations) {
+        secondariesLocations.push_back(
+          std::pair<const std::string, boost::property_tree::ptree>("", secondariesIssue));
+      }
+      if (!secondariesLocations.empty()) {
+        issue.add_child("secondaryLocations",  secondariesLocations);
+      }
       issues.push_back(
           std::pair<const std::string, boost::property_tree::ptree>("", issue));
     } 
