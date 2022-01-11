@@ -301,6 +301,13 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/bin
       run: ctest --verbose
 
+    - name: Lint Clang-Tidy (data-management)
+      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
+
+    - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
+      working-directory: ${{github.workspace}}/data-management/bin
+      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
+
     - name: Generate target cppcheck-to-sonarqube
       run: cmake -S ${{github.workspace}}/tools/cppcheck-to-sonarqube -B ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
@@ -309,6 +316,13 @@ jobs:
     - name: Build cppcheck-to-sonarqube
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube
       run: cmake --build ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+
+    - name: Lint Clang-Tidy (tools)
+      run: clang-tidy -checks='*' -header-filter='tools/cppcheck-to-sonarqube/src/.*' -p tools/cppcheck-to-sonarqube/bin tools/cppcheck-to-sonarqube/**/*.*pp > ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang_tidy_report.txt
+
+    - name: Convert Lint Clang-Tidy to sonarqube format
+      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang_tidy_report.txt ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang-tidy-sonarqube-report.json
 
     - name: Convert Lint Cpp Check to sonarqube format
       working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
