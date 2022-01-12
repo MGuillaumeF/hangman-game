@@ -28,42 +28,42 @@ public:
    *
    * @return std::string
    */
-  std::string getDescription() const;
+  [[nodiscard]] std::string getDescription() const;
 
   /**
    * @brief Get the Hostname object
    *
    * @return std::string
    */
-  std::string getHostname() const;
+  [[nodiscard]] std::string getHostname() const;
 
   /**
     * @brief Get the Root object
     *
     * @return std::string
     */
-   std::string getRoot() const;
+   [[nodiscard]] std::string getRoot() const;
 
   /**
    * @brief Get the ipAddress object
    *
    * @return std::string
    */
-  std::string getIpAddress() const;
+  [[nodiscard]] std::string getIpAddress() const;
 
   /**
    * @brief Get the Threads object
    *
    * @return uint8_t
    */
-  uint8_t getThreads() const;
+  [[nodiscard]] uint8_t getThreads() const;
 
   /**
    * @brief Get the Port object
    *
    * @return uint16_t
    */
-  uint16_t getPort() const;
+  [[nodiscard]] uint16_t getPort() const;
 
 private:
   std::string m_description;
