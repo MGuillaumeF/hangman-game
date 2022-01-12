@@ -61,8 +61,3 @@ void HttpTokenEndpoint::doPost() {
   setResponse(res);
 }
 
-/**
- * @brief Destroy the Http Token Endpoint:: Http Token Endpoint object
- *
- */
-HttpTokenEndpoint::~HttpTokenEndpoint() = default;
