@@ -81,7 +81,7 @@ public:
    *
    * @return boost::beast::http::response<boost::beast::http::string_body>
    */
-  boost::beast::http::response<boost::beast::http::string_body>
+  [[nodiscard]] boost::beast::http::response<boost::beast::http::string_body>
   getResponse() const {
     return m_response;
   }
@@ -90,7 +90,7 @@ public:
    *
    * @return boost::beast::http::request<boost::beast::http::string_body>
    */
-  boost::beast::http::request<boost::beast::http::string_body>
+  [[nodiscard]] boost::beast::http::request<boost::beast::http::string_body>
   getRequest() const {
     return m_request;
   }
@@ -102,7 +102,7 @@ public:
    * @return true - The HTTP method is allowed
    * @return false - The HTTP method is not allowed
    */
-  bool methodIsAllowed(const boost::beast::http::verb &method) const {
+  [[nodiscard]] bool methodIsAllowed(const boost::beast::http::verb &method) const {
     return m_allowedMethods.contains(method);
   }
 

@@ -68,7 +68,7 @@ public:
    * To get the log level of Logger
    * @see LEVEL
    */
-  ELogLevel getLevel() const;
+  [[nodiscard]] ELogLevel getLevel() const;
   /**
    * To set the log level of Logger
    * @param level The new level of logger
