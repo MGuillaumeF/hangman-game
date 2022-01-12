@@ -18,11 +18,6 @@ public:
    */
   Server(const std::string &address, const uint16_t port,
          const uint8_t threads);
-  /**
-   * @brief Destroy the Http Server object
-   *
-   */
-  ~Server() = default;
 };
 } // namespace http
 
