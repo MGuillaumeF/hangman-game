@@ -89,11 +89,12 @@ public:
       const std::string_view &body,
       const std::string_view &contentType = "text/html");
 
-private:
   /**
    * @brief The default constructor of Utils class is deleted
    */
   Utils() = delete;
+
+private:
   /**
    * @brief configuration map of mimetype where key is extension, populated at
    * the first mime-type search
