@@ -42,7 +42,7 @@ jobs:
          build_dir: server/bin
          exclude: data-management/**/*.[ch]xx,data-management/**/*.[ch]pp,tools/cppcheck-to-sonarqube/**/*.[ch]xx,tools/cppcheck-to-sonarqube/**/*.[ch]pp
 
-clang-tidy-analyze-tools:
+ clang-tidy-analyze-tools:
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
