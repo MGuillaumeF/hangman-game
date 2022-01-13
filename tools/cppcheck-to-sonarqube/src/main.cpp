@@ -19,7 +19,7 @@ int32_t main(int argc, char *argv[]) {
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
-      if (reportType == "cppcheck")) {
+      if (reportType == "cppcheck") {
         const boost::property_tree::ptree cppCheckReport =
             Convertor::readCppCheckReport(inputFile);
         sonarqubeReport =
