@@ -17,13 +17,13 @@ int32_t main(int argc, char *argv[]) {
   const std::string inputFile = argv[2];
   const std::string outputFile = argv[3];
 
-  std::vector<std::string> args(argv + 1, argv + argc);
-
-  auto [a, b, c, d] = args;
-
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
+
+      std::vector<std::string> args(argv + 1, argv + argc);
+      auto [a, b, c, d] = args;
+
       if (reportType == "cppcheck") {
         const boost::property_tree::ptree cppCheckReport =
             Convertor::readCppCheckReport(inputFile);
