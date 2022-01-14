@@ -23,7 +23,7 @@ int32_t main(int argc, char *argv[]) {
 
       std::vector<std::string> args(argv + 1, argv + argc);
 
-      args.reserve(4);
+      args.resize(4);
 
       auto [a, b, c, d] = args;
 
