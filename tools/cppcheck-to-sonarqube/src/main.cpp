@@ -3,6 +3,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <fstream>
 #include <iostream>
+#include <span>
 
 /**
  * @brief entry of application
@@ -16,6 +17,10 @@ int32_t main(int argc, char *argv[]) {
   const std::string reportType = argv[1];
   const std::string inputFile = argv[2];
   const std::string outputFile = argv[3];
+  const auto args = std::span(argv, size_t(argc));
+
+  auto [a, b, c, d] = args;
+
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
