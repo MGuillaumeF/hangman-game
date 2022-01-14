@@ -22,6 +22,9 @@ int32_t main(int argc, char *argv[]) {
     if (argc == 4) {
 
       std::vector<std::string> args(argv + 1, argv + argc);
+
+      args.setSize(4);
+
       auto [a, b, c, d] = args;
 
       if (reportType == "cppcheck") {
