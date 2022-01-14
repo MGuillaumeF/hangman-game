@@ -13,7 +13,9 @@
  */
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
-  const auto [reportType, inputFile, outputFile] = argv;
+  const std::string reportType = argv[1];
+  const std::string inputFile = argv[2];
+  const std::string outputFile = argv[3];
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
