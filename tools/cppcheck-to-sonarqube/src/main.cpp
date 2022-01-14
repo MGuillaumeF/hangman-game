@@ -3,6 +3,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <fstream>
 #include <iostream>
+#include <list>
 
 /**
  * @brief entry of application
@@ -17,11 +18,14 @@ int32_t main(int argc, char *argv[]) {
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
-      std::vector<std::string> args(argv + 1, argv + argc);
+      std::list<std::string> args(argv + 1, argv + argc);
 
-      const std::string reportType = argv[1];
-      const std::string inputFile = argv[2];
-      const std::string outputFile = argv[3];
+      const std::string reportType = args.front();
+      args.pop_front();
+      const std::string inputFile = args.front();
+      args.pop_front();
+      const std::string outputFile = args.front();
+      args.pop_front();
 
       if (reportType == "cppcheck") {
         const boost::property_tree::ptree cppCheckReport =
@@ -33,21 +37,21 @@ int32_t main(int argc, char *argv[]) {
         sonarqubeReport =
             Convertor::clangTidyReportToSonarqubeReportTree(inputFile);
       }
+      // if at least one issue found write property tree json report
+      if (!sonarqubeReport.get_child("issues").empty()) {
+        boost::property_tree::write_json(outputFile, sonarqubeReport);
+      } else {
+        // if issues property tree array is empty write empty report 
+        // to have a valid report
+        std::ofstream emptyJsonFile;
+        emptyJsonFile.open(outputFile);
+        emptyJsonFile << "{\"issues\": []}";
+        emptyJsonFile.close();
+      }
     } else {
       std::cerr << "Bad usage of tool : " << std::endl
                 << "  example of expected usage : cppcheck-to-sonarqube "
                    "cppcheck-report.xml cppcheck-sonarqube-report.json";
-    }
-    // if at least one issue found write property tree json report
-    if (!sonarqubeReport.get_child("issues").empty()) {
-      boost::property_tree::write_json(outputFile, sonarqubeReport);
-    } else {
-      // if issues property tree array is empty write empty report 
-      // to have a valid report
-      std::ofstream emptyJsonFile;
-      emptyJsonFile.open(outputFile);
-      emptyJsonFile << "{\"issues\": []}";
-      emptyJsonFile.close();
     }
   // catch all exception to have a managed return with error log
   } catch (const std::exception &ex) {
