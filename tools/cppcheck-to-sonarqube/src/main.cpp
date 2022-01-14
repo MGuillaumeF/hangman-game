@@ -13,19 +13,15 @@
  */
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
-  const std::string reportType = argv[1];
-  const std::string inputFile = argv[2];
-  const std::string outputFile = argv[3];
 
   try {
     boost::property_tree::ptree sonarqubeReport;
     if (argc == 4) {
-
       std::vector<std::string> args(argv + 1, argv + argc);
 
-      args.resize(4);
-
-      auto [a, b, c, d] = args;
+      const std::string reportType = argv[1];
+      const std::string inputFile = argv[2];
+      const std::string outputFile = argv[3];
 
       if (reportType == "cppcheck") {
         const boost::property_tree::ptree cppCheckReport =
