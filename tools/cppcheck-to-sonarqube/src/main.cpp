@@ -14,10 +14,11 @@
  */
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
+  const uint8_t ARGUMENTS_SIZE = 4;
 
   try {
     boost::property_tree::ptree sonarqubeReport;
-    if (argc == 4) {
+    if (argc == ARGUMENTS_SIZE) {
       std::list<std::string> args(argv + 1, argv + argc);
 
       const std::string reportType = args.front();
