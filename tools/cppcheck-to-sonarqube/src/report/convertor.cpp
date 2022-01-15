@@ -194,24 +194,6 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
 
   const std::regex regex("(.+\\.[ch](?:pp|xx)?):(\\d+):(\\d+):\\s([a-z]+):(.+)\\[(.+)\\]", std::regex_constants::ECMAScript);
 
-  // std::smatch match;
-  // if (regex_search(reportContent, match, regex) == true) {
-
-  //       std::cout << "Match size = " << match.size() << std::endl;
-
-  //       std::cout << "Whole match : " << match.str(0) << std::endl;
-  //       std::cout << "Filename is :" << match.str(1)  << std::endl
-  //            << "Line :" <<  match.str(2)  << std::endl
-  //            << "Column :" <<  match.str(3)  << std::endl
-  //            << "Severity :" <<  match.str(4)  << std::endl
-  //            << "Message :" <<  match.str(5)  << std::endl
-  //            << "ruleId :" <<  match.str(6)
-  //            << std::endl;
-  //   }
-  //   else {
-  //      std::cout << "No match is found" << std::endl;
-  //   }
-
   const std::string engineId = "clang-tidy";
   const std::string type = "CODE_SMELL";
 
@@ -249,12 +231,16 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
     issue.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
     issue.put<std::string>("type", type);
 
-    boost::property_tree::ptree location = buildLocationTree(message, filename, line, column);
+    // get location Peter of issue
+    const boost::property_tree::ptree location = buildLocationTree(message, filename, line, column);
     issue.add_child("primaryLocation", location);
+    
+    // add full generated issue in issue ptree array
     issues.push_back(
           std::pair<const std::string, boost::property_tree::ptree>("", issue));
   }
 
+  // save all issues in result property tree
   sonarQubeReport.add_child("issues", issues);
   return sonarQubeReport;
 }
