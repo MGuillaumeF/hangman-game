@@ -19,7 +19,7 @@
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
-const std::map<std::string, ESonarCloudSeverity> cppcheckToSonarCloudSeverity = {
+const std::map<std::string, ESonarCloudSeverity, std::less<>> cppcheckToSonarCloudSeverity = {
     {"none", ESonarCloudSeverity::INFO},
     {"debug", ESonarCloudSeverity::INFO},
     {"information", ESonarCloudSeverity::INFO},
@@ -33,7 +33,7 @@ const std::map<std::string, ESonarCloudSeverity> cppcheckToSonarCloudSeverity = 
  * @brief map to convert clang-tidy severity to sonacloud severity
  *
  */
-const std::map<std::string, ESonarCloudSeverity> clangTidyToSonarCloudSeverity = {
+const std::map<std::string, ESonarCloudSeverity, std::less<>> clangTidyToSonarCloudSeverity = {
     {"none", ESonarCloudSeverity::INFO},
     {"debug", ESonarCloudSeverity::INFO},
     {"information", ESonarCloudSeverity::INFO},
@@ -48,7 +48,7 @@ const std::map<std::string, ESonarCloudSeverity> clangTidyToSonarCloudSeverity =
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
-const std::map<ESonarCloudSeverity, std::string> SonarCloudSeverityValue = {
+const std::map<ESonarCloudSeverity, std::string, std::less<>> SonarCloudSeverityValue = {
     {ESonarCloudSeverity::INFO, "INFO"},
     {ESonarCloudSeverity::MINOR, "MINOR"},
     {ESonarCloudSeverity::MAJOR, "MAJOR"},
