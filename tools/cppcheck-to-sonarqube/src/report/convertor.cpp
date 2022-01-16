@@ -207,10 +207,10 @@ Convertor::clangTidyToSonarReport(const std::string &filename) {
 
   // for each issue text line found in raw clang tidy report
   // convert to issue property tree
-  for (std::sregex_iterator i = std::sregex_iterator(
+  for (auto i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
        i != std::sregex_iterator(); ++i) {
-    std::smatch match = *i;
+    const std::smatch match = *i;
     std::cout << "Match size = " << match.size() << std::endl;
 
     // save all raw splitted data
