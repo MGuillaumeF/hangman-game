@@ -210,7 +210,7 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
     const std::string column = match.str(3);
     const std::string severity = match.str(4);
     const std::string message = match.str(5);
-    const std::string ruleId = match.str(6);
+    const std::string ruleId = "(C++) " + match.str(6);
     
     std::cout << "Whole match : " << match.str(0) << std::endl
               << "Filename is :" << filename << std::endl
