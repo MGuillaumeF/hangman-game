@@ -40,20 +40,20 @@ const std::map<std::string, ESonarCloudSeverity> clangTidyToSonarCloudSeverity =
     {"note", ESonarCloudSeverity::MINOR},
     {"style", ESonarCloudSeverity::MINOR},
     {"warning", ESonarCloudSeverity::MAJOR},
-    {"portability", MAJOR},
-    {"performance", CRITICAL},
-    {"error", BLOCKER}};
+    {"portability", ESonarCloudSeverity::MAJOR},
+    {"performance", ESonarCloudSeverity::CRITICAL},
+    {"error", ESonarCloudSeverity::BLOCKER}};
 
 /**
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
 const std::map<ESonarCloudSeverity, std::string> SonarCloudSeverityValue = {
-    {INFO, "INFO"},
-    {MINOR, "MINOR"},
-    {MAJOR, "MAJOR"},
-    {CRITICAL, "CRITICAL"},
-    {BLOCKER, "BLOCKER"}};
+    {ESonarCloudSeverity::INFO, "INFO"},
+    {ESonarCloudSeverity::MINOR, "MINOR"},
+    {ESonarCloudSeverity::MAJOR, "MAJOR"},
+    {ESonarCloudSeverity::CRITICAL, "CRITICAL"},
+    {ESonarCloudSeverity::BLOCKER, "BLOCKER"}};
 
 boost::property_tree::ptree buildLocationTree(const std::string& message, const std::string& filePath, const std::string& line, const std::string& column) {
   boost::property_tree::ptree location;
