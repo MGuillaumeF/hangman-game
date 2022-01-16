@@ -20,26 +20,26 @@
  *
  */
 const std::map<std::string, ESonarCloudSeverity> cppcheckToSonarCloudSeverity = {
-    {"none", INFO},
-    {"debug", INFO},
-    {"information", INFO},
-    {"style", MINOR},
-    {"warning", MAJOR},
-    {"portability", MAJOR},
-    {"performance", CRITICAL},
-    {"error", BLOCKER}};
+    {"none", ESonarCloudSeverity::INFO},
+    {"debug", ESonarCloudSeverity::INFO},
+    {"information", ESonarCloudSeverity::INFO},
+    {"style", ESonarCloudSeverity::MINOR},
+    {"warning", ESonarCloudSeverity::MAJOR},
+    {"portability", ESonarCloudSeverity::MAJOR},
+    {"performance", ESonarCloudSeverity::CRITICAL},
+    {"error", ESonarCloudSeverity::BLOCKER}};
 
 /**
  * @brief map to convert clang-tidy severity to sonacloud severity
  *
  */
 const std::map<std::string, ESonarCloudSeverity> clangTidyToSonarCloudSeverity = {
-    {"none", INFO},
-    {"debug", INFO},
-    {"information", INFO},
-    {"note", MINOR},
-    {"style", MINOR},
-    {"warning", MAJOR},
+    {"none", ESonarCloudSeverity::INFO},
+    {"debug", ESonarCloudSeverity::INFO},
+    {"information", ESonarCloudSeverity::INFO},
+    {"note", ESonarCloudSeverity::MINOR},
+    {"style", ESonarCloudSeverity::MINOR},
+    {"warning", ESonarCloudSeverity::MAJOR},
     {"portability", MAJOR},
     {"performance", CRITICAL},
     {"error", BLOCKER}};
