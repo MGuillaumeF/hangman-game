@@ -192,26 +192,34 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
   // str holds the content of the file
   const std::string reportContent = strStream.str();
 
-  const std::regex regex("(.+\\.[ch](?:pp|xx)?):(\\d+):(\\d+):\\s([a-z]+):(.+)\\[(.+)\\]", std::regex_constants::ECMAScript);
+  const std::regex regex("(.+\\.[ch](?:pp|xx)?):(\\d+):(\\d+):\\s([a-z]+):\\s*(.+)\\[(.+)\\]", std::regex_constants::ECMAScript);
 
+  // all issues have "clang-tidy" engineId for this conversion
   const std::string engineId = "clang-tidy";
+
+  // external issues are "CODE_SMELL" by default
   const std::string type = "CODE_SMELL";
 
+  // issue property tree array
   boost::property_tree::ptree issues;
 
+  // for each issue text line found in raw clang tidy report
+  // convert to issue property tree
   for (std::sregex_iterator i = std::sregex_iterator(
            reportContent.begin(), reportContent.end(), regex);
        i != std::sregex_iterator(); ++i) {
     std::smatch match = *i;
     std::cout << "Match size = " << match.size() << std::endl;
 
+    // save all raw splitted data
     const std::string filename = match.str(1);
     const std::string line = match.str(2);
     const std::string column = match.str(3);
     const std::string severity = match.str(4);
     const std::string message = match.str(5);
-    const std::string ruleId = "(C++) " + match.str(6);
+    const std::string ruleId = match.str(6);
     
+    // print issue raw data
     std::cout << "Whole match : " << match.str(0) << std::endl
               << "Filename is :" << filename << std::endl
               << "Line :" << line << std::endl
@@ -221,13 +229,20 @@ Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
               << "ruleId :" << ruleId << std::endl;
 
     std::cout << "new rule added in map : " << ruleId << std::endl;
+
+    // create and populate issue property tree
     boost::property_tree::ptree issue;
+
+    // common properties 
     issue.put<std::string>("engineId", engineId);
     issue.put<std::string>("ruleId", ruleId);
+
+    // check issue level is known by tool and sonar
     if (!clangTidyToSonarCloudSeverity.contains(severity)) {
       std::cerr << "Map error : unknown severity '" << severity << "' " << std::endl;
       throw std::runtime_error("Map error : unknown severity");
     }
+    // add converted level of issue
     issue.put<std::string>("severity", SonarCloudSeverityValue.at(clangTidyToSonarCloudSeverity.at(severity)));
     issue.put<std::string>("type", type);
 
