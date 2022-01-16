@@ -1,8 +1,14 @@
 #include "report/convertor.hpp"
+
+// boost imports
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+// STL stream import
 #include <fstream>
 #include <iostream>
+
+// STL data containers import
 #include <list>
 
 /**
@@ -13,7 +19,11 @@
  * @return int The process exit code
  */
 int32_t main(int argc, char *argv[]) {
+  // by default if execution don't raise error
+  // the exit code is success
   int32_t exitStatus = EXIT_SUCCESS;
+
+  // process args expected
   const uint8_t ARGUMENTS_SIZE = 4;
 
   try {
@@ -32,11 +42,11 @@ int32_t main(int argc, char *argv[]) {
         const boost::property_tree::ptree cppCheckReport =
             Convertor::readCppCheckReport(inputFile);
         sonarqubeReport =
-            Convertor::cppCheckReportToSonarqubeReportTree(cppCheckReport);
+            Convertor::cppCheckToSonarReport(cppCheckReport);
        
       } else if (reportType == "clang-tidy") {
         sonarqubeReport =
-            Convertor::clangTidyReportToSonarqubeReportTree(inputFile);
+            Convertor::clangTidyToSonarReport(inputFile);
       }
       // if at least one issue found write property tree json report
       if (!sonarqubeReport.get_child("issues").empty()) {
