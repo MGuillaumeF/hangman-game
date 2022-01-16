@@ -1,57 +1,59 @@
 #include "convertor.hpp"
+
+// boost xml import
 #include <boost/property_tree/xml_parser.hpp>
+
+// STL stream import
+#include <sstream>
 #include <fstream>
 #include <iostream>
+
+// STL data container import
 #include <map>
 #include <list>
-#include <regex>
-#include <sstream>
 
-/**
- * @brief SonarCloud severity levels of issues
- *
- */
-enum SonarCloudSeverity { INFO, MINOR, MAJOR, CRITICAL, BLOCKER };
+// STL regrex import
+#include <regex>
 
 /**
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
-const std::map<std::string, SonarCloudSeverity> cppcheckToSonarCloudSeverity = {
-    {"none", INFO},
-    {"debug", INFO},
-    {"information", INFO},
-    {"style", MINOR},
-    {"warning", MAJOR},
-    {"portability", MAJOR},
-    {"performance", CRITICAL},
-    {"error", BLOCKER}};
+const std::map<std::string, ESonarCloudSeverity> cppcheckToSonarCloudSeverity = {
+    {"none", ESonarCloudSeverity::INFO},
+    {"debug", ESonarCloudSeverity::INFO},
+    {"information", ESonarCloudSeverity::INFO},
+    {"style", ESonarCloudSeverity::MINOR},
+    {"warning", ESonarCloudSeverity::MAJOR},
+    {"portability", ESonarCloudSeverity::MAJOR},
+    {"performance", ESonarCloudSeverity::CRITICAL},
+    {"error", ESonarCloudSeverity::BLOCKER}};
 
 /**
  * @brief map to convert clang-tidy severity to sonacloud severity
  *
  */
-const std::map<std::string, SonarCloudSeverity> clangTidyToSonarCloudSeverity = {
-    {"none", INFO},
-    {"debug", INFO},
-    {"information", INFO},
-    {"note", MINOR},
-    {"style", MINOR},
-    {"warning", MAJOR},
-    {"portability", MAJOR},
-    {"performance", CRITICAL},
-    {"error", BLOCKER}};
+const std::map<std::string, ESonarCloudSeverity> clangTidyToSonarCloudSeverity = {
+    {"none", ESonarCloudSeverity::INFO},
+    {"debug", ESonarCloudSeverity::INFO},
+    {"information", ESonarCloudSeverity::INFO},
+    {"note", ESonarCloudSeverity::MINOR},
+    {"style", ESonarCloudSeverity::MINOR},
+    {"warning", ESonarCloudSeverity::MAJOR},
+    {"portability", ESonarCloudSeverity::MAJOR},
+    {"performance", ESonarCloudSeverity::CRITICAL},
+    {"error", ESonarCloudSeverity::BLOCKER}};
 
 /**
  * @brief map to convert cppcheck severity to sonacloud severity
  *
  */
-const std::map<SonarCloudSeverity, std::string> SonarCloudSeverityValue = {
-    {INFO, "INFO"},
-    {MINOR, "MINOR"},
-    {MAJOR, "MAJOR"},
-    {CRITICAL, "CRITICAL"},
-    {BLOCKER, "BLOCKER"}};
+const std::map<ESonarCloudSeverity, std::string> SonarCloudSeverityValue = {
+    {ESonarCloudSeverity::INFO, "INFO"},
+    {ESonarCloudSeverity::MINOR, "MINOR"},
+    {ESonarCloudSeverity::MAJOR, "MAJOR"},
+    {ESonarCloudSeverity::CRITICAL, "CRITICAL"},
+    {ESonarCloudSeverity::BLOCKER, "BLOCKER"}};
 
 boost::property_tree::ptree buildLocationTree(const std::string& message, const std::string& filePath, const std::string& line, const std::string& column) {
   boost::property_tree::ptree location;
@@ -87,7 +89,7 @@ Convertor::readCppCheckReport(const std::string &filename) {
  * @param cppCheckTree The readed cppcheck report ptree
  * @return boost::property_tree::ptree The converted ptree
  */
-boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
+boost::property_tree::ptree Convertor::cppCheckToSonarReport(
     const boost::property_tree::ptree &cppCheckTree) {
   boost::property_tree::ptree sonarQubeReport;
 
@@ -123,10 +125,10 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
 
     bool first = true;
     boost::property_tree::ptree secondaryLocations;
-    for (const auto &errorChild : error.second) {
-      if (errorChild.first == "location") {
+    for (const auto &[errorChildNodeKey, errorChildNodeContent]: error.second) {
+      if (errorChildNodeKey == "location") {
         const std::string filePath =
-            errorChild.second.get<std::string>("<xmlattr>.file");
+            errorChildNodeContent.get<std::string>("<xmlattr>.file");
 
         boost::property_tree::ptree location;
         location.put<std::string>("message", message);
@@ -134,11 +136,11 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
 
         // add text range to get location of error
         boost::property_tree::ptree textRange;
-        const std::string line = errorChild.second.get<std::string>("<xmlattr>.line");
+        const std::string line = errorChildNodeContent.get<std::string>("<xmlattr>.line");
         textRange.put<std::string>("startLine", line == "0" ? "1" : line);
         textRange.put<std::string>(
             "startColumn",
-            errorChild.second.get<std::string>("<xmlattr>.column"));
+            errorChildNodeContent.get<std::string>("<xmlattr>.column"));
         location.add_child("textRange", textRange);
 
         // if it's first occurency of error add in primary place
@@ -179,7 +181,7 @@ boost::property_tree::ptree Convertor::cppCheckReportToSonarqubeReportTree(
  * @return boost::property_tree::ptree The converted ptree
  */
 boost::property_tree::ptree
-Convertor::clangTidyReportToSonarqubeReportTree(const std::string &filename) {
+Convertor::clangTidyToSonarReport(const std::string &filename) {
 
   boost::property_tree::ptree sonarQubeReport;
   std::ifstream inFile;

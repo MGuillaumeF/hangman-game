@@ -5,6 +5,12 @@
 #include <string>
 
 /**
+ * @brief SonarCloud severity levels of issues
+ *
+ */
+enum class ESonarCloudSeverity { INFO, MINOR, MAJOR, CRITICAL, BLOCKER };
+
+/**
  * @brief class to convert cppcheck xml report to sonarqube json report
  *
  */
@@ -31,7 +37,7 @@ public:
    * @param cppCheckTree The readed cppcheck report ptree
    * @return boost::property_tree::ptree The converted ptree
    */
-  static boost::property_tree::ptree cppCheckReportToSonarqubeReportTree(
+  static boost::property_tree::ptree cppCheckToSonarReport(
       const boost::property_tree::ptree &cppCheckTree);
 
   /**
@@ -41,7 +47,7 @@ public:
    * @return boost::property_tree::ptree The converted ptree
    */
   static boost::property_tree::ptree
-  clangTidyReportToSonarqubeReportTree(const std::string &filename);
+  clangTidyToSonarReport(const std::string &filename);
 };
 
 #endif
