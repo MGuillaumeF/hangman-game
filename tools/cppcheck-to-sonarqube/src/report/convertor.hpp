@@ -1,7 +1,10 @@
 #ifndef __CONVERTOR_HPP__
 #define __CONVERTOR_HPP__
 
+// boost import
 #include <boost/property_tree/ptree.hpp>
+
+// STL import
 #include <string>
 
 /**
@@ -28,8 +31,7 @@ public:
    * @param filename The input cppcheck report path
    * @return boost::property_tree::ptree The readed cppcheck report ptree
    */
-  static boost::property_tree::ptree
-  readCppCheckReport(const std::string &filename);
+  static auto readCppCheckReport(const std::string &filename) -> boost::property_tree::ptree;
 
   /**
    * @brief method to convert the report
@@ -37,8 +39,7 @@ public:
    * @param cppCheckTree The readed cppcheck report ptree
    * @return boost::property_tree::ptree The converted ptree
    */
-  static boost::property_tree::ptree cppCheckToSonarReport(
-      const boost::property_tree::ptree &cppCheckTree);
+  static auto cppCheckToSonarReport(const boost::property_tree::ptree &cppCheckTree) -> boost::property_tree::ptree;
 
   /**
    * @brief method to convert the clang-tidy report
@@ -46,8 +47,7 @@ public:
    * @param filename The input clang-tidy report path
    * @return boost::property_tree::ptree The converted ptree
    */
-  static boost::property_tree::ptree
-  clangTidyToSonarReport(const std::string &filename);
+  static auto clangTidyToSonarReport(const std::string &filename) -> boost::property_tree::ptree;
 };
 
 #endif
