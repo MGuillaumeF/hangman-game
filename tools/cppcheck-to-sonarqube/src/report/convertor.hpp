@@ -31,7 +31,7 @@ public:
    * @param filename The input cppcheck report path
    * @return boost::property_tree::ptree The readed cppcheck report ptree
    */
-  static auto readCppCheckReport(const std::string &filename) -> boost::property_tree::ptree;
+  static boost::property_tree::ptree readCppCheckReport(const std::string &filename);
 
   /**
    * @brief method to convert the report
@@ -39,7 +39,7 @@ public:
    * @param cppCheckTree The readed cppcheck report ptree
    * @return boost::property_tree::ptree The converted ptree
    */
-  static auto cppCheckToSonarReport(const boost::property_tree::ptree &cppCheckTree) -> boost::property_tree::ptree;
+  static boost::property_tree::ptree cppCheckToSonarReport(const boost::property_tree::ptree &cppCheckTree);
 
   /**
    * @brief method to convert the clang-tidy report
@@ -47,7 +47,7 @@ public:
    * @param filename The input clang-tidy report path
    * @return boost::property_tree::ptree The converted ptree
    */
-  static auto clangTidyToSonarReport(const std::string &filename) -> boost::property_tree::ptree;
+  static boost::property_tree::ptree clangTidyToSonarReport(const std::string &filename);
 };
 
 #endif
