@@ -434,7 +434,7 @@ jobs:
 
     - name: Audit dependency
       working-directory: ${{github.workspace}}/client
-      run: npm audit --json > ./dist/reports/audit-dependency.json
+      run: npm audit --json > ./dist/reports/audit-dependency.json || echo FAILED
 
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
