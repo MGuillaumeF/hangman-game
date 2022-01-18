@@ -432,6 +432,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:eslint || echo FAILED
 
+    - name: Audit dependency
+      working-directory: ${{github.workspace}}/client
+      run: npm audit --json > ./dist/reports/audit-dependency.json
+
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
