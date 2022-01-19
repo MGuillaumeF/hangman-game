@@ -1,6 +1,23 @@
-(function(){
+(async function(){
   if (process.args.length === 2) {
       const fs = require('fs').promises;
+      const path = require('path');
+      const filename = path.resolve(__dirname, process.args.pop());
+      const auditJsonString = (await fs.readFile(filename)).toString();
+      const audit = JSON.parse(auditJsonString);
+      const issues = [];
+      for (const [packageName, vulnerability] of audit.vulnerabilies) {
+          issues.push({
+              engineId : 'npm-audit',
+              ruleId : 'dependency-vulnerability',
+              severity : vulnerability.severity,
+              type : 'VULNERABILITY',
+              primaryLocation : {
+                  message : 'temp message'
+              }
+          });
+      }
+      await fs.writeFile('./audit-report.json', JSON.stringify({issues}, null, 4));
   } else {
       console.error('one argument expected', process.args.length, 'found'; 
   }
