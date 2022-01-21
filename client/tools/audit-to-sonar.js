@@ -14,7 +14,7 @@
               type : 'VULNERABILITY',
               primaryLocation : {
                   message : 'temp message',
-                  filePath : path.resolve(process.cwd(), 'package.json',
+                  filePath : path.resolve(process.cwd(), 'package.json'),
                   textRange : {
                       startLine : 1,
                       startColumn : 0
