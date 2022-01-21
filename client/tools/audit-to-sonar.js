@@ -14,7 +14,7 @@
               type : 'VULNERABILITY',
               primaryLocation : {
                   message : 'temp message',
-                  filePath : path.resolve(__dirname, '..', '..', 'package.json',
+                  filePath : path.resolve(process.cwd(), 'package.json',
                   textRange : {
                       startLine : 1,
                       startColumn : 0
@@ -22,7 +22,7 @@
               }
           });
       }
-      await fs.writeFile(path.resolve(__dirname, '..', '..', 'audit-report.json'), JSON.stringify({issues}, null, 4));
+      await fs.writeFile(path.resolve(process.cwd(), 'audit-report.json'), JSON.stringify({issues}, null, 4));
   } else {
       console.error('one argument expected', process.args.length, 'found'; 
   }
