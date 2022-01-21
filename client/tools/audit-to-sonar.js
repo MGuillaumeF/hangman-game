@@ -24,6 +24,6 @@
       }
       await fs.writeFile(path.resolve(process.cwd(), 'audit-report.json'), JSON.stringify({issues}, null, 4));
   } else {
-      console.error('one argument expected', process.args.length, 'found'; 
+      console.error('one argument expected', process.args.length, 'found'); 
   }
 })();
