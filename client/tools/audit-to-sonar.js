@@ -1,6 +1,6 @@
 (async function(){
   const args = process.argv.slice(2);
-  if (args.length === 2) {
+  if (args.length === 1) {
       const fs = require('fs').promises;
       const path = require('path');
       const filename = path.resolve(__dirname, process.args.pop());
@@ -23,7 +23,9 @@
               }
           });
       }
-      await fs.writeFile(path.resolve(process.cwd(), 'audit-report.json'), JSON.stringify({issues}, null, 4));
+      const output = JSON.stringify({issues}, null, 4);
+      console.log('issues generated', output);
+      await fs.writeFile(path.resolve(process.cwd(), 'audit-report.json'), output);
   } else {
       console.error('one argument expected', args.length, 'found'); 
   }
