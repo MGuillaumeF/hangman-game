@@ -1,5 +1,6 @@
 (async function(){
-  if (process.args.length === 2) {
+  const args = process.argv.slice(2);
+  if (args.length === 2) {
       const fs = require('fs').promises;
       const path = require('path');
       const filename = path.resolve(__dirname, process.args.pop());
