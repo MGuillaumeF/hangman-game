@@ -1,9 +1,10 @@
 (async function(){
   const args = process.argv.slice(2);
   if (args.length === 1) {
+      const [inputFile] = args;
       const fs = require('fs').promises;
       const path = require('path');
-      const filename = path.resolve(__dirname, process.args.pop());
+      const filename = path.resolve(__dirname, inputFile);
       const auditJsonString = (await fs.readFile(filename)).toString();
       const audit = JSON.parse(auditJsonString);
       const issues = [];
