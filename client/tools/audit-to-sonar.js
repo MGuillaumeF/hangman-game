@@ -26,7 +26,7 @@
       }
       const output = JSON.stringify({issues}, null, 4);
       console.log('issues generated', output);
-      await fs.writeFile(path.resolve(process.cwd(), 'audit-report.json'), output);
+      await fs.writeFile(path.resolve(process.cwd(), 'dist/reports/audit-report.json'), output);
   } else {
       console.error('one argument expected', args.length, 'found'); 
   }
