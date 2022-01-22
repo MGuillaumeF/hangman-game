@@ -7,8 +7,18 @@
       const [inputFile] = args;
       const fs = require('fs').promises;
       const path = require('path');
-      const filename = path.resolve(__dirname, inputFile);
-      const auditJsonString = (await fs.readFile(filename)).toString();
+      const filename = path.resolve(process.cwd(), inputFile);
+      let auditJsonString = '';
+      try {
+          auditJsonString = await fs.readFile(filename);
+          auditJsonString = auditJsonString.toString();
+
+      } catch (error) {
+          console.error('input file read failed', error);
+          exitStatus = 3;
+          process.exit(3);
+      }
+
       const audit = JSON.parse(auditJsonString);
       const issues = [];
       for (const [packageName, vulnerability] of audit.vulnerabilies) {
@@ -28,8 +38,9 @@
               }
           });
       }
+         
       const output = JSON.stringify({issues}, null, 4);
-      console.log('issues generated', output);
+      console.debug('issues generated', output);
       try {
           await fs.writeFile(path.resolve(process.cwd(), 'dist/reports/audit-report.json'), output);
       } catch (error) {
