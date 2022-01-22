@@ -21,7 +21,7 @@
 
       const audit = JSON.parse(auditJsonString);
       const issues = [];
-      for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilies)) {
+      for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
           console.info('severity found', vulnerability.severity);
           issues.push({
               engineId : 'npm-audit',
