@@ -8,6 +8,15 @@
       const fs = require('fs').promises;
       const path = require('path');
       const filename = path.resolve(process.cwd(), inputFile);
+
+      const npmSeverityToSonar = new Map([
+          ["info", 'INFO'],
+          ["low", 'MINOR'],
+          ["moderate", 'MINOR'],
+          ["high", 'MAJOR'],
+          ['critical', 'CRITICAL']
+      ]);
+
       let auditJsonString = '';
       try {
           auditJsonString = await fs.readFile(filename);
@@ -22,14 +31,13 @@
       const audit = JSON.parse(auditJsonString);
       const issues = [];
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
-          console.info('severity found', vulnerability.severity);
           issues.push({
               engineId : 'npm-audit',
-              ruleId : 'dependency-vulnerability',
-              severity : 'INFO',
+              ruleId : vulnerability.isDirect ? 'direct-dependency-vulnerability' : 'dependency-vulnerability',
+              severity : npmSeverityToSonar.get(vulnerability.severity),
               type : 'VULNERABILITY',
               primaryLocation : {
-                  message : `The dependency ${packageName} has vulnerability`,
+                  message : `The dependency ${packageName} has vulnerability${vulnerability.fixAvailable ? `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}` : ''}`,
                   filePath : path.resolve(process.cwd(), 'package.json'),
                   textRange : {
                       startLine : 1,
