@@ -34,8 +34,9 @@
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
           let startLine = 1;
           if (vulnerability.isDirect) {
-              const packageNameIndex = auditJsonString.indexOf(packageName);
-              startLine = auditJsonString.slice(0, packageNameIndex).split('\n').length;
+              const packageJsonFile = (await fs.readFile(path.resolve(process.cwd(), 'package.json'))).toString();
+              const packageNameIndex = packageJsonFile.indexOf(packageName);
+              startLine = packageJsonFile.slice(0, packageNameIndex).split('\n').length;
           }
           issues.push({
               engineId,
