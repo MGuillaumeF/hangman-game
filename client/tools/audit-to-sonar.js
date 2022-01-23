@@ -30,7 +30,7 @@
 
       const audit = JSON.parse(auditJsonString);
       const issues = [];
-      const engineId = `npm-audit-{audit.auditReportVersion}`;
+      const engineId = `npm-audit-${audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
           let startLine = 1;
           if (vulnerability.isDirect) {
