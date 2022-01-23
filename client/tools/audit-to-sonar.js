@@ -30,9 +30,16 @@
 
       const audit = JSON.parse(auditJsonString);
       const issues = [];
+      const engineId = `npm-audit-{audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
+          let startLine = 1;
+          if (vulnerability.isDirect) {
+              const packageJsonFile = (await fs.readFile(path.resolve(process.cwd(), 'package.json'))).toString();
+              const packageNameIndex = packageJsonFile.indexOf(packageName);
+              startLine = packageJsonFile.slice(0, packageNameIndex).split('\n').length;
+          }
           issues.push({
-              engineId : 'npm-audit',
+              engineId,
               ruleId : vulnerability.isDirect ? 'direct-dependency-vulnerability' : 'dependency-vulnerability',
               severity : npmSeverityToSonar.get(vulnerability.severity),
               type : 'VULNERABILITY',
@@ -40,7 +47,7 @@
                   message : `The dependency ${packageName} has vulnerability${vulnerability.fixAvailable ? `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}` : ''}`,
                   filePath : path.resolve(process.cwd(), 'package.json'),
                   textRange : {
-                      startLine : 1,
+                      startLine,
                       startColumn : 0
                   }
               }
