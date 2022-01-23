@@ -32,6 +32,11 @@
       const issues = [];
       const engineId = `npm-audit-{audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
+          let startLine = 1;
+          if (vulnerability.isDirect) {
+              const packageNameIndex = auditJsonString.findIndex(packageName);
+              startLine = auditJsonString.slice(0, packageNameIndex).split('\n').length;
+          }
           issues.push({
               engineId,
               ruleId : vulnerability.isDirect ? 'direct-dependency-vulnerability' : 'dependency-vulnerability',
@@ -41,7 +46,7 @@
                   message : `The dependency ${packageName} has vulnerability${vulnerability.fixAvailable ? `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}` : ''}`,
                   filePath : path.resolve(process.cwd(), 'package.json'),
                   textRange : {
-                      startLine : 1,
+                      startLine,
                       startColumn : 0
                   }
               }
