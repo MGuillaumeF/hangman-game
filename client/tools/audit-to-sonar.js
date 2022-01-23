@@ -30,9 +30,10 @@
 
       const audit = JSON.parse(auditJsonString);
       const issues = [];
+      const engineId = `npm-audit-{audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
           issues.push({
-              engineId : 'npm-audit',
+              engineId,
               ruleId : vulnerability.isDirect ? 'direct-dependency-vulnerability' : 'dependency-vulnerability',
               severity : npmSeverityToSonar.get(vulnerability.severity),
               type : 'VULNERABILITY',
