@@ -374,7 +374,8 @@ jobs:
     - name: gcov after unit tests
       if: github.actor != 'dependabot[bot]'
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
-      run: find -name '*.gcda' | xargs gcov;
+      #run: find -name '*.gcda' | xargs gcov;
+      run: gcovr -r ${{github.workspace}}/server/bin --xml-pretty > ${{github.workspace}}/server/reports/gcovr_report.xml
 
     - name: gcov after integration tests
       if: github.actor != 'dependabot[bot]'
