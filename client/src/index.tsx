@@ -11,7 +11,7 @@ function App(): JSX.Element {
   return (
     <>
       <Header title="Hello" />
-      <span>Ceci</span>&nbsp;<span>est mon site</span>
+      <span>Ceci non </span>&nbsp;<span>est mon site</span>
       <Main />
     </>
   );
