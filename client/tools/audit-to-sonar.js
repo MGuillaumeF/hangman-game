@@ -32,34 +32,49 @@
       const issues = [];
       const engineId = `npm-audit-${audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
-          let startLine = 1;
-          let startColumn = 0;
-          let endColumn = undefined;
           if (vulnerability.isDirect) {
               const packageJsonFile = (await fs.readFile(path.resolve(process.cwd(), 'package.json'))).toString();
               const packageNameIndex = packageJsonFile.indexOf(packageName);
               const rows = packageJsonFile.slice(0, packageNameIndex).split('\n');
-              startLine = rows.length;
-              startColumn = rows.at(-1).length;
-              endColumn = startColumn + packageName.length;
-          }
-          issues.push({
-              engineId,
-              ruleId : vulnerability.isDirect ? 'direct-dependency-vulnerability' : 'dependency-vulnerability',
-              severity : npmSeverityToSonar.get(vulnerability.severity),
-              type : 'VULNERABILITY',
-              primaryLocation : {
-                  message : `The dependency ${packageName} has vulnerability${vulnerability.fixAvailable ? `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}` : ''}`,
-                  filePath : path.resolve(process.cwd(), 'package.json'),
-                  textRange : {
-                      startLine,
-                      startColumn,
-                      endColumn
+              const startLine = rows.length;
+              const startColumn = rows.at(-1).length;
+              const endColumn = startColumn + packageName.length;
+          
+              issues.push({
+                  engineId,
+                  ruleId : 'dependency-vulnerability',
+                  severity : npmSeverityToSonar.get(vulnerability.severity),
+                  type : 'VULNERABILITY',
+                  primaryLocation : {
+                      message : `The dependency ${packageName} has vulnerability${vulnerability.fixAvailable ? `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}` : ''}`,
+                      filePath : path.resolve(process.cwd(), 'package.json'),
+                      textRange : {
+                          startLine,
+                          startColumn,
+                          endColumn
+                      }
                   }
-              }
-          });
+              });
+          }
       }
-         
+      
+      issues.push({
+          engineId,
+          ruleId : 'summary-dependency-vulnerability',
+          severity : 'INFO',
+          type : 'VULNERABILITY',
+          primaryLocation : {
+              message : Object.entries(audit.metadata.vulnerabilities).map((entry) => {
+                  const [level, quantity] = entry;
+                  return `- ${quantity} ${level}`;
+              }).join('\n'),
+              filePath : path.resolve(process.cwd(), 'package.json'),
+              textRange : {
+                  startLine : 1,
+                  startColumn : 0
+              }
+          }
+      });
       const output = JSON.stringify({issues}, null, 4);
       console.debug('issues generated', output);
       try {
