@@ -33,10 +33,15 @@
       const engineId = `npm-audit-${audit.auditReportVersion}`;
       for (const [packageName, vulnerability] of Object.entries(audit.vulnerabilities)) {
           let startLine = 1;
+          let startColumn = 0;
+          let endColumn = undefined;
           if (vulnerability.isDirect) {
               const packageJsonFile = (await fs.readFile(path.resolve(process.cwd(), 'package.json'))).toString();
               const packageNameIndex = packageJsonFile.indexOf(packageName);
-              startLine = packageJsonFile.slice(0, packageNameIndex).split('\n').length;
+              const rows = packageJsonFile.slice(0, packageNameIndex).split('\n');
+              startLine = rows.length;
+              startColumn = rows.at(-1).length;
+              endColumn = startColumn + packageName.length;
           }
           issues.push({
               engineId,
@@ -48,7 +53,8 @@
                   filePath : path.resolve(process.cwd(), 'package.json'),
                   textRange : {
                       startLine,
-                      startColumn : 0
+                      startColumn,
+                      endColumn
                   }
               }
           });
