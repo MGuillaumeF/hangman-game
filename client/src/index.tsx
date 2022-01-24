@@ -10,7 +10,8 @@ import "./index.scss";
 function App(): JSX.Element {
   return (
     <>
-      <Header title="Ceci est mon site" />
+      <Header title="Hello" />
+      <span>Ceci</span>&nbsp;<span>est mon site</span>
       <Main />
     </>
   );
