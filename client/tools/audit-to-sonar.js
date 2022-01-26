@@ -8,7 +8,7 @@
 
   const params = {
       packageFilePath : path.resolve(process.cwd(), 'package.json'),
-      outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report.json')
+      outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report.json'),
       inputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report-dependency.json')
   };
 
