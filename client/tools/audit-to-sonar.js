@@ -1,5 +1,7 @@
 (async function() {
   exitStatus = 0;
+  const fs = require('fs').promises;
+  const path = require('path');
 
   // get arguments of process run
   const args = process.argv.slice(2);
@@ -7,14 +9,12 @@
   const params = {
       packageFilePath : path.resolve(process.cwd(), 'package.json'),
       outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report.json')
-      inputFilePath : path.resolve(process.cwd(), inputFile)
+      inputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report-dependency.json')
   };
 
   // if args have good size run converting
   if (args.length === 1) {
       const [inputFile] = args;
-      const fs = require('fs').promises;
-      const path = require('path');
 
       const npmSeverityToSonar = new Map([
           ["info", 'INFO'],
