@@ -8,8 +8,8 @@
 
   const params = {
       packageFilePath : path.resolve(process.cwd(), 'package.json'),
-      outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report.json'),
-      inputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-report-dependency.json')
+      outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report-sonarqube.json'),
+      inputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report.json')
   };
 
   // if args have good size run converting
