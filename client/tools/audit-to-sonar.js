@@ -6,11 +6,44 @@
   // get arguments of process run
   const args = process.argv.slice(2);
 
-  const params = {
-      packageFilePath : path.resolve(process.cwd(), 'package.json'),
-      outputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report-sonarqube.json'),
-      inputFilePath : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report.json')
+  const params = {};
+
+  const configuration = [
+      {
+          key : 'packageFilePath',
+          alias : ['-p', '--package-file'],
+          type : 'string',
+          quantity : 1,
+          required : false,
+          description : '',
+          value : path.resolve(process.cwd(), 'package.json')
+      },
+      {
+          key : 'outputFilePath',
+          alias : ['-o', '--output-file'],
+          type : 'string',
+          quantity : 1,
+          required : false,
+          description : '',
+          value : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report-sonarqube.json')
+      },
+      {
+          key : 'inputFilePath',
+          alias : ['-i', '--input-file'],
+          type : 'string',
+          quantity : 1,
+          required : false,
+          description : '',
+          value : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report.json')
+      }
   };
+
+  configuration.forEach((value, index) => {
+      const newValue = args.find((arg, index) => {
+          return value.alias.map(reg => RegExp(`${reg}=\S+`)).some(regTest => regTest.test(arg));
+      });
+      console.log(newValue.split('=');
+  });
 
   // if args have good size run converting
   if (args.length === 1) {
