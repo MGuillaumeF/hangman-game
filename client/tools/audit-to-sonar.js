@@ -36,7 +36,7 @@
           description : '',
           value : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report.json')
       }
-  };
+  ];
 
   configuration.forEach((value, index) => {
       const newValue = args.find((arg, index) => {
