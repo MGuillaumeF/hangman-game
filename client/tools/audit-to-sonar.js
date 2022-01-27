@@ -40,18 +40,16 @@
 
   configuration.forEach((value, index) => {
       const newValue = args.find((arg, index) => {
-          return value.alias.map(reg => RegExp(`${reg}=\S+`)).some(regTest => regTest.test(arg));
+          return value.alias.map(reg => RegExp(`${reg}=\\S+`)).some(regTest => regTest.test(arg));
       });
       if (newValue) {
-          value.value = newValue.split('=')[1];
-          value.required = true;
+          value.value = path.resolve(process.cwd(), newValue.split('=')[1]);
       } else {
           const optionIndex = args.findIndex((arg, index) => {
               return value.alias.some(regTest => regTest === arg);
           });
           if (optionIndex !== -1) {
-              value.value = value.quantity === 1 ? args[optionIndex + 1] : args.slice(optionIndex + 1, optionIndex + value.quantity);
-              value.required = true;
+              value.value = path.resolve(process.cwd(),  value.quantity === 1 ? args[optionIndex + 1] : args.slice(optionIndex + 1, optionIndex + value.quantity));
           }
       }
 
@@ -62,7 +60,6 @@
           process.exit(1);
       }
   });
-      const [inputFile] = args;
 
       const npmSeverityToSonar = new Map([
           ["info", 'INFO'],
