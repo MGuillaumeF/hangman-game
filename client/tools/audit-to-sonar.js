@@ -42,7 +42,21 @@
       const newValue = args.find((arg, index) => {
           return value.alias.map(reg => RegExp(`${reg}=\S+`)).some(regTest => regTest.test(arg));
       });
-      console.log(newValue.split('=');
+      if (newValue) {
+          value.value = newValue.split('=')[1];
+          value.required = true;
+      } else {
+          const optionIndex = args.findIndex((arg, index) => {
+              return value.alias.some(regTest => regTest === arg);
+          });
+          if (optionIndex !== -1) {
+              value.value = value.quantity === 1 ? args[optionIndex + 1] : args.slice(optionIndex + 1, optionIndex + value.quantity);
+              value.required = true;
+          }
+      }
+      if (value.required) {
+          params[value.key] = value.value;
+      }
   });
 
   // if args have good size run converting
