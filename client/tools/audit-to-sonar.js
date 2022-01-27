@@ -25,7 +25,7 @@
           quantity : 1,
           required : false,
           description : '',
-          value : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report-sonarqube.json')
+          value : path.resolve(process.cwd(), 'audit-dependency-report-sonarqube.json')
       },
       {
           key : 'inputFilePath',
@@ -34,7 +34,7 @@
           quantity : 1,
           required : false,
           description : '',
-          value : path.resolve(process.cwd(), 'dist/reports/audit-dependency-report.json')
+          value : path.resolve(process.cwd(), 'audit-dependency-report.json')
       }
   ];
 
@@ -54,8 +54,12 @@
               value.required = true;
           }
       }
-      if (value.required) {
-          params[value.key] = value.value;
+
+      params[value.key] = value.value;
+
+      if (value.required && value.value === undefined) {
+          console.error(`${value.alias.join(', ')} required option is not defined`);
+          process.exit(1);
       }
   });
 
