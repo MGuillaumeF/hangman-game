@@ -434,11 +434,11 @@ jobs:
 
     - name: Audit dependency
       working-directory: ${{github.workspace}}/client
-      run: npm audit --json > ./dist/reports/audit-dependency.json || echo FAILED
+      run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
 
     - name: Convert Audit dependency report
       working-directory: ${{github.workspace}}/client
-      run: node ./tools/audit-to-sonar.js ./dist/reports/audit-dependency.json
+      run: node ./tools/audit-to-sonar.js --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
 
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
