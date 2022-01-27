@@ -62,9 +62,6 @@
           process.exit(1);
       }
   });
-
-  // if args have good size run converting
-  if (args.length === 1) {
       const [inputFile] = args;
 
       const npmSeverityToSonar = new Map([
@@ -141,9 +138,5 @@
           console.error('output file write failed', error);
           exitStatus = 2;
       }
-  } else {
-      console.error('one argument expected,', args.length, 'found');
-      exitStatus = 1;
-  }
   process.exit(exitStatus);
 })();
