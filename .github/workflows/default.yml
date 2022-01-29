@@ -438,7 +438,7 @@ jobs:
 
     - name: Convert Audit dependency report
       working-directory: ${{github.workspace}}/client
-      run: audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
+      run: npm run audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
 
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
