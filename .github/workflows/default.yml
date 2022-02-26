@@ -12,6 +12,7 @@ env:
   BUILD_TYPE: Debug
   BOOST_VERSION: 78
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  CPP_COSO_VERSION: 0.1.0
 
 permissions: write-all
 
@@ -97,6 +98,14 @@ jobs:
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin
+    
+    - name: Run clang-tidy
+      if: github.event_name == 'pull_request'
+      uses: ZedThree/clang-tidy-review@v0.7.0
+      id: review
+      with:
+         build_dir: server/bin
+         exclude: data-management/**/*.[ch]xx,data-management/**/*.[ch]pp
 
     - name: Archive Server
       uses: actions/upload-artifact@v2
@@ -256,12 +265,6 @@ jobs:
     - name: Lint Cpp Check (server)
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server
 
-    - name: Create reports directory (tools)
-      run: mkdir ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports; 
-
-    - name: Lint Cpp Check (tools)
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck_report.xml ${{github.workspace}}/tools/cppcheck-to-sonarqube
-
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
@@ -304,43 +307,22 @@ jobs:
     - name: Lint Clang-Tidy (data-management)
       run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
 
-    - name: Generate target cppcheck-to-sonarqube
-      run: cmake -S ${{github.workspace}}/tools/cppcheck-to-sonarqube -B ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+    - name: Download cpp-coso ${{env.CPP_COSO_VERSION}}
+      uses: wei/wget@v1
+      with:
+        args: -O cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb https://mguillaumef.github.io/cpp-coso/delivery/${{env.CPP_COSO_VERSION}}/cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
 
-    - name: Build cppcheck-to-sonarqube
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube
-      run: cmake --build ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
+    - name: Install cpp-coso
+      run: sudo dpkg -i cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
-
-    - name: Lint Clang-Tidy (tools)
-      run: clang-tidy -checks='*' -header-filter='tools/cppcheck-to-sonarqube/src/.*' -p tools/cppcheck-to-sonarqube/bin tools/cppcheck-to-sonarqube/**/*.*pp > ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang_tidy_report.txt
-
-    - name: Convert Lint Clang-Tidy to sonarqube format
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang_tidy_report.txt ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/clang-tidy-sonarqube-report.json
+      run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
 
     - name: Convert Lint Cpp Check to sonarqube format
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server/reports/cppcheck-sonarqube-report.json
+      run: /usr/cpp-coso/cpp-coso cppcheck ${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server/reports/cppcheck-sonarqube-report.json
 
     - name: Convert Lint Cpp Check to sonarqube format (data-management)
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management/reports/cppcheck-sonarqube-report.json
-
-    - name: Convert Lint Cpp Check to sonarqube format (tools)
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube cppcheck ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck_report.xml ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports/cppcheck-sonarqube-report.json
-
-    - name: Archive tools report
-      uses: actions/upload-artifact@v2
-      with:
-        name: Tools-Hangman-Game - Reports
-        path: ${{github.workspace}}/tools/cppcheck-to-sonarqube/reports
+      run: /usr/cpp-coso/cpp-coso cppcheck ${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management/reports/cppcheck-sonarqube-report.json
 
     - name: Archive data-management report
       uses: actions/upload-artifact@v2
@@ -364,8 +346,7 @@ jobs:
       run: clang-tidy -checks='*' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
 
     - name: Convert Lint Clang-Tidy to sonarqube format
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube/bin
-      run: ./cppcheck-to-sonarqube clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
+      run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
@@ -453,16 +434,6 @@ jobs:
     - name: Setup sonarqube
       if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
-
-    - name: Run SonarQube Tools
-      working-directory: ${{github.workspace}}/tools/cppcheck-to-sonarqube
-      if: github.actor != 'dependabot[bot]'
-      env:
-        GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-      run: sonar-scanner
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.verbose=false
 
     - name: Run SonarQube data-management
       working-directory: ${{github.workspace}}/data-management
