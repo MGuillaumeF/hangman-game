@@ -17,6 +17,7 @@
     "noImplicitAny": true,
     "noResolve": false,
     "noImplicitThis": true,
+    "resolveJsonModule": true,
     "strict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
