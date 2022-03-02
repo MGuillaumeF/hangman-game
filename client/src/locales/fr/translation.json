@@ -1,0 +1,58 @@
+{
+  "pages": {
+    "home": {},
+    "settings": {
+      "language": "Changer la langue",
+      "custom": "Personaliser l'interface",
+      "sound": "Paramétrage du son",
+      "accessibilities": "Paramétrage d'accessibilité"
+    },
+    "scores": {}
+  },
+  "forms": {
+    "sign-in": {
+      "title": "Connexion",
+      "fields": {
+        "identifier": {
+          "label": "Identifiant"
+        },
+        "password": {
+          "label": "Mot de passe"
+        },
+        "submit": {
+          "label": "Se connecter"
+        }
+      }
+    },
+    "sign-up": {
+      "title": "Inscription",
+      "fields": {
+        "identifier": {
+          "label": "Veuillez choisir un identifiant",
+          "placeholder": "MGuillaumeF",
+          "helper": "L'identifiant sera visible pour les autres utilisateurs, il vous sera également demandé pour vous connecter sur le site"
+        },
+        "password": {
+          "label": "Veuillez définir un mot de passe"
+        },
+        "confirm": {
+          "label": "Comfirmez votre mot de passe"
+        },
+        "submit": {
+          "label": "S'inscrire"
+        }
+      }
+    }
+  },
+  "rules": {
+    "fields": {
+      "mandatory": "Le champ {{name}} doit être saisie",
+      "min-size": "La valeur doit être supérieur à {{min}}",
+      "max-size": "La valeur doit être inférieur à {{max}}",
+      "range": "La valeur doit être comprise entre {{min}} et {{max}}"
+    }
+  },
+  "errors" : {
+      "access-denied" : "Accès non-autorisé"
+  }
+}
