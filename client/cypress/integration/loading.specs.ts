@@ -8,5 +8,8 @@ describe('Load presentation page', () => {
       duration: 3000,
       blocking: true,
     })
+    cy.contains("Connexion");
+    cy.get("#lang-en").click();
+    cy.contains("Login");
   });
 });
