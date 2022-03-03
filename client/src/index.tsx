@@ -13,9 +13,6 @@ import { useTranslation } from "react-i18next";
 
 function App(): JSX.Element {
   const { t, i18n } = useTranslation();
-  const changeLang = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
 
   const changeLangBtnClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -24,7 +21,7 @@ function App(): JSX.Element {
       event?.currentTarget?.textContent
     ).toLowerCase();
     if (["fr", "en"].includes(currentBtnText)) {
-      changeLang(currentBtnText);
+      i18n.changeLanguage(currentBtnText);
     }
   };
   return (
@@ -41,8 +38,8 @@ function App(): JSX.Element {
         </fieldset>
         <input type="submit" value={String(t("forms.sign-in.fields.submit.label"))} />
       </form>
-      <button onClick={changeLangBtnClick}>FR</button>
-      <button onClick={changeLangBtnClick}>EN</button>
+      <button id="lang-fr" onClick={changeLangBtnClick}>FR</button>
+      <button id="lang-en" onClick={changeLangBtnClick}>EN</button>
     </>
   );
 }
