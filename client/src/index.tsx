@@ -33,12 +33,11 @@ function App(): JSX.Element {
       <Main />
       <form>
         <fieldset>
-        <legend>{t("forms.sign-in.title")}</legend>
-        <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.identifier.label")}</label>
-        <input type="text" name="login" id="forms.sign-in.fields.identifier" />
-        <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.password.label")}</label>
-        <input type="password" name="password" id="forms.sign-in.fields.password" /> 
-
+          <legend>{t("forms.sign-in.title")}</legend>
+          <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.identifier.label")}</label>
+          <input type="text" name="login" id="forms.sign-in.fields.identifier" />
+          <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.password.label")}</label>
+          <input type="password" name="password" id="forms.sign-in.fields.password" />
         </fieldset>
         <input type="submit" value={String(t("forms.sign-in.fields.submit.label"))} />
       </form>
