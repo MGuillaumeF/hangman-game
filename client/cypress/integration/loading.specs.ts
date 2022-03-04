@@ -56,7 +56,7 @@ function addPresentation() {
 function addEnd() {
   return cy.document().then($document => {
     const title = $document.createElement("h1");
-    title.textContent = "Hangman Game";
+    title.textContent = "FIN";
     return addPage('end', title);
   });
 }
