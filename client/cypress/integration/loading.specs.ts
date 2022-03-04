@@ -14,32 +14,10 @@ describe('Load presentation page', () => {
           image.style.width = "100%";
           image.style.position = "fixed";
           image.style.display = "flex";
-          image.style.alignItems = "middle";
+          image.style.alignItems = "center";
           image.style.justifyContent = "center";
           image.style.zIndex = 3000000;
-          return image;
-        }
-        $div.empty();
-        $div.append(words);
-      });
-    });
-    cy.wait(3000);
-    cy.visit('/');
-    cy.document().then($document => {
-      cy.get('body').then(($div) => {
-        function words(){
-          var image = $document.createElement("div");
-          image.id = "cypress-application-pres";
-          image.textContent = "Hangman Game v0.1.0";
-          image.style.backgroundColor = "#333";
-          image.style.color = "#FFF";
-          image.style.height = "100%";
-          image.style.width = "100%";
-          image.style.position = "absolute";
-          image.style.display = "flex";
-          image.style.alignItems = "middle";
-          image.style.justifyContent = "center";
-          image.style.zIndex = 3000000;
+          image.style.fontSize = "2.5em";
           return image;
         }
         $div.empty();
