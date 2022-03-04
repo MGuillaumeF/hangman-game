@@ -62,7 +62,6 @@ function addEnd() {
 describe('Load presentation page', () => {
   it('load first page', () => {
     cy.clearViewport();
-    cy.visit('/');
    
     addPresentation();
 
