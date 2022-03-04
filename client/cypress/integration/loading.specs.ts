@@ -19,6 +19,7 @@ describe('Load presentation page', () => {
           image.style.zIndex = "3000";
           return image;
         }
+        $div.innerHTML = '';
         $div.append(words);
       });
     });
