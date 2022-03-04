@@ -24,7 +24,8 @@ function addPage(id : string, ...elements : any[]): void {
   });
 }
 
-function addPresentation() {
+async function addPresentation(): Promise<void> {
+  const $document = await cy.document();
   const title = $document.createElement("h1");
   title.textContent = "Hangman Game";
 
@@ -46,13 +47,14 @@ function addPresentation() {
   author.style.top = "0.5em";
   author.style.left = "0.5em";
 
-  addPage('pres', title, subTitle, version, date, author);
+  await addPage('pres', title, subTitle, version, date, author);
 }
 
-function addEnd(): void {
+async function addEnd(): Promise<void> {
+  const $document = await cy.document();
   const title = $document.createElement("h1");
   title.textContent = "Hangman Game";
-  addPage('end', title);
+  await addPage('end', title);
 }
 
 describe('Load presentation page', () => {
