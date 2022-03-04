@@ -6,8 +6,10 @@ function addPage(id : string, ...elements : any[]) {
         page.id = `cypress-application-${id}`;
         page.style.backgroundColor = "#333";
         page.style.color = "#FFF";
-        page.style.height = "100%";
-        page.style.width = "100%";
+        page.style.height = "100vh";
+        page.style.width = "100vw";
+        page.style.top = 0;
+        page.style.left = 0;
         page.style.position = "fixed";
         page.style.display = "flex";
         page.style.alignItems = "center";
