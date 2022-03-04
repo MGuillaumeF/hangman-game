@@ -19,8 +19,6 @@ function addPage(id : string, ...elements : any[]) {
         return page;
       }
       $div.empty();
-      $div.style.padding = 0;
-      $div.style.margin = 0;
       $div.append(add);
     });
   });
@@ -64,6 +62,7 @@ function addEnd() {
 describe('Load presentation page', () => {
   it('load first page', () => {
     cy.clearViewport();
+    cy.visit('/');
    
     addPresentation();
 
