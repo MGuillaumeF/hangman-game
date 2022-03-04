@@ -1,5 +1,5 @@
-function addPage(id : string, ...elements : any[]): void {
-  cy.document().then($document => {
+function addPage(id : string, ...elements : any[]) {
+  return cy.document().then($document => {
     cy.get('body').then(($div) => {
       function add(){
         const page = $document.createElement("div");
@@ -24,37 +24,39 @@ function addPage(id : string, ...elements : any[]): void {
   });
 }
 
-async function addPresentation(): Promise<void> {
-  const $document = await cy.document();
-  const title = $document.createElement("h1");
-  title.textContent = "Hangman Game";
+function addPresentation() {
+  return cy.document().then($document => {
+    const title = $document.createElement("h1");
+    title.textContent = "Hangman Game";
 
-  const subTitle = $document.createElement("h2");
-  subTitle.textContent = "Démonstration";
+    const subTitle = $document.createElement("h2");
+    subTitle.textContent = "Démonstration";
 
-  const version = $document.createElement("p");
-  version.textContent = "v0.1.0";
+    const version = $document.createElement("p");
+    version.textContent = "v0.1.0";
 
-  const date = $document.createElement("span");
-  date.textContent = new Date().toISOString().split('T')[0];
-  date.style.position = "fixed";
-  date.style.bottom = "0.5em";
-  date.style.right = "0.5em";
+    const date = $document.createElement("span");
+    date.textContent = new Date().toISOString().split('T')[0];
+    date.style.position = "fixed";
+    date.style.bottom = "0.5em";
+    date.style.right = "0.5em";
 
-  const author = $document.createElement("span");
-  author.textContent = "MGuillaumeF";
-  author.style.position = "fixed";
-  author.style.top = "0.5em";
-  author.style.left = "0.5em";
+    const author = $document.createElement("span");
+    author.textContent = "MGuillaumeF";
+    author.style.position = "fixed";
+    author.style.top = "0.5em";
+    author.style.left = "0.5em";
 
-  await addPage('pres', title, subTitle, version, date, author);
+    return addPage('pres', title, subTitle, version, date, author);
+  });
 }
 
-async function addEnd(): Promise<void> {
-  const $document = await cy.document();
-  const title = $document.createElement("h1");
-  title.textContent = "Hangman Game";
-  await addPage('end', title);
+function addEnd() {
+  return cy.document().then($document => {
+    const title = $document.createElement("h1");
+    title.textContent = "Hangman Game";
+    return addPage('end', title);
+  });
 }
 
 describe('Load presentation page', () => {
