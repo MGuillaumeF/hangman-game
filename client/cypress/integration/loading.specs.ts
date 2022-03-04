@@ -19,6 +19,7 @@ describe('Load presentation page', () => {
           image.style.zIndex = 3000000;
           return image;
         }
+        $div.empty();
         $div.append(words);
       });
     });
@@ -41,6 +42,7 @@ describe('Load presentation page', () => {
           image.style.zIndex = 3000000;
           return image;
         }
+        $div.empty();
         $div.append(words);
       });
     });
