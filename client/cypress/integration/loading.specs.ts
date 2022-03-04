@@ -8,8 +8,6 @@ function addPage(id : string, ...elements : any[]) {
         page.style.color = "#FFF";
         page.style.height = "100vh";
         page.style.width = "100vw";
-        page.style.top = 0;
-        page.style.left = 0;
         page.style.position = "fixed";
         page.style.display = "flex";
         page.style.alignItems = "center";
@@ -21,6 +19,8 @@ function addPage(id : string, ...elements : any[]) {
         return page;
       }
       $div.empty();
+      $div.style.padding = 0;
+      $div.style.margin = 0;
       $div.append(add);
     });
   });
