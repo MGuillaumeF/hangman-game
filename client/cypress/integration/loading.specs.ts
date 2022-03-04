@@ -16,6 +16,7 @@ describe('Load presentation page', () => {
           image.style.display = "flex";
           image.style.alignItems = "middle";
           image.style.justifyContent = "center";
+          image.style.zIndex = "3000";
           return image;
         }
         $div.append(words);
