@@ -1,52 +1,67 @@
+function addPage(id : string, ...elements : any[]): void {
+  cy.document().then($document => {
+    cy.get('body').then(($div) => {
+      function add(){
+        const page = $document.createElement("div");
+        page.id = `cypress-application-${id}`;
+        page.style.backgroundColor = "#333";
+        page.style.color = "#FFF";
+        page.style.height = "100%";
+        page.style.width = "100%";
+        page.style.position = "fixed";
+        page.style.display = "flex";
+        page.style.alignItems = "center";
+        page.style.justifyContent = "center";
+        page.style.flexDirection = "column";
+        page.style.zIndex = 3000000;
+
+        elements.forEach((element) => page.append(element));
+        return page;
+      }
+      $div.empty();
+      $div.append(add);
+    });
+  });
+}
+
+function addPresentation() {
+  const title = $document.createElement("h1");
+  title.textContent = "Hangman Game";
+
+  const subTitle = $document.createElement("h2");
+  subTitle.textContent = "Démonstration";
+
+  const version = $document.createElement("p");
+  version.textContent = "v0.1.0";
+
+  const date = $document.createElement("span");
+  date.textContent = new Date().toISOString().split('T')[0];
+  date.style.position = "fixed";
+  date.style.bottom = "0.5em";
+  date.style.right = "0.5em";
+
+  const author = $document.createElement("span");
+  author.textContent = "MGuillaumeF";
+  author.style.position = "fixed";
+  author.style.top = "0.5em";
+  author.style.left = "0.5em";
+
+  addPage('pres', title, subTitle, version, date, author);
+}
+
+function addEnd(): void {
+  const title = $document.createElement("h1");
+  title.textContent = "Hangman Game";
+  addPage('end', title);
+}
+
 describe('Load presentation page', () => {
   it('load first page', () => {
     cy.clearViewport();
     cy.visit('/');
-    cy.document().then($document => {
-      cy.get('body').then(($div) => {
-        function presentation(){
-          const page = $document.createElement("div");
-          page.id = "cypress-application-pres";
-          page.style.backgroundColor = "#333";
-          page.style.color = "#FFF";
-          page.style.height = "100%";
-          page.style.width = "100%";
-          page.style.position = "fixed";
-          page.style.display = "flex";
-          page.style.alignItems = "center";
-          page.style.justifyContent = "center";
-          page.style.flexDirection = "column";
-          page.style.zIndex = 3000000;
+   
+    addPresentation();
 
-          const title = $document.createElement("h1");
-          title.textContent = "Hangman Game";
-         // title.style.fontSize = "2.5em";
-
-          const version = $document.createElement("p");
-          version.textContent = "v0.1.0";
-
-          const date = $document.createElement("span");
-          date.textContent = new Date().toISOString().split('T')[0];
-          date.style.position = "fixed";
-          date.style.bottom = "0.5em";
-          date.style.right = "0.5em";
-
-          const author = $document.createElement("span");
-          author.textContent = "MGuillaumeF";
-          author.style.position = "fixed";
-          author.style.top = "0.5em";
-          author.style.left = "0.5em";
-
-          page.append(title);
-          page.append(version);
-          page.append(date);
-          page.append(author);
-          return page;
-        }
-        $div.empty();
-        $div.append(presentation);
-      });
-    });
     cy.wait(3000);
     cy.visit('/');
     cy.contains('Ceci est mon site');
@@ -59,5 +74,7 @@ describe('Load presentation page', () => {
     cy.contains("Connexion");
     cy.get("#lang-en").click();
     cy.contains("Login");
+
+    addEnd();
   });
 });
