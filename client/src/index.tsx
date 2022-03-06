@@ -34,7 +34,7 @@ function App(): JSX.Element {
       <Header title="Ceci est mon site" />
       <Main />
       <div style={scopeStyle}>
-        <form style={formStyle} method="POST" action="/sign-in">
+        <form style={formStyle} method="POST" action="/api/session">
           <fieldset style={fieldsetStyle}>
             <legend>{t("forms.sign-in.title")}</legend>
             <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.identifier.label")}</label>
