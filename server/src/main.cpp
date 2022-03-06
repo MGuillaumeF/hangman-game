@@ -160,7 +160,7 @@ int32_t main(int argc, char *argv[]) {
   auto config = ConfigurationServer();
 
   http::Session::addRequestDispatcher(
-      "/api/token",
+      "/api/session",
       [](const boost::beast::http::request<boost::beast::http::string_body>
              &req) {
         HttpTokenEndpoint tokenEndpoint(req);
