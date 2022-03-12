@@ -103,6 +103,7 @@
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-i18next": "^11.15.5"
+    "react-i18next": "^11.15.5",
+    "react-router-dom": "^6.2.2"
   }
 }

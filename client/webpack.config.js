@@ -25,15 +25,14 @@ const StylelintPlugin = require("stylelint-webpack-plugin");
 /**
  * custom plugin
  */
-const PostBuildPlugin = require('./tools/webpack/PostBuildPlugin');
-const Logger = require('./tools/webpack/Logger');
-
+const PostBuildPlugin = require("./tools/webpack/PostBuildPlugin");
+const Logger = require("./tools/webpack/Logger");
 
 const DEV = "development";
 const PROD = "production";
 const logger = Logger.getInstance();
-logger.setLocation('./webpack.log');
-logger.setLevel('INFO');
+logger.setLocation("./webpack.log");
+logger.setLevel("INFO");
 
 /**
  *
@@ -98,7 +97,17 @@ module.exports = (env, args) => {
     },
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
-      extensions: [".ts", ".tsx", ".js", ".scss", '.svg', '.png', '.gif', '.jpg', '.jpeg']
+      extensions: [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".scss",
+        ".svg",
+        ".png",
+        ".gif",
+        ".jpg",
+        ".jpeg"
+      ]
     },
     module: {
       rules: [
@@ -106,7 +115,12 @@ module.exports = (env, args) => {
           test: /\.s[ac]ss$/i,
           use: [
             // Translates CSS into CommonJS
-            "css-loader",
+            {
+              loader: "css-loader",
+              options: {
+                modules: true
+              }
+            },
             // prefix for css rules
             {
               loader: "postcss-loader",
@@ -139,9 +153,9 @@ module.exports = (env, args) => {
                 ]
               }
             },
-             {
-               loader: "ts-loader"
-             }
+            {
+              loader: "ts-loader"
+            }
           ],
           exclude: [
             path.resolve(__dirname, "node_modules"),
@@ -149,29 +163,28 @@ module.exports = (env, args) => {
             path.resolve(__dirname, "test")
           ]
         },
-        
+
         {
           test: /\.(png|jpe?g|gif|svg)$/i,
           use: [
-            
             {
               loader: "babel-loader"
             },
             {
-              loader: 'file-loader',
-              options : {
+              loader: "file-loader",
+              options: {
                 // publicPath : 'public',
-                name: '[contenthash].[ext]'
+                name: "[contenthash].[ext]"
               }
             },
             {
-              loader: 'url-loader',
+              loader: "url-loader",
               options: {
-                limit: 8192,
-              },
-            },
-          ],
-        },
+                limit: 8192
+              }
+            }
+          ]
+        }
       ]
     },
     plugins: [
@@ -181,7 +194,7 @@ module.exports = (env, args) => {
         template: path.resolve(__dirname, "public/index.html"),
         favicon: path.resolve(__dirname, "public/favicon.ico")
       }),
-      new CleanWebpackPlugin(),
+      // new CleanWebpackPlugin(),
       new ESLintPlugin({
         emitError: true,
         emitWarning: true,
@@ -197,8 +210,8 @@ module.exports = (env, args) => {
       }),
       new StylelintPlugin({
         exclude: ["node_modules/**/*", "dist/**/*", "test/**/*"],
-        extensions : ['scss'],
-        customSyntax : 'postcss-scss'
+        extensions: ["scss"],
+        customSyntax: "postcss-scss"
       }),
       new PostBuildPlugin()
     ]
@@ -253,14 +266,19 @@ module.exports = (env, args) => {
       minimizer: [new CssMinimizerPlugin()],
       usedExports: true
     };
-    trace("INFO", "CONFIGURATION_PERFO", "Add CSS bundle compactor and importer");
+    trace(
+      "INFO",
+      "CONFIGURATION_PERFO",
+      "Add CSS bundle compactor and importer"
+    );
     config.plugins.push(
       new CssMinimizerPlugin(),
-      new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
-      },
-      //new PostBuildPlugin()
+      new MiniCssExtractPlugin(
+        {
+          filename: "[name].css",
+          chunkFilename: "[id].css"
+        }
+        //new PostBuildPlugin()
       )
     );
   }
