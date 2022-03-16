@@ -73,7 +73,7 @@ function App(): JSX.Element {
         </Routes>
 
         <div style={langStyle}>
-          <Link id="PAGES.SETTINGS.TITLE" to="settings">
+          <Link id="PAGES_SETTINGS_TITLE" to="settings">
             {t("PAGES.SETTINGS.TITLE")}
           </Link>
           <button id="lang-fr" onClick={changeLangBtnClick}>
