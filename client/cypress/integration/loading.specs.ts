@@ -84,7 +84,7 @@ describe("Load presentation page", () => {
     cy.get("#lang-en").click();
     cy.contains("Settings");
 
-    cy.get("#PAGES.SETTINGS.TITLE").click();
+    cy.get("#PAGES_SETTINGS_TITLE").click();
 
     // all parameters are optional
     cy.toast("Display menu", {
