@@ -91,9 +91,11 @@ module.exports = (env, args) => {
   const config = {
     mode: MODE,
     entry: "./src/index.tsx",
+
+    cache: false,
     output: {
       path: path.resolve(__dirname, "dist"),
-      publicPath: process.env.PUBLIC_PATH || ".",
+      publicPath: MODE === DEV ? "/" : process.env.PUBLIC_PATH || ".",
       filename: "[name].bundle.js"
     },
     resolve: {
