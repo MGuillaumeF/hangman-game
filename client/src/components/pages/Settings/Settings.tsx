@@ -1,24 +1,32 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import './style.scss'
-
-const pageStyle : React.CSSProperties= { display : 'flex', flexDirection : 'column'}
+import React, { HTMLProps } from "react";
+import { useTranslation } from "react-i18next";
+import soundIcon from "../../../icones/menu/sound.svg";
+import videoIcon from "../../../icones/menu/video.svg";
+import style from "./style.scss";
 
 type Props = {
-    id:string
-}
+  id: string;
+  navProperties?: HTMLProps<HTMLDivElement>;
+};
 
-function Settings({id}: Props) {
-    const {t} = useTranslation()
+function Settings({ id, navProperties }: Props): React.ReactElement {
+  const { t } = useTranslation();
   return (
-    <div id={id} style={pageStyle} className='settingsPage'>
-        <h2>{t('pages.settings.title')}</h2>
-        <button>{t('pages.settings.menu.control')}</button>
-        <button>{t('pages.settings.menu.languages')}</button>
-        <button>{t('pages.settings.menu.sound')}</button>
-        <button>{t('pages.settings.menu.video')}</button>
-    </div>
-  )
+    <nav id={id} className={style.SettingsContainer} {...navProperties}>
+      <button>
+        <img src={videoIcon} alt={t("PAGES.SETTINGS.MENU.CONTROL")} />
+      </button>
+      <button>
+        <img src={videoIcon} alt={t("PAGES.SETTINGS.MENU.LANGUAGES")} />
+      </button>
+      <button>
+        <img src={soundIcon} alt={t("PAGES.SETTINGS.MENU.SOUND")} />
+      </button>
+      <button>
+        <img src={videoIcon} alt={t("PAGES.SETTINGS.MENU.VIDEO")} />
+      </button>
+    </nav>
+  );
 }
 
-export default Settings
+export default Settings;

@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "build": "webpack --node-env production",
+    "build": "webpack --node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
     "start": "webpack serve --open --node-env development",
     "cy:open": "cypress open",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
@@ -16,11 +16,7 @@
   },
   "author": "MGuillaumeF",
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

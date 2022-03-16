@@ -93,6 +93,7 @@ module.exports = (env, args) => {
     entry: "./src/index.tsx",
     output: {
       path: path.resolve(__dirname, "dist"),
+      publicPath: process.env.PUBLIC_PATH || ".",
       filename: "[name].bundle.js"
     },
     resolve: {
@@ -163,26 +164,25 @@ module.exports = (env, args) => {
             path.resolve(__dirname, "test")
           ]
         },
-
         {
           test: /\.(png|jpe?g|gif|svg)$/i,
           use: [
-            {
-              loader: "babel-loader"
-            },
-            {
-              loader: "file-loader",
-              options: {
-                // publicPath : 'public',
-                name: "[contenthash].[ext]"
-              }
-            },
+            // {
+            //   loader: "babel-loader"
+            // },
             {
               loader: "url-loader",
               options: {
                 limit: 8192
               }
             }
+            // {
+            //   loader: "file-loader",
+            //   options: {
+            //     name: "[contenthash].[ext]",
+            //     outputPath: path.resolve(__dirname, "dist")
+            //   }
+            // }
           ]
         }
       ]
@@ -234,6 +234,7 @@ module.exports = (env, args) => {
     config.devtool = "cheap-module-source-map";
     trace("INFO", "DEV_SERVER", "Define webpack server configuration");
     config.devServer = {
+      historyApiFallback: true,
       client: {
         overlay: true
       },

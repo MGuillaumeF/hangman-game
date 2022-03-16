@@ -1,59 +1,61 @@
 {
-    "pages": {
-      "home": {},
-      "settings": {
-        "language": "Change language",
-        "custom": "Custom interface",
-        "sound": "Sound settings",
-        "accessibilities": "Accessibilities settings"
-      },
-      "scores": {}
+  "PAGES": {
+    "HOME": {},
+    "SETTINGS": {
+      "TITLE": "Settings",
+      "MENU": {
+        "CONTROL": "Control settings",
+        "LANGUAGES": "Change language",
+        "SOUND": "Sound settings",
+        "VIDEO": "Video settings"
+      }
     },
-    "forms": {
-      "sign-in": {
-        "title": "Login",
-        "fields": {
-          "identifier": {
-            "label": "Identifier"
-          },
-          "password": {
-            "label": "Password"
-          },
-          "submit": {
-            "label": "Login"
-          }
-        }
-      },
-      "sign-up": {
-        "title": "Subscribe",
-        "fields": {
-          "identifier": {
-            "label": "Choose an identifier",
-            "placeholder": "MGuillaumeF",
-            "helper": "L'identifiant sera visible pour les autres utilisateurs, il vous sera également demandé pour vous connecter sur le site"
-          },
-          "password": {
-            "label": "Veuillez définir un mot de passe"
-          },
-          "confirm": {
-            "label": "Comfirmez votre mot de passe"
-          },
-          "submit": {
-            "label": "S'inscrire"
-          }
+    "SCORES": {}
+  },
+  "FORMS": {
+    "SIGN_IN": {
+      "TITLE": "Login",
+      "FIELDS": {
+        "IDENTIFIER": {
+          "LABEL": "Identifier"
+        },
+        "PASSWORD": {
+          "LABEL": "Password"
+        },
+        "SUBMIT": {
+          "LABEL": "Login"
         }
       }
     },
-    "rules": {
-      "fields": {
-        "mandatory": "Le champ {{name}} doit être saisie",
-        "min-size": "La valeur doit être supérieur à {{min}}",
-        "max-size": "La valeur doit être inférieur à {{max}}",
-        "range": "La valeur doit être comprise entre {{min}} et {{max}}"
+    "SIGN_UP": {
+      "TITLE": "Subscribe",
+      "FIELDS": {
+        "IDENTIFIER": {
+          "LABEL": "Choose an identifier",
+          "PLACEHOLDER": "MGuillaumeF",
+          "HELPER": "L'identifiant sera visible pour les autres utilisateurs, il vous sera également demandé pour vous connecter sur le site"
+        },
+        "PASSWORD": {
+          "LABEL": "Veuillez définir un mot de passe"
+        },
+        "CONFIRM": {
+          "LABEL": "Comfirmez votre mot de passe"
+        },
+        "SUBMIT": {
+          "LABEL": "S'inscrire"
+        }
       }
-    },
-    "errors" : {
-        "access-denied" : "Accès non-autorisé"
     }
+  },
+  "RULES": {
+    "FIELDS": {
+      "MANDATORY": "Le champ {{name}} doit être saisie",
+      "MIN_SIZE": "La valeur doit être supérieur à {{min}}",
+      "MAX_SIZE": "La valeur doit être inférieur à {{max}}",
+      "RANGE": "La valeur doit être comprise entre {{min}} et {{max}}"
+    }
+  },
+  "ERRORS": {
+    "ACCESS_DENIED": "Accès non-autorisé"
   }
-  
+}
