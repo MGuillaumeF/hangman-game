@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
 
     REQUEST requestProperties;
     requestProperties.port = 8080;
-    requestProperties.target = "/api/token";
+    requestProperties.target = "/api/session";
     requestProperties.headers = {{"Content-Type", "application/json"},
                                  {"Accept", "application/json"}};
 

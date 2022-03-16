@@ -1,0 +1,12 @@
+.SettingsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  & > button {
+    height: 5em;
+    background-color: rgb(219, 219, 219);
+    border: 1px solid #333;
+    color: #333;
+  }
+}

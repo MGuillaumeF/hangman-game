@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "build": "webpack --node-env production",
+    "build": "webpack --node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
     "start": "webpack serve --open --node-env development",
     "cy:open": "cypress open",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
@@ -16,11 +16,7 @@
   },
   "author": "MGuillaumeF",
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -85,6 +81,7 @@
     "postcss-loader": "^6.2.1",
     "postcss-scss": "^4.0.3",
     "prettier": "^2.5.1",
+    "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "stylelint": "^14.5.3",
@@ -103,6 +100,7 @@
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-i18next": "^11.15.7"
+    "react-i18next": "^11.15.7",
+    "react-router-dom": "^6.2.2"
   }
 }

@@ -1,18 +1,42 @@
 /* eslint-disable react-perf/jsx-no-new-function-as-prop */
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-
+import React, { useState } from "react";
+import { render } from "react-dom";
+import { useTranslation } from "react-i18next";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import SignIn from "./components/Forms/SignIn/SignIn";
+import AboutUs from "./components/pages/AboutUs/AboutUs";
+import CGU from "./components/pages/CGU/CGU";
+import Error404 from "./components/pages/Errors/Error404";
+import Home from "./components/pages/Home/Home";
+import Messages from "./components/pages/Messages/Messages";
+import Settings from "./components/pages/Settings/Settings";
+import "./i18n";
+import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 
-import Header from "./components/Header/Header";
-import Main from "./components/Main/Main";
-import "./index.scss";
-import "./i18n";
-
-import { useTranslation } from "react-i18next";
+const scopeStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center"
+};
+const langStyle: React.CSSProperties = {
+  position: "absolute",
+  bottom: "0.5em",
+  right: "0.5em"
+};
+const signInStyle: React.CSSProperties = {
+  position: "absolute",
+  top: "0.5em",
+  right: "0.5em",
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "#777"
+};
 
 function App(): JSX.Element {
-  const { t, i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const [displaySignInForm, setdisplaySignInForm] = useState(false);
 
   const changeLangBtnClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -25,24 +49,44 @@ function App(): JSX.Element {
     }
   };
   return (
-    <>
-      <Header title="Ceci est mon site" />
-      <Main />
-      <form>
-        <fieldset>
-          <legend>{t("forms.sign-in.title")}</legend>
-          <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.identifier.label")}</label>
-          <input type="text" name="login" id="forms.sign-in.fields.identifier" />
-          <label htmlFor="forms.sign-in.fields.identifier">{t("forms.sign-in.fields.password.label")}</label>
-          <input type="password" name="password" id="forms.sign-in.fields.password" />
-        </fieldset>
-        <input type="submit" value={String(t("forms.sign-in.fields.submit.label"))} />
-      </form>
-      <button id="lang-fr" onClick={changeLangBtnClick}>FR</button>
-      <button id="lang-en" onClick={changeLangBtnClick}>EN</button>
-    </>
+    <BrowserRouter>
+      <div style={scopeStyle}>
+        <div style={signInStyle}>
+          <button onClick={() => setdisplaySignInForm(!displaySignInForm)}>
+            Connexion
+          </button>
+          {displaySignInForm ? <SignIn id="form-sign-in" /> : null}
+        </div>
+        <Routes>
+          <Route path="/" element={<Home id="page-home" />}></Route>
+          <Route
+            path="settings"
+            element={<Settings id="page-settings" />}
+          ></Route>
+          <Route path="about" element={<AboutUs id="page-about-us" />}></Route>
+          <Route path="/cgu" element={<CGU id="page-cgu" />}></Route>
+          <Route
+            path="messages"
+            element={<Messages id="page-messages" />}
+          ></Route>
+          <Route element={<Error404 />}></Route>
+        </Routes>
+
+        <div style={langStyle}>
+          <Link id="PAGES_SETTINGS_TITLE" to="settings">
+            {t("PAGES.SETTINGS.TITLE")}
+          </Link>
+          <button id="lang-fr" onClick={changeLangBtnClick}>
+            FR
+          </button>
+          <button id="lang-en" onClick={changeLangBtnClick}>
+            EN
+          </button>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById("root"));
 reportWebVitals(console.log);
