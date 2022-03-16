@@ -91,8 +91,8 @@ describe("Load presentation page", () => {
       blocking: true
     });
 
-    cy.visit("/badPage");
-    cy.contains("Error404");
+    //cy.visit("/badPage");
+    //cy.contains("Error404");
 
     addEnd();
   });
