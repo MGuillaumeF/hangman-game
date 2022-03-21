@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    id : string
+  id: string;
+};
+
+function AboutUs({ id }: Props) {
+  return <div id={id}>AboutUs</div>;
 }
 
-function AboutUs({id}: Props) {
-  return (
-    <div id={id}>AboutUs</div>
-  )
-}
-
-export default AboutUs
+export default AboutUs;

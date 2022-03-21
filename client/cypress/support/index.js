@@ -20,6 +20,6 @@ import "./commands";
 // require('./commands')
 
 // coverage support
-import '@cypress/code-coverage/support'
+import "@cypress/code-coverage/support";
 
-import 'cypress-movie/commands'
+import "cypress-movie/commands";

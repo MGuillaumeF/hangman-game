@@ -147,15 +147,7 @@ module.exports = (env, args) => {
         {
           test: /\.tsx?$/,
           use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: [
-                  "@babel/preset-typescript",
-                  ["react-app", { flow: false, typescript: true }]
-                ]
-              }
-            },
+            "babel-loader",
             {
               loader: "ts-loader"
             }

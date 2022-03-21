@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    id:string
+  id: string;
+};
+
+function Messages({ id }: Props) {
+  return <div id={id}>Messages</div>;
 }
 
-function Messages({id}: Props) {
-  return (
-    <div id={id}>Messages</div>
-  )
-}
-
-export default Messages
+export default Messages;
