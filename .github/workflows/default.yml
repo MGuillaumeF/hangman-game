@@ -385,6 +385,7 @@ jobs:
       if: github.event_name == 'pull_request'
       working-directory: ${{github.workspace}}/client
       run: |
+        git checkout ${{github.ref.name}}
         npm run prettier
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
