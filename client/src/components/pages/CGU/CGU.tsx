@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    id : string
+  id: string;
+};
+
+function CGU({ id }: Props) {
+  return <div id={id}>CGU</div>;
 }
 
-function CGU({id}: Props) {
-  return (
-    <div id={id}>CGU</div>
-  )
-}
-
-export default CGU
+export default CGU;

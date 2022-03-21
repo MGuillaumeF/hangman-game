@@ -1,8 +1,9 @@
-/* eslint-disable react-perf/jsx-no-new-function-as-prop */
-import React, { useState } from "react";
+import "core-js";
+import React, { useCallback, useState } from "react";
 import { render } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import "regenerator-runtime/runtime";
 import SignIn from "./components/Forms/SignIn/SignIn";
 import AboutUs from "./components/pages/AboutUs/AboutUs";
 import CGU from "./components/pages/CGU/CGU";
@@ -34,30 +35,48 @@ const signInStyle: React.CSSProperties = {
   backgroundColor: "#777"
 };
 
+const changeLangBtnClick = (
+  event: React.MouseEvent<HTMLButtonElement>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  i18n: any
+): void => {
+  const currentBtnText = String(
+    event?.currentTarget?.textContent
+  ).toLowerCase();
+  if (
+    i18n &&
+    typeof i18n === "object" &&
+    "changeLanguage" in i18n &&
+    ["fr", "en"].includes(currentBtnText)
+  ) {
+    i18n.changeLanguage(currentBtnText);
+  }
+};
+
 function App(): JSX.Element {
   const { i18n, t } = useTranslation();
   const [displaySignInForm, setdisplaySignInForm] = useState(false);
 
-  const changeLangBtnClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ): void => {
-    const currentBtnText = String(
-      event?.currentTarget?.textContent
-    ).toLowerCase();
-    if (["fr", "en"].includes(currentBtnText)) {
-      i18n.changeLanguage(currentBtnText);
-    }
-  };
+  const onLanguageClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      changeLangBtnClick(event, i18n);
+    },
+    [i18n]
+  );
+
+  const onClickDisplaySignIn = useCallback(() => {
+    setdisplaySignInForm(!displaySignInForm);
+  }, [displaySignInForm]);
+
   return (
     <BrowserRouter>
       <div style={scopeStyle}>
         <div style={signInStyle}>
-          <button onClick={() => setdisplaySignInForm(!displaySignInForm)}>
-            Connexion
-          </button>
+          <button onClick={onClickDisplaySignIn}>Connexion</button>
           {displaySignInForm ? <SignIn id="form-sign-in" /> : null}
         </div>
         <Routes>
+          <Route path="*" element={<Error404 />}></Route>
           <Route path="/" element={<Home id="page-home" />}></Route>
           <Route
             path="settings"
@@ -69,17 +88,16 @@ function App(): JSX.Element {
             path="messages"
             element={<Messages id="page-messages" />}
           ></Route>
-          <Route element={<Error404 />}></Route>
         </Routes>
 
         <div style={langStyle}>
           <Link id="PAGES_SETTINGS_TITLE" to="settings">
             {t("PAGES.SETTINGS.TITLE")}
           </Link>
-          <button id="lang-fr" onClick={changeLangBtnClick}>
+          <button id="lang-fr" onClick={onLanguageClick}>
             FR
           </button>
-          <button id="lang-en" onClick={changeLangBtnClick}>
+          <button id="lang-en" onClick={onLanguageClick}>
             EN
           </button>
         </div>

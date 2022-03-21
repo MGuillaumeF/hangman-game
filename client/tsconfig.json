@@ -12,7 +12,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "rootDir": "src",
-    "allowSyntheticDefaultImports" : true,
+    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noResolve": false,
@@ -28,8 +28,8 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noEmit":false
+    "noEmit": false
   },
-  "include" : ["src/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "build", "scripts"]
 }

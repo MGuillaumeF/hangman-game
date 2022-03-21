@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const Logger = require('./Logger')
+const Logger = require("./Logger");
 const logger = Logger.getInstance();
-logger.setLevel('WARN')
-logger.setLocation('pioupiou.log')
+logger.setLevel("WARN");
+logger.setLocation("pioupiou.log");
 class PostBuildPlugin {
   apply(compiler) {
     compiler.hooks.done.tap(

@@ -1,17 +1,16 @@
-/* eslint-disable no-undef */
 module.exports = {
   root: true,
   env: {
-    node: true,
+    node: true
   },
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2020,
-    sourceType: 'module',
+    sourceType: "module"
   },
-  settings : {
-    react : {
-      version : "detect"
+  settings: {
+    react: {
+      version: "detect"
     }
   },
   extends: [

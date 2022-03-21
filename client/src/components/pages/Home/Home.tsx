@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    id : string;
+  id: string;
+};
+
+function Home({ id }: Props) {
+  return <div id={id}>Home</div>;
 }
 
-function Home({id} : Props) {
-  return (
-    <div id={id}>Home</div>
-  )
-}
-
-export default Home
+export default Home;

@@ -1,7 +1,16 @@
 module.exports = {
   presets: [
-    ["@babel/preset-env", { targets: { node: "current" } }],
-    "@babel/preset-typescript"
+    [
+      "@babel/preset-env",
+      {
+        targets: { node: "current" },
+        useBuiltIns: "usage",
+        corejs: 3.21
+      }
+    ],
+    "@babel/preset-typescript",
+    "@babel/preset-react",
+    ["react-app", { flow: false, typescript: true }]
   ],
   plugins: [
     "istanbul",
