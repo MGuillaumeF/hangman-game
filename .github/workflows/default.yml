@@ -381,6 +381,20 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
+    - name: Prettier format
+      if: github.event_name == 'pull_request'
+      working-directory: ${{github.workspace}}/client
+      run: |
+        git checkout ${{github.head_ref}}
+        npm run prettier
+        git config user.name "MGuillaumeF"
+        git config user.email "${{secrets.EMAIL}}"
+        git add .
+        git commit -m "[AUTO] prettier format write"
+        git push
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
