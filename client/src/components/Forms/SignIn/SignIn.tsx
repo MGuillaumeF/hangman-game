@@ -81,7 +81,7 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
             console.log("success");
           }
           if (error) {
-            setErrors(errors.concat(error));
+            setErrors([...errors, error]);
           }
         }
       );
