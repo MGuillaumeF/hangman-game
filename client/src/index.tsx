@@ -35,6 +35,8 @@ const signInStyle: React.CSSProperties = {
   backgroundColor: "#777"
 };
 
+console.log(structuredClone(signInStyle));
+
 const changeLangBtnClick = (
   event: React.MouseEvent<HTMLButtonElement>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
