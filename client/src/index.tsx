@@ -1,4 +1,5 @@
 import "core-js";
+import structuredClone from "core-js-pure/features";
 import React, { useCallback, useState } from "react";
 import { render } from "react-dom";
 import { useTranslation } from "react-i18next";
