@@ -390,8 +390,8 @@ jobs:
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
         git add .
-        git commit -m "[AUTO] prettier format write"
-        git push
+        (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
+       
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
