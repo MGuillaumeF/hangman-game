@@ -1,4 +1,4 @@
-import "core-js";
+import structuredClone from "core-js/features/structured-clone";
 import React, { useCallback, useState } from "react";
 import { render } from "react-dom";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,8 @@ const signInStyle: React.CSSProperties = {
   flexDirection: "column",
   backgroundColor: "#777"
 };
+
+console.log(structuredClone(signInStyle));
 
 const changeLangBtnClick = (
   event: React.MouseEvent<HTMLButtonElement>,

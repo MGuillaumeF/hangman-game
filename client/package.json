@@ -92,6 +92,7 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-prettier": "^2.0.0",
     "stylelint-webpack-plugin": "^3.1.1",
+    "tslib": "^2.3.1",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.2",
     "url-loader": "^4.1.1",
@@ -102,6 +103,7 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
+    "core-js-pure": "^3.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.16.1",
