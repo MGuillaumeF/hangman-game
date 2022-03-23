@@ -5,4 +5,4 @@ declare module "*.svg" {
 // declaration.d.ts
 declare module "*.scss";
 // declaration core-js module
-declare module "core-js/features/structured-clone"
+declare module "core-js/features/structured-clone";
