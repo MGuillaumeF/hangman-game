@@ -89,9 +89,10 @@ void loadLoggerConfiguration() {
 
 int32_t main(int argc, char *argv[]) {
   int16_t exitStatus = EXIT_SUCCESS;
-
+  // load logger configuration file to create them appenders
   loadLoggerConfiguration();
 
+  // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   boost::property_tree::ptree pt;
@@ -99,9 +100,9 @@ int32_t main(int argc, char *argv[]) {
 
     boost::property_tree::read_json("../resources/data.json", pt);
 
-    const std::double_t latitude = pt.get<std::double_t>("point.latitude", 0);
+    const auto latitude = pt.get<std::double_t>("point.latitude", 0);
 
-    const std::double_t longitude = pt.get<std::double_t>("point.longitude");
+    const auto longitude = pt.get<std::double_t>("point.longitude");
 
     logger->info("HTTP_CONFIGURATION",
                  "Le point est : \r\n Latitude : " + std::to_string(latitude) +
@@ -114,9 +115,9 @@ int32_t main(int argc, char *argv[]) {
     std::smatch m;
     const std::string errorStr(ex.what());
     // filename, number line error, error message
-    std::regex re("(.+)\\((\\d+)\\): (.*)");
+    std::regex re(R"(.+)\((\d+)\): (.*)");
     std::regex_search(errorStr, m, re);
-    if (!m.size()) {
+    if (m.empty()) {
       re = std::regex("(.+): (.*)");
       std::regex_search(errorStr, m, re);
     }
