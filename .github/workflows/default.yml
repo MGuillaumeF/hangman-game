@@ -382,7 +382,7 @@ jobs:
       run: npm install
 
     - name: Prettier format
-      if: github.event_name == 'pull_request'
+      if: {{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
       run: |
         git checkout ${{github.head_ref}}
