@@ -138,9 +138,9 @@ public:
   static std::unique_ptr<std::ofstream> &
   getLoggerFile(const std::string &filename);
 
-  Logger(Logger &) = delete;
+  Logger(const Logger &) = delete;
   Logger(Logger &&) = delete;
-  Logger &operator=(Logger &) = delete;
+  Logger &operator=(const Logger &) = delete;
   Logger &operator=(Logger &&) = delete;
 
 private:
