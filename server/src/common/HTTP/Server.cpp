@@ -12,8 +12,8 @@ namespace http {
  * @param port The Port of server
  * @param threads The number of thread of server
  */
-Server::Server(const std::string &address, const uint16_t port,
-               const uint8_t threads) {
+Server::Server(const std::string &address, const &uint16_t port,
+               const &uint8_t threads) {
   auto const l_address = boost::asio::ip::make_address(address);
 
   // The io_context is required for all I/O
