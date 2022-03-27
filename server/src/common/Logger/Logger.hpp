@@ -59,6 +59,12 @@ public:
   Logger() = default;
 
   /**
+   * @brief Destructor Logger object
+   *
+   */
+  ~Logger() = default;
+
+  /**
    * @brief Get instance of singleton logger
    *
    * @return Logger* address of logger instance
