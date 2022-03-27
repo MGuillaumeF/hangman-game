@@ -128,7 +128,7 @@ Logger::getLoggerFile(const std::string &filename) {
  * @param theme The theme of message
  * @param appender The tracer function to manage printing of message
  */
-void Logger::addAppender(const ELogLevel level, const std::string &theme,
+void Logger::addAppender(const ELogLevel &level, const std::string &theme,
                          const appender_t &appender) {
   if (m_appenders.contains(theme)) {
     if (m_appenders[theme].contains(Logger::s_corresp[level])) {
