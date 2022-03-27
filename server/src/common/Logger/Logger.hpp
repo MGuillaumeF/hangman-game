@@ -106,7 +106,7 @@ public:
    * @param theme The theme of message
    * @param appender The tracer function to manage printing of message
    */
-  void addAppender(const ELogLevel level, const std::string &theme,
+  void addAppender(const ELogLevel &level, const std::string &theme,
                    const appender_t &appender);
 
   /**
