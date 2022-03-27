@@ -31,13 +31,13 @@ class Session : public std::enable_shared_from_this<Session> {
    *
    */
   struct send_lambda {
-    Session &self_;
+    Session &m_session;
     /**
      * @brief Construct a new send lambda object
      *
      * @param self pointer on struct
      */
-    explicit send_lambda(Session &self) : self_(self) {}
+    explicit send_lambda(Session &self) : m_session(self) {}
 
     template <bool isRequest, class Body, class Fields>
     /**
@@ -55,13 +55,13 @@ class Session : public std::enable_shared_from_this<Session> {
 
       // Store a type-erased version of the shared
       // pointer in the class to keep it alive.
-      self_.m_res = sp;
+      m_session.m_res = sp;
 
       // Write the response
       boost::beast::http::async_write(
-          self_.m_stream, *sp,
+          m_session.m_stream, *sp,
           boost::beast::bind_front_handler(
-              &Session::onWrite, self_.shared_from_this(), sp->need_eof()));
+              &Session::onWrite, m_session.shared_from_this(), sp->need_eof()));
     }
   };
 
