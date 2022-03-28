@@ -73,7 +73,7 @@ jobs:
       run: sudo service mysql start 
 
     - name: Update Database schema
-      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{DB_USER}} --password=${{env.DB_PWD}}
+      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
 
     - name: Update Database schema
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -282,7 +282,7 @@ jobs:
       run: sudo service mysql start 
 
     - name: Update Database schema
-      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{DB_USER}} --password=${{env.DB_PWD}}
+      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
 
     - name: Update Database schema
       working-directory: ${{github.workspace}}/data-management/src/model
