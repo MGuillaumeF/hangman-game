@@ -13,6 +13,9 @@ env:
   BOOST_VERSION: 78
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   CPP_COSO_VERSION: 0.1.0
+  DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
+  DB_USER: root
+  DB_PWD: root
 
 permissions: write-all
 
@@ -41,11 +44,11 @@ jobs:
     # - name: Bootstrap Boost
     #   working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
     #   run: |
-    #     sudo ./bootstrap.sh; \
+    #     sudo ./bootstrap.sh
     #     sudo ./b2 install
 
     - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports; 
+      run: mkdir ${{github.workspace}}/server/reports
 
     - name: Analyze CPPCheck
       uses: deep5050/cppcheck-action@main
@@ -70,7 +73,7 @@ jobs:
       run: sudo service mysql start 
 
     - name: Update Database schema
-      run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
+      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{DB_USER}} --password=${{env.DB_PWD}}
 
     - name: Update Database schema
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -115,15 +118,15 @@ jobs:
 
     - name: Unit Tests Graph
       working-directory: ${{github.workspace}}/server/bin
-      run: ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1; dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+      run: |
+        ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
+        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
    
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-tests.sh; ./run-tests.sh
-
-    # - name: gcov after unit tests
-    #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
-    #   run: find -name '*.gcda' | xargs gcov;
+      run: |
+        chmod +x ./run-tests.sh
+        ./run-tests.sh
 
     - name: Generate Unit Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -132,10 +135,6 @@ jobs:
     - name: Generate Integration Tests HTML report
       working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
       run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
-
-    # - name: gcov after integration tests
-    #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
-    #   run: find -name '*.gcda' | xargs gcov;
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
@@ -172,7 +171,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports; 
+      run: mkdir ${{github.workspace}}/server/reports
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -217,7 +216,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports; 
+      run: mkdir ${{github.workspace}}/server/reports
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.0.0
@@ -226,8 +225,6 @@ jobs:
         boost_version: 1.${{env.BOOST_VERSION}}.0
 
     - name: Generate target
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
@@ -245,7 +242,9 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-tests.sh; ./run-tests.sh
+      run: |
+        chmod +x ./run-tests.sh
+        ./run-tests.sh
 
  sonarcloud-analyse:
     runs-on: ubuntu-latest
@@ -260,7 +259,7 @@ jobs:
       run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
 
     - name: Create reports directory (server)
-      run: mkdir ${{github.workspace}}/server/reports; 
+      run: mkdir ${{github.workspace}}/server/reports
 
     - name: Lint Cpp Check (server)
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server
@@ -276,7 +275,7 @@ jobs:
       run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
 
     - name: Create reports directory
-      run: mkdir ${{github.workspace}}/data-management/reports; 
+      run: mkdir ${{github.workspace}}/data-management/reports
 
     - name: Lint Cpp Check
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management
@@ -285,14 +284,14 @@ jobs:
       run: sudo service mysql start 
 
     - name: Update Database schema
-      run: sudo mysql -e 'CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;' --user=root --password=root
+      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{DB_USER}} --password=${{env.DB_PWD}}
 
     - name: Update Database schema
       working-directory: ${{github.workspace}}/data-management/src/model
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
     - name: Generate target (data management)
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -331,8 +330,6 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
 
     - name: Generate target
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
@@ -350,16 +347,20 @@ jobs:
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
-      run: chmod +x ./run-tests.sh; ./run-tests.sh
+      run: |
+        chmod +x ./run-tests.sh
+        ./run-tests.sh
 
     - name: Merge Coverage
       if: github.actor != 'dependabot[bot]'
-      run: cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/coverage; gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
+      run: | 
+        cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/coverage
+        gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
 
     - name: gcov after merge
       if: github.actor != 'dependabot[bot]'
       working-directory: ${{github.workspace}}/server/bin/coverage
-      run: find -name '*.gcda' | xargs gcov;
+      run: find -name '*.gcda' | xargs gcov
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
