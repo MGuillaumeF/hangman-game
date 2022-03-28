@@ -2,7 +2,7 @@ name: HANGMAN-GAME - DEFAULT
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
     branches: 
       - main
@@ -178,8 +178,6 @@ jobs:
       id: install-boost
       with:
         boost_version: 1.${{env.BOOST_VERSION}}.0
-        # OPTIONAL: Specify a platform version
-        platform_version: 2019
         # OPTIONAL: in workspace by default
         boost_install_dir: 'D:/'
 
