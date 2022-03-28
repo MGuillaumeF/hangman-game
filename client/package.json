@@ -83,7 +83,7 @@
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",
     "postcss-scss": "^4.0.3",
-    "prettier": "^2.6.0",
+    "prettier": "^2.6.1",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
