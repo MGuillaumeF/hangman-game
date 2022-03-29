@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "incremental": true,
     "outDir": "./build/",
     "sourceMap": true,
@@ -28,7 +29,10 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noEmit": false
+    "noEmit": false,
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build", "scripts"]
