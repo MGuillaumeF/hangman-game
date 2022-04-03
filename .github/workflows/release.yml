@@ -12,6 +12,7 @@ env:
   BUILD_TYPE: Release
   BOOST_VERSION: 1.78.0
   APPLICATION_VERSION: 0.1.0
+  CPP_COSO_VERSION: 0.1.0
   APPLICATION_NAME: HangmanGame
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
@@ -348,7 +349,7 @@ jobs:
       run: ctest --verbose
 
  build-release-Windows:
-    needs: [sonarcloud-analyse]
+    needs: [build-debug-Windows]
     runs-on: windows-latest
     steps:
 
