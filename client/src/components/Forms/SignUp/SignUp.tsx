@@ -17,6 +17,13 @@ type Props = {
   title?: string;
 };
 
+const FIELDS = {
+  email: api.paths["/user/sign-up"].post.parameters[0],
+  login: api.paths["/user/sign-up"].post.parameters[1],
+  password: api.paths["/user/sign-up"].post.parameters[2],
+  confirm: api.paths["/user/sign-up"].post.parameters[3]
+};
+
 /**
  * onSubmit function
  * @param event the on submit form event
@@ -28,10 +35,10 @@ const onSubmitRequest = async (
 ): Promise<void> => {
   event.preventDefault();
   const fields = [
-    api.paths["/user/sign-up"].post.parameters[0]?.name,
-    api.paths["/user/sign-up"].post.parameters[1]?.name,
-    api.paths["/user/sign-up"].post.parameters[2]?.name,
-    api.paths["/user/sign-up"].post.parameters[3]?.name
+    FIELDS.email?.name,
+    FIELDS.login?.name,
+    FIELDS.password?.name,
+    FIELDS.confirm?.name
   ];
   const formElements = event.currentTarget.elements;
 
@@ -117,36 +124,36 @@ function SignUp({ fieldsetProperties, formProperties, id, title }: Props) {
           </label>
           <input
             type="email"
-            name={api.paths["/user/sign-up"].post.parameters[0]?.name}
+            name={FIELDS.email?.name}
             id="FORMS.SIGN_UP.FIELDS.EMAIL"
-            required={api.paths["/user/sign-in"].post.parameters[0]?.required}
+            required={FIELDS.email?.required}
           />
           <label htmlFor="FORMS.SIGN_UP.FIELDS.IDENTIFIER">
             {t("FORMS.SIGN_UP.FIELDS.IDENTIFIER.LABEL")}
           </label>
           <input
             type="text"
-            name={api.paths["/user/sign-up"].post.parameters[1]?.name}
+            name={FIELDS.login?.name}
             id="FORMS.SIGN_UP.FIELDS.IDENTIFIER"
-            required={api.paths["/user/sign-in"].post.parameters[1]?.required}
+            required={FIELDS.login?.required}
           />
           <label htmlFor="FORMS.SIGN_UP.FIELDS.PASSWORD">
             {t("FORMS.SIGN_UP.FIELDS.PASSWORD.LABEL")}
           </label>
           <input
             type="password"
-            name={api.paths["/user/sign-up"].post.parameters[2]?.name}
+            name={FIELDS.password?.name}
             id="FORMS.SIGN_UP.FIELDS.PASSWORD"
-            required={api.paths["/user/sign-in"].post.parameters[2]?.required}
+            required={FIELDS.password?.required}
           />
           <label htmlFor="FORMS.SIGN_UP.FIELDS.CONFIRM">
             {t("FORMS.SIGN_UP.FIELDS.CONFIRM.LABEL")}
           </label>
           <input
             type="password"
-            name={api.paths["/user/sign-up"].post.parameters[3]?.name}
+            name={FIELDS.confirm?.name}
             id="FORMS.SIGN_UP.FIELDS.CONFIRM"
-            required={api.paths["/user/sign-in"].post.parameters[3]?.required}
+            required={FIELDS.confirm?.required}
           />
           <input
             disabled={pendingState}

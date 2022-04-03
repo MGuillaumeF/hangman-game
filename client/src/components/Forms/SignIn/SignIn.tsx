@@ -10,6 +10,11 @@ const fieldsetStyle: React.CSSProperties = {
   borderRadius: "0.25em"
 };
 
+const FIELDS = {
+  login: api.paths["/user/sign-in"].post.parameters[0],
+  password: api.paths["/user/sign-in"].post.parameters[1]
+};
+
 type Props = {
   fieldsetProperties?: HTMLProps<HTMLFieldSetElement>;
   formProperties?: HTMLProps<HTMLFormElement>;
@@ -27,10 +32,7 @@ const onSubmitRequest = async (
   resultUpdater: (success: boolean, error?: string) => void
 ): Promise<void> => {
   event.preventDefault();
-  const fields = [
-    api.paths["/user/sign-in"].post.parameters[0]?.name,
-    api.paths["/user/sign-in"].post.parameters[1]?.name
-  ];
+  const fields = [FIELDS.login?.name, FIELDS.password?.name];
   const formElements = event.currentTarget.elements;
 
   const formData = new Map<string, string>(
@@ -115,18 +117,18 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
           </label>
           <input
             type="text"
-            name={api.paths["/user/sign-in"].post.parameters[0]?.name}
+            name={FIELDS.login?.name}
             id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
-            required={api.paths["/user/sign-in"].post.parameters[0]?.required}
+            required={FIELDS.login?.required}
           />
           <label htmlFor="FORMS.SIGN_IN.FIELDS.IDENTIFIER">
             {t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
           </label>
           <input
             type="password"
-            name={api.paths["/user/sign-in"].post.parameters[1]?.name}
+            name={FIELDS.password?.name}
             id="FORMS.SIGN_IN.FIELDS.PASSWORD"
-            required={api.paths["/user/sign-in"].post.parameters[1]?.required}
+            required={FIELDS.password?.required}
           />
           <input
             disabled={pendingState}
