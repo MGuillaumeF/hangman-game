@@ -3,7 +3,6 @@
     "baseUrl": ".",
     "incremental": true,
     "outDir": "./build/",
-    "sourceMap": true,
     "module": "esnext",
     "lib": ["DOM", "ESNext"],
     "skipLibCheck": true,
