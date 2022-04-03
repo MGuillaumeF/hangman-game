@@ -253,13 +253,15 @@ module.exports = (env, args) => {
       MiniCssExtractPlugin.loader
     );
     trace("INFO", "CONFIGURATION_DEBUG", "Add source map in production mode");
-    config.devtool = "source-map";
     trace("INFO", "CONFIGURATION_PERFO", "Add optimizations");
     config.optimization = {
       // [...]
+      emitOnErrors: true,
+      mergeDuplicateChunks: false,
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
-      usedExports: true
+      usedExports: true,
+      removeAvailableModules: true
     };
     trace(
       "INFO",
