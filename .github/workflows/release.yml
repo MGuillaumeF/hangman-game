@@ -13,6 +13,9 @@ env:
   BOOST_VERSION: 1.78.0
   APPLICATION_VERSION: 0.1.0
   APPLICATION_NAME: HangmanGame
+  DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
+  DB_USER: root
+  DB_PWD: root
 
 permissions: write-all
 
