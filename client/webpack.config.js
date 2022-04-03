@@ -256,11 +256,11 @@ module.exports = (env, args) => {
     trace("INFO", "CONFIGURATION_PERFO", "Add optimizations");
     config.optimization = {
       // [...]
-      emitOnErrors:true,
+      emitOnErrors: true,
       mergeDuplicateChunks: true,
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
-      usedExports: true,
+      usedExports: true
       //removeAvailableModules: true
     };
     trace(
