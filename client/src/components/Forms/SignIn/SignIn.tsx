@@ -1,19 +1,20 @@
 import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import api from "../../../generated/.api_doc.json";
+import { isValidField } from "../../../model/fields";
+import BasicInput from "../../BasicInput/BasicInput";
+import BasicForm from "../BasicForm.scss";
 
 const formStyle: React.CSSProperties = { marginTop: "1.5em" };
-const fieldsetStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5em",
-  borderRadius: "0.25em"
-};
 
 const FIELDS = {
   login: api.paths["/user/sign-in"].post.parameters[0],
   password: api.paths["/user/sign-in"].post.parameters[1]
 };
+
+for (const [fieldName, fieldValues] of Object.entries(FIELDS)) {
+  isValidField(fieldName, fieldValues);
+}
 
 type Props = {
   fieldsetProperties?: HTMLProps<HTMLFieldSetElement>;
@@ -21,6 +22,9 @@ type Props = {
   id: string;
   title?: string;
 };
+
+const loginInputProperties = { required: FIELDS.login?.required };
+const passwordInputProperties = { required: FIELDS.password?.required };
 
 /**
  * onSubmit function
@@ -102,42 +106,45 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
 
   return (
     <>
-      <form
-        style={formStyle}
-        method="POST"
-        action={`/api/${api.paths["/user/sign-in"]}`}
-        id={id}
-        onSubmit={onSubmit}
-        {...formProperties}
-      >
-        <fieldset style={fieldsetStyle} {...fieldsetProperties}>
-          <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
-          <label htmlFor="FORMS.SIGN_IN.FIELDS.IDENTIFIER">
-            {t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
-          </label>
-          <input
-            type="text"
-            name={FIELDS.login?.name}
-            id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
-            required={FIELDS.login?.required}
-          />
-          <label htmlFor="FORMS.SIGN_IN.FIELDS.IDENTIFIER">
-            {t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
-          </label>
-          <input
-            type="password"
-            name={FIELDS.password?.name}
-            id="FORMS.SIGN_IN.FIELDS.PASSWORD"
-            required={FIELDS.password?.required}
-          />
-          <input
-            disabled={pendingState}
-            type="submit"
-            value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
-          />
-        </fieldset>
-      </form>
-      {pendingState ? <div>loading</div> : null}
+      {isValidField("login", FIELDS.login) &&
+      isValidField("password", FIELDS.password) ? (
+        <>
+          <form
+            style={formStyle}
+            method="POST"
+            action={`/api/${api.paths["/user/sign-in"]}`}
+            id={id}
+            onSubmit={onSubmit}
+            className={BasicForm.BasicForm}
+            {...formProperties}
+          >
+            <fieldset {...fieldsetProperties}>
+              <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
+              <BasicInput
+                type="text"
+                name={FIELDS.login.name}
+                id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
+                inputProperties={loginInputProperties}
+                label={t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
+              />
+
+              <BasicInput
+                type="password"
+                name={FIELDS.password.name}
+                id="FORMS.SIGN_IN.FIELDS.PASSWORD"
+                inputProperties={passwordInputProperties}
+                label={t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
+              />
+              <input
+                disabled={pendingState}
+                type="submit"
+                value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
+              />
+            </fieldset>
+          </form>
+          {pendingState ? <div>loading</div> : null}
+        </>
+      ) : null}
     </>
   );
 }
