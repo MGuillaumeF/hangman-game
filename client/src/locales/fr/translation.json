@@ -30,6 +30,9 @@
     "SIGN_UP": {
       "TITLE": "Inscription",
       "FIELDS": {
+        "EMAIL": {
+          "LABEL": "Enter an email address"
+        },
         "IDENTIFIER": {
           "LABEL": "Veuillez choisir un identifiant",
           "PLACEHOLDER": "MGuillaumeF",

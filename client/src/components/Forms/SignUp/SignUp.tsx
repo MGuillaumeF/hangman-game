@@ -28,8 +28,10 @@ const onSubmitRequest = async (
 ): Promise<void> => {
   event.preventDefault();
   const fields = [
-    api.paths["/user/sign-in"].post.parameters[0]?.name,
-    api.paths["/user/sign-in"].post.parameters[1]?.name
+    api.paths["/user/sign-up"].post.parameters[0]?.name,
+    api.paths["/user/sign-up"].post.parameters[1]?.name,
+    api.paths["/user/sign-up"].post.parameters[2]?.name,
+    api.paths["/user/sign-up"].post.parameters[3]?.name
   ];
   const formElements = event.currentTarget.elements;
 
@@ -76,7 +78,7 @@ const onSubmitRequest = async (
   pendingUpdater(false);
 };
 
-function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
+function SignUp({ fieldsetProperties, formProperties, id, title }: Props) {
   const { t } = useTranslation();
   const [pendingState, setPendingState] = useState(false);
   const [errors, setErrors] = useState<Array<string>>([]);
@@ -103,35 +105,53 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
       <form
         style={formStyle}
         method="POST"
-        action={`/api/${api.paths["/user/sign-in"]}`}
+        action={`/api/${api.paths["/user/sign-up"]}`}
         id={id}
         onSubmit={onSubmit}
         {...formProperties}
       >
         <fieldset style={fieldsetStyle} {...fieldsetProperties}>
-          <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
-          <label htmlFor="FORMS.SIGN_IN.FIELDS.IDENTIFIER">
-            {t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
+          <legend>{t(title || "FORMS.SIGN_UP.TITLE")}</legend>
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.EMAIL">
+            {t("FORMS.SIGN_UP.FIELDS.EMAIL.LABEL")}
+          </label>
+          <input
+            type="email"
+            name={api.paths["/user/sign-up"].post.parameters[0]?.name}
+            id="FORMS.SIGN_UP.FIELDS.EMAIL"
+            required={api.paths["/user/sign-in"].post.parameters[0]?.required}
+          />
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.IDENTIFIER">
+            {t("FORMS.SIGN_UP.FIELDS.IDENTIFIER.LABEL")}
           </label>
           <input
             type="text"
-            name={api.paths["/user/sign-in"].post.parameters[0]?.name}
-            id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
-            required={api.paths["/user/sign-in"].post.parameters[0]?.required}
+            name={api.paths["/user/sign-up"].post.parameters[1]?.name}
+            id="FORMS.SIGN_UP.FIELDS.IDENTIFIER"
+            required={api.paths["/user/sign-in"].post.parameters[1]?.required}
           />
-          <label htmlFor="FORMS.SIGN_IN.FIELDS.IDENTIFIER">
-            {t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.PASSWORD">
+            {t("FORMS.SIGN_UP.FIELDS.PASSWORD.LABEL")}
           </label>
           <input
             type="password"
-            name={api.paths["/user/sign-in"].post.parameters[1]?.name}
-            id="FORMS.SIGN_IN.FIELDS.PASSWORD"
-            required={api.paths["/user/sign-in"].post.parameters[1]?.required}
+            name={api.paths["/user/sign-up"].post.parameters[2]?.name}
+            id="FORMS.SIGN_UP.FIELDS.PASSWORD"
+            required={api.paths["/user/sign-in"].post.parameters[2]?.required}
+          />
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.CONFIRM">
+            {t("FORMS.SIGN_UP.FIELDS.CONFIRM.LABEL")}
+          </label>
+          <input
+            type="password"
+            name={api.paths["/user/sign-up"].post.parameters[3]?.name}
+            id="FORMS.SIGN_UP.FIELDS.CONFIRM"
+            required={api.paths["/user/sign-in"].post.parameters[3]?.required}
           />
           <input
             disabled={pendingState}
             type="submit"
-            value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
+            value={String(t("FORMS.SIGN_UP.FIELDS.SUBMIT.LABEL"))}
           />
         </fieldset>
       </form>
@@ -140,4 +160,4 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
   );
 }
 
-export default SignIn;
+export default SignUp;

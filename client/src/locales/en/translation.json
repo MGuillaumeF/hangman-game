@@ -14,7 +14,7 @@
   },
   "FORMS": {
     "SIGN_IN": {
-      "TITLE": "Login",
+      "TITLE": "Sign In",
       "FIELDS": {
         "IDENTIFIER": {
           "LABEL": "Identifier"
@@ -23,39 +23,42 @@
           "LABEL": "Password"
         },
         "SUBMIT": {
-          "LABEL": "Login"
+          "LABEL": "Sign In"
         }
       }
     },
     "SIGN_UP": {
-      "TITLE": "Subscribe",
+      "TITLE": "Sign Up",
       "FIELDS": {
+        "EMAIL": {
+          "LABEL": "Enter an email address"
+        },
         "IDENTIFIER": {
           "LABEL": "Choose an identifier",
           "PLACEHOLDER": "MGuillaumeF",
-          "HELPER": "L'identifiant sera visible pour les autres utilisateurs, il vous sera également demandé pour vous connecter sur le site"
+          "HELPER": "Your identifier will be visible by other users logged or not, it will be ask to at the next login on game"
         },
         "PASSWORD": {
-          "LABEL": "Veuillez définir un mot de passe"
+          "LABEL": "Enter a password"
         },
         "CONFIRM": {
-          "LABEL": "Comfirmez votre mot de passe"
+          "LABEL": "Confirm password"
         },
         "SUBMIT": {
-          "LABEL": "S'inscrire"
+          "LABEL": "Sign Up"
         }
       }
     }
   },
   "RULES": {
     "FIELDS": {
-      "MANDATORY": "Le champ {{name}} doit être saisie",
-      "MIN_SIZE": "La valeur doit être supérieur à {{min}}",
-      "MAX_SIZE": "La valeur doit être inférieur à {{max}}",
-      "RANGE": "La valeur doit être comprise entre {{min}} et {{max}}"
+      "MANDATORY": "The field {{name}} must be complete",
+      "MIN_SIZE": "The value must be greater than {{min}}",
+      "MAX_SIZE": "The value must be lower than {{max}}",
+      "RANGE": "The value must be between {{min}} and {{max}}"
     }
   },
   "ERRORS": {
-    "ACCESS_DENIED": "Accès non-autorisé"
+    "ACCESS_DENIED": "Access denied"
   }
 }

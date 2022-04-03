@@ -25,6 +25,7 @@ const StylelintPlugin = require("stylelint-webpack-plugin");
 /**
  * custom plugin
  */
+const PreBuildPlugin = require("./tools/webpack/PreBuildPlugin");
 const PostBuildPlugin = require("./tools/webpack/PostBuildPlugin");
 const Logger = require("./tools/webpack/Logger");
 
@@ -182,6 +183,7 @@ module.exports = (env, args) => {
       ]
     },
     plugins: [
+      new PreBuildPlugin(),
       new HtmlWebpackPlugin({
         inject: "head",
         title: "Hangman Game",
