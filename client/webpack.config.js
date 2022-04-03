@@ -257,7 +257,7 @@ module.exports = (env, args) => {
     config.optimization = {
       // [...]
       emitOnErrors: true,
-      mergeDuplicateChunks: true,
+    //  mergeDuplicateChunks: true,
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
       usedExports: true
