@@ -25,11 +25,11 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": true,
+    "declaration": false,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noEmit": true,
+    "noEmit": false,
     "paths": {
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     }

@@ -261,7 +261,10 @@ module.exports = (env, args) => {
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
       usedExports: true,
-      removeAvailableModules: true
+      removeAvailableModules: true,
+      splitChunks: {
+        chunks: "all"
+      }
     };
     trace(
       "INFO",
