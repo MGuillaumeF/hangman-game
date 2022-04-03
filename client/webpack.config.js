@@ -94,7 +94,7 @@ module.exports = (env, args) => {
 
     cache: false,
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "build"),
       publicPath: MODE === DEV ? "/" : process.env.PUBLIC_PATH || ".",
       filename: "[name].bundle.js"
     },
