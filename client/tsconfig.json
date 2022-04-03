@@ -29,7 +29,7 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noEmit": false,
+    "noEmit": true,
     "paths": {
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     }
