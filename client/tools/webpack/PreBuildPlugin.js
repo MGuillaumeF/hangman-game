@@ -33,17 +33,14 @@ class PreBuildPlugin {
         for (const [endpointName, endpointConfiguration] of Object.entries(
           JSON.parse(apiDocs).paths
         )) {
-          const namesParts = endpointName.split(/[\/\-]/g);
+          const namesParts = endpointName.split(/[\/\-]/g).filter(value => value !== '');
           console.log("parts", namesParts);
-          const name =
-            namesParts.length > 0
-              ? [
+          const name = [
                   namesParts.pop(),
                   ...namesParts.map((value) =>
                     [value[0].toUpperCase(), ...value.slice(1)].join("")
                   )
-                ].join("")
-              : nameParts[0];
+                ].join("");
           parameters[name] = {};
           for (const [
             methodName,
