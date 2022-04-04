@@ -31,7 +31,7 @@ class PreBuildPlugin {
           .toString();
         const parameters = {};
         for (const [endpointName, endpointConfiguration] of Object.entries(
-          apiDocs.paths
+          JSON.parse(apiDocs).paths
         )) {
           const namesParts = endpointName.split(/[\/\-]/g);
           const name = [
