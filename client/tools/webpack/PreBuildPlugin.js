@@ -49,6 +49,11 @@ class PreBuildPlugin {
             methodConfiguration
           ] of Object.entries(endpointConfiguration)) {
             parameters[name][methodName] = {};
+            for (const parameter of methodConfiguration.parameters) {
+              parameters[name][methodName][parameter.name] = {
+                name : parameter.name
+              };
+            }
           }
         }
         console.info(
