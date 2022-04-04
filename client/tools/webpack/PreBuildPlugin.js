@@ -45,7 +45,7 @@ class PreBuildPlugin {
             )
           ].join("");
           parameters[name] = {
-            path: `${apiDocsJson.basePath}/${endpointName}`
+            path: `${apiDocsJson.basePath}${endpointName}`
           };
           for (const [methodName, methodConfiguration] of Object.entries(
             endpointConfiguration
