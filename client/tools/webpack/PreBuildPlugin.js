@@ -37,7 +37,7 @@ class PreBuildPlugin {
           const name = [
             namesParts.pop(),
             ...namesParts.map((value) =>
-              [value[0].toUpperCas(), ...value.slic(1)].join("")
+              [value[0].toUpperCase(), ...value.slic(1)].join("")
             )
           ].join("");
           parameters[name] = {};
