@@ -47,7 +47,7 @@ class PreBuildPlugin {
           for (const [
             methodName,
             methodConfiguration
-          ] of endpointConfiguration) {
+          ] of Object.entries(endpointConfiguration)) {
             parameters[name][methodName] = {};
           }
         }
