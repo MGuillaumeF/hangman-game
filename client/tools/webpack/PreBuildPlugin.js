@@ -16,7 +16,7 @@ class PreBuildPlugin {
       ) => {
         // start reporting generation
         logger.info("APPLY", "PreBuildPlugin", "RUN");
-        logger.log(...Object.keys(stats));
+        console.log(...Object.keys(stats));
         if (!fs.existsSync(path.resolve(__dirname, "../../src/generated"))) {
           fs.mkdirSync(path.resolve(__dirname, "../../src/generated"));
         }
