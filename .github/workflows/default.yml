@@ -10,8 +10,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  BOOST_VERSION: 78
-  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  BOOST_VERSION: 1.78.0
   CPP_COSO_VERSION: 0.1.0
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
@@ -36,13 +35,13 @@ jobs:
     # - name: Download Boost
     #   uses: wei/wget@v1
     #   with:
-    #.    args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
+    #.    args: -O boost_1_78_0.tar.gz https://sourceforge.net/projects/boost/files/boost/78/boost_1_78_0.tar.gz/download
 
     # - name: Unzip Boost
-    #   run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
+    #   run: tar xzvf ${{github.workspace}}/boost_1_78_0.tar.gz
 
     # - name: Bootstrap Boost
-    #   working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
+    #   working-directory: ${{github.workspace}}/boost_1_78_0
     #   run: |
     #     sudo ./bootstrap.sh
     #     sudo ./b2 install
@@ -63,7 +62,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -177,7 +176,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
         # OPTIONAL: in workspace by default
         boost_install_dir: 'D:/'
 
@@ -220,7 +219,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate target
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -266,7 +265,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
