@@ -24,18 +24,41 @@ class PreBuildPlugin {
           path.resolve(__dirname, "../../../server/docs/api_doc.json"),
           path.resolve(__dirname, "../../src/generated/.api_doc.json")
         );
-        const apiDocs = fs.readFileSync(path.resolve(__dirname, "../../../server/docs/api_doc.json")).toString();
+        const apiDocs = fs
+          .readFileSync(
+            path.resolve(__dirname, "../../../server/docs/api_doc.json")
+          )
+          .toString();
         const parameters = {};
-        for (const [endpointName, endpointConfiguration] of Object.entries(apiDocs.paths)) {
+        for (const [endpointName, endpointConfiguration] of Object.entries(
+          apiDocs.paths
+        )) {
           const namesParts = endpointName.split(/[\/\-]/g);
-          const name = [namesParts.pop(), ...namesParts.map(value => [value[0].toUpperCas(), ...value.slic(1)].join(''))].join('');
+          const name = [
+            namesParts.pop(),
+            ...namesParts.map((value) =>
+              [value[0].toUpperCas(), ...value.slic(1)].join("")
+            )
+          ].join("");
           parameters[name] = {};
-          for (const [methodName, methodConfiguration] of endpointConfiguration) {
+          for (const [
+            methodName,
+            methodConfiguration
+          ] of endpointConfiguration) {
             parameters[name][methodName] = {};
           }
         }
-        console.info("output parameters docs", JSON.stringify(parameters, null, 4));
-        fs.writeFileSync(path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"), JSON.stringify(parameters, null, 4))
+        console.info(
+          "output parameters docs",
+          JSON.stringify(parameters, null, 4)
+        );
+        fs.writeFileSync(
+          path.resolve(
+            __dirname,
+            "../../src/generated/.api_doc_parameters.json"
+          ),
+          JSON.stringify(parameters, null, 4)
+        );
       }
     );
   }
