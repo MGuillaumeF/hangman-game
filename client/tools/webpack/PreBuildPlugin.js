@@ -30,9 +30,9 @@ class PreBuildPlugin {
           )
           .toString();
         const parameters = {};
-        const apiDocsJson = JSON.parse(apiDocs)
+        const apiDocsJson = JSON.parse(apiDocs);
         for (const [endpointName, endpointConfiguration] of Object.entries(
-         apiDocsJson.paths
+          apiDocsJson.paths
         )) {
           const namesParts = endpointName
             .split(/[\/\-]/g)
@@ -45,7 +45,7 @@ class PreBuildPlugin {
             )
           ].join("");
           parameters[name] = {
-            path : `${apiDocsJson.basePath}/${endpointName}`
+            path: `${apiDocsJson.basePath}/${endpointName}`
           };
           for (const [methodName, methodConfiguration] of Object.entries(
             endpointConfiguration
