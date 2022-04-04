@@ -44,14 +44,13 @@ class PreBuildPlugin {
             )
           ].join("");
           parameters[name] = {};
-          for (const [
-            methodName,
-            methodConfiguration
-          ] of Object.entries(endpointConfiguration)) {
+          for (const [methodName, methodConfiguration] of Object.entries(
+            endpointConfiguration
+          )) {
             parameters[name][methodName] = {};
             for (const parameter of methodConfiguration.parameters) {
               parameters[name][methodName][parameter.name] = {
-                name : parameter.name
+                name: parameter.name
               };
             }
           }
