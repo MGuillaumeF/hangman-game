@@ -342,8 +342,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
 
     - name: Unit Tests
-      working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose || ctest --rerun-failed --output-on-failure
+      run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
 
  build-release-Windows:
     needs: [build-debug-Windows]
