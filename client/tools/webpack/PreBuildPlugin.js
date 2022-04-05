@@ -5,7 +5,7 @@ const path = require("path");
 const Logger = require("./Logger");
 const logger = Logger.getInstance();
 logger.setLevel("WARN");
-logger.setLocation("pioupiou.log");
+logger.setLocation("pre-build-plugin.log");
 
 class PreBuildPlugin {
   apply(compiler) {
@@ -14,16 +14,28 @@ class PreBuildPlugin {
       (
         stats /* stats is passed as an argument when done hook is tapped.  */
       ) => {
-        // start reporting generation
-        logger.info("APPLY", "PreBuildPlugin", "RUN");
-        console.log(...Object.keys(stats));
-        if (!fs.existsSync(path.resolve(__dirname, "../../src/generated"))) {
+        this.initGeneratedDirectory();
+        this.copyApiDoc();
+        this.generateApiParameters();
+      }
+    );
+  }
+  initGeneratedDirectory () {
+    if (!fs.existsSync(path.resolve(__dirname, "../../src/generated"))) {
           fs.mkdirSync(path.resolve(__dirname, "../../src/generated"));
         }
-        fs.copyFileSync(
+  }
+  copyApiDoc() {
+    fs.copyFileSync(
           path.resolve(__dirname, "../../../server/docs/api_doc.json"),
           path.resolve(__dirname, "../../src/generated/.api_doc.json")
         );
+  }
+  generateApiParameters() {
+    // start reporting generation
+        logger.info("APPLY", "PreBuildPlugin", "RUN");
+        console.log(...Object.keys(stats));
+       
         const apiDocs = fs
           .readFileSync(
             path.resolve(__dirname, "../../../server/docs/api_doc.json")
@@ -70,8 +82,6 @@ class PreBuildPlugin {
           ),
           JSON.stringify(parameters, null, 4)
         );
-      }
-    );
   }
 }
 
