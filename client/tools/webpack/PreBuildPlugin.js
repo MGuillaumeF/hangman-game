@@ -39,17 +39,25 @@ class PreBuildPlugin {
   }
   copyApiDoc() {
     let mustBeCopied = false;
-    if (!fs.existsSync(path.resolve(__dirname, "../../src/generated/.api_doc.json"))) { 
-     mustBeCopied = true;
+    if (
+      !fs.existsSync(
+        path.resolve(__dirname, "../../src/generated/.api_doc.json")
+      )
+    ) {
+      mustBeCopied = true;
     } else {
-      const externalInputDoc = fs.readFileSync(path.resolve(__dirname, "../../../server/docs/api_doc.json"));
-      const currentInputDoc = fs.readFileSync(path.resolve(__dirname, "../../src/generated/.api_doc.json"));
+      const externalInputDoc = fs.readFileSync(
+        path.resolve(__dirname, "../../../server/docs/api_doc.json")
+      );
+      const currentInputDoc = fs.readFileSync(
+        path.resolve(__dirname, "../../src/generated/.api_doc.json")
+      );
       if (!externalInputDoc.equals(currentInputDoc)) {
         mustBeCopied = true;
       }
     }
     if (mustBeCopied) {
-      console.log('COPY DOC FILE');
+      console.log("COPY DOC FILE");
       fs.copyFileSync(
         path.resolve(__dirname, "../../../server/docs/api_doc.json"),
         path.resolve(__dirname, "../../src/generated/.api_doc.json")
