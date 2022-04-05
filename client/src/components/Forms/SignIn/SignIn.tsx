@@ -1,7 +1,6 @@
 import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import api2 from "../../../generated/.api_doc_parameters.json";
-import { isValidField } from "../../../model/fields";
 import BasicInput from "../../BasicInput/BasicInput";
 import BasicForm from "../BasicForm.scss";
 
@@ -12,10 +11,6 @@ const FIELDS = {
   password: api2.userSignIn.post.password
 };
 
-for (const [fieldName, fieldValues] of Object.entries(FIELDS)) {
-  isValidField(fieldName, fieldValues);
-}
-
 type Props = {
   fieldsetProperties?: HTMLProps<HTMLFieldSetElement>;
   formProperties?: HTMLProps<HTMLFormElement>;
@@ -23,8 +18,8 @@ type Props = {
   title?: string;
 };
 
-const loginInputProperties = { required: FIELDS.login?.required };
-const passwordInputProperties = { required: FIELDS.password?.required };
+const loginInputProperties = { required: FIELDS.login.required };
+const passwordInputProperties = { required: FIELDS.password.required };
 
 /**
  * onSubmit function
