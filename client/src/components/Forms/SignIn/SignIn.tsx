@@ -1,6 +1,6 @@
 import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import api from "../../../generated/.api_doc.json";
+import api2 from "../../../generated/.api_doc_parameters.json"
 import { isValidField } from "../../../model/fields";
 import BasicInput from "../../BasicInput/BasicInput";
 import BasicForm from "../BasicForm.scss";
@@ -8,8 +8,8 @@ import BasicForm from "../BasicForm.scss";
 const formStyle: React.CSSProperties = { marginTop: "1.5em" };
 
 const FIELDS = {
-  login: api.paths["/user/sign-in"].post.parameters[0],
-  password: api.paths["/user/sign-in"].post.parameters[1]
+  login: api2.userSignIn.post.login,
+  password: api2.userSignIn.post.password
 };
 
 for (const [fieldName, fieldValues] of Object.entries(FIELDS)) {
@@ -36,14 +36,11 @@ const onSubmitRequest = async (
   resultUpdater: (success: boolean, error?: string) => void
 ): Promise<void> => {
   event.preventDefault();
-  const fields = [FIELDS.login?.name, FIELDS.password?.name];
+  const fields = [FIELDS.login.name, FIELDS.password.name];
   const formElements = event.currentTarget.elements;
 
   const formData = new Map<string, string>(
-    fields.map((fieldName: string | undefined) => {
-      if (fieldName === undefined) {
-        throw Error("Documentation Error");
-      }
+    fields.map((fieldName: string) => {
       const fieldInput = formElements.namedItem(fieldName);
       if (!fieldInput || !(fieldInput instanceof HTMLInputElement)) {
         throw Error("Invalid form usage");
@@ -106,13 +103,10 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
 
   return (
     <>
-      {isValidField("login", FIELDS.login) &&
-      isValidField("password", FIELDS.password) ? (
-        <>
           <form
             style={formStyle}
             method="POST"
-            action={`/api/${api.paths["/user/sign-in"]}`}
+            action={`/api${api2.userSignIn.path}`}
             id={id}
             onSubmit={onSubmit}
             className={BasicForm.BasicForm}
@@ -143,8 +137,6 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
             </fieldset>
           </form>
           {pendingState ? <div>loading</div> : null}
-        </>
-      ) : null}
     </>
   );
 }
