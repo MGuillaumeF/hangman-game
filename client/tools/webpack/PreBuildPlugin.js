@@ -101,7 +101,12 @@ class PreBuildPlugin {
     const dataToWrite = JSON.stringify(parameters, null, 4);
     if (
       !fs.existsSync(
-        path.resolve(path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"))
+        path.resolve(
+          path.resolve(
+            __dirname,
+            "../../src/generated/.api_doc_parameters.json"
+          )
+        )
       )
     ) {
       mustBeWrited = true;
@@ -114,17 +119,15 @@ class PreBuildPlugin {
       }
     }
     if (mustBeWrited) {
-      console.info("output parameters docs", JSON.stringify(parameters, null, 4));
-    fs.writeFileSync(
-      path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"),
-     dataToWrite
-    );
+      console.info(
+        "output parameters docs",
+        JSON.stringify(parameters, null, 4)
+      );
+      fs.writeFileSync(
+        path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"),
+        dataToWrite
+      );
     }
-
-
-
-
-   
   }
 }
 
