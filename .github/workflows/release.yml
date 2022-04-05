@@ -343,7 +343,7 @@ jobs:
 
     - name: Unit Tests
       working-directory: ${{github.workspace}}/server/bin
-      run: ctest --verbose
+      run: ctest --verbose || ctest --rerun-failed --output-on-failure
 
  build-release-Windows:
     needs: [build-debug-Windows]
