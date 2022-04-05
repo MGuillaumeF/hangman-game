@@ -97,11 +97,34 @@ class PreBuildPlugin {
         }
       }
     }
-    console.info("output parameters docs", JSON.stringify(parameters, null, 4));
+    let mustBeWrited = false;
+    const dataToWrite = JSON.stringify(parameters, null, 4);
+    if (
+      !fs.existsSync(
+        path.resolve(path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"))
+      )
+    ) {
+      mustBeWrited = true;
+    } else {
+      const currentInputDoc = fs.readFileSync(
+        path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json")
+      );
+      if (!currentInputDoc.toString() !== dataToWrite) {
+        mustBeWrited = true;
+      }
+    }
+    if (mustBeWrited) {
+      console.info("output parameters docs", JSON.stringify(parameters, null, 4));
     fs.writeFileSync(
       path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json"),
-      JSON.stringify(parameters, null, 4)
+     dataToWrite
     );
+    }
+
+
+
+
+   
   }
 }
 
