@@ -1,6 +1,6 @@
 import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import api2 from "../../../generated/.api_doc_parameters.json"
+import api2 from "../../../generated/.api_doc_parameters.json";
 import { isValidField } from "../../../model/fields";
 import BasicInput from "../../BasicInput/BasicInput";
 import BasicForm from "../BasicForm.scss";
@@ -103,40 +103,40 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
 
   return (
     <>
-          <form
-            style={formStyle}
-            method="POST"
-            action={`/api${api2.userSignIn.path}`}
-            id={id}
-            onSubmit={onSubmit}
-            className={BasicForm.BasicForm}
-            {...formProperties}
-          >
-            <fieldset {...fieldsetProperties}>
-              <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
-              <BasicInput
-                type="text"
-                name={FIELDS.login.name}
-                id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
-                inputProperties={loginInputProperties}
-                label={t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
-              />
+      <form
+        style={formStyle}
+        method="POST"
+        action={`/api${api2.userSignIn.path}`}
+        id={id}
+        onSubmit={onSubmit}
+        className={BasicForm.BasicForm}
+        {...formProperties}
+      >
+        <fieldset {...fieldsetProperties}>
+          <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
+          <BasicInput
+            type="text"
+            name={FIELDS.login.name}
+            id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
+            inputProperties={loginInputProperties}
+            label={t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
+          />
 
-              <BasicInput
-                type="password"
-                name={FIELDS.password.name}
-                id="FORMS.SIGN_IN.FIELDS.PASSWORD"
-                inputProperties={passwordInputProperties}
-                label={t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
-              />
-              <input
-                disabled={pendingState}
-                type="submit"
-                value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
-              />
-            </fieldset>
-          </form>
-          {pendingState ? <div>loading</div> : null}
+          <BasicInput
+            type="password"
+            name={FIELDS.password.name}
+            id="FORMS.SIGN_IN.FIELDS.PASSWORD"
+            inputProperties={passwordInputProperties}
+            label={t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
+          />
+          <input
+            disabled={pendingState}
+            type="submit"
+            value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
+          />
+        </fieldset>
+      </form>
+      {pendingState ? <div>loading</div> : null}
     </>
   );
 }
