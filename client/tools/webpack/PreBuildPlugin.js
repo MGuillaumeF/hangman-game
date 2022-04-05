@@ -11,10 +11,7 @@ class PreBuildPlugin {
   apply(compiler) {
     compiler.hooks.environment.tap(
       "PreBuildPlugin",
-      (
-        stats /* stats is passed as an argument when done hook is tapped.  */
-      ) => {
-        console.log("ENVIRONMENT STATS DATAS", ...Object.keys(stats));
+      () => {
         this.initGeneratedDirectory();
         this.copyApiDoc();
         this.generateApiParameters();
