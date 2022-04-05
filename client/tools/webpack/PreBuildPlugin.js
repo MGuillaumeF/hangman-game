@@ -14,6 +14,7 @@ class PreBuildPlugin {
       (
         stats /* stats is passed as an argument when done hook is tapped.  */
       ) => {
+        console.log('STATS DATAS', ...Object.keys(stats));
         this.initGeneratedDirectory();
         this.copyApiDoc();
         this.generateApiParameters();
@@ -33,8 +34,7 @@ class PreBuildPlugin {
   }
   generateApiParameters() {
     // start reporting generation
-    logger.info("APPLY", "PreBuildPlugin", "RUN");
-    console.log(...Object.keys(stats));
+    logger.info("GENERATION", "PreBuildPlugin", "RUN");
 
     const apiDocs = fs
       .readFileSync(
