@@ -114,7 +114,7 @@ class PreBuildPlugin {
       const currentInputDoc = fs.readFileSync(
         path.resolve(__dirname, "../../src/generated/.api_doc_parameters.json")
       );
-      if (!currentInputDoc.toString() !== dataToWrite) {
+      if (currentInputDoc.toString() !== dataToWrite) {
         mustBeWrited = true;
       }
     }
