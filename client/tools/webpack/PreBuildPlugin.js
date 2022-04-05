@@ -14,7 +14,7 @@ class PreBuildPlugin {
       (
         stats /* stats is passed as an argument when done hook is tapped.  */
       ) => {
-        console.log('STATS DATAS', ...Object.keys(stats));
+        console.log("STATS DATAS", ...Object.keys(stats));
         this.initGeneratedDirectory();
         this.copyApiDoc();
         this.generateApiParameters();
