@@ -9,14 +9,11 @@ logger.setLocation("pre-build-plugin.log");
 
 class PreBuildPlugin {
   apply(compiler) {
-    compiler.hooks.environment.tap(
-      "PreBuildPlugin",
-      () => {
-        this.initGeneratedDirectory();
-        this.copyApiDoc();
-        this.generateApiParameters();
-      }
-    );
+    compiler.hooks.environment.tap("PreBuildPlugin", () => {
+      this.initGeneratedDirectory();
+      this.copyApiDoc();
+      this.generateApiParameters();
+    });
     compiler.hooks.beforeCompile.tap(
       "PreBuildPlugin",
       (
