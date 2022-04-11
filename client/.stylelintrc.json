@@ -24,6 +24,7 @@
     "indentation": 2,
     "keyframe-declaration-no-important": true,
     "plugin/no-unsupported-browser-features": [true, {
+       "browsers": ["> 1%", "Last 2 versions"],
       "severity": "warning"
     }]
     "unit-case": "lower"
