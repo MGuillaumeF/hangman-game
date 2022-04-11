@@ -30,8 +30,8 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4; odb --version; mysql --version
-    # mysql-common mysql-community-client-plugins 
+      run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common; odb --version; mysql --version
+    # mysql-community-client-plugins 
 
     # - name: Download Boost
     #   uses: wei/wget@v1
@@ -254,7 +254,8 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
+      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
+    # mysql-community-client-plugins
 
     - name: Create reports directory (server)
       run: mkdir ${{github.workspace}}/server/reports
