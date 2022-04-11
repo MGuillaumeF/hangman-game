@@ -1,6 +1,7 @@
 {
-  "plugins": ["stylelint-prettier",
-  "stylelint-no-unsupported-browser-features"
+  "plugins": [
+    "stylelint-prettier",
+    "stylelint-no-unsupported-browser-features"
   ],
   "rules": {
     "color-no-invalid-hex": true,
@@ -23,10 +24,13 @@
     "declaration-no-important": true,
     "indentation": 2,
     "keyframe-declaration-no-important": true,
-    "plugin/no-unsupported-browser-features": [true, {
-       "browsers": ["> 1%", "Last 2 versions"],
-      "severity": "warning"
-    }],
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "browsers": ["> 1%", "Last 2 versions"],
+        "severity": "warning"
+      }
+    ],
     "unit-case": "lower"
   }
 }
