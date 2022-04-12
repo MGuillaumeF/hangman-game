@@ -31,7 +31,7 @@ jobs:
 
     - name: Install dependencies
       run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common; odb --version; mysql --version
-    # mysql-community-client-plugins
+    # mysql-community-client-plugins 
 
     # - name: Download Boost
     #   uses: wei/wget@v1
@@ -374,14 +374,18 @@ jobs:
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
+      run: npm run prettier
+
+    - name: Save client changes
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}/client
       run: |
-        git checkout ${{github.head_ref}}
-        npm run prettier
+        git stash
+        git stash pop
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
         git add .
         (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
-       
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
