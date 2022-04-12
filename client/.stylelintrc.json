@@ -27,7 +27,7 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
-        "browsers": ["> 1%", "Last 2 versions"],
+        "browsers": ["last 1 chrome version"],
         "severity": "warning"
       }
     ],
