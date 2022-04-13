@@ -16,7 +16,7 @@
   },
   "author": "MGuillaumeF",
   "browserslist": {
-    "production": [">0.2%, ie>11", "not dead, ie>11", "not op_mini all, ie>11"],
+    "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
