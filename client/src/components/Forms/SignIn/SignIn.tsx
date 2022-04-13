@@ -79,7 +79,7 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
   const [pendingState, setPendingState] = useState(false);
   const [errors, setErrors] = useState<Array<string>>([]);
   const onSubmit = useCallback(
-    (event : event: FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLFormElement>) => {
       onSubmitRequest(
         event,
         setPendingState,
