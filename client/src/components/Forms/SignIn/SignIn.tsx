@@ -79,7 +79,7 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
   const [pendingState, setPendingState] = useState(false);
   const [errors, setErrors] = useState<Array<string>>([]);
   const onSubmit = useCallback(
-    (event) => {
+    (event : event: FormEvent<HTMLFormElement>) => {
       onSubmitRequest(
         event,
         setPendingState,
@@ -108,7 +108,7 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
         {...formProperties}
       >
         <fieldset {...fieldsetProperties}>
-          <legend>{t(title || "FORMS.SIGN_IN.TITLE")}</legend>
+          <legend>{String(t(title || "FORMS.SIGN_IN.TITLE"))}</legend>
           <BasicInput
             type="text"
             name={FIELDS.login.name}
