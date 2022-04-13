@@ -235,8 +235,8 @@ module.exports = (env, args) => {
       historyApiFallback: true,
       client: {
         overlay: {
-          error: true,
-          warning: false
+          errors: true,
+          warnings: false
         }
       },
       static: [path.join(__dirname, "dist")],
