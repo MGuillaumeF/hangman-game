@@ -371,6 +371,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
+    - name: Update Browserlist
+      working-directory: ${{github.workspace}}/client
+      run: npx browserslist@latest --update-db
+
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
