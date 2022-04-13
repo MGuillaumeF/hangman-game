@@ -234,7 +234,10 @@ module.exports = (env, args) => {
     config.devServer = {
       historyApiFallback: true,
       client: {
-        overlay: true
+        overlay: {
+          error: true,
+          warning: false
+        }
       },
       static: [path.join(__dirname, "dist")],
       //compress: true,
