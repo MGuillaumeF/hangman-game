@@ -27,7 +27,6 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
-        "browsers": [">0.2%, ie>11", "not dead, ie>11", "not op_mini all, ie>11"],
         "severity": "warning"
       }
     ],
