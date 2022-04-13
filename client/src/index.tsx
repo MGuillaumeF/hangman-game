@@ -68,11 +68,11 @@ function App(): JSX.Element {
       <div style={scopeStyle}>
         <span style={signInStyle}>
           <Link id="PAGES_SIGN_IN_LINK" to="sign-in">
-            {t("FORMS.SIGN_IN.TITLE")}
+            {String(t("FORMS.SIGN_IN.TITLE"))}
           </Link>
           &nbsp;/&nbsp;
           <Link id="PAGES_SIGN_UP_LINK" to="sign-up">
-            {t("FORMS.SIGN_UP.TITLE")}
+            {String(t("FORMS.SIGN_UP.TITLE"))}
           </Link>
         </span>
         <Routes>
@@ -94,7 +94,7 @@ function App(): JSX.Element {
 
         <div style={langStyle}>
           <Link id="PAGES_SETTINGS_TITLE" to="settings">
-            {t("PAGES.SETTINGS.TITLE")}
+           {String(t("PAGES.SETTINGS.TITLE"))}
           </Link>
           <button id="lang-fr" onClick={onLanguageClick}>
             FR
