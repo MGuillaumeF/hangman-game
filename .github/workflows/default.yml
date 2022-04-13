@@ -372,6 +372,7 @@ jobs:
       run: npm install
 
     - name: Update Browserlist
+      working-directory: ${{github.workspace}}/client
       run: npx browserslist@latest --update-db
 
     - name: Prettier format
