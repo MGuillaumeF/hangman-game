@@ -14,6 +14,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+
 /**
  * Lint plugins
  * JS/TS
@@ -281,7 +283,10 @@ module.exports = (env, args) => {
           chunkFilename: "[id].css"
         }
         //new PostBuildPlugin()
-      )
+      ),
+      new CompressionPlugin({
+        algorithm: "gzip",
+      }),
     );
   }
   return config;
