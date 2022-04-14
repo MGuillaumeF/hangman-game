@@ -94,7 +94,7 @@ function App(): JSX.Element {
 
         <div style={langStyle}>
           <Link id="PAGES_SETTINGS_TITLE" to="settings">
-           {String(t("PAGES.SETTINGS.TITLE"))}
+            {String(t("PAGES.SETTINGS.TITLE"))}
           </Link>
           <button id="lang-fr" onClick={onLanguageClick}>
             FR

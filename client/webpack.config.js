@@ -8,6 +8,11 @@ const path = require("path");
 const fs = require("fs");
 
 /**
+ * algo compression
+ */
+const zopfli = require("@gfx/zopfli");
+
+/**
  * WebPack Plugins import
  */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -288,8 +293,13 @@ module.exports = (env, args) => {
         //new PostBuildPlugin()
       ),
       new CompressionPlugin({
-        algorithm: "gzip",
-      }),
+        compressionOptions: {
+          numiterations: 15
+        },
+        algorithm(input, compressionOptions, callback) {
+          return zopfli.gzip(input, compressionOptions, callback);
+        }
+      })
     );
   }
   return config;
