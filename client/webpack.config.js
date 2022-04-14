@@ -8,6 +8,11 @@ const path = require("path");
 const fs = require("fs");
 
 /**
+ * algo compression
+ */
+const zopfli = require("@gfx/zopfli");
+
+/**
  * WebPack Plugins import
  */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
