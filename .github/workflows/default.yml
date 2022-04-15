@@ -398,6 +398,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run build
 
+    - name: Extract Webpack stats
+      working-directory: ${{github.workspace}}/client
+      run: npm run webpack --profile --json=compilation-stats.json
+
     - name: Archive IHM
       uses: actions/upload-artifact@v2
       with:
