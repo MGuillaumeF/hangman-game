@@ -12,8 +12,6 @@ class PostBuildPlugin {
       ) => {
         // start reporting generation
         logger.info("APPLY", "PostBuildPlugin", "RUN");
-        logger.warn("APPLY", "PostBuildPlugin", "RUN");
-        console.log(...Object.keys(stats));
       }
     );
   }
