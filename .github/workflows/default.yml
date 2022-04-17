@@ -435,6 +435,7 @@ jobs:
       run: npm run lint:eslint || echo FAILED
 
     - name: Copy Webpack stats reports
+      working-directory: ${{github.workspace}}/client
       run: mv ./stats.json ./dist/reports/stats.json
 
     - name: Audit dependency
