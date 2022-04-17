@@ -400,7 +400,7 @@ jobs:
 
     - name: Extract Webpack stats
       working-directory: ${{github.workspace}}/client
-      run: npm run webpack --profile --json > stats.json
+      run: npm run webpack-stats
 
     - name: Archive IHM
       uses: actions/upload-artifact@v2
