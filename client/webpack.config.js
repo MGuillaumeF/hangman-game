@@ -20,6 +20,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const WebpackVisualizerPlugin = require("webpack-visualizer-plugin2");
 
 /**
  * Lint plugins
@@ -299,7 +300,8 @@ module.exports = (env, args) => {
         algorithm(input, compressionOptions, callback) {
           return zopfli.gzip(input, compressionOptions, callback);
         }
-      })
+      }),
+      new WebpackVisualizerPlugin()
     );
   }
   return config;
