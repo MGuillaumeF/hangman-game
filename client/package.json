@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack --node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
+    "build:doc": "styleguidist build",
     "start": "webpack serve --open --progress --color --node-env development",
     "cy:open": "cypress open",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
@@ -85,6 +86,7 @@
     "postcss-loader": "^6.2.1",
     "postcss-scss": "^4.0.3",
     "prettier": "^2.6.2",
+    "react-docgen-typescript": "^2.2.2",
     "react-styleguidist": "^11.2.0",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.50.0",
