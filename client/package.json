@@ -103,7 +103,7 @@
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1",
-    "webpack-visualizer-plugin": "^0.1.11"
+    "webpack-visualizer-plugin2": "^1.0.0"
   },
   "dependencies": {
     "@types/react-transition-group": "^4.4.4",
