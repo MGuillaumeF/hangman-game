@@ -20,7 +20,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
-const WebpackVisualizerPlugin = require('webpack-visualizer-plugin');
+const WebpackVisualizerPlugin = require("webpack-visualizer-plugin");
 
 /**
  * Lint plugins
