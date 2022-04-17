@@ -452,6 +452,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
 
+    - name: Generate Client Docs
+      working-directory: ${{github.workspace}}/client
+      run: npm run build:doc
+
     - name: Archive Analyses reports
       if: always()
       uses: actions/upload-artifact@v2
