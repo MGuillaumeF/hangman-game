@@ -1,14 +1,13 @@
 import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import api2 from "../../../generated/.api_doc_parameters.json";
-import BasicInput from "../../BasicInput/BasicInput";
-import BasicForm from "../BasicForm.scss";
+import api from "../../../generated/.api_doc.json";
 
 const formStyle: React.CSSProperties = { marginTop: "1.5em" };
-
-const FIELDS = {
-  login: api2.userSignIn.post.login,
-  password: api2.userSignIn.post.password
+const fieldsetStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5em",
+  borderRadius: "0.25em"
 };
 
 type Props = {
@@ -18,8 +17,12 @@ type Props = {
   title?: string;
 };
 
-const loginInputProperties = { required: FIELDS.login.required };
-const passwordInputProperties = { required: FIELDS.password.required };
+const FIELDS = {
+  email: api.paths["/user/sign-up"].post.parameters[0],
+  login: api.paths["/user/sign-up"].post.parameters[1],
+  password: api.paths["/user/sign-up"].post.parameters[2],
+  confirm: api.paths["/user/sign-up"].post.parameters[3]
+};
 
 /**
  * onSubmit function
@@ -31,11 +34,19 @@ const onSubmitRequest = async (
   resultUpdater: (success: boolean, error?: string) => void
 ): Promise<void> => {
   event.preventDefault();
-  const fields = [FIELDS.login.name, FIELDS.password.name];
+  const fields = [
+    FIELDS.email?.name,
+    FIELDS.login?.name,
+    FIELDS.password?.name,
+    FIELDS.confirm?.name
+  ];
   const formElements = event.currentTarget.elements;
 
   const formData = new Map<string, string>(
-    fields.map((fieldName: string) => {
+    fields.map((fieldName: string | undefined) => {
+      if (fieldName === undefined) {
+        throw Error("Documentation Error");
+      }
       const fieldInput = formElements.namedItem(fieldName);
       if (!fieldInput || !(fieldInput instanceof HTMLInputElement)) {
         throw Error("Invalid form usage");
@@ -74,7 +85,7 @@ const onSubmitRequest = async (
   pendingUpdater(false);
 };
 
-function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
+function SignUp({ fieldsetProperties, formProperties, id, title }: Props) {
   const { t } = useTranslation();
   const [pendingState, setPendingState] = useState(false);
   const [errors, setErrors] = useState<Array<string>>([]);
@@ -101,33 +112,53 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
       <form
         style={formStyle}
         method="POST"
-        action={`/api${api2.userSignIn.path}`}
+        action={`/api/${api.paths["/user/sign-up"]}`}
         id={id}
         onSubmit={onSubmit}
-        className={BasicForm.BasicForm}
         {...formProperties}
       >
-        <fieldset {...fieldsetProperties}>
-          <legend>{String(t(title || "FORMS.SIGN_IN.TITLE"))}</legend>
-          <BasicInput
-            type="text"
-            name={FIELDS.login.name}
-            id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
-            inputProperties={loginInputProperties}
-            label={t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
+        <fieldset style={fieldsetStyle} {...fieldsetProperties}>
+          <legend>{t(title || "FORMS.SIGN_UP.TITLE")}</legend>
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.EMAIL">
+            {t("FORMS.SIGN_UP.FIELDS.EMAIL.LABEL")}
+          </label>
+          <input
+            type="email"
+            name={FIELDS.email?.name}
+            id="FORMS.SIGN_UP.FIELDS.EMAIL"
+            required={FIELDS.email?.required}
           />
-
-          <BasicInput
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.IDENTIFIER">
+            {t("FORMS.SIGN_UP.FIELDS.IDENTIFIER.LABEL")}
+          </label>
+          <input
+            type="text"
+            name={FIELDS.login?.name}
+            id="FORMS.SIGN_UP.FIELDS.IDENTIFIER"
+            required={FIELDS.login?.required}
+          />
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.PASSWORD">
+            {t("FORMS.SIGN_UP.FIELDS.PASSWORD.LABEL")}
+          </label>
+          <input
             type="password"
-            name={FIELDS.password.name}
-            id="FORMS.SIGN_IN.FIELDS.PASSWORD"
-            inputProperties={passwordInputProperties}
-            label={t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
+            name={FIELDS.password?.name}
+            id="FORMS.SIGN_UP.FIELDS.PASSWORD"
+            required={FIELDS.password?.required}
+          />
+          <label htmlFor="FORMS.SIGN_UP.FIELDS.CONFIRM">
+            {t("FORMS.SIGN_UP.FIELDS.CONFIRM.LABEL")}
+          </label>
+          <input
+            type="password"
+            name={FIELDS.confirm?.name}
+            id="FORMS.SIGN_UP.FIELDS.CONFIRM"
+            required={FIELDS.confirm?.required}
           />
           <input
             disabled={pendingState}
             type="submit"
-            value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
+            value={String(t("FORMS.SIGN_UP.FIELDS.SUBMIT.LABEL"))}
           />
         </fieldset>
       </form>
@@ -136,4 +167,4 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
   );
 }
 
-export default SignIn;
+export default SignUp;

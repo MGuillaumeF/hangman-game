@@ -1,19 +1,18 @@
 # minimum CMake version (minimum feature)
 cmake_minimum_required(VERSION 3.12)
 
-# version setting for main app
-set (HangmanGame_VERSION_MAJOR 1)
-set (HangmanGame_VERSION_MINOR 0) 
+# Add name on project 
+project(HangmanGame)
 
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add name on project 
-project(HangmanGame)
-
-# activate test on project
-enable_testing()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  MESSAGE("Debug mode activate test")
+  # activate test on project
+  enable_testing()
+endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   # using Clang
@@ -85,22 +84,30 @@ if (Boost_FOUND)
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   install(TARGETS HangmanGame DESTINATION HangmanGame)
   install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "HangmanGame/configuration")
-  add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
-  add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
-  add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logUT.xml  --report_sink=../reports/reportUT.xml) 
-  add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
-  add_test(HangmanGameIntegrationTests HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logIT.xml  --report_sink=../reports/reportIT.xml)
+  install(DIRECTORY "${PROJECT_SOURCE_DIR}/../client/build/" DESTINATION "HangmanGame/")
+  
+  if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
+    add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
+    add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logUT.xml  --report_sink=../reports/reportUT.xml) 
+    add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
+    add_test(HangmanGameIntegrationTests HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logIT.xml  --report_sink=../reports/reportIT.xml)
+  endif()
 
   if(WIN32)
   add_definitions("-D_WIN32_WINNT=0x0601")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
-    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+      target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+      target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+    endif()
   else ()
     SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     target_link_libraries(HangmanGame ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
-    target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+      target_link_libraries(HangmanGameTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+      target_link_libraries(HangmanGameITTest ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    endif()
   endif()
 else ()
   # If boost not found print fatal error message

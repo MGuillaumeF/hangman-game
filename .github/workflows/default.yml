@@ -10,8 +10,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  BOOST_VERSION: 78
-  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  BOOST_VERSION: 1.78.0
   CPP_COSO_VERSION: 0.1.0
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
@@ -31,18 +30,19 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common; odb --version; mysql --version
+      run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common; odb --version; mysql --version
+    # mysql-community-client-plugins 
 
     # - name: Download Boost
     #   uses: wei/wget@v1
     #   with:
-    #.    args: -O boost_1_${{env.BOOST_VERSION}}_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.${{env.BOOST_VERSION}}.0/boost_1_${{env.BOOST_VERSION}}_0.tar.gz/download
+    #.    args: -O boost_1_78_0.tar.gz https://sourceforge.net/projects/boost/files/boost/78/boost_1_78_0.tar.gz/download
 
     # - name: Unzip Boost
-    #   run: tar xzvf ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0.tar.gz
+    #   run: tar xzvf ${{github.workspace}}/boost_1_78_0.tar.gz
 
     # - name: Bootstrap Boost
-    #   working-directory: ${{github.workspace}}/boost_1_${{env.BOOST_VERSION}}_0
+    #   working-directory: ${{github.workspace}}/boost_1_78_0
     #   run: |
     #     sudo ./bootstrap.sh
     #     sudo ./b2 install
@@ -63,7 +63,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -137,6 +137,7 @@ jobs:
       run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
 
     - name: Archive Test report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game Unit Test - Reports
@@ -177,7 +178,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
         # OPTIONAL: in workspace by default
         boost_install_dir: 'D:/'
 
@@ -220,7 +221,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate target
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -254,7 +255,8 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-community-client-plugins mysql-common
+      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
+    # mysql-community-client-plugins
 
     - name: Create reports directory (server)
       run: mkdir ${{github.workspace}}/server/reports
@@ -266,7 +268,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.0.0
       id: install-boost
       with:
-        boost_version: 1.${{env.BOOST_VERSION}}.0
+        boost_version: ${{env.BOOST_VERSION}}
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -351,6 +353,7 @@ jobs:
 
     - name: Merge Coverage
       if: github.actor != 'dependabot[bot]'
+      continue-on-error: true
       run: | 
         cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/coverage
         gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -361,6 +364,7 @@ jobs:
       run: find -name '*.gcda' | xargs gcov
 
     - name: Archive Test report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game - Reports
@@ -370,23 +374,36 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm install
 
+    - name: Update Browserlist
+      working-directory: ${{github.workspace}}/client
+      run: npx browserslist@latest --update-db
+
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
+      run: npm run prettier
+
+    - name: Save client changes
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}/client
       run: |
+        git stash
         git checkout ${{github.head_ref}}
-        npm run prettier
+        git stash pop
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
         git add .
         (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
-       
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
+
+    - name: Extract Webpack stats
+      working-directory: ${{github.workspace}}/client
+      run: npm run webpack-stats
 
     - name: Archive IHM
       uses: actions/upload-artifact@v2
@@ -398,7 +415,8 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
 
-    - name: Archive IHM Tests videos 
+    - name: Archive IHM Tests videos
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Tests-Videos 
@@ -416,6 +434,12 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:eslint || echo FAILED
 
+    - name: Copy Webpack stats reports
+      working-directory: ${{github.workspace}}/client
+      run: |
+        mv ./stats.json ./dist/reports/stats.json
+        mv ./build/stats.html ./dist/reports/stats.html
+
     - name: Audit dependency
       working-directory: ${{github.workspace}}/client
       run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
@@ -428,7 +452,12 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
 
+    - name: Generate Client Docs
+      working-directory: ${{github.workspace}}/client
+      run: npm run build:doc
+
     - name: Archive Analyses reports
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Analyses-report

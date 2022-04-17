@@ -1,10 +1,11 @@
 import structuredClone from "core-js/features/structured-clone";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { render } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "regenerator-runtime/runtime";
 import SignIn from "./components/Forms/SignIn/SignIn";
+import SignUp from "./components/Forms/SignUp/SignUp";
 import AboutUs from "./components/pages/AboutUs/AboutUs";
 import CGU from "./components/pages/CGU/CGU";
 import Error404 from "./components/pages/Errors/Error404";
@@ -29,10 +30,7 @@ const langStyle: React.CSSProperties = {
 const signInStyle: React.CSSProperties = {
   position: "absolute",
   top: "0.5em",
-  right: "0.5em",
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: "#777"
+  right: "0.5em"
 };
 
 console.log(structuredClone(signInStyle));
@@ -57,7 +55,6 @@ const changeLangBtnClick = (
 
 function App(): JSX.Element {
   const { i18n, t } = useTranslation();
-  const [displaySignInForm, setdisplaySignInForm] = useState(false);
 
   const onLanguageClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,17 +63,18 @@ function App(): JSX.Element {
     [i18n]
   );
 
-  const onClickDisplaySignIn = useCallback(() => {
-    setdisplaySignInForm(!displaySignInForm);
-  }, [displaySignInForm]);
-
   return (
     <BrowserRouter>
       <div style={scopeStyle}>
-        <div style={signInStyle}>
-          <button onClick={onClickDisplaySignIn}>Connexion</button>
-          {displaySignInForm ? <SignIn id="form-sign-in" /> : null}
-        </div>
+        <span style={signInStyle}>
+          <Link id="PAGES_SIGN_IN_LINK" to="sign-in">
+            {String(t("FORMS.SIGN_IN.TITLE"))}
+          </Link>
+          &nbsp;/&nbsp;
+          <Link id="PAGES_SIGN_UP_LINK" to="sign-up">
+            {String(t("FORMS.SIGN_UP.TITLE"))}
+          </Link>
+        </span>
         <Routes>
           <Route path="*" element={<Error404 />}></Route>
           <Route path="/" element={<Home id="page-home" />}></Route>
@@ -85,7 +83,9 @@ function App(): JSX.Element {
             element={<Settings id="page-settings" />}
           ></Route>
           <Route path="about" element={<AboutUs id="page-about-us" />}></Route>
-          <Route path="/cgu" element={<CGU id="page-cgu" />}></Route>
+          <Route path="cgu" element={<CGU id="page-cgu" />}></Route>
+          <Route path="sign-in" element={<SignIn id="SignIn" />}></Route>
+          <Route path="sign-up" element={<SignUp id="SignUp" />}></Route>
           <Route
             path="messages"
             element={<Messages id="page-messages" />}
@@ -94,7 +94,7 @@ function App(): JSX.Element {
 
         <div style={langStyle}>
           <Link id="PAGES_SETTINGS_TITLE" to="settings">
-            {t("PAGES.SETTINGS.TITLE")}
+            {String(t("PAGES.SETTINGS.TITLE"))}
           </Link>
           <button id="lang-fr" onClick={onLanguageClick}>
             FR

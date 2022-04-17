@@ -1,5 +1,8 @@
 {
-  "plugins": ["stylelint-prettier"],
+  "plugins": [
+    "stylelint-prettier",
+    "stylelint-no-unsupported-browser-features"
+  ],
   "rules": {
     "color-no-invalid-hex": true,
     "font-family-no-duplicate-names": true,
@@ -21,6 +24,12 @@
     "declaration-no-important": true,
     "indentation": 2,
     "keyframe-declaration-no-important": true,
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
     "unit-case": "lower"
   }
 }

@@ -8,12 +8,20 @@ const path = require("path");
 const fs = require("fs");
 
 /**
+ * algo compression
+ */
+const zopfli = require("@gfx/zopfli");
+
+/**
  * WebPack Plugins import
  */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const WebpackVisualizerPlugin = require("webpack-visualizer-plugin2");
+
 /**
  * Lint plugins
  * JS/TS
@@ -25,6 +33,7 @@ const StylelintPlugin = require("stylelint-webpack-plugin");
 /**
  * custom plugin
  */
+const PreBuildPlugin = require("./tools/webpack/PreBuildPlugin");
 const PostBuildPlugin = require("./tools/webpack/PostBuildPlugin");
 const Logger = require("./tools/webpack/Logger");
 
@@ -94,7 +103,7 @@ module.exports = (env, args) => {
 
     cache: false,
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "build"),
       publicPath: MODE === DEV ? "/" : process.env.PUBLIC_PATH || ".",
       filename: "[name].bundle.js"
     },
@@ -182,6 +191,7 @@ module.exports = (env, args) => {
       ]
     },
     plugins: [
+      new PreBuildPlugin(),
       new HtmlWebpackPlugin({
         inject: "head",
         title: "Hangman Game",
@@ -230,7 +240,10 @@ module.exports = (env, args) => {
     config.devServer = {
       historyApiFallback: true,
       client: {
-        overlay: true
+        overlay: {
+          errors: true,
+          warnings: false
+        }
       },
       static: [path.join(__dirname, "dist")],
       //compress: true,
@@ -253,13 +266,18 @@ module.exports = (env, args) => {
       MiniCssExtractPlugin.loader
     );
     trace("INFO", "CONFIGURATION_DEBUG", "Add source map in production mode");
-    config.devtool = "source-map";
     trace("INFO", "CONFIGURATION_PERFO", "Add optimizations");
     config.optimization = {
       // [...]
+      emitOnErrors: true,
+      mergeDuplicateChunks: true,
       minimize: true,
       minimizer: [new CssMinimizerPlugin()],
-      usedExports: true
+      usedExports: true,
+      removeAvailableModules: true,
+      splitChunks: {
+        chunks: "all"
+      }
     };
     trace(
       "INFO",
@@ -274,7 +292,16 @@ module.exports = (env, args) => {
           chunkFilename: "[id].css"
         }
         //new PostBuildPlugin()
-      )
+      ),
+      new CompressionPlugin({
+        compressionOptions: {
+          numiterations: 15
+        },
+        algorithm(input, compressionOptions, callback) {
+          return zopfli.gzip(input, compressionOptions, callback);
+        }
+      }),
+      new WebpackVisualizerPlugin()
     );
   }
   return config;
