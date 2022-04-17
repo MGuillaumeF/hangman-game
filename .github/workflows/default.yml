@@ -137,6 +137,7 @@ jobs:
       run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
 
     - name: Archive Test report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game Unit Test - Reports
@@ -352,6 +353,7 @@ jobs:
 
     - name: Merge Coverage
       if: github.actor != 'dependabot[bot]'
+      continue-on-error: true
       run: | 
         cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/coverage
         gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
@@ -362,6 +364,7 @@ jobs:
       run: find -name '*.gcda' | xargs gcov
 
     - name: Archive Test report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game - Reports
@@ -398,6 +401,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run build
 
+    - name: Extract Webpack stats
+      working-directory: ${{github.workspace}}/client
+      run: npm run webpack-stats
+
     - name: Archive IHM
       uses: actions/upload-artifact@v2
       with:
@@ -408,7 +415,8 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
 
-    - name: Archive IHM Tests videos 
+    - name: Archive IHM Tests videos
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Tests-Videos 
@@ -426,6 +434,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:eslint || echo FAILED
 
+    - name: Copy Webpack stats reports
+      working-directory: ${{github.workspace}}/client
+      run: mv ./stats.json ./dist/reports/stats.json
+
     - name: Audit dependency
       working-directory: ${{github.workspace}}/client
       run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
@@ -439,6 +451,7 @@ jobs:
       run: npm run lint:stylelint
 
     - name: Archive Analyses reports
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Analyses-report
