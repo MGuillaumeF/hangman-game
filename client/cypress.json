@@ -14,5 +14,13 @@
       "width": 1920,
       "height": 640
     }
+  },
+  "reporter": "cypress-mochawesome-reporter",
+  "reporterOptions": {
+    "reportDir": "cypress/reports",
+    "charts": true,
+    "reportPageTitle": "Browser Integration Tests Reports",
+    "embeddedScreenshots": true,
+    "inlineAssets": true
   }
 }
