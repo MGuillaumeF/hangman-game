@@ -15,12 +15,18 @@
       "height": 640
     }
   },
-  "reporter": "cypress-mochawesome-reporter",
+  "reporter": "cypress-multi-reporters",
   "reporterOptions": {
-    "reportDir": "cypress/reports",
-    "charts": true,
-    "reportPageTitle": "Browser Integration Tests Reports",
-    "embeddedScreenshots": true,
-    "inlineAssets": true
+    "reporterEnabled": "cypress-sonarqube-reporter, mochawesome",
+    "mochawesomeReporterOptions": {
+      "reportDir": "cypress/reports/tests",
+      "charts": true,
+      "reportPageTitle": "Browser Integration Tests Reports",
+      "embeddedScreenshots": true,
+      "inlineAssets": true
+    },
+    "cypressSonarqubeReporterReporterOptions": {
+      "reportDir": "cypress/reports/sonar"
+    }
   }
 }
