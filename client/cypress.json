@@ -14,5 +14,19 @@
       "width": 1920,
       "height": 640
     }
+  },
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "reporterEnabled": "cypress-sonarqube-reporter, cypress-mochawesome-reporter",
+    "mochawesomeReporterOptions": {
+      "reportDir": "cypress/reports/tests",
+      "charts": true,
+      "reportPageTitle": "Browser Integration Tests Reports",
+      "embeddedScreenshots": true,
+      "inlineAssets": true
+    },
+    "cypressSonarqubeReporterReporterOptions": {
+      "reportDir": "cypress/reports/sonar"
+    }
   }
 }
