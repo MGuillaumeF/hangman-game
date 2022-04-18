@@ -17,7 +17,7 @@
   },
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
-    "reporterEnabled": "cypress-sonarqube-reporter, mochawesome",
+    "reporterEnabled": "cypress-sonarqube-reporter, cypress-mochawesome-reporter",
     "mochawesomeReporterOptions": {
       "reportDir": "cypress/reports/tests",
       "charts": true,
