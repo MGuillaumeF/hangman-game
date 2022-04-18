@@ -72,7 +72,8 @@
         background-color: transparent;
         border: none;
         width: fit-content;
-        transform: scale(1);
+        transform: scale(0.6);
+        transform-origin: center;
         position: fixed;
         left: 1em;
         & img {
@@ -83,6 +84,8 @@
         &:hover {
           &::before {
             display: inline-block;
+            position: fixed;
+            transform: scale(1.6) translate(-33%, -33%);
           }
           & > img {
             animation-timing-function: ease-out;
@@ -106,11 +109,11 @@
 
 @keyframes hover-summary {
   0% {
-    transform: rotate(0turn) scale(1);
+    transform: rotate(1turn) scale(0.6);
   }
 
   100% {
-    transform: rotate(1turn) scale(0.6);
+    transform: rotate(0turn) scale(1);
   }
 }
 

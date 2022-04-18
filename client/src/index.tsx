@@ -78,10 +78,7 @@ function App(): JSX.Element {
         <Routes>
           <Route path="*" element={<Error404 />}></Route>
           <Route path="/" element={<Home id="page-home" />}></Route>
-          <Route
-            path="settings"
-            element={<Settings id="page-settings" />}
-          ></Route>
+
           <Route path="about" element={<AboutUs id="page-about-us" />}></Route>
           <Route path="cgu" element={<CGU id="page-cgu" />}></Route>
           <Route path="sign-in" element={<SignIn id="SignIn" />}></Route>
@@ -91,11 +88,8 @@ function App(): JSX.Element {
             element={<Messages id="page-messages" />}
           ></Route>
         </Routes>
-
+        <Settings id="PAGES_SETTINGS_TITLE" />
         <div style={langStyle}>
-          <Link id="PAGES_SETTINGS_TITLE" to="settings">
-            {String(t("PAGES.SETTINGS.TITLE"))}
-          </Link>
           <button id="lang-fr" onClick={onLanguageClick}>
             FR
           </button>
