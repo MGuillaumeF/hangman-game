@@ -4,6 +4,7 @@
 /// <reference types="cypress" />
 
 import { expect } from "chai";
+import specTitle from "cypress-sonarqube-reporter/specTitle";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 const AUTHOR = "MGuillaumeF";
@@ -76,7 +77,7 @@ function addEnd() {
   });
 }
 
-describe("Offlines Access", () => {
+describe(specTitle("Offlines Access"), () => {
   it("Settings", () => {
     cy.clearViewport();
     cy.visit("/");
@@ -110,7 +111,7 @@ describe("Offlines Access", () => {
   });
 });
 
-describe("Subscription", () => {
+describe(specTitle("Subscription"), () => {
   it("With Success", () => {
     cy.clearViewport();
     cy.visit("/");
@@ -159,7 +160,7 @@ describe("Subscription", () => {
   });
 });
 
-describe("Login", () => {
+describe(specTitle("Login"), () => {
   it("With Success", () => {
     cy.clearViewport();
     cy.visit("/");
@@ -196,7 +197,7 @@ describe("Login", () => {
   });
 });
 
-describe("Errors pages", () => {
+describe(specTitle("Errors pages"), () => {
   it("Not Found", () => {
     cy.clearViewport();
     cy.visit("/");
