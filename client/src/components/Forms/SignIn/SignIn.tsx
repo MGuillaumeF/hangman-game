@@ -8,11 +8,11 @@ import { HttpMethod } from "../FormTypes";
 const FIELDS = {
   login: {
     ...api2.userSignIn.post.login,
-    id: "FORMS.SIGN_IN.FIELDS.IDENTIFIER"
+    id: "FORMS_SIGN_IN_FIELDS_IDENTIFIER"
   },
   password: {
     ...api2.userSignIn.post.password,
-    id: "FORMS.SIGN_IN.FIELDS.PASSWORD"
+    id: "FORMS_SIGN_IN_FIELDS_PASSWORD"
   }
 };
 

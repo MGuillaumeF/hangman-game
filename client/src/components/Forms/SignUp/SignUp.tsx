@@ -19,19 +19,19 @@ type Props = {
 const FIELDS = {
   email: {
     ...api.userSignUp.post.email,
-    id: "FORMS.SIGN_UP.FIELDS.EMAIL"
+    id: "FORMS_SIGN_UP_FIELDS_EMAIL"
   },
   login: {
     ...api.userSignUp.post.login,
-    id: "FORMS.SIGN_UP.FIELDS.IDENTIFIER"
+    id: "FORMS_SIGN_UP_FIELDS_IDENTIFIER"
   },
   password: {
     ...api.userSignUp.post.password,
-    id: "FORMS.SIGN_UP.FIELDS.PASSWORD"
+    id: "FORMS_SIGN_UP_FIELDS_PASSWORD"
   },
   confirm: {
     ...api.userSignUp.post.confirm,
-    id: "FORMS.SIGN_UP.FIELDS.COMFIRM"
+    id: "FORMS_SIGN_UP_FIELDS_CONFIRM"
   }
 };
 

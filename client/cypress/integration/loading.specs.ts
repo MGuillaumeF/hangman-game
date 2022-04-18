@@ -83,7 +83,7 @@ describe("Offlines Access", () => {
 
     addPresentation("Settings");
 
-    cy.wait(3000);
+    cy.wait(2000);
     cy.visit("/");
     // all parameters are optional
     cy.toast("Change language to French", {
@@ -97,7 +97,7 @@ describe("Offlines Access", () => {
       blocking: true
     });
     cy.get("#lang-en").click();
-    cy.contains("Settings");
+    cy.contains("Sign In");
 
     cy.get("#PAGES_SETTINGS_TITLE").click();
 
@@ -122,7 +122,7 @@ describe("Subscription", () => {
 
     cy.intercept(
       "POST",
-      "^/api*",
+      "/api/v1/user/sign-up",
       (req: CyHttpMessages.IncomingHttpRequest) => {
         expect(req.body?.email).to.equal("mguillaumef@draft.com");
         expect(req.body?.login).to.equal("mguillaumef");
@@ -133,23 +133,65 @@ describe("Subscription", () => {
 
     cy.get("#PAGES_SIGN_UP_LINK").click();
 
-    cy.get("#FORMS.SIGN_UP.FIELDS.EMAIL")
+    cy.get("#FORMS_SIGN_UP_FIELDS_EMAIL")
+      .click({ force: true })
       .type("mguillaumef@draft.com")
       .should("have.value", "mguillaumef@draft.com");
 
-    cy.get("#FORMS.SIGN_UP.FIELDS.IDENTIFIER")
+    cy.get("#FORMS_SIGN_UP_FIELDS_IDENTIFIER")
+      .click({ force: true })
       .type("mguillaumef")
       .should("have.value", "mguillaumef");
 
-    cy.get("#FORMS.SIGN_UP.FIELDS.PASSWORD")
+    cy.get("#FORMS_SIGN_UP_FIELDS_PASSWORD")
+      .click({ force: true })
       .type("DROWssap987")
       .should("have.value", "DROWssap987");
 
-    cy.get("#FORMS.SIGN_UP.FIELDS.CONFIRM")
+    cy.get("#FORMS_SIGN_UP_FIELDS_CONFIRM")
+      .click({ force: true })
       .type("DROWssap987")
-      .should("have.value", "DROWssap987{enter}");
+      .should("have.value", "DROWssap987")
+      .type("{enter}");
 
     cy.wait("@subscribe");
+    addEnd();
+  });
+});
+
+describe("Login", () => {
+  it("With Success", () => {
+    cy.clearViewport();
+    cy.visit("/");
+
+    addPresentation("Login - with success");
+
+    cy.wait(2000);
+    cy.visit("/");
+
+    cy.intercept(
+      "POST",
+      "/api/v1/user/sign-in",
+      (req: CyHttpMessages.IncomingHttpRequest) => {
+        expect(req.body?.login).to.equal("mguillaumef");
+        expect(req.body?.password).to.equal("DROWssap987");
+      }
+    ).as("login");
+
+    cy.get("#PAGES_SIGN_IN_LINK").click();
+
+    cy.get("#FORMS_SIGN_IN_FIELDS_IDENTIFIER")
+      .click({ force: true })
+      .type("mguillaumef")
+      .should("have.value", "mguillaumef");
+
+    cy.get("#FORMS_SIGN_IN_FIELDS_PASSWORD")
+      .click({ force: true })
+      .type("DROWssap987")
+      .should("have.value", "DROWssap987")
+      .type("{enter}");
+
+    cy.wait("@login");
     addEnd();
   });
 });
@@ -161,7 +203,7 @@ describe("Errors pages", () => {
 
     addPresentation("Not Found");
 
-    cy.wait(3000);
+    cy.wait(2000);
     cy.visit("/badPage");
     cy.contains("Error404");
 
