@@ -360,6 +360,7 @@ jobs:
 
     - name: gcov after merge
       if: github.actor != 'dependabot[bot]'
+      continue-on-error: true
       working-directory: ${{github.workspace}}/server/bin/coverage
       run: find -name '*.gcda' | xargs gcov
 
