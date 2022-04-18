@@ -18,7 +18,12 @@
   },
   "author": "MGuillaumeF",
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not IE 11"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -54,6 +59,7 @@
     "babel-plugin-istanbul": "^6.1.1",
     "babel-plugin-polyfill-corejs3": "^0.5.2",
     "babel-preset-react-app": "^10.0.1",
+    "chai": "^4.3.6",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "compression-webpack-plugin": "^9.2.0",
     "css-loader": "^6.7.1",

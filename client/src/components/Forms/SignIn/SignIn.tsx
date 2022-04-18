@@ -1,118 +1,46 @@
-import React, { FormEvent, HTMLProps, useCallback, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import api2 from "../../../generated/.api_doc_parameters.json";
 import BasicInput from "../../BasicInput/BasicInput";
-import BasicForm from "../BasicForm.scss";
-
-const formStyle: React.CSSProperties = { marginTop: "1.5em" };
+import BasicForm from "../BasicForm";
+import { HttpMethod } from "../FormTypes";
 
 const FIELDS = {
-  login: api2.userSignIn.post.login,
-  password: api2.userSignIn.post.password
+  login: {
+    ...api2.userSignIn.post.login,
+    id: "FORMS.SIGN_IN.FIELDS.IDENTIFIER"
+  },
+  password: {
+    ...api2.userSignIn.post.password,
+    id: "FORMS.SIGN_IN.FIELDS.PASSWORD"
+  }
 };
 
 type Props = {
-  fieldsetProperties?: HTMLProps<HTMLFieldSetElement>;
-  formProperties?: HTMLProps<HTMLFormElement>;
   id: string;
-  title?: string;
 };
 
 const loginInputProperties = { required: FIELDS.login.required };
 const passwordInputProperties = { required: FIELDS.password.required };
 
-/**
- * onSubmit function
- * @param event the on submit form event
- */
-const onSubmitRequest = async (
-  event: FormEvent<HTMLFormElement>,
-  pendingUpdater: (state: boolean) => void,
-  resultUpdater: (success: boolean, error?: string) => void
-): Promise<void> => {
-  event.preventDefault();
-  const fields = [FIELDS.login.name, FIELDS.password.name];
-  const formElements = event.currentTarget.elements;
-
-  const formData = new Map<string, string>(
-    fields.map((fieldName: string) => {
-      const fieldInput = formElements.namedItem(fieldName);
-      if (!fieldInput || !(fieldInput instanceof HTMLInputElement)) {
-        throw Error("Invalid form usage");
-      }
-      return [fieldName, fieldInput.value];
-    })
-  );
-
-  console.info("start spinner and lock button");
-  pendingUpdater(true);
-  try {
-    const response = await fetch(
-      event.currentTarget.getAttribute("action") || "/",
-      {
-        method: event.currentTarget.getAttribute("method") || "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(Object.fromEntries(formData))
-      }
-    );
-
-    if (response.status <= 400) {
-      console.info("display success notification");
-      resultUpdater(true);
-    } else {
-      console.error("display error notification with code", response.status);
-      resultUpdater(false, `Error notification with code ${response.status}`);
-    }
-  } catch (error) {
-    console.error("display error notification", error);
-    const message = error instanceof Error ? error.message : "unknown error";
-    resultUpdater(false, `Error notification ${message}`);
-  }
-  console.info("end spinner and enable button");
-  pendingUpdater(false);
-};
-
-function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
+function SignIn({ id }: Props) {
   const { t } = useTranslation();
-  const [pendingState, setPendingState] = useState(false);
-  const [errors, setErrors] = useState<Array<string>>([]);
-  const onSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      onSubmitRequest(
-        event,
-        setPendingState,
-        (success: boolean, error?: string) => {
-          if (success) {
-            console.log("success");
-          }
-          if (error) {
-            setErrors([...errors, error]);
-          }
-        }
-      );
-    },
-    [errors]
-  );
 
   return (
     <>
-      <form
-        style={formStyle}
-        method="POST"
+      <BasicForm
+        method={HttpMethod.POST}
         action={`/api${api2.userSignIn.path}`}
+        fields={Object.values(FIELDS)}
+        submitTitle="FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"
         id={id}
-        onSubmit={onSubmit}
-        className={BasicForm.BasicForm}
-        {...formProperties}
       >
-        <fieldset {...fieldsetProperties}>
-          <legend>{String(t(title || "FORMS.SIGN_IN.TITLE"))}</legend>
+        <fieldset>
+          <legend>{String(t("FORMS.SIGN_IN.TITLE"))}</legend>
           <BasicInput
             type="text"
             name={FIELDS.login.name}
-            id="FORMS.SIGN_IN.FIELDS.IDENTIFIER"
+            id={FIELDS.login.id}
             inputProperties={loginInputProperties}
             label={t("FORMS.SIGN_IN.FIELDS.IDENTIFIER.LABEL")}
           />
@@ -120,18 +48,12 @@ function SignIn({ fieldsetProperties, formProperties, id, title }: Props) {
           <BasicInput
             type="password"
             name={FIELDS.password.name}
-            id="FORMS.SIGN_IN.FIELDS.PASSWORD"
+            id={FIELDS.password.id}
             inputProperties={passwordInputProperties}
             label={t("FORMS.SIGN_IN.FIELDS.PASSWORD.LABEL")}
           />
-          <input
-            disabled={pendingState}
-            type="submit"
-            value={String(t("FORMS.SIGN_IN.FIELDS.SUBMIT.LABEL"))}
-          />
         </fieldset>
-      </form>
-      {pendingState ? <div>loading</div> : null}
+      </BasicForm>
     </>
   );
 }

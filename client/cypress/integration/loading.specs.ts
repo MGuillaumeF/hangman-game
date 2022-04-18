@@ -1,5 +1,15 @@
 /* eslint-disable promise/no-nesting */
 /* eslint-disable promise/catch-or-return */
+
+/// <reference types="cypress" />
+
+import { expect } from "chai";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
+
+const AUTHOR = "MGuillaumeF";
+const PROJECT = "Hangman Game";
+const VERSION = "v0.1.0";
+
 function addPage(id: string, ...elements: any[]) {
   return cy.document().then(($document) => {
     cy.get("body").then(($div) => {
@@ -15,7 +25,7 @@ function addPage(id: string, ...elements: any[]) {
         page.style.alignItems = "center";
         page.style.justifyContent = "center";
         page.style.flexDirection = "column";
-        page.style.zIndex = 3000000;
+        page.style.zIndex = "3000000";
 
         elements.forEach((element) => page.append(element));
         return page;
@@ -26,16 +36,21 @@ function addPage(id: string, ...elements: any[]) {
   });
 }
 
-function addPresentation() {
+function addPresentation(
+  title: string,
+  project: string = PROJECT,
+  version: string = VERSION,
+  author: string = AUTHOR
+) {
   return cy.document().then(($document) => {
-    const title = $document.createElement("h1");
-    title.textContent = "Hangman Game";
+    const mainTitle = $document.createElement("h1");
+    mainTitle.textContent = project;
 
     const subTitle = $document.createElement("h2");
-    subTitle.textContent = "Démonstration";
+    subTitle.textContent = title;
 
-    const version = $document.createElement("p");
-    version.textContent = "v0.1.0";
+    const pVersion = $document.createElement("p");
+    pVersion.textContent = version;
 
     const date = $document.createElement("span");
     date.textContent = new Date().toISOString().split("T")[0];
@@ -43,13 +58,13 @@ function addPresentation() {
     date.style.bottom = "0.5em";
     date.style.right = "0.5em";
 
-    const author = $document.createElement("span");
-    author.textContent = "MGuillaumeF";
-    author.style.position = "fixed";
-    author.style.top = "0.5em";
-    author.style.left = "0.5em";
+    const sAuthor = $document.createElement("span");
+    sAuthor.textContent = author;
+    sAuthor.style.position = "fixed";
+    sAuthor.style.top = "0.5em";
+    sAuthor.style.left = "0.5em";
 
-    return addPage("pres", title, subTitle, version, date, author);
+    return addPage("pres", mainTitle, subTitle, pVersion, date, sAuthor);
   });
 }
 
@@ -61,12 +76,12 @@ function addEnd() {
   });
 }
 
-describe("Load presentation page", () => {
-  it("load first page", () => {
+describe("Offlines Access", () => {
+  it("Settings", () => {
     cy.clearViewport();
     cy.visit("/");
 
-    addPresentation();
+    addPresentation("Settings");
 
     cy.wait(3000);
     cy.visit("/");
@@ -75,7 +90,7 @@ describe("Load presentation page", () => {
       blocking: true
     });
     cy.get("#lang-fr").click();
-    cy.contains("Paramètre");
+    cy.contains("Connexion");
 
     // all parameters are optional
     cy.toast("Change language to English", {
@@ -91,6 +106,62 @@ describe("Load presentation page", () => {
       blocking: true
     });
 
+    addEnd();
+  });
+});
+
+describe("Subscription", () => {
+  it("With Success", () => {
+    cy.clearViewport();
+    cy.visit("/");
+
+    addPresentation("Subscription - with success");
+
+    cy.wait(2000);
+    cy.visit("/");
+
+    cy.intercept(
+      "POST",
+      "^/api*",
+      (req: CyHttpMessages.IncomingHttpRequest) => {
+        expect(req.body?.email).to.equal("mguillaumef@draft.com");
+        expect(req.body?.login).to.equal("mguillaumef");
+        expect(req.body?.password).to.equal("DROWssap987");
+        expect(req.body?.confirm).to.equal("DROWssap987");
+      }
+    ).as("subscribe");
+
+    cy.get("#PAGES_SIGN_UP_LINK").click();
+
+    cy.get("#FORMS.SIGN_UP.FIELDS.EMAIL")
+      .type("mguillaumef@draft.com")
+      .should("have.value", "mguillaumef@draft.com");
+
+    cy.get("#FORMS.SIGN_UP.FIELDS.IDENTIFIER")
+      .type("mguillaumef")
+      .should("have.value", "mguillaumef");
+
+    cy.get("#FORMS.SIGN_UP.FIELDS.PASSWORD")
+      .type("DROWssap987")
+      .should("have.value", "DROWssap987");
+
+    cy.get("#FORMS.SIGN_UP.FIELDS.CONFIRM")
+      .type("DROWssap987")
+      .should("have.value", "DROWssap987{enter}");
+
+    cy.wait("@subscribe");
+    addEnd();
+  });
+});
+
+describe("Errors pages", () => {
+  it("Not Found", () => {
+    cy.clearViewport();
+    cy.visit("/");
+
+    addPresentation("Not Found");
+
+    cy.wait(3000);
     cy.visit("/badPage");
     cy.contains("Error404");
 
