@@ -31,5 +31,6 @@
     "cypressSonarqubeReporterReporterOptions": {
       "reportDir": "cypress/reports/sonar"
     }
-  }
+  },
+  "screenshotsFolder": "cypress/reports/mochareports/assets"
 }
