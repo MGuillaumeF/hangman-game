@@ -415,6 +415,7 @@ jobs:
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
+      continue-on-error: true
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
 
     - name: Archive IHM Tests videos
