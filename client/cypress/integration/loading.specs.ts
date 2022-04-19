@@ -206,7 +206,7 @@ describe(specTitle("Errors pages"), () => {
 
     cy.wait(2000);
     cy.visit("/badPage");
-    cy.contains("Error404");
+    cy.contains("Error405");
 
     addEnd();
   });
