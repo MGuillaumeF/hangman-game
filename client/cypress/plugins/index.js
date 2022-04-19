@@ -1,11 +1,14 @@
 const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
-const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
+const {
+  beforeRunHook,
+  afterRunHook
+} = require("cypress-mochawesome-reporter/lib");
 
 module.exports = (on, config) => {
   registerCodeCoverageTasks(on, config);
   // include any other plugin code...
 
-  on('before:run', async (details) => {
+  on("before:run", async (details) => {
     await beforeRunHook(details);
   });
 
