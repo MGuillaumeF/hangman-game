@@ -1,8 +1,7 @@
 const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
-const cypressMochawesomeReporter = require("cypress-mochawesome-reporter/plugin");
+
 module.exports = (on, config) => {
   registerCodeCoverageTasks(on, config);
-  cypressMochawesomeReporter(on);
   // include any other plugin code...
 
   // https://docs.cypress.io/api/plugins/after-run-api

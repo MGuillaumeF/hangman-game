@@ -436,9 +436,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run lint:eslint || echo FAILED
 
-    - name: Copy Webpack stats reports
+    - name: Copy reports
       working-directory: ${{github.workspace}}/client
       run: |
+        mv ./cypress/reports/tests ./dist/cypress-reports
         mv ./stats.json ./dist/reports/stats.json
         mv ./build/stats.html ./dist/reports/stats.html
 
