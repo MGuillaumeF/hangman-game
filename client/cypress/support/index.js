@@ -22,6 +22,4 @@ import "./commands";
 // coverage support
 import "@cypress/code-coverage/support";
 
-import "cypress-mochawesome-reporter/register";
-
 import "cypress-movie/commands";
