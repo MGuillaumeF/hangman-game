@@ -5,9 +5,9 @@ module.exports = (on, config) => {
   // include any other plugin code...
 
   // https://docs.cypress.io/api/plugins/after-run-api
-  on("after:run", async (results) => {
+  on("after:run", (results) => {
     // /!\ don't forget to return the Promise /!\
-    await require("cypress-sonarqube-reporter/mergeReports")(results, {
+    return require("cypress-sonarqube-reporter/mergeReports")(results, {
       // see "Merge Plugin Options" section for all available options
       mergeFileName: "sonar-report-all.xml"
     });
