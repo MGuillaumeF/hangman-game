@@ -439,7 +439,7 @@ jobs:
     - name: Copy reports
       working-directory: ${{github.workspace}}/client
       run: |
-        mv ./cypress/reports/tests ./dist/cypress/reports/tests
+        mv ./cypress/reports ./dist/cypress/reports/tests
         mv ./stats.json ./dist/reports/stats.json
         mv ./build/stats.html ./dist/reports/stats.html
 
