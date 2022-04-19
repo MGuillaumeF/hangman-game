@@ -24,7 +24,7 @@ import "@cypress/code-coverage/support";
 
 import "cypress-movie/commands";
 
-import addContext from 'mochawesome/addContext':
+import addContext from 'mochawesome/addContext';
 
 Cypress.on("test:after:run', (test, runnable) => {
   if (test.state === "failed) {
