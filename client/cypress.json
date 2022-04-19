@@ -17,13 +17,16 @@
   },
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
-    "reporterEnabled": "cypress-sonarqube-reporter, cypress-mochawesome-reporter",
+    "reporterEnabled": "cypress-sonarqube-reporter, mochawesome",
     "mochawesomeReporterOptions": {
       "reportDir": "cypress/reports/tests",
       "charts": true,
+      "html": true,
+      "json": true,
       "reportPageTitle": "Browser Integration Tests Reports",
       "embeddedScreenshots": true,
-      "inlineAssets": true
+      "inlineAssets": true,
+      "overwrite": true
     },
     "cypressSonarqubeReporterReporterOptions": {
       "reportDir": "cypress/reports/sonar"
