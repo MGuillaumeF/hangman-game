@@ -32,5 +32,5 @@
       "reportDir": "cypress/reports/sonar"
     }
   },
-  "screenshotsFolder": "cypress/reports/mochareports/assets"
+  "screenshotsFolder": "cypress/reports/tests/assets"
 }
