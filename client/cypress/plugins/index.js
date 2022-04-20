@@ -1,27 +1,29 @@
-const fs = require('fs')
+const fs = require("fs");
 const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
 
 module.exports = (on, config) => {
   registerCodeCoverageTasks(on, config);
   // include any other plugin code...
 
-  on('after:screenshot', (details) => {
-    console.log(details) // print all details to terminal
+  on("after:screenshot", (details) => {
+    console.log(details); // print all details to terminal
 
-    const newPath = `${Cypress.config("screenshotsFolder")}/${Cypress.spec.name}/${details.parent.title} -- ${details.title} (failed).png`;
+    const newPath = `${Cypress.config("screenshotsFolder")}/${
+      Cypress.spec.name
+    }/${details.parent.title} -- ${details.title} (failed).png`;
 
     return new Promise((resolve, reject) => {
       // fs.rename moves the file to the existing directory 'new/path/to'
       // and renames the image to 'screenshot.png'
       fs.rename(details.path, newPath, (err) => {
-        if (err) return reject(err)
+        if (err) return reject(err);
 
         // because we renamed and moved the image, resolve with the new path
         // so it is accurate in the test results
-        resolve({ path: newPath })
-      })
-    })
-  })
+        resolve({ path: newPath });
+      });
+    });
+  });
 
   // https://docs.cypress.io/api/plugins/after-run-api
   on("after:run", (results) => {
