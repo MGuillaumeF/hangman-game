@@ -29,7 +29,7 @@ import addContext from "mochawesome/addContext";
 import fs from "fs";
 
 Cypress.on("test:after:run", (test, runnable) => {
-  if (test.state === "failed") {
+  //if (test.state === "failed") {
     // `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
     const screenshot = `${Cypress.config("screenshotsFolder")}/${
       Cypress.spec.name
@@ -37,7 +37,9 @@ Cypress.on("test:after:run", (test, runnable) => {
     // `${Cypress.config("screenshotsFolder")}/${
     //      Cypress.spec.name
     //    }/${runnable.parent.title} -- ${test.title} (failed).png`;
-
+console.info(`add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(
+        screenshot)
+      )
     throw Error(
       `add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(
         screenshot
@@ -45,5 +47,5 @@ Cypress.on("test:after:run", (test, runnable) => {
     );
 
     addContext({ test }, screenshot);
-  }
+ // }
 });
