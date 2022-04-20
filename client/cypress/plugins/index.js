@@ -12,7 +12,7 @@ module.exports = (on, config) => {
 
     const newName = path
       .basename(details.path)
-      .replace(/^(.*)\[\{@.*\}\]\s(--\s.* \(failed\)\.png)/, "$1 $2");
+      .replace(/^(.*)\[@spec\{.*\}\]\s(--\s.* \(failed\)\.png)/, "$1 $2");
 
     const newPath = path.resolve(path.dirname(details.path), newName);
 
