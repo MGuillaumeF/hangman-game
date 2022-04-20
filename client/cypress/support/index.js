@@ -26,7 +26,7 @@ import "cypress-movie/commands";
 
 import addContext from "mochawesome/addContext";
 
-import fs from 'fs';
+import fs from "fs";
 
 Cypress.on("test:after:run", (test, runnable) => {
   if (test.state === "failed") {
@@ -38,7 +38,11 @@ Cypress.on("test:after:run", (test, runnable) => {
     //      Cypress.spec.name
     //    }/${runnable.parent.title} -- ${test.title} (failed).png`;
 
-    throw Error(`add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(screenshot)}`);
+    throw Error(
+      `add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(
+        screenshot
+      )}`
+    );
 
     addContext({ test }, screenshot);
   }
