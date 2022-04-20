@@ -10,7 +10,9 @@ module.exports = (on, config) => {
   on("after:screenshot", (details) => {
     console.log(details); // print all details to terminal
 
-    const newName = path.basename(details.path).replace(/^(.*)\[\{@.*\}\]\s(--\s.* \(failed\)\.png)/, "$1 $2")
+    const newName = path
+      .basename(details.path)
+      .replace(/^(.*)\[\{@.*\}\]\s(--\s.* \(failed\)\.png)/, "$1 $2");
 
     const newPath = path.resolve(path.dirname(details.path), newName);
 
