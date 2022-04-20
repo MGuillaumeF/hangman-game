@@ -1,4 +1,6 @@
 const fs = require("fs");
+const path = require("path");
+
 const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
 
 module.exports = (on, config) => {
@@ -8,9 +10,9 @@ module.exports = (on, config) => {
   on("after:screenshot", (details) => {
     console.log(details); // print all details to terminal
 
-    const newPath = `${Cypress.config("screenshotsFolder")}/${
-      Cypress.spec.name
-    }/${details.parent.title} -- ${details.title} (failed).png`;
+    const newName = path.basename(details.path).replace(/^(.*)\[\{@.*\}\]\s(--\s.* \(failed\)\.png)/, "$1 $2)
+
+    const newPath = path.resolve(path.dirname(details.path), newName);
 
     return new Promise((resolve, reject) => {
       // fs.rename moves the file to the existing directory 'new/path/to'
