@@ -28,8 +28,8 @@ import addContext from "mochawesome/addContext";
 
 Cypress.on("test:after:run", (test, runnable) => {
   if (test.state === "failed") {
-    const screenshot = `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
-
+    // `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
+    const screenshot = "assets/loading.specs.ts/Errors pages [@spec {nameloading.specs.ts,relativecypressintegrationloading.specs.ts,absolutehomerunnerworkhangman-gamehangman-gameclientcypressintegrationloading.specs.ts,specTypeintegration}] -- Not Found (failed).png"
     // `${Cypress.config("screenshotsFolder")}/${
     //      Cypress.spec.name
     //    }/${runnable.parent.title} -- ${test.title} (failed).png`;
