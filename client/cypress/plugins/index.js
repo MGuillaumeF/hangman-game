@@ -34,6 +34,7 @@ module.exports = (on, config) => {
     // /!\ don't forget to return the Promise /!\
     return require("cypress-sonarqube-reporter/mergeReports")(results, {
       reportsOutputDir: "cypress/reports/sonar",
+      mergeOutputDir: "cypress/reports/sonar",
       // see "Merge Plugin Options" section for all available options
       mergeFileName: "sonar-report-all.xml"
     });
