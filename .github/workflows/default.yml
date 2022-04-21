@@ -437,8 +437,8 @@ jobs:
       run: npm run lint:eslint || echo FAILED
 
     - name: Copy reports
-      if: always()
       wording-directory: ${{github.workspace}}/client
+      if: always()
       run: |
         tree cypress
         mv ./cypress/reports/tests ./dist/cypress-reports
