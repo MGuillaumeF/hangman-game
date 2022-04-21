@@ -20,5 +20,5 @@ module.exports = {
     "@babel/plugin-transform-runtime",
     "@babel/plugin-transform-regenerator"
   ],
-  ignore: ["./dist", "./build", "./test", "./node_modules"]
+  ignore: ["./dist", "./build", "./node_modules"]
 };
