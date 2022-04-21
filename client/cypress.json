@@ -29,7 +29,8 @@
       "overwrite": true
     },
     "cypressSonarqubeReporterReporterOptions": {
-      "outputDir": "cypress/reports/sonar"
+      "outputDir": "cypress/reports/sonar",
+      "useAbsoluteSpecPath": true
     }
   },
   "screenshotsFolder": "cypress/reports/tests/assets"
