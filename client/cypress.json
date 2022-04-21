@@ -29,7 +29,7 @@
       "overwrite": true
     },
     "cypressSonarqubeReporterReporterOptions": {
-      "reportDir": "cypress/reports/sonar"
+      "outputDir": "cypress/reports/sonar"
     }
   },
   "screenshotsFolder": "cypress/reports/tests/assets"
