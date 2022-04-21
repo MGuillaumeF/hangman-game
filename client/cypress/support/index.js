@@ -31,7 +31,7 @@ import fs from "fs";
 Cypress.on("test:after:run", (test, runnable) => {
   if (test.state === "failed") {
     // `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
-    const screenshot = `${Cypress.config("screenshotsFolder")}/${
+    const screenshot = `assets/${
       Cypress.spec.name
     }/Errors pages -- Not Found (failed).png`;
     // `${Cypress.config("screenshotsFolder")}/${
