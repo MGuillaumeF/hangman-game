@@ -499,6 +499,10 @@ jobs:
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+    - name: propagate status
+      if: failure()
+      run: exit 1
+
  dependabot:
     needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
