@@ -30,18 +30,19 @@ import fs from "fs";
 
 Cypress.on("test:after:run", (test, runnable) => {
   if (test.state === "failed") {
-  // `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
-  const screenshot = `${Cypress.config("screenshotsFolder")}/${
-    Cypress.spec.name
-  }/Errors pages -- Not Found (failed).png`;
-  // `${Cypress.config("screenshotsFolder")}/${
-  //      Cypress.spec.name
-  //    }/${runnable.parent.title} -- ${test.title} (failed).png`;
-  fs.writeFileSync(Cypress.config("screenshotsFolder") + '/assets/dump.txt',
-    `add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(
-      screenshot
-    )}`
-  );
+    // `assets/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
+    const screenshot = `${Cypress.config("screenshotsFolder")}/${
+      Cypress.spec.name
+    }/Errors pages -- Not Found (failed).png`;
+    // `${Cypress.config("screenshotsFolder")}/${
+    //      Cypress.spec.name
+    //    }/${runnable.parent.title} -- ${test.title} (failed).png`;
+    fs.writeFileSync(
+      Cypress.config("screenshotsFolder") + "/assets/dump.txt",
+      `add screenshot in report failed case, ${screenshot}, file exist ? ${fs.existsSync(
+        screenshot
+      )}`
+    );
     addContext({ test }, screenshot);
   }
 });
