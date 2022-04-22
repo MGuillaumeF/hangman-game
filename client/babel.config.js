@@ -13,12 +13,7 @@ module.exports = {
     ["react-app", { flow: false, typescript: true }]
   ],
   plugins: [
-    "istanbul",
-    ["@babel/plugin-proposal-class-properties", { loose: true }],
-    ["@babel/plugin-proposal-private-methods", { loose: true }],
-    "@babel/plugin-transform-react-constant-elements",
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-transform-regenerator"
+    "istanbul"
   ],
   ignore: ["./dist", "./build", "./node_modules"]
 };
