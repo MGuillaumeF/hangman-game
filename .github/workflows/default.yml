@@ -433,6 +433,7 @@ jobs:
       if: always()
       run: |
         tree cypress
+        mkdir -p ./dist/cypress-reports
         cp -R ./cypress/reports ./dist/cypress-reports
         mv ./stats.json ./dist/reports/stats.json
         mv ./build/stats.html ./dist/reports/stats.html
