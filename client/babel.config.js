@@ -12,6 +12,5 @@ module.exports = {
     "@babel/preset-react",
     ["react-app", { flow: false, typescript: true }]
   ],
-  plugins: ["istanbul"],
   ignore: ["./dist", "./build", "./node_modules"]
 };
