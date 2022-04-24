@@ -500,7 +500,8 @@ jobs:
     - name: Install Raspberry PI x64 toolchain
       run: |
         sudo apt-get install -y gcc-aarch64-linux-gnu
-        ls /home/devel
+        ls -a /home
+        ls -a /use/bin
         # mkdir ~/rpi
         # cd ~/rpi
         # git clone https://github.com/raspberrypi/tools.git
