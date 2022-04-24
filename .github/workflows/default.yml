@@ -515,13 +515,13 @@ jobs:
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         arch: aarch64 # Note the new 'arch' option
 
-    - name: build project
-      run: |
-        cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake
-        cmake --build ${{github.workspace}}/server/bin
+    - name: Generate Target
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake
+
+    - name: Build Target 
+      cmake --build ${{github.workspace}}/server/bin
       env:
-        BOOST_ROOT: ${{github.workspace}}/boost/boost-1.79.0-ubuntu-20.04-gcc-static+shared-aarch64
-        # ${{ steps.install-boost.outputs.BOOST_ROOT }}
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
  dependabot:
     needs: [sonarcloud-analyse]
