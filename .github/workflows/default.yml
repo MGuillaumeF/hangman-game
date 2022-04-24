@@ -494,6 +494,9 @@ jobs:
  raspberry-pi-toolchain:
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/checkout@v2
+
     - name: Install Raspberry PI x64 toolchain
       run: |
         mkdir ~/rpi
@@ -522,7 +525,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v2
 
       - name: Dependabot metadata
         id: metadata
