@@ -519,6 +519,7 @@ jobs:
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+        boost_INCLUDE_DIR: ${{ steps.install-boost.outputs.BOOST_ROOT }}/include
 
     - name: Build Target 
       run: cmake --build ${{github.workspace}}/server/bin
