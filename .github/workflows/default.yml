@@ -501,7 +501,7 @@ jobs:
       run: |
         sudo apt-get install -y gcc-aarch64-linux-gnu
         ls -a /home
-        ls -a /use/bin
+        ls -a /usr/bin
         # mkdir ~/rpi
         # cd ~/rpi
         # git clone https://github.com/raspberrypi/tools.git
