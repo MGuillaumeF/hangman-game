@@ -499,10 +499,11 @@ jobs:
 
     - name: Install Raspberry PI x64 toolchain
       run: |
-        mkdir ~/rpi
-        cd ~/rpi
-        git clone https://github.com/raspberrypi/tools.git
-        mkdir -p rootfs/opt
+        sudo apt-get install -y gcc-aarch64-linux-gnu
+        # mkdir ~/rpi
+        # cd ~/rpi
+        # git clone https://github.com/raspberrypi/tools.git
+        # mkdir -p rootfs/opt
 
     - name: Install Boost
       uses: MarkusJx/install-boost@ebe4e0e3c10a85635247dc7f6f89b72a4a162b2d
@@ -515,10 +516,9 @@ jobs:
     - name: build project
       working-directory: ${{github.workspace}}/server
       run: |
-        cp ../tools/toolchains/Toolchain-RaspberryPi.cmake $HOME/rpi/Toolchain-RaspberryPi.cmake
         mkdir build
         cd build
-        cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=$HOME/rpi/Toolchain-RaspberryPi.cmake ../
+        cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=../tools/toolchains/Toolchain-RaspberryPi.cmake
 
  dependabot:
     needs: [sonarcloud-analyse]
