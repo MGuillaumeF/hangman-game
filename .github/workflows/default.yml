@@ -516,11 +516,9 @@ jobs:
         arch: aarch64 # Note the new 'arch' option
 
     - name: build project
-      working-directory: ${{github.workspace}}/server
       run: |
-        mkdir build
-        cd build
-        cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=../tools/toolchains/Toolchain-RaspberryPi.cmake
+        cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake
+        cmake --build ${{github.workspace}}/server/bin
 
  dependabot:
     needs: [sonarcloud-analyse]
