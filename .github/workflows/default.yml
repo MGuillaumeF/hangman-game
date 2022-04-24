@@ -500,9 +500,6 @@ jobs:
         cd ~/rpi
         git clone https://github.com/raspberrypi/tools.git
         mkdir -p rootfs/opt
-        # cp /run/media/amgaera/root/lib/ rootfs/ -rv
-        # cp /run/media/amgaera/root/usr/ rootfs/ -rv
-        # cp /run/media/amgaera/root/opt/vc rootfs/opt/ -rv
 
     - name: Install Boost
       uses: MarkusJx/install-boost@ebe4e0e3c10a85635247dc7f6f89b72a4a162b2d
@@ -511,6 +508,14 @@ jobs:
         boost_version: 1.79.0 # Currently only works with boost v1.79.0
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         arch: aarch64 # Note the new 'arch' option
+
+    - name: build project
+      working-directory: ${{github.workspace}}/server
+      run: |
+        cp ../tools/toolchains/Toolchain-RaspberryPi.cmake $HOME/rpi/Toolchain-RaspberryPi.cmake
+        mkdir build
+        cd build
+        cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=$HOME/rpi/Toolchain-RaspberryPi.cmake ../
 
  dependabot:
     needs: [sonarcloud-analyse]
