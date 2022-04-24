@@ -500,9 +500,9 @@ jobs:
         cd ~/rpi
         git clone https://github.com/raspberrypi/tools.git
         mkdir -p rootfs/opt
-        cp /run/media/amgaera/root/lib/ rootfs/ -rv
-        cp /run/media/amgaera/root/usr/ rootfs/ -rv
-        cp /run/media/amgaera/root/opt/vc rootfs/opt/ -rv
+        # cp /run/media/amgaera/root/lib/ rootfs/ -rv
+        # cp /run/media/amgaera/root/usr/ rootfs/ -rv
+        # cp /run/media/amgaera/root/opt/vc rootfs/opt/ -rv
 
     - name: Install Boost
       uses: MarkusJx/install-boost@ebe4e0e3c10a85635247dc7f6f89b72a4a162b2d
