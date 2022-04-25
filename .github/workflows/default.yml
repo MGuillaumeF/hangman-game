@@ -522,7 +522,24 @@ jobs:
 
     - name: Build Target 
       run: cmake --build ${{github.workspace}}/server/bin
-      
+
+    - name: Package server
+      working-directory: ${{github.workspace}}/server/bin
+      # Build your program with the given configuration
+      run: cpack -G "ZIP;DEB"
+
+    - name: Archive Server ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game-Linux-arm64
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
+
+    - name: Archive Server DEB
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game-Linux-arm64
+        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
+
  dependabot:
     needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
