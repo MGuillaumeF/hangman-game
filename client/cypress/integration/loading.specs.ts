@@ -77,6 +77,11 @@ function addEnd() {
   });
 }
 
+function basicInputType(id: string, value: string) {
+  cy.get(`label[for=${id}]`).click();
+  return cy.get(`#${id}`).click().type(value).should("have.value", value);
+}
+
 describe(specTitle("Offlines Access"), () => {
   it("Settings", () => {
     cy.clearViewport();
@@ -134,26 +139,15 @@ describe(specTitle("Subscription"), () => {
 
     cy.get("#PAGES_SIGN_UP_LINK").click();
 
-    cy.get("#FORMS_SIGN_UP_FIELDS_EMAIL")
-      .click({ force: true })
-      .type("mguillaumef@draft.com")
-      .should("have.value", "mguillaumef@draft.com");
+    basicInputType("FORMS_SIGN_UP_FIELDS_EMAIL", "mguillaumef@draft.com");
 
-    cy.get("#FORMS_SIGN_UP_FIELDS_IDENTIFIER")
-      .click({ force: true })
-      .type("mguillaumef")
-      .should("have.value", "mguillaumef");
+    basicInputType("FORMS_SIGN_UP_FIELDS_IDENTIFIER", "mguillaumef");
 
-    cy.get("#FORMS_SIGN_UP_FIELDS_PASSWORD")
-      .click({ force: true })
-      .type("DROWssap987")
-      .should("have.value", "DROWssap987");
+    basicInputType("FORMS_SIGN_UP_FIELDS_PASSWORD", "DROWssap987");
 
-    cy.get("#FORMS_SIGN_UP_FIELDS_CONFIRM")
-      .click({ force: true })
-      .type("DROWssap987")
-      .should("have.value", "DROWssap987")
-      .type("{enter}");
+    basicInputType("FORMS_SIGN_UP_FIELDS_CONFIRM", "DROWssap987").type(
+      "{enter}"
+    );
 
     cy.wait("@subscribe");
     addEnd();
@@ -181,16 +175,11 @@ describe(specTitle("Login"), () => {
 
     cy.get("#PAGES_SIGN_IN_LINK").click();
 
-    cy.get("#FORMS_SIGN_IN_FIELDS_IDENTIFIER")
-      .click({ force: true })
-      .type("mguillaumef")
-      .should("have.value", "mguillaumef");
+    basicInputType("FORMS_SIGN_IN_FIELDS_IDENTIFIER", "mguillaumef");
 
-    cy.get("#FORMS_SIGN_IN_FIELDS_PASSWORD")
-      .click({ force: true })
-      .type("DROWssap987")
-      .should("have.value", "DROWssap987")
-      .type("{enter}");
+    basicInputType("FORMS_SIGN_IN_FIELDS_PASSWORD", "DROWssap987").type(
+      "{enter}"
+    );
 
     cy.wait("@login");
     addEnd();
