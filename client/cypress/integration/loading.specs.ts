@@ -78,12 +78,8 @@ function addEnd() {
 }
 
 function basicInputType(id: string, value: string) {
-  cy.get(`label[for=${id}]`)
-    .click();
-  return cy.get(`#${id}]`)
-    .click()
-    .type(value)
-    .should("have.value", value);
+  cy.get(`label[for=${id}]`).click();
+  return cy.get(`#${id}]`).click().type(value).should("have.value", value);
 }
 
 describe(specTitle("Offlines Access"), () => {
