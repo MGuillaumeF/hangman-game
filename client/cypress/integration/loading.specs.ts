@@ -77,11 +77,12 @@ function addEnd() {
   });
 }
 
-function basicInputType(id : string, value : string) {
-  return cy.get(`label[for=${id}]`)
-      .click()
-      .type(value)
-      .should("have.value", value);
+function basicInputType(id: string, value: string) {
+  return cy
+    .get(`label[for=${id}]`)
+    .click()
+    .type(value)
+    .should("have.value", value);
 }
 
 describe(specTitle("Offlines Access"), () => {
@@ -147,8 +148,9 @@ describe(specTitle("Subscription"), () => {
 
     basicInputType("FORMS_SIGN_UP_FIELDS_PASSWORD", "DROWssap987");
 
-    basicInputType("FORMS_SIGN_UP_FIELDS_CONFIRM", "DROWssap987")
-      .type("{enter}");
+    basicInputType("FORMS_SIGN_UP_FIELDS_CONFIRM", "DROWssap987").type(
+      "{enter}"
+    );
 
     cy.wait("@subscribe");
     addEnd();
@@ -178,8 +180,9 @@ describe(specTitle("Login"), () => {
 
     basicInputType("FORMS_SIGN_IN_FIELDS_IDENTIFIER", "mguillaumef");
 
-    basicInputType("FORMS_SIGN_IN_FIELDS_PASSWORD", "DROWssap987")
-      .type("{enter}");
+    basicInputType("FORMS_SIGN_IN_FIELDS_PASSWORD", "DROWssap987").type(
+      "{enter}"
+    );
 
     cy.wait("@login");
     addEnd();
