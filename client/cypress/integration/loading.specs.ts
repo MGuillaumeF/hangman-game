@@ -78,8 +78,9 @@ function addEnd() {
 }
 
 function basicInputType(id: string, value: string) {
-  return cy
-    .get(`label[for=${id}]`)
+  cy.get(`label[for=${id}]`)
+    .click();
+  return cy.get(`#${id}]`)
     .click()
     .type(value)
     .should("have.value", value);
