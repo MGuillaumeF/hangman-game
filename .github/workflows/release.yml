@@ -281,14 +281,14 @@ jobs:
     - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  install-server-linux:
     needs: [build-release-Linux]
@@ -492,13 +492,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
-        path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  packaging:
     needs: [ install-server-linux, build-release-Windows, build-server-MacOSX, build-raspberry-pi-toolchain]
@@ -557,4 +557,4 @@ jobs:
       run: echo "add version ${{env.APPLICATION_VERSION}} of application"
 
     - name: Save application
-      run: echo "save all changes"
+      run: tree ${{github.workspace}}/packaging && echo "save all changes"
