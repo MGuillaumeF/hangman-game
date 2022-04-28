@@ -287,7 +287,7 @@ jobs:
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
         path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  install-server-linux:
