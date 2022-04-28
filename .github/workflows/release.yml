@@ -300,7 +300,7 @@ jobs:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
 
     - name: install
-      run: sudo dpkg -i ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
+      run: is -a && sudo dpkg -i ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
     - name: display installation tree
       run: tree /usr/HangmanGame
