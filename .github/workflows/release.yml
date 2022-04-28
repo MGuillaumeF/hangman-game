@@ -40,7 +40,7 @@ jobs:
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -258,7 +258,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -281,13 +281,13 @@ jobs:
     - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game-Linux
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game-Linux
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
 
  install-server-linux:
@@ -297,10 +297,10 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        name: Server-Hangman-Game-Linux
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
 
     - name: install
-      run: sudo dpkg -i HangmanGame-0.1.0-Linux.deb
+      run: sudo dpkg -i ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
 
     - name: display installation tree
       run: tree /usr/HangmanGame
@@ -324,7 +324,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -357,7 +357,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -419,7 +419,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -468,7 +468,7 @@ jobs:
       run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
     - name: Install Boost
-      uses: MarkusJx/install-boost@ebe4e0e3c10a85635247dc7f6f89b72a4a162b2d
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}} # Currently only works with boost v1.79.0
@@ -491,11 +491,70 @@ jobs:
     - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game-Linux-arm64
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
-        name: Server-Hangman-Game-Linux-arm64
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
         path: ${{github.workspace}}/server/bin/HangmanGame-0.1.0-Linux.deb
+
+ packaging:
+    needs: [ install-server-linux, build-release-Windows, build-server-MacOSX, build-raspberry-pi-toolchain]
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+    
+    - name: Checkout Branch
+      run: echo "change git branch to develop"
+
+    - name: Test if version number is available
+      run: echo "test if version ${{env.APPLICATION_VERSION}} is available"
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
+
+    - name: Update static files of host page to add new version an change log
+      run: echo "add version ${{env.APPLICATION_VERSION}} of application"
+
+    - name: Save application
+      run: echo "save all changes"
