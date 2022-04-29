@@ -281,7 +281,7 @@ jobs:
     - name: Archive Server ZIP
       uses: actions/upload-artifact@v2
       with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
         path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
     - name: Archive Server DEB
