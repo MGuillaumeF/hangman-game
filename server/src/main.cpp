@@ -94,7 +94,7 @@ int32_t main(int argc, char *argv[]) {
 
   // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
-  
+
   // get server configuration
   auto config = ConfigurationServer();
 
@@ -107,13 +107,17 @@ int32_t main(int argc, char *argv[]) {
         return tokenEndpoint.getResponse();
       });
   http::Session::addRequestDispatcher(
-     "/", [](const boost::beast::http::request<boost::beast::http::string_body>
+      "/", [](const boost::beast::http::request<boost::beast::http::string_body>
                   &req) {
         LocationEndpoint rootDirectoryEndpoint(req, ".");
         rootDirectoryEndpoint.dispatchRequest();
         return rootDirectoryEndpoint.getResponse();
       });
-  auto server = http::Server(config.getIpAddress(), config.getPort(), config.getThreads());
+
+  logger->info("HTTP_CONFIGURATION", "Enpoints configured");
+
+  auto server = http::Server(config.getIpAddress(), config.getPort(),
+                             config.getThreads());
 
   return exitStatus;
 }
