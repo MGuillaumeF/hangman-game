@@ -344,17 +344,10 @@ jobs:
         chmod +x ./run-tests.sh
         ./run-tests.sh
 
-    - name: Merge Coverage
+    - name: gcov after test
       if: github.actor != 'dependabot[bot]'
       continue-on-error: true
-      run: | 
-        cp -r ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/coverage
-        gcov-tool merge --output ${{github.workspace}}/server/bin/coverage --verbose ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
-
-    - name: gcov after merge
-      if: github.actor != 'dependabot[bot]'
-      continue-on-error: true
-      working-directory: ${{github.workspace}}/server/bin/coverage
+      working-directory: ${{github.workspace}}/server/bin/CMakeFiles
       run: find -name '*.gcda' | xargs gcov
 
     - name: Archive Test report
