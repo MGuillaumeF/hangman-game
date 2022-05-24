@@ -133,7 +133,7 @@ jobs:
 
     - name: Convert Boost Tests reports to sonarqube format
       working-directory: ${{github.workspace}}/server/bin
-      run: ./cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/reports.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report.xml
+      run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/reports.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report.xml
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
