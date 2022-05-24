@@ -131,9 +131,13 @@ jobs:
       working-directory: ${{github.workspace}}/server/bin
       run: find -name '*.gcda' | xargs gcov
 
-    - name: Convert Boost Tests reports to sonarqube format
+    - name: Convert Boost Tests UT reports to sonarqube format
       working-directory: ${{github.workspace}}/server/bin
-      run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report.xml
+      run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
+
+    - name: Convert Boost Tests IT reports to sonarqube format
+      working-directory: ${{github.workspace}}/server/bin
+      run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2
