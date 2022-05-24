@@ -1,24 +1,23 @@
 #ifndef __HTTP_SERIALIZATION_EXCEPTION_HPP__
 #define __HTTP_SERIALIZATION_EXCEPTION_HPP__
 
-#include <exception>
-#include <string>
+#include "./HangmanGameException.hpp"
 
 /**
  * Exception class for serialization error
  */
-class SerializationException : public std::exception {
+class SerializationException : public HangmanGameException {
 public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit SerializationException(const char * const message) : m_message(message) {}
+  explicit SerializationException(const char * const message) : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
   explicit SerializationException(const std::string &message)
-      : m_message(message) {}
+      : HangmanGameException(message) {}
 
 private:
   /** Error message.
