@@ -1,25 +1,24 @@
 #ifndef __HTTP_CONFIGURATION_EXCEPTION_HPP__
 #define __HTTP_CONFIGURATION_EXCEPTION_HPP__
 
-#include <exception>
-#include <string>
+#include "./HangmanGameException.hpp"
 
 /**
  * Exception class for configuration error
  */
-class ConfigurationException : public std::exception {
+class ConfigurationException : public HangmanGameException {
 public:
   /** Constructor
    *  @param message The message exception
    */
   explicit ConfigurationException(const char *const message)
-      : m_message(message) {}
+      : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
   explicit ConfigurationException(const std::string_view &message)
-      : m_message(message) {}
+      : HangmanGameException(message) {}
 
 private:
   /** Error message.

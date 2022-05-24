@@ -1,23 +1,22 @@
 #ifndef __HTTP_PARSING_EXCEPTION_HPP__
 #define __HTTP_PARSING_EXCEPTION_HPP__
 
-#include <exception>
-#include <string>
+#include "./HangmanGameException.hpp"
 
 /**
  * Exception class for parsing error
  */
-class ParsingException : public std::exception {
+class ParsingException : public HangmanGameException {
 public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit ParsingException(const char * const message) : m_message(message) {}
+  explicit ParsingException(const char * const message) : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
-  explicit ParsingException(const std::string &message) : m_message(message) {}
+  explicit ParsingException(const std::string &message) : HangmanGameException(message) {}
 
 private:
   /** Error message.
