@@ -11,7 +11,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
   BOOST_VERSION: 1.79.0
-  CPP_COSO_VERSION: 0.2.0
+  CPP_COSO_VERSION: 0.2.1
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
   DB_PWD: root
