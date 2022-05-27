@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
-    "@cypress/code-coverage": "^3.9.12",
+    "@cypress/code-coverage": "^3.10.0",
     "@gfx/zopfli": "^1.0.15",
     "@mguillaumef/audiso": "^0.0.4",
     "@testing-library/jest-dom": "^5.16.4",
