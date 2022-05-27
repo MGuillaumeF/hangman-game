@@ -468,7 +468,7 @@ jobs:
  build-release-Windows:
     needs: [build-debug-Windows]
     runs-on: windows-latest
-    github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
     - uses: actions/checkout@v2
@@ -573,7 +573,7 @@ jobs:
  build-release-MacOSX:
     needs: [build-debug-MacOSX]
     runs-on: macos-11
-    github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
     - uses: actions/checkout@v2
