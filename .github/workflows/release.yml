@@ -37,7 +37,7 @@ jobs:
       run: sudo apt-get install -y gcovr doxygen graphviz clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
 
     - name: Create icon
-      working-directory: ${{github.workspace}}/resources/icon/hangman-game
+      working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
       run: |
         dbus-run-session inkscape -w 16 -h 16 -e hangman-game-16x16.png hangman-game.svg
         dbus-run-session inkscape -w 32 -h 32 -e hangman-game-32x32.png hangman-game.svg
@@ -55,7 +55,7 @@ jobs:
         git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add resources/icon/hangman-game
+        git add server/resources/icon/hangman-game
         (git commit -m "[AUTO] update icon generated" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
