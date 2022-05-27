@@ -253,7 +253,7 @@ jobs:
     - name: Build client
       working-directory: ${{github.workspace}}/client
       run: npm run build
-      
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
@@ -401,7 +401,7 @@ jobs:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
         path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
- install-server-linux:
+ install-server-Linux:
     needs: [build-release-Linux]
     runs-on: ubuntu-latest
     steps:
@@ -512,7 +512,7 @@ jobs:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
         path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
 
- install-Windows:
+ install-server-Windows:
     needs: [build-release-Windows]
     runs-on: windows-latest
     steps:
@@ -682,7 +682,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
  packaging:
-    needs: [ install-server-linux, build-release-Windows, build-server-MacOSX, build-raspberry-pi-toolchain]
+    needs: [ install-server-Linux, install-server-Windows, build-release-MacOSX, build-raspberry-pi-toolchain]
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
