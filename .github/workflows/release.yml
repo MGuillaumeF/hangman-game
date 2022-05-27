@@ -34,7 +34,7 @@ jobs:
         fetch-depth: 0
 
     - name: Install dependencies
-      run: sudo apt-get install -y gcovr doxygen graphviz clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
 
     - name: Create icon
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
