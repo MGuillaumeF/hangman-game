@@ -1,8 +1,15 @@
 # minimum CMake version (minimum feature)
 cmake_minimum_required(VERSION 3.12)
 
+
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
+
 # Add name on project 
-project(HangmanGame)
+project(HangmanGame VERSION "${PACKAGE_VERSION}")
 
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 20)
@@ -80,7 +87,9 @@ if (Boost_FOUND)
   # add boost includes
   include_directories(${Boost_INCLUDE_DIRS}) 
   # Create application executable files
-  add_executable(HangmanGame ${SRCS})
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
+  set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
+  add_executable(${PROJECT_NAME} ${SRCS} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
   add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
   install(TARGETS HangmanGame DESTINATION HangmanGame)
   install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "HangmanGame/configuration")
@@ -123,10 +132,7 @@ set(CPACK_PACKAGE_VENDOR "MGuillaumeF")
 set(CPACK_PACKAGE_CONTACT "draft@gmail.com")
 # set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/docs/README.txt")
 # set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/docs/Copyright.txt")
-set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}.${CMake_VERSION_PATCH}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}-${CMAKE_PROJECT_VERSION}")
 if(WIN32 AND NOT UNIX)
   # There is a bug in NSI that does not handle full UNIX paths properly.
   # Make sure there is at least one set of four backlashes.

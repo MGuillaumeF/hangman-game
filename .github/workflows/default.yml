@@ -2,10 +2,10 @@ name: HANGMAN-GAME - DEFAULT
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ never ]
   pull_request:
     branches: 
-      - main
+      - never
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
