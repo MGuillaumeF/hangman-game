@@ -82,7 +82,9 @@ jobs:
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
-      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+      run: |
+        odb -d sqlite --generate-query --generate-schema user.hxx
+        ls -a .
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/data-management/reports
