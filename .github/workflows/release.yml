@@ -33,6 +33,9 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
+    - name: echo g++ version
+      run: g++ -v
+
     - name: Install dependencies
       run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common
 
