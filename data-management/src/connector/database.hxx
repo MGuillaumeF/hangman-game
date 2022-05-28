@@ -62,7 +62,7 @@ create_database (int& argc, char* argv[])
 #if defined(DATABASE_MYSQL)
   auto_ptr<database> db (new odb::mysql::database (argc, argv));
 #elif defined(DATABASE_SQLITE)
-  auto_ptr<database> db (new odb::sqlite::database (argc, argv));
+  auto_ptr<database> db (new odb::sqlite::database ("data.db"));
 
   // Create the database schema. Due to bugs in SQLite foreign key
   // support for DDL statements, we need to temporarily disable
