@@ -64,7 +64,7 @@ create_database (int& argc, char* argv[])
 #elif defined(DATABASE_SQLITE)
   auto_ptr<database> db (
     new odb::sqlite::database (
-      argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
+      argc, argv, false, SQLITE_OPEN_READWRITE));
 
   // Create the database schema. Due to bugs in SQLite foreign key
   // support for DDL statements, we need to temporarily disable
