@@ -1,7 +1,7 @@
 #define DATABASE_SQLITE
 
 #include <iostream>
-#include <memory> // std::auto_ptr
+#include <memory> // std::auto_ptr, unique_ptr
 
 #include <odb/transaction.hxx>
 
@@ -23,7 +23,7 @@ int32_t main(int argc, char *argv[]) {
   char *tempArgv[] = {exec_name, user_key, user_value, database_key,
                       database_value};
   int tempArgc = 5;
-  auto_ptr<database> db(create_database(tempArgc, tempArgv));
+  unique_ptr<database> db(create_database(tempArgc, tempArgv));
 
   unsigned long john_id;
   unsigned long joe_id;
@@ -86,7 +86,7 @@ int32_t main(int argc, char *argv[]) {
   {
     transaction t(db->begin());
 
-    auto_ptr<user> joe(db->load<user>(joe_id));
+    unique_ptr<user> joe(db->load<user>(joe_id));
     joe->setToken("new token");
     db->update(*joe);
 
@@ -95,24 +95,22 @@ int32_t main(int argc, char *argv[]) {
 
   // Alternative implementation without using the id.
   //
-  /*
   {
     transaction t (db->begin ());
     // Here we know that there can be only one Joe  in our
     // database so we use the query_one() shortcut instead of
     // manually iterating over the result returned by query().
     //
-    auto_ptr<user> joe (
-      db->query_one<user> (query::login == "Joe" &&
-                             query::password == "password_3"));
-    if (joe.get () != 0)
+    unique_ptr<user> frank (
+      db->query_one<user> (query::login == "Frank" &&
+                             query::password == "password_4"));
+    if (frank.get () != 0)
     {
-      joe->setToken ("new token");
-      db->update (*joe);
+      frank->setToken ("new token");
+      db->update (* frank);
     }
     t.commit ();
   }
-  */
 
   // Print some statistics about all the people in our database.
   //
