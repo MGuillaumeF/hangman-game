@@ -81,6 +81,7 @@ if (ODB_FOUND)
   else ()
     target_link_libraries(DataManagement ${ODB_LIBRARIES}  ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
   endif()
+  target_link_libraries(main PRIVATE odb::libodb-sqlite)
 else ()
   # If ODB not found print fatal error message
   message(FATAL_ERROR "ODB not found")
