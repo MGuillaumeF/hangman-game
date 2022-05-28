@@ -1,4 +1,4 @@
-#define DATABASE_MYSQL
+#define DATABASE_SQLITE
 
 #include <iostream>
 #include <memory> // std::auto_ptr
