@@ -57,7 +57,7 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 # search external dependence ODB
-find_package (ODB REQUIRED COMPONENTS mysql)
+find_package (ODB REQUIRED COMPONENTS sqlite)
 find_package (Boost)
 include(${ODB_USE_FILE})
 
@@ -81,7 +81,7 @@ if (ODB_FOUND)
   else ()
     target_link_libraries(DataManagement ${ODB_LIBRARIES}  ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
   endif()
-  target_link_libraries(DataManagement PRIVATE odb::libodb-sqlite)
+  # target_link_libraries(DataManagement PRIVATE odb::libodb-sqlite)
 else ()
   # If ODB not found print fatal error message
   message(FATAL_ERROR "ODB not found")
