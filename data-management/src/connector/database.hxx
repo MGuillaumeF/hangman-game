@@ -47,7 +47,7 @@ create_database (int& argc, char* argv[])
 #if defined(DATABASE_MYSQL)
     odb::mysql::database::print_usage (cout);
 #elif defined(DATABASE_SQLITE)
-    // odb::sqlite::database::print_usage (cout);
+    odb::sqlite::database::print_usage (cout);
 #elif defined(DATABASE_PGSQL)
     odb::pgsql::database::print_usage (cout);
 #elif defined(DATABASE_ORACLE)
