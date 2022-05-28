@@ -77,7 +77,8 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg update
         ./vcpkg integrate install
-        ./vcpkg install boost libodb-mysql
+        ./vcpkg install boost
+        ./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
