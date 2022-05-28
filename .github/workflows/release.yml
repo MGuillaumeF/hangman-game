@@ -92,15 +92,15 @@ jobs:
     - name: Lint Cpp Check
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management
 
-    - name: Start MySQL server
-      run: sudo service mysql start 
+    # - name: Start MySQL server
+    #   run: sudo service mysql start 
 
-    - name: Update Database schema
-      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
+    # - name: Update Database schema
+    #   run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
 
-    - name: Update Database schema
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run:  mysql --user=odb_test --database=odb_test < user.sql
+    # - name: Update Database schema
+    #   working-directory: ${{github.workspace}}/data-management/src/model
+    #   run:  mysql --user=odb_test --database=odb_test < user.sql
 
     - name: Generate target (data management)
       run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake
