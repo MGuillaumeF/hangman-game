@@ -37,7 +37,7 @@ jobs:
       run: g++ -v
 
     - name: Install dependencies
-      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common odb
 
     - name: Create icon
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
