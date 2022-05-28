@@ -78,7 +78,7 @@ jobs:
         ./vcpkg update
         ./vcpkg integrate install
         ./vcpkg install boost
-        ./vcpkg install libodb-mysql
+        ./vcpkg install libodb-sqlite
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
