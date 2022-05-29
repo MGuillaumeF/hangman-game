@@ -58,7 +58,7 @@ create_database (int& argc, char* argv[])
 #if defined(DATABASE_MYSQL)
   std::unique_ptr<database> db (new odb::mysql::database (argc, argv));
 #elif defined(DATABASE_SQLITE)
-  unique_ptr<database> db (
+  std::unique_ptr<database> db (
      new odb::sqlite::database (
        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
   // Create the database schema. Due to bugs in SQLite foreign key
