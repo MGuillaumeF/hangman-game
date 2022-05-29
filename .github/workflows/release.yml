@@ -23,7 +23,7 @@ permissions: write-all
 jobs:
 
  sonarcloud-analyse:
-    if: never()
+    if: github.actor == 'dependabot[bot]'
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
