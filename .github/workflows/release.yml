@@ -23,7 +23,6 @@ permissions: write-all
 jobs:
 
  sonarcloud-analyse:
-    if: github.actor == 'dependabot[bot]'
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
@@ -455,7 +454,7 @@ jobs:
     #   run: ./HangmanGame
 
  build-debug-Windows:
-    # needs: [sonarcloud-analyse]
+    needs: [sonarcloud-analyse]
     env:
       BUILD_TYPE: Debug
     runs-on: windows-latest
@@ -584,7 +583,7 @@ jobs:
       run: 'tree "C:\program files\${{env.APPLICATION_NAME}}\${{env.APPLICATION_NAME}}"'
 
  build-debug-MacOSX:
-    # needs: [sonarcloud-analyse]
+    needs: [sonarcloud-analyse]
     env:
       BUILD_TYPE: Debug
     runs-on: macos-11
