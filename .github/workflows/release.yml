@@ -488,11 +488,11 @@ jobs:
         cd vcpkg
         git pull
         .\bootstrap-vcpkg.sh
-        .\vcpkg update
-        .\vcpkg integrate install
+        cmd.exe /C "vcpkg update"
+        cmd.exe /C "vcpkg integrate install"
         # .\vcpkg install boost
-        .\vcpkg install libodb
-        .\vcpkg install libodb-sqlite
+        cmd.exe /C "vcpkg install libodb"
+        cmd.exe /C "vcpkg install libodb-sqlite"
 
     - name: Generate target (data management)
       run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
