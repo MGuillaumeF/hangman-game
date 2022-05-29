@@ -22,7 +22,7 @@ int32_t main(int argc, char *argv[]) {
   char *tempArgv[] = {exec_name, user_key, user_value, database_key,
                       database_value};
   int tempArgc = 5;
-  unique_ptr<database> db(create_database(tempArgc, tempArgv));
+  std::unique_ptr<database> db(create_database(tempArgc, tempArgv));
 
   unsigned long john_id;
   unsigned long joe_id;
