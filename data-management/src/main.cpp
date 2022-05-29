@@ -13,7 +13,6 @@
 int32_t main(int argc, char *argv[]) {
 
   using namespace odb::core;
-  using namespace std;
 
   char *exec_name = "./HangmanGameTest";
   char *user_key = "--user";
@@ -86,7 +85,7 @@ int32_t main(int argc, char *argv[]) {
   {
     transaction t(db->begin());
 
-    unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
     joe->setToken("new token");
     db->update(*joe);
 
@@ -101,7 +100,7 @@ int32_t main(int argc, char *argv[]) {
     // database so we use the query_one() shortcut instead of
     // manually iterating over the result returned by query().
     //
-    unique_ptr<user> frank (
+    std::unique_ptr<user> frank (
       db->query_one<user> (query::login == "Frank" &&
                              query::password == "password_4"));
     if (frank.get () != 0)
