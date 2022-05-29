@@ -491,6 +491,7 @@ jobs:
         .\vcpkg update
         .\vcpkg integrate install
         # .\vcpkg install boost
+        .\vcpkg install libodb
         .\vcpkg install libodb-sqlite
 
     - name: Generate target (data management)
@@ -618,6 +619,7 @@ jobs:
         ./vcpkg update
         ./vcpkg integrate install
         # ./vcpkg install boost
+        ./vcpkg install libodb
         ./vcpkg install libodb-sqlite
 
     - name: Generate target (data management)
