@@ -12,6 +12,7 @@
 #include <string>
 #include <memory>   // std::unique_ptr
 #include <iostream>
+#include <stdexcept>
 
 #include <odb/database.hxx>
 
@@ -53,13 +54,14 @@ create_database (int& argc, char* argv[])
 #elif defined(DATABASE_MSSQL)
     odb::mssql::database::print_usage (std::cout);
 #endif
+    throw std::runtime_error("bad usage database");
   } else {
 
 #if defined(DATABASE_MYSQL)
-  std::unique_ptr<database> db (new odb::mysql::database (argc, argv));
+    std::unique_ptr<database> db (new odb::mysql::database (argc, argv));
 #elif defined(DATABASE_SQLITE)
-  std::unique_ptr<database> db (
-     new odb::sqlite::database (
+    std::unique_ptr<database> db (
+       new odb::sqlite::database (
        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
   // Create the database schema. Due to bugs in SQLite foreign key
   // support for DDL statements, we need to temporarily disable
@@ -75,14 +77,14 @@ create_database (int& argc, char* argv[])
 
     c->execute ("PRAGMA foreign_keys=ON");
 #elif defined(DATABASE_PGSQL)
-  std::unique_ptr<database> db (new odb::pgsql::database (argc, argv));
+    std::unique_ptr<database> db (new odb::pgsql::database (argc, argv));
 #elif defined(DATABASE_ORACLE)
-  std::unique_ptr<database> db (new odb::oracle::database (argc, argv));
+    std::unique_ptr<database> db (new odb::oracle::database (argc, argv));
 #elif defined(DATABASE_MSSQL)
-  std::unique_ptr<database> db (new odb::mssql::database (argc, argv));
+    std::unique_ptr<database> db (new odb::mssql::database (argc, argv));
 #endif
+    return db;
   }
-  return db;
 }
 
 #endif // DATABASE_HXX
