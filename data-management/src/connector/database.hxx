@@ -10,8 +10,7 @@
 #define DATABASE_HXX
 
 #include <string>
-#include <memory>   // std::auto_ptr
-#include <cstdlib>  // std::exit
+#include <memory>   // std::unique_ptr
 #include <iostream>
 
 #include <odb/database.hxx>
@@ -36,31 +35,28 @@
 inline std::unique_ptr<odb::database>
 create_database (int& argc, char* argv[])
 {
-  using namespace std;
   using namespace odb::core;
 
-  if (argc > 1 && argv[1] == string ("--help"))
+  if (argc > 1 && argv[1] == std::string ("--help"))
   {
-    cout << "Usage: " << argv[0] << " [options]" << endl
-         << "Options:" << endl;
+    std::cout << "Usage: " << argv[0] << " [options]" << std::endl
+         << "Options:" << std::endl;
 
 #if defined(DATABASE_MYSQL)
-    odb::mysql::database::print_usage (cout);
+    odb::mysql::database::print_usage (std::cout);
 #elif defined(DATABASE_SQLITE)
-    odb::sqlite::database::print_usage (cout);
+    odb::sqlite::database::print_usage (std::cout);
 #elif defined(DATABASE_PGSQL)
-    odb::pgsql::database::print_usage (cout);
+    odb::pgsql::database::print_usage (std::cout);
 #elif defined(DATABASE_ORACLE)
-    odb::oracle::database::print_usage (cout);
+    odb::oracle::database::print_usage (std::cout);
 #elif defined(DATABASE_MSSQL)
-    odb::mssql::database::print_usage (cout);
+    odb::mssql::database::print_usage (std::cout);
 #endif
-
-    exit (0);
-  }
+  } else {
 
 #if defined(DATABASE_MYSQL)
-  unique_ptr<database> db (new odb::mysql::database (argc, argv));
+  std::unique_ptr<database> db (new odb::mysql::database (argc, argv));
 #elif defined(DATABASE_SQLITE)
   unique_ptr<database> db (
      new odb::sqlite::database (
@@ -69,8 +65,7 @@ create_database (int& argc, char* argv[])
   // support for DDL statements, we need to temporarily disable
   // foreign keys.
   //
-  {
-    connection_ptr c (db->connection ());
+    const connection_ptr c (db->connection ());
 
     c->execute ("PRAGMA foreign_keys=OFF");
 
@@ -79,15 +74,14 @@ create_database (int& argc, char* argv[])
     t.commit ();
 
     c->execute ("PRAGMA foreign_keys=ON");
-  }
 #elif defined(DATABASE_PGSQL)
-  unique_ptr<database> db (new odb::pgsql::database (argc, argv));
+  std::unique_ptr<database> db (new odb::pgsql::database (argc, argv));
 #elif defined(DATABASE_ORACLE)
-  unique_ptr<database> db (new odb::oracle::database (argc, argv));
+  std::unique_ptr<database> db (new odb::oracle::database (argc, argv));
 #elif defined(DATABASE_MSSQL)
-  unique_ptr<database> db (new odb::mssql::database (argc, argv));
+  std::unique_ptr<database> db (new odb::mssql::database (argc, argv));
 #endif
-
+  }
   return db;
 }
 
