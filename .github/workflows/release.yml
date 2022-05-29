@@ -609,11 +609,16 @@ jobs:
       with:
         boost_version: ${{env.BOOST_VERSION}}
 
+    - name: Install compiler odb
+      working-directory: /opt
+      run: |
+        curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
+        sudo bzip -dc odb-2.4.0-i686-macosx.tar.bz2 | tar xf -
+        tree odb-2.4.0-i686-macosx
+
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
       run: |
-        brew tap max13/odb
-        brew install max13/odb/odb
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
         git pull
