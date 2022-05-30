@@ -54,12 +54,12 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
      "src/connector/*.hxx"
 )
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
+# list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 # search external dependence ODB
 find_package (ODB REQUIRED COMPONENTS sqlite)
 find_package (Boost)
-include(${ODB_USE_FILE})
+# include(${ODB_USE_FILE})
 
 if (ODB_FOUND)
   include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS}) 
