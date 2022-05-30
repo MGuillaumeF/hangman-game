@@ -482,7 +482,7 @@ jobs:
         .\bootstrap-vcpkg.sh
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
-        cmd.exe /C "vcpkg install boost"
+        cmd.exe /C "vcpkg install boost --triplet x64-windows"
         cmd.exe /C "vcpkg install libodb"
         cmd.exe /C "vcpkg install libodb-sqlite"
 
