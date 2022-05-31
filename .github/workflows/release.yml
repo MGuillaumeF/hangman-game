@@ -44,7 +44,8 @@ jobs:
       run: g++ -v
 
     - name: Install dependencies
-      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common odb autoconf-archive
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common odb
+      # add autoconf-archive for libodb-mysql
 
     - name: Create icon
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
@@ -94,7 +95,7 @@ jobs:
         ./vcpkg integrate install
         # ./vcpkg install boost
         ./vcpkg install libodb-sqlite
-        ./vcpkg install libodb-mysql
+        #./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -147,7 +148,7 @@ jobs:
       run: ctest --verbose
 
     - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
+      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
 
     - name: Download cpp-coso ${{env.CPP_COSO_VERSION}}
       uses: wei/wget@v1
