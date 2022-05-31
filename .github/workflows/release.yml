@@ -475,6 +475,14 @@ jobs:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
 
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+        # OPTIONAL: in workspace by default
+        boost_install_dir: 'D:/'
+
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
       run: |
@@ -484,7 +492,7 @@ jobs:
         .\bootstrap-vcpkg.sh
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
-        cmd.exe /C "vcpkg install boost --triplet x64-windows"
+        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
         cmd.exe /C "vcpkg install libodb --triplet x64-windows"
         cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
 
