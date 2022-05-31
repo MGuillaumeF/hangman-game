@@ -630,6 +630,7 @@ jobs:
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         ODB_ROOT: ${{github.workspace}}/odb-2.4.0-i686-macosx
+        EXTERNAL_INCLUDE_DIRS: ${{github.workspace}}/odb-2.4.0-i686-macosx/lib/odb/i686-apple-darwin10/include
 
     - name: Build Data Management
       working-directory: ${{github.workspace}}/data-management
