@@ -62,7 +62,7 @@ find_package (Boost)
 include(${ODB_USE_FILE})
 
 if (ODB_FOUND)
-  include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS}) 
+  include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${EXTERNAL_INCLUDE_DIRS}) 
 
   # Create application executable files
   add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
