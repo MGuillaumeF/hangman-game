@@ -85,7 +85,9 @@ find_library(libodb_LIBRARY
 find_program(odb_BIN
 	NAMES odb
 	HINTS
-		${libodb_INCLUDE_DIR}/../bin)
+		${libodb_INCLUDE_DIR}/../bin
+                ${ODB_ROOT}/bin
+)
 
 set(ODB_LIBODB_INCLUDE_DIRS ${libodb_INCLUDE_DIR} CACHE STRING "ODB libodb include dirs")
 set(ODB_LIBODB_LIBRARIES ${libodb_LIBRARY} CACHE STRING "ODB libodb library")
