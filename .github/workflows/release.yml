@@ -147,7 +147,7 @@ jobs:
       run: ctest --verbose
 
     - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
+      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
 
     - name: Download cpp-coso ${{env.CPP_COSO_VERSION}}
       uses: wei/wget@v1
