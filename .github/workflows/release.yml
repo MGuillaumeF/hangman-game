@@ -483,8 +483,8 @@ jobs:
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
         cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb"
-        cmd.exe /C "vcpkg install libodb-sqlite"
+        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
+        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
@@ -608,7 +608,7 @@ jobs:
         curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
         sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
         tree odb-2.4.0-i686-macosx
-        sudo cp ./odb-2.4.0-i686-macosx/bin/odb /usr/bin/odb
+        sudo cp ./odb-2.4.0-i686-macosx/bin/* /usr/bin
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
