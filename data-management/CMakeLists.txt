@@ -65,7 +65,9 @@ if (ODB_FOUND)
   include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${EXTERNAL_INCLUDE_DIRS}) 
 
   # Create application executable files
-  add_executable(DataManagement src/main.cpp ${CONNECTOR_MODEL_SRC_DIR})
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
+  set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
+  add_executable(${PROJECT_NAME}  src/main.cpp ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
   add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
   add_test(DataManagementUnitTests DataManagement)
   # install(TARGETS DataManagement DESTINATION DataManagement)
