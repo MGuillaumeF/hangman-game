@@ -1,10 +1,6 @@
 # minimum CMake version (minimum feature)
 cmake_minimum_required(VERSION 3.12)
 
-# version setting for main app
-set (DataManagement_VERSION_MAJOR 1)
-set (DataManagement_VERSION_MINOR 0)
-
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,8 +8,13 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 # target_compile_definitions(DATABASE_MYSQL)
 # add_compile_definitions(DATABASE_MYSQL)
 
-# Add name on project
-project(DataManagement)
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
+# Add name on project 
+project(DataManagement VERSION "${PACKAGE_VERSION}")
 
 # activate test on project
 enable_testing()
