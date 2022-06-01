@@ -12,7 +12,7 @@ namespace odb
   access::object_traits< ::user >::
   id (const object_type& o)
   {
-    return o.id_;
+    return o.m_id;
   }
 
   inline

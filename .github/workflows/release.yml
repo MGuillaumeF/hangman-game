@@ -111,7 +111,7 @@ jobs:
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
-        odb -d sqlite --generate-query --generate-schema user.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx
         ls -a .
 
     - name: Save model changes

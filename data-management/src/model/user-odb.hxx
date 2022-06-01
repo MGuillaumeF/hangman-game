@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
@@ -53,7 +54,7 @@ namespace odb
 
     static const bool polymorphic = false;
 
-    typedef long unsigned int id_type;
+    typedef ::uint32_t id_type;
 
     static const bool auto_id = true;
 
@@ -117,7 +118,7 @@ namespace odb
     typedef
     sqlite::query_column<
       sqlite::value_traits<
-        long unsigned int,
+        ::uint32_t,
         sqlite::id_integer >::query_type,
       sqlite::id_integer >
     id_type_;
@@ -183,6 +184,18 @@ namespace odb
     token_type_;
 
     static const token_type_ token;
+
+    // lastConnection
+    //
+    typedef
+    sqlite::query_column<
+      sqlite::value_traits<
+        ::uint32_t,
+        sqlite::id_integer >::query_type,
+      sqlite::id_integer >
+    lastConnection_type_;
+
+    static const lastConnection_type_ lastConnection;
   };
 
   template <typename A>
@@ -216,6 +229,11 @@ namespace odb
   token (A::table_name, "\"token\"", 0);
 
   template <typename A>
+  const typename query_columns< ::user, id_sqlite, A >::lastConnection_type_
+  query_columns< ::user, id_sqlite, A >::
+  lastConnection (A::table_name, "\"lastConnection\"", 0);
+
+  template <typename A>
   struct pointer_query_columns< ::user, id_sqlite, A >:
     query_columns< ::user, id_sqlite, A >
   {
@@ -236,40 +254,45 @@ namespace odb
 
     struct image_type
     {
-      // id_
+      // m_id
       //
-      long long id_value;
-      bool id_null;
+      long long m_id_value;
+      bool m_id_null;
 
-      // login_
+      // m_login
       //
-      details::buffer login_value;
-      std::size_t login_size;
-      bool login_null;
+      details::buffer m_login_value;
+      std::size_t m_login_size;
+      bool m_login_null;
 
-      // password_
+      // m_password
       //
-      details::buffer password_value;
-      std::size_t password_size;
-      bool password_null;
+      details::buffer m_password_value;
+      std::size_t m_password_size;
+      bool m_password_null;
 
-      // saltUser_
+      // m_saltUser
       //
-      details::buffer saltUser_value;
-      std::size_t saltUser_size;
-      bool saltUser_null;
+      details::buffer m_saltUser_value;
+      std::size_t m_saltUser_size;
+      bool m_saltUser_null;
 
-      // saltSession_
+      // m_saltSession
       //
-      details::buffer saltSession_value;
-      std::size_t saltSession_size;
-      bool saltSession_null;
+      details::buffer m_saltSession_value;
+      std::size_t m_saltSession_size;
+      bool m_saltSession_null;
 
-      // token_
+      // m_token
       //
-      details::buffer token_value;
-      std::size_t token_size;
-      bool token_null;
+      details::buffer m_token_value;
+      std::size_t m_token_size;
+      bool m_token_null;
+
+      // m_lastConnection
+      //
+      long long m_lastConnection_value;
+      bool m_lastConnection_null;
 
       std::size_t version;
     };
@@ -313,7 +336,7 @@ namespace odb
 
     typedef sqlite::query_base query_base_type;
 
-    static const std::size_t column_count = 6UL;
+    static const std::size_t column_count = 7UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;

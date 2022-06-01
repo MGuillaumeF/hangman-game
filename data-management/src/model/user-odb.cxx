@@ -51,7 +51,7 @@ namespace odb
     id_type id;
     {
       sqlite::value_traits<
-          long unsigned int,
+          ::uint32_t,
           sqlite::id_integer >::set_value (
         id,
         i.id_value,
@@ -71,11 +71,11 @@ namespace odb
     id_type id;
     {
       sqlite::value_traits<
-          long unsigned int,
+          ::uint32_t,
           sqlite::id_integer >::set_value (
         id,
-        i.id_value,
-        i.id_null);
+        i.m_id_value,
+        i.m_id_null);
     }
 
     return id;
@@ -90,49 +90,53 @@ namespace odb
 
     bool grew (false);
 
-    // id_
+    // m_id
     //
     t[0UL] = false;
 
-    // login_
+    // m_login
     //
     if (t[1UL])
     {
-      i.login_value.capacity (i.login_size);
+      i.m_login_value.capacity (i.m_login_size);
       grew = true;
     }
 
-    // password_
+    // m_password
     //
     if (t[2UL])
     {
-      i.password_value.capacity (i.password_size);
+      i.m_password_value.capacity (i.m_password_size);
       grew = true;
     }
 
-    // saltUser_
+    // m_saltUser
     //
     if (t[3UL])
     {
-      i.saltUser_value.capacity (i.saltUser_size);
+      i.m_saltUser_value.capacity (i.m_saltUser_size);
       grew = true;
     }
 
-    // saltSession_
+    // m_saltSession
     //
     if (t[4UL])
     {
-      i.saltSession_value.capacity (i.saltSession_size);
+      i.m_saltSession_value.capacity (i.m_saltSession_size);
       grew = true;
     }
 
-    // token_
+    // m_token
     //
     if (t[5UL])
     {
-      i.token_value.capacity (i.token_size);
+      i.m_token_value.capacity (i.m_token_size);
       grew = true;
     }
+
+    // m_lastConnection
+    //
+    t[6UL] = false;
 
     return grew;
   }
@@ -148,69 +152,76 @@ namespace odb
 
     std::size_t n (0);
 
-    // id_
+    // m_id
     //
     if (sk != statement_update)
     {
       b[n].type = sqlite::bind::integer;
-      b[n].buffer = &i.id_value;
-      b[n].is_null = &i.id_null;
+      b[n].buffer = &i.m_id_value;
+      b[n].is_null = &i.m_id_null;
       n++;
     }
 
-    // login_
+    // m_login
     //
     b[n].type = sqlite::image_traits<
       ::std::string,
       sqlite::id_text>::bind_value;
-    b[n].buffer = i.login_value.data ();
-    b[n].size = &i.login_size;
-    b[n].capacity = i.login_value.capacity ();
-    b[n].is_null = &i.login_null;
+    b[n].buffer = i.m_login_value.data ();
+    b[n].size = &i.m_login_size;
+    b[n].capacity = i.m_login_value.capacity ();
+    b[n].is_null = &i.m_login_null;
     n++;
 
-    // password_
+    // m_password
     //
     b[n].type = sqlite::image_traits<
       ::std::string,
       sqlite::id_text>::bind_value;
-    b[n].buffer = i.password_value.data ();
-    b[n].size = &i.password_size;
-    b[n].capacity = i.password_value.capacity ();
-    b[n].is_null = &i.password_null;
+    b[n].buffer = i.m_password_value.data ();
+    b[n].size = &i.m_password_size;
+    b[n].capacity = i.m_password_value.capacity ();
+    b[n].is_null = &i.m_password_null;
     n++;
 
-    // saltUser_
+    // m_saltUser
     //
     b[n].type = sqlite::image_traits<
       ::std::string,
       sqlite::id_text>::bind_value;
-    b[n].buffer = i.saltUser_value.data ();
-    b[n].size = &i.saltUser_size;
-    b[n].capacity = i.saltUser_value.capacity ();
-    b[n].is_null = &i.saltUser_null;
+    b[n].buffer = i.m_saltUser_value.data ();
+    b[n].size = &i.m_saltUser_size;
+    b[n].capacity = i.m_saltUser_value.capacity ();
+    b[n].is_null = &i.m_saltUser_null;
     n++;
 
-    // saltSession_
+    // m_saltSession
     //
     b[n].type = sqlite::image_traits<
       ::std::string,
       sqlite::id_text>::bind_value;
-    b[n].buffer = i.saltSession_value.data ();
-    b[n].size = &i.saltSession_size;
-    b[n].capacity = i.saltSession_value.capacity ();
-    b[n].is_null = &i.saltSession_null;
+    b[n].buffer = i.m_saltSession_value.data ();
+    b[n].size = &i.m_saltSession_size;
+    b[n].capacity = i.m_saltSession_value.capacity ();
+    b[n].is_null = &i.m_saltSession_null;
     n++;
 
-    // token_
+    // m_token
     //
     b[n].type = sqlite::image_traits<
       ::std::string,
       sqlite::id_text>::bind_value;
-    b[n].buffer = i.token_value.data ();
-    b[n].size = &i.token_size;
-    b[n].capacity = i.token_value.capacity ();
-    b[n].is_null = &i.token_null;
+    b[n].buffer = i.m_token_value.data ();
+    b[n].size = &i.m_token_size;
+    b[n].capacity = i.m_token_value.capacity ();
+    b[n].is_null = &i.m_token_null;
+    n++;
+
+    // m_lastConnection
+    //
+    b[n].type = sqlite::bind::integer;
+    b[n].buffer = &i.m_lastConnection_value;
+    b[n].is_null = &i.m_lastConnection_null;
     n++;
   }
 
@@ -236,116 +247,132 @@ namespace odb
 
     bool grew (false);
 
-    // id_
+    // m_id
     //
     if (sk == statement_insert)
     {
-      long unsigned int const& v =
-        o.id_;
+      ::uint32_t const& v =
+        o.m_id;
 
       bool is_null (false);
       sqlite::value_traits<
-          long unsigned int,
+          ::uint32_t,
           sqlite::id_integer >::set_image (
-        i.id_value,
+        i.m_id_value,
         is_null,
         v);
-      i.id_null = is_null;
+      i.m_id_null = is_null;
     }
 
-    // login_
+    // m_login
     //
     {
       ::std::string const& v =
-        o.login_;
+        o.m_login;
 
       bool is_null (false);
-      std::size_t cap (i.login_value.capacity ());
+      std::size_t cap (i.m_login_value.capacity ());
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_image (
-        i.login_value,
-        i.login_size,
+        i.m_login_value,
+        i.m_login_size,
         is_null,
         v);
-      i.login_null = is_null;
-      grew = grew || (cap != i.login_value.capacity ());
+      i.m_login_null = is_null;
+      grew = grew || (cap != i.m_login_value.capacity ());
     }
 
-    // password_
+    // m_password
     //
     {
       ::std::string const& v =
-        o.password_;
+        o.m_password;
 
       bool is_null (false);
-      std::size_t cap (i.password_value.capacity ());
+      std::size_t cap (i.m_password_value.capacity ());
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_image (
-        i.password_value,
-        i.password_size,
+        i.m_password_value,
+        i.m_password_size,
         is_null,
         v);
-      i.password_null = is_null;
-      grew = grew || (cap != i.password_value.capacity ());
+      i.m_password_null = is_null;
+      grew = grew || (cap != i.m_password_value.capacity ());
     }
 
-    // saltUser_
+    // m_saltUser
     //
     {
       ::std::string const& v =
-        o.saltUser_;
+        o.m_saltUser;
 
       bool is_null (false);
-      std::size_t cap (i.saltUser_value.capacity ());
+      std::size_t cap (i.m_saltUser_value.capacity ());
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_image (
-        i.saltUser_value,
-        i.saltUser_size,
+        i.m_saltUser_value,
+        i.m_saltUser_size,
         is_null,
         v);
-      i.saltUser_null = is_null;
-      grew = grew || (cap != i.saltUser_value.capacity ());
+      i.m_saltUser_null = is_null;
+      grew = grew || (cap != i.m_saltUser_value.capacity ());
     }
 
-    // saltSession_
+    // m_saltSession
     //
     {
       ::std::string const& v =
-        o.saltSession_;
+        o.m_saltSession;
 
-      bool is_null (false);
-      std::size_t cap (i.saltSession_value.capacity ());
+      bool is_null (true);
+      std::size_t cap (i.m_saltSession_value.capacity ());
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_image (
-        i.saltSession_value,
-        i.saltSession_size,
+        i.m_saltSession_value,
+        i.m_saltSession_size,
         is_null,
         v);
-      i.saltSession_null = is_null;
-      grew = grew || (cap != i.saltSession_value.capacity ());
+      i.m_saltSession_null = is_null;
+      grew = grew || (cap != i.m_saltSession_value.capacity ());
     }
 
-    // token_
+    // m_token
     //
     {
       ::std::string const& v =
-        o.token_;
+        o.m_token;
 
-      bool is_null (false);
-      std::size_t cap (i.token_value.capacity ());
+      bool is_null (true);
+      std::size_t cap (i.m_token_value.capacity ());
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_image (
-        i.token_value,
-        i.token_size,
+        i.m_token_value,
+        i.m_token_size,
         is_null,
         v);
-      i.token_null = is_null;
-      grew = grew || (cap != i.token_value.capacity ());
+      i.m_token_null = is_null;
+      grew = grew || (cap != i.m_token_value.capacity ());
+    }
+
+    // m_lastConnection
+    //
+    {
+      ::uint32_t const& v =
+        o.m_lastConnection;
+
+      bool is_null (true);
+      sqlite::value_traits<
+          ::uint32_t,
+          sqlite::id_integer >::set_image (
+        i.m_lastConnection_value,
+        is_null,
+        v);
+      i.m_lastConnection_null = is_null;
     }
 
     return grew;
@@ -360,93 +387,107 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (i);
     ODB_POTENTIALLY_UNUSED (db);
 
-    // id_
+    // m_id
     //
     {
-      long unsigned int& v =
-        o.id_;
+      ::uint32_t& v =
+        o.m_id;
 
       sqlite::value_traits<
-          long unsigned int,
+          ::uint32_t,
           sqlite::id_integer >::set_value (
         v,
-        i.id_value,
-        i.id_null);
+        i.m_id_value,
+        i.m_id_null);
     }
 
-    // login_
+    // m_login
     //
     {
       ::std::string& v =
-        o.login_;
+        o.m_login;
 
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_value (
         v,
-        i.login_value,
-        i.login_size,
-        i.login_null);
+        i.m_login_value,
+        i.m_login_size,
+        i.m_login_null);
     }
 
-    // password_
+    // m_password
     //
     {
       ::std::string& v =
-        o.password_;
+        o.m_password;
 
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_value (
         v,
-        i.password_value,
-        i.password_size,
-        i.password_null);
+        i.m_password_value,
+        i.m_password_size,
+        i.m_password_null);
     }
 
-    // saltUser_
+    // m_saltUser
     //
     {
       ::std::string& v =
-        o.saltUser_;
+        o.m_saltUser;
 
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_value (
         v,
-        i.saltUser_value,
-        i.saltUser_size,
-        i.saltUser_null);
+        i.m_saltUser_value,
+        i.m_saltUser_size,
+        i.m_saltUser_null);
     }
 
-    // saltSession_
+    // m_saltSession
     //
     {
       ::std::string& v =
-        o.saltSession_;
+        o.m_saltSession;
 
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_value (
         v,
-        i.saltSession_value,
-        i.saltSession_size,
-        i.saltSession_null);
+        i.m_saltSession_value,
+        i.m_saltSession_size,
+        i.m_saltSession_null);
     }
 
-    // token_
+    // m_token
     //
     {
       ::std::string& v =
-        o.token_;
+        o.m_token;
 
       sqlite::value_traits<
           ::std::string,
           sqlite::id_text >::set_value (
         v,
-        i.token_value,
-        i.token_size,
-        i.token_null);
+        i.m_token_value,
+        i.m_token_size,
+        i.m_token_null);
+    }
+
+    // m_lastConnection
+    //
+    {
+      ::uint32_t& v =
+        o.m_lastConnection;
+
+      sqlite::value_traits<
+          ::uint32_t,
+          sqlite::id_integer >::set_value (
+        v,
+        i.m_lastConnection_value,
+        i.m_lastConnection_null);
     }
   }
 
@@ -456,7 +497,7 @@ namespace odb
     {
       bool is_null (false);
       sqlite::value_traits<
-          long unsigned int,
+          ::uint32_t,
           sqlite::id_integer >::set_image (
         i.id_value,
         is_null,
@@ -472,9 +513,10 @@ namespace odb
   "\"password\", "
   "\"saltUser\", "
   "\"saltSession\", "
-  "\"token\") "
+  "\"token\", "
+  "\"lastConnection\") "
   "VALUES "
-  "(?, ?, ?, ?, ?, ?)";
+  "(?, ?, ?, ?, ?, ?, ?)";
 
   const char access::object_traits_impl< ::user, id_sqlite >::find_statement[] =
   "SELECT "
@@ -483,7 +525,8 @@ namespace odb
   "\"user\".\"password\", "
   "\"user\".\"saltUser\", "
   "\"user\".\"saltSession\", "
-  "\"user\".\"token\" "
+  "\"user\".\"token\", "
+  "\"user\".\"lastConnection\" "
   "FROM \"user\" "
   "WHERE \"user\".\"id\"=?";
 
@@ -494,7 +537,8 @@ namespace odb
   "\"password\"=?, "
   "\"saltUser\"=?, "
   "\"saltSession\"=?, "
-  "\"token\"=? "
+  "\"token\"=?, "
+  "\"lastConnection\"=? "
   "WHERE \"id\"=?";
 
   const char access::object_traits_impl< ::user, id_sqlite >::erase_statement[] =
@@ -508,7 +552,8 @@ namespace odb
   "\"user\".\"password\", "
   "\"user\".\"saltUser\", "
   "\"user\".\"saltSession\", "
-  "\"user\".\"token\" "
+  "\"user\".\"token\", "
+  "\"user\".\"lastConnection\" "
   "FROM \"user\"";
 
   const char access::object_traits_impl< ::user, id_sqlite >::erase_query_statement[] =
@@ -539,7 +584,7 @@ namespace odb
     if (init (im, obj, statement_insert))
       im.version++;
 
-    im.id_null = true;
+    im.m_id_null = true;
 
     if (im.version != sts.insert_image_version () ||
         imb.version == 0)
@@ -564,7 +609,7 @@ namespace odb
     if (!st.execute ())
       throw object_already_persistent ();
 
-    obj.id_ = id (sts.id_image ());
+    obj.m_id = id (sts.id_image ());
 
     callback (db,
               static_cast<const object_type&> (obj),
@@ -587,7 +632,7 @@ namespace odb
       conn.statement_cache ().find_object<object_type> ());
 
     const id_type& id (
-      obj.id_);
+      obj.m_id);
     id_image_type& idi (sts.id_image ());
     init (idi, id);
 
@@ -763,7 +808,7 @@ namespace odb
     statements_type::auto_lock l (sts);
 
     const id_type& id  (
-      obj.id_);
+      obj.m_id);
 
     if (!find_ (sts, &id))
       return false;
@@ -1064,11 +1109,12 @@ namespace odb
         {
           db.execute ("CREATE TABLE \"user\" (\n"
                       "  \"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
-                      "  \"login\" TEXT NOT NULL,\n"
-                      "  \"password\" TEXT NOT NULL,\n"
-                      "  \"saltUser\" TEXT NOT NULL,\n"
-                      "  \"saltSession\" TEXT NOT NULL,\n"
-                      "  \"token\" TEXT NOT NULL)");
+                      "  \"login\" TEXT NOT NULL CHECK(login != ''),\n"
+                      "  \"password\" TEXT NOT NULL CHECK(password != ''),\n"
+                      "  \"saltUser\" TEXT NOT NULL CHECK(saltUser != ''),\n"
+                      "  \"saltSession\" TEXT NULL,\n"
+                      "  \"token\" TEXT NULL,\n"
+                      "  \"lastConnection\" INTEGER NULL)");
           return false;
         }
       }

@@ -12,7 +12,7 @@ public:
    * @brief Construct a new user object
    * 
    */
-  user() {};
+  user()=default;
 
   /**
    * @brief Get the Login object
@@ -20,7 +20,7 @@ public:
    * @return const std::string& 
    */
   const std::string& getLogin () const {
-    return login_;
+    return m_login;
   };
 
   /**
@@ -29,7 +29,7 @@ public:
    * @param login 
    */
   void setLogin(const std::string& login) {
-    login_ = login; 
+    m_login = login; 
   };
 
   /**
@@ -38,7 +38,7 @@ public:
    * @return const std::string& 
    */
   const std::string& getPassword () const {
-    return password_;
+    return m_password;
   };
 
   /**
@@ -47,7 +47,7 @@ public:
    * @param password 
    */
   void setPassword(const std::string& password) {
-    password_ = password;
+    m_password = password;
   };
 
   /**
@@ -56,7 +56,7 @@ public:
    * @return const std::string& 
    */
   const std::string& getSaltUser () const {
-    return saltUser_;
+    return m_saltUser;
   };
 
   /**
@@ -65,7 +65,7 @@ public:
    * @param saltUser 
    */
   void setSaltUser(const std::string& saltUser) {
-    saltUser_ = saltUser;
+    m_saltUser = saltUser;
   };
 
   /**
@@ -74,7 +74,7 @@ public:
    * @return const std::string& 
    */
   const std::string& getSaltSession () const {
-    return saltSession_;
+    return m_saltSession;
   };
 
   /**
@@ -83,7 +83,7 @@ public:
    * @param saltSession 
    */
   void setSaltSession(const std::string& saltSession) {
-    saltSession_ = saltSession;
+    m_saltSession = saltSession;
   };
 
   /**
@@ -92,7 +92,7 @@ public:
    * @return const std::string& 
    */
   const std::string& getToken () const {
-    return token_;
+    return m_token;
   };
 
   /**
@@ -101,20 +101,44 @@ public:
    * @param token 
    */
   void setToken(const std::string& token) {
-    token_ = token;
+    m_token = token;
+  };
+  /**
+   * @brief Get the Last connection object
+   * 
+   * @return const uint32_t& 
+   */
+  const uint32_t& getLastConnection () const {
+    return m_lastConnection;
+  };
+
+  /**
+   * @brief Set the last connection object
+   * 
+   * @param lastConnection 
+   */
+  void setLastConnection(const uint32_t& lastConnection) {
+    m_lastConnection = lastConnection;
   };
 
 private:
   friend class odb::access;
 
   #pragma db id auto
-  unsigned long id_;
+  uint32_t m_id;
 
-  std::string login_;
-  std::string password_;
-  std::string saltUser_;
-  std::string saltSession_;
-  std::string token_;
+   #pragma db options() options("CHECK(login != '')")
+  std::string m_login;
+   #pragma db options() options("CHECK(password != '')")
+  std::string m_password;
+   #pragma db options() options("CHECK(saltUser != '')")
+  std::string m_saltUser;
+  #pragma db null
+  std::string m_saltSession;
+  #pragma db null
+  std::string m_token;
+  #pragma db null
+  uint32_t m_lastConnection;
 };
 
 #pragma db object(user)
@@ -122,7 +146,7 @@ private:
 #pragma db view object(user)
 struct user_stat
 {
-  #pragma db column("count(" + user::id_ + ")")
+  #pragma db column("count(" + user::m_id + ")")
   std::size_t count;
 };
 
