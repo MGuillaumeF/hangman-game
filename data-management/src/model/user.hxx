@@ -15,6 +15,24 @@ public:
   user()=default;
 
   /**
+   * @brief Get the Id object
+   * 
+   * @return const uint32_t& 
+   */
+  const uint32_t& getId () const {
+    return m_id;
+  };
+
+  /**
+   * @brief Set the Id object
+   * 
+   * @param id 
+   */
+  void setId(const uint32_t& id) {
+    m_id = id; 
+  };
+
+  /**
    * @brief Get the Login object
    * 
    * @return const std::string& 
@@ -133,11 +151,8 @@ private:
   std::string m_password;
    #pragma db options() options("CHECK(saltUser != '')")
   std::string m_saltUser;
-  #pragma db null
   std::string m_saltSession;
-  #pragma db null
   std::string m_token;
-  #pragma db null
   uint32_t m_lastConnection;
 };
 

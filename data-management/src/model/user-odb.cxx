@@ -327,7 +327,7 @@ namespace odb
       ::std::string const& v =
         o.m_saltSession;
 
-      bool is_null (true);
+      bool is_null (false);
       std::size_t cap (i.m_saltSession_value.capacity ());
       sqlite::value_traits<
           ::std::string,
@@ -346,7 +346,7 @@ namespace odb
       ::std::string const& v =
         o.m_token;
 
-      bool is_null (true);
+      bool is_null (false);
       std::size_t cap (i.m_token_value.capacity ());
       sqlite::value_traits<
           ::std::string,
@@ -365,7 +365,7 @@ namespace odb
       ::uint32_t const& v =
         o.m_lastConnection;
 
-      bool is_null (true);
+      bool is_null (false);
       sqlite::value_traits<
           ::uint32_t,
           sqlite::id_integer >::set_image (
@@ -1112,9 +1112,9 @@ namespace odb
                       "  \"login\" TEXT NOT NULL CHECK(login != ''),\n"
                       "  \"password\" TEXT NOT NULL CHECK(password != ''),\n"
                       "  \"saltUser\" TEXT NOT NULL CHECK(saltUser != ''),\n"
-                      "  \"saltSession\" TEXT NULL,\n"
-                      "  \"token\" TEXT NULL,\n"
-                      "  \"lastConnection\" INTEGER NULL)");
+                      "  \"saltSession\" TEXT NOT NULL,\n"
+                      "  \"token\" TEXT NOT NULL,\n"
+                      "  \"lastConnection\" INTEGER NOT NULL)");
           return false;
         }
       }

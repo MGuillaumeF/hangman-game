@@ -1,35 +1,85 @@
 #define DATABASE_SQLITE
-
+#include <boost/property_tree/ptree.hpp>
 #include <exception>
 #include <iostream>
-#include <memory> // std::auto_ptr, unique_ptr
-
+#include <memory> // unique_ptr
 #include <odb/transaction.hxx>
-
-#include "./connector/database.hxx" // create database access
+// create database access
+#include "./connector/database.hxx"
 
 #include "./model/user-odb.hxx"
 #include "./model/user.hxx"
+
+std::unique_ptr<odb::core::database> getDataBaseAccess() {
+  char *exec_name = "./HangmanGameTest";
+  char *user_key = "--user";
+  char *user_value = "odb_test";
+  char *database_key = "--database";
+  char *database_value = "odb_test";
+  char *tempArgv[] = {exec_name, user_key, user_value, database_key,
+                      database_value};
+  int tempArgc = 5;
+
+  return create_database(tempArgc, tempArgv);
+}
+/**
+ * @brief Create a User object
+ *
+ * @param data
+ * @return uint32_t
+ */
+uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
+                    const boost::property_tree::ptree &data) {
+
+  user newUser;
+
+  newUser.setLogin(data.get<std::string>("login"));
+  newUser.setPassword(data.get<std::string>("password"));
+  newUser.setSaltUser(data.get<std::string>("salt_user"));
+
+  odb::core::transaction t(db->begin());
+  const uint32_t id = db->persist(newUser);
+  t.commit();
+
+  return id;
+}
+
+/**
+ * @brief
+ *
+ * @param data
+ * @return std::string
+ */
+std::string connectUser(const std::unique_ptr<odb::core::database> &db,
+                        const boost::property_tree::ptree &data) {
+
+  odb::core::transaction t(db->begin());
+  std::cout << "here1 " << data.get<std::string>("login") << ":"
+            << data.get<std::string>("password") << std::endl;
+
+  std::unique_ptr<user> foundUser(db->query_one<user>(
+      odb::query<user>::login == data.get<std::string>("login") &&
+      odb::query<user>::password == data.get<std::string>("password")));
+  if (foundUser.get() != nullptr) {
+    foundUser->setToken("new token");
+    db->update(*foundUser);
+  }
+
+  t.commit();
+
+  return "";
+}
 
 int32_t main(int argc, char *argv[]) {
   int32_t result = EXIT_SUCCESS;
 
   try {
+    std::unique_ptr<odb::core::database> db = getDataBaseAccess();
 
     using namespace odb::core;
 
-    char *exec_name = "./HangmanGameTest";
-    char *user_key = "--user";
-    char *user_value = "odb_test";
-    char *database_key = "--database";
-    char *database_value = "odb_test";
-    char *tempArgv[] = {exec_name, user_key, user_value, database_key,
-                        database_value};
-    int tempArgc = 5;
-    std::unique_ptr<database> db(create_database(tempArgc, tempArgv));
-
-    unsigned long john_id;
-    unsigned long joe_id;
+    uint32_t john_id;
+    uint32_t joe_id;
 
     // Create a few persistent user objects.
     //
@@ -54,6 +104,13 @@ int32_t main(int argc, char *argv[]) {
     joe.setSaltSession("salt_session_3");
     joe.setToken("token_3");
 
+    user frank;
+    frank.setLogin("Frank");
+    frank.setPassword("password_4");
+    frank.setSaltUser("salt_user_4");
+    frank.setSaltSession("salt_session_4");
+    frank.setToken("token_4");
+
     // Make objects persistent and save their ids for later use.
     //
     {
@@ -62,6 +119,7 @@ int32_t main(int argc, char *argv[]) {
       john_id = db->persist(john);
       db->persist(jane);
       joe_id = db->persist(joe);
+      db->persist(frank);
 
       t.commit();
     }
@@ -74,7 +132,7 @@ int32_t main(int argc, char *argv[]) {
     {
       transaction t(db->begin());
 
-      result r(db->query<user>(query::id < 3));
+      result r(db->query<user>(query::id < 10));
 
       for (result::iterator i(r.begin()); i != r.end(); ++i) {
         std::cout << "Hello, " << i->getLogin() << " " << i->getPassword()
@@ -98,20 +156,17 @@ int32_t main(int argc, char *argv[]) {
 
     // Alternative implementation without using the id.
     //
-    {
-      transaction t(db->begin());
-      // Here we know that there can be only one Joe  in our
-      // database so we use the query_one() shortcut instead of
-      // manually iterating over the result returned by query().
-      //
-      std::unique_ptr<user> frank(db->query_one<user>(
-          query::login == "Frank" && query::password == "password_4"));
-      if (frank.get() != 0) {
-        frank->setToken("new token");
-        db->update(*frank);
-      }
-      t.commit();
-    }
+    // Here we know that there can be only one Joe  in our
+    // database so we use the query_one() shortcut instead of
+    // manually iterating over the result returned by query().
+    //
+
+    boost::property_tree::ptree frk;
+    frk.put("login", "Frank");
+    frk.put("password", "password_4");
+    const std::string tok = connectUser(db, frk);
+
+    std::cout << "New token found is \"" << tok << std::endl;
 
     // Print some statistics about all the people in our database.
     //
