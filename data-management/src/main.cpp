@@ -44,6 +44,13 @@ uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
   return id;
 }
 
+void deleteUser(const std::unique_ptr<odb::core::database> &db,
+                    const uint32_t &id) {
+  transaction t(db->begin());
+  db->erase<user>(id);
+  t.commit();
+}
+
 /**
  * @brief
  *
@@ -161,7 +168,6 @@ int32_t main(int argc, char *argv[]) {
     // database so we use the query_one() shortcut instead of
     // manually iterating over the result returned by query().
     //
-
     boost::property_tree::ptree frk;
     frk.put("login", "Frank");
     frk.put("password", "password_4");
@@ -185,12 +191,7 @@ int32_t main(int argc, char *argv[]) {
     }
 
     // John Doe is no longer in our database.
-    //
-    {
-      transaction t(db->begin());
-      db->erase<user>(john_id);
-      t.commit();
-    }
+    deleteUser(john_id);
 
   } catch (const std::exception &ex) {
     std::cerr << "[ERROR] " << ex.what() << std::endl;
