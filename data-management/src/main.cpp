@@ -46,7 +46,7 @@ uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
 
 void deleteUser(const std::unique_ptr<odb::core::database> &db,
                     const uint32_t &id) {
-  transaction t(db->begin());
+  odb::core::transaction t(db->begin());
   db->erase<user>(id);
   t.commit();
 }
