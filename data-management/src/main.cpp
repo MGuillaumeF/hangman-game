@@ -28,7 +28,7 @@ std::unique_ptr<odb::core::database> getDataBaseAccess() {
  * @param data
  * @return uint32_t
  */
-uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
+uint32_t createUser(const odb::core::database &db,
                     const boost::property_tree::ptree &data) {
 
   user newUser;
@@ -50,24 +50,25 @@ uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
  * @param data
  * @return std::string
  */
-std::string connectUser(const std::unique_ptr<odb::core::database> &db,
+std::string connectUser(const odb::core::database &db,
                         const boost::property_tree::ptree &data) {
-
+  std::string token = "";
   odb::core::transaction t(db->begin());
   std::cout << "here1 " << data.get<std::string>("login") << ":"
             << data.get<std::string>("password") << std::endl;
 
-  std::unique_ptr<user> foundUser(db->query_one<user>(
+  const std::unique_ptr<user> foundUser(db->query_one<user>(
       odb::query<user>::login == data.get<std::string>("login") &&
       odb::query<user>::password == data.get<std::string>("password")));
   if (foundUser.get() != nullptr) {
-    foundUser->setToken("new token");
+    token = "new token";
+    foundUser->setToken(token);
     db->update(*foundUser);
   }
 
   t.commit();
 
-  return "";
+  return token;
 }
 
 int32_t main(int argc, char *argv[]) {
