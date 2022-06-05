@@ -37,8 +37,8 @@ uint32_t createUser(const odb::core::database &db,
   newUser.setPassword(data.get<std::string>("password"));
   newUser.setSaltUser(data.get<std::string>("salt_user"));
 
-  odb::core::transaction t(db->begin());
-  const uint32_t id = db->persist(newUser);
+  odb::core::transaction t(db.begin());
+  const uint32_t id = db.persist(newUser);
   t.commit();
 
   return id;
@@ -53,17 +53,17 @@ uint32_t createUser(const odb::core::database &db,
 std::string connectUser(const odb::core::database &db,
                         const boost::property_tree::ptree &data) {
   std::string token = "";
-  odb::core::transaction t(db->begin());
+  odb::core::transaction t(db.begin());
   std::cout << "here1 " << data.get<std::string>("login") << ":"
             << data.get<std::string>("password") << std::endl;
 
-  const std::unique_ptr<user> foundUser(db->query_one<user>(
+  const std::unique_ptr<user> foundUser(db.query_one<user>(
       odb::query<user>::login == data.get<std::string>("login") &&
       odb::query<user>::password == data.get<std::string>("password")));
   if (foundUser.get() != nullptr) {
     token = "new token";
     foundUser->setToken(token);
-    db->update(*foundUser);
+    db.update(*foundUser);
   }
 
   t.commit();
@@ -79,8 +79,8 @@ int32_t main(int argc, char *argv[]) {
 
     using namespace odb::core;
 
-    uint32_t john_id;
-    uint32_t joe_id;
+    uint32_t john_id = -1;
+    uint32_t joe_id = -1;
 
     // Create a few persistent user objects.
     //
