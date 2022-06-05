@@ -165,7 +165,7 @@ int32_t main(int argc, char *argv[]) {
     boost::property_tree::ptree frk;
     frk.put("login", "Frank");
     frk.put("password", "password_4");
-    const std::string tok = connectUser(db, frk);
+    const std::string tok = connectUser(*db, frk);
 
     std::cout << "New token found is \"" << tok << std::endl;
 
