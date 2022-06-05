@@ -191,7 +191,7 @@ int32_t main(int argc, char *argv[]) {
     }
 
     // John Doe is no longer in our database.
-    deleteUser(john_id);
+    deleteUser(db, john_id);
 
   } catch (const std::exception &ex) {
     std::cerr << "[ERROR] " << ex.what() << std::endl;
