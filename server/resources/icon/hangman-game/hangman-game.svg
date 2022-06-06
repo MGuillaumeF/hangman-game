@@ -3,10 +3,14 @@
      viewBox="0 0 500 500"
      width="500" height="500"
      xmlns="http://www.w3.org/2000/svg">
-  <path d="M250 10 L470 120 L470 380 L250 490 L30 380 L30 120 Z" fill="#0D6AC1" />
-  <path d="M250 10 L30 120 30 380 L250 490 Z" fill="#F07427" />
-  <circle cx="250" cy="250" r="160" fill="white" />
-  <circle cx="250" cy="250" r="80" fill="#0D6AC1" />
-  <!-- 093F8C -->
-  <path d="M470 120 L470 380 L250 250 Z" fill="#0D6AC1" />
+  <path d="M0 500 L500 500 L500 475 L50 475 
+L50 35 L320 35 L320 75 L325 75
+
+L325 10
+L25 10 L25 475 L0 475 Z" fill="#000000" />
+
+<circle cx="322.5" cy="100" r="25" fill="transparent" stroke="#000000" stroke-width="2" />
+<path d="M322.5 125 L322.5 200" stroke="#000000" stroke-width="2" />
+<path d="M322.5 200 L344.5 215" stroke="#000000" stroke-width="2" />
+<path d="M322.5 200 L300.5 215" stroke="#000000" stroke-width="2" />
 </svg>
