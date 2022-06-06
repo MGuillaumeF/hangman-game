@@ -51,7 +51,7 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
 #elif defined(DATABASE_MSSQL)
     odb::mssql::database::print_usage(std::cout);
 #endif
-    throw std::runtime_error("bad usage database");
+    // compilation failed with unknown database message
   } else {
 
 #if defined(DATABASE_MYSQL)
