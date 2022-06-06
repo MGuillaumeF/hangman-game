@@ -8,7 +8,7 @@ namespace tcp {
  * @brief TCP Server class
  *
  */
-Server::Server(boost::asio::io_context &ioContext, const uint16_t port)
+Server::Server(boost::asio::io_context &ioContext, const uint16_t& port)
     : m_acceptor(ioContext, boost::asio::ip::tcp::endpoint(
                                 boost::asio::ip::tcp::v4(), port)) {
   doAccept();
