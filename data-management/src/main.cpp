@@ -129,8 +129,9 @@ int32_t main(int argc, char *argv[]) {
     boost::asio::connect(s, resolver.resolve("localhost", "50000"));
 
     std::cout << "Enter message: ";
-    char request[max_length];
-    std::cin.getline(request, max_length);
+    // char request[max_length];
+    // std::cin.getline(request, max_length);
+    char* request = "this is a request test";
     size_t request_length = std::strlen(request);
     boost::asio::write(s, boost::asio::buffer(request, request_length));
 
