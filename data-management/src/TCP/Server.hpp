@@ -21,7 +21,7 @@ public:
    * @param ioContext connection context
    * @param port The connection port
    */
-  Server(boost::asio::io_context &ioContext, uint16_t port);
+  Server(boost::asio::io_context &ioContext, const uint16_t& port);
 
 private:
   /**
