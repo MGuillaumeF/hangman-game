@@ -1,32 +1,39 @@
 #define DATABASE_SQLITE
-#include <boost/property_tree/ptree.hpp>
+
 #include <exception>
 #include <iostream>
 #include <memory> // unique_ptr
+#include <thread>
+
+#include <boost/property_tree/ptree.hpp>
 #include <odb/transaction.hxx>
+
 // create database access
 #include "./connector/database.hxx"
 
 #include "./model/user-odb.hxx"
 #include "./model/user.hxx"
 
+#include "./TCP/Server.hpp"
+
+enum { max_length = 1024 };
+
+/**
+ * @brief Get the Data Base Access object
+ *
+ * @return std::unique_ptr<odb::core::database>
+ */
 std::unique_ptr<odb::core::database> getDataBaseAccess() {
-  char *exec_name = "./HangmanGameTest";
-  char *user_key = "--user";
-  char *user_value = "odb_test";
-  char *database_key = "--database";
-  char *database_value = "odb_test";
-  char *tempArgv[] = {exec_name, user_key, user_value, database_key,
-                      database_value};
-  int tempArgc = 5;
+  char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
+  int32_t tempArgc = static_cast<int32_t>(sizeof(tempArgv));
 
   return create_database(tempArgc, tempArgv);
 }
 /**
  * @brief Create a User object
  *
- * @param data
- * @return uint32_t
+ * @param data The property tree data of user to create
+ * @return uint32_t The user id after create
  */
 uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
                     const boost::property_tree::ptree &data) {
@@ -44,18 +51,25 @@ uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
   return id;
 }
 
+/**
+ * @brief function to delete user by id
+ *
+ * @param db The database access
+ * @param id The id of user t delete
+ */
 void deleteUser(const std::unique_ptr<odb::core::database> &db,
-                    const uint32_t &id) {
+                const uint32_t &id) {
   odb::core::transaction t(db->begin());
   db->erase<user>(id);
   t.commit();
 }
 
 /**
- * @brief
+ * @brief function to connect user by login and password
  *
- * @param data
- * @return std::string
+ * @param db The database access
+ * @param data The property tree data of user to connect
+ * @return std::string The new token of connected user
  */
 std::string connectUser(const std::unique_ptr<odb::core::database> &db,
                         const boost::property_tree::ptree &data) {
@@ -78,13 +92,64 @@ std::string connectUser(const std::unique_ptr<odb::core::database> &db,
   return token;
 }
 
+void printUserCount(const std::unique_ptr<odb::core::database> &db) {
+  odb::core::transaction t(db->begin());
+
+  // The result of this (aggregate) query always has exactly one element
+  // so use the query_value() shortcut.
+  //
+  user_stat ps(db->query_value<user_stat>());
+
+  std::cout << std::endl << "count  : " << ps.count << std::endl;
+
+  t.commit();
+}
+
+void startTcpServer() {
+  try {
+    boost::asio::io_context ioContext;
+    hangman::tcp::Server server(ioContext, 50000);
+    ioContext.run();
+  } catch (std::exception &e) {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+}
+
 int32_t main(int argc, char *argv[]) {
-  int32_t result = EXIT_SUCCESS;
+  int32_t exitStatus = EXIT_SUCCESS;
+
+  std::thread serv(startTcpServer);
+  serv.detach();
 
   try {
-    std::unique_ptr<odb::core::database> db = getDataBaseAccess();
+    boost::asio::io_context io_context;
 
-    using namespace odb::core;
+    boost::asio::ip::tcp::socket s(io_context);
+    boost::asio::ip::tcp::resolver resolver(io_context);
+    boost::asio::connect(s, resolver.resolve("localhost", "50000"));
+
+    std::cout << "Enter message: ";
+    char request[max_length];
+    std::cin.getline(request, max_length);
+    size_t request_length = std::strlen(request);
+    boost::asio::write(s, boost::asio::buffer(request, request_length));
+
+    char reply[max_length];
+    size_t reply_length =
+        boost::asio::read(s, boost::asio::buffer(reply, request_length));
+    std::cout << "Reply is: ";
+    std::cout.write(reply, reply_length);
+    std::cout << "\n";
+
+    s.close();
+  } catch (std::exception &e) {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+
+  try {
+    std::unique_ptr<odb::core::database> db = create_database(argc, argv);
+
+    printUserCount(db);
 
     uint32_t john_id = -1;
     uint32_t joe_id = -1;
@@ -122,7 +187,7 @@ int32_t main(int argc, char *argv[]) {
     // Make objects persistent and save their ids for later use.
     //
     {
-      transaction t(db->begin());
+      odb::core::transaction t(db->begin());
 
       john_id = db->persist(john);
       db->persist(jane);
@@ -132,17 +197,14 @@ int32_t main(int argc, char *argv[]) {
       t.commit();
     }
 
-    typedef odb::query<user> query;
-    typedef odb::result<user> result;
-
     // Say hello to those have id under 2.
     //
     {
-      transaction t(db->begin());
+      odb::core::transaction t(db->begin());
 
-      result r(db->query<user>(query::id < 10));
+      odb::result<user> r(db->query<user>(odb::query<user>::id < 10));
 
-      for (result::iterator i(r.begin()); i != r.end(); ++i) {
+      for (odb::result<user>::iterator i(r.begin()); i != r.end(); ++i) {
         std::cout << "Hello, " << i->getLogin() << " " << i->getPassword()
                   << "!" << std::endl;
       }
@@ -153,7 +215,7 @@ int32_t main(int argc, char *argv[]) {
     // Joe is logged, so update his token.
     //
     {
-      transaction t(db->begin());
+      odb::core::transaction t(db->begin());
 
       std::unique_ptr<user> joe(db->load<user>(joe_id));
       joe->setToken("new token");
@@ -173,29 +235,18 @@ int32_t main(int argc, char *argv[]) {
     frk.put("password", "password_4");
     const std::string tok = connectUser(db, frk);
 
-    std::cout << "New token found is \"" << tok << std::endl;
+    std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
-    // Print some statistics about all the people in our database.
-    //
-    {
-      transaction t(db->begin());
-
-      // The result of this (aggregate) query always has exactly one element
-      // so use the query_value() shortcut.
-      //
-      user_stat ps(db->query_value<user_stat>());
-
-      std::cout << std::endl << "count  : " << ps.count << std::endl;
-
-      t.commit();
-    }
+    printUserCount(db);
 
     // John Doe is no longer in our database.
     deleteUser(db, john_id);
 
+    printUserCount(db);
+
   } catch (const std::exception &ex) {
     std::cerr << "[ERROR] " << ex.what() << std::endl;
-    result = EXIT_FAILURE;
+    exitStatus = EXIT_FAILURE;
   }
-  return result;
+  return exitStatus;
 }

@@ -5,6 +5,10 @@
 
 #include <odb/core.hxx>
 
+/**
+ * @brief class of Users in model
+ * 
+ */
 #pragma db object
 class user {
 public:

@@ -53,6 +53,8 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
      "src/model/*-odb.cxx"
      "src/model/*-odb.hxx"
      "src/connector/*.hxx"
+     "src/TCP/*.hpp"
+     "src/TCP/*.cpp"
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
