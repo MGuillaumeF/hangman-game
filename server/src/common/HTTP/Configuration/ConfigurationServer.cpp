@@ -41,12 +41,12 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
 
     logger->info("HTTP_CONFIGURATION",
                  "Configuration reading : "
-                 "\n -> Description  : " + m_description +
-                 "\n -> Hostname     : " + m_hostname +
-                 "\n -> Ip Address   : " + m_ipAddress +
-                 "\n -> Port         : " + std::to_string(m_port) +
-                 "\n -> Root         : " + m_root +
-                 "\n -> Thread       : " + std::to_string(m_thread));
+                 "\n -> Description  : " +
+                     m_description + "\n -> Hostname     : " + m_hostname +
+                     "\n -> Ip Address   : " + m_ipAddress +
+                     "\n -> Port         : " + std::to_string(m_port) +
+                     "\n -> Root         : " + m_root +
+                     "\n -> Thread       : " + std::to_string(m_thread));
 
   } catch (const boost::property_tree::ptree_error &e) {
     logger->error("HTTP_CONFIGURATION",

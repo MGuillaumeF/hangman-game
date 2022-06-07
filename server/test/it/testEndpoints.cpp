@@ -89,94 +89,96 @@ sendRequest(REQUEST requestProperties) {
 // CREATE FUNCTION TO EMIT REQUEST WITH BODY AND METHOD
 // ADD ASSERT ON RESULT EXPECTED
 
-
 BOOST_AUTO_TEST_SUITE(testsHttpEndpoints)
 
 BOOST_AUTO_TEST_CASE(testEndpoints) {
 
-    REQUEST requestProperties;
-    requestProperties.port = 8080;
-    requestProperties.target = "/api/session";
-    requestProperties.headers = {{"Content-Type", "application/json"},
-                                 {"Accept", "application/json"}};
+  REQUEST requestProperties;
+  requestProperties.port = 8080;
+  requestProperties.target = "/api/session";
+  requestProperties.headers = {{"Content-Type", "application/json"},
+                               {"Accept", "application/json"}};
 
-    requestProperties.method = boost::beast::http::verb::post;
-    requestProperties.body = "{\"login\" : \"a\", \"password\" : \"b\"}";
-    boost::beast::http::response<boost::beast::http::dynamic_body> response =
-        sendRequest(requestProperties);
+  requestProperties.method = boost::beast::http::verb::post;
+  requestProperties.body = "{\"login\" : \"a\", \"password\" : \"b\"}";
+  boost::beast::http::response<boost::beast::http::dynamic_body> response =
+      sendRequest(requestProperties);
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
+  BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
 
-    requestProperties.body = "{\"login\" : \"a\", \"errorKey\" : \"b\"}";
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
+  requestProperties.body = "{\"login\" : \"a\", \"errorKey\" : \"b\"}";
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
 
-    requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
+  requestProperties.body = "'{\"login\" : \"a\", \"errorKey\" : \"b\"}'";
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
 
-    requestProperties.headers = {{"Content-Type", "application/xml"},
-                                 {"Accept", "application/xml"}};
+  requestProperties.headers = {{"Content-Type", "application/xml"},
+                               {"Accept", "application/xml"}};
 
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
 
+  requestProperties.headers = {{"Content-Type", "text/html"},
+                               {"Accept", "text/html"}};
 
-    requestProperties.headers = {{"Content-Type", "text/html"},
-                                 {"Accept", "text/html"}};
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
 
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
+  requestProperties.method = boost::beast::http::verb::get;
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed,
+                    response.result());
 
-    requestProperties.method = boost::beast::http::verb::get;
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed, response.result());
+  requestProperties.method = boost::beast::http::verb::put;
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed,
+                    response.result());
 
-    requestProperties.method = boost::beast::http::verb::put;
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed, response.result());
+  requestProperties.method = boost::beast::http::verb::patch;
+  response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed,
+                    response.result());
 
-    requestProperties.method = boost::beast::http::verb::patch;
-    response = sendRequest(requestProperties);
-    BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed, response.result());
+  // ********************************** file path test
+  requestProperties.headers = {};
 
-    // ********************************** file path test
-    requestProperties.headers = {};
+  requestProperties.method = boost::beast::http::verb::get;
+  requestProperties.body = "";
 
-    requestProperties.method = boost::beast::http::verb::get;
-    requestProperties.body = "";
+  requestProperties.target = "/bin/configuration/mime-types.xml-old";
+  response = sendRequest(requestProperties);
 
-    requestProperties.target = "/bin/configuration/mime-types.xml-old";
-    response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
+  requestProperties.target = "/../../../../bin/configuration/mime-types.xml";
+  response = sendRequest(requestProperties);
 
-    requestProperties.target = "/../../../../bin/configuration/mime-types.xml";
-    response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
+  requestProperties.target = "/configuration/mime-types.xml";
+  requestProperties.method = boost::beast::http::verb::patch;
+  response = sendRequest(requestProperties);
 
-    requestProperties.target = "/configuration/mime-types.xml";
-    requestProperties.method = boost::beast::http::verb::patch;
-    response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed,
+                    response.result());
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::method_not_allowed, response.result());
+  requestProperties.target = "/configuration/mime-types.xml";
+  requestProperties.method = boost::beast::http::verb::get;
+  response = sendRequest(requestProperties);
 
-    requestProperties.target = "/configuration/mime-types.xml";
-    requestProperties.method = boost::beast::http::verb::get;
-    response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
+  requestProperties.method = boost::beast::http::verb::delete_;
+  response = sendRequest(requestProperties);
 
-    requestProperties.method = boost::beast::http::verb::delete_;
-    response = sendRequest(requestProperties);
+  BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
 
-    BOOST_CHECK_EQUAL(boost::beast::http::status::ok, response.result());
+  requestProperties.method = boost::beast::http::verb::get;
+  response = sendRequest(requestProperties);
 
-    requestProperties.method = boost::beast::http::verb::get;
-    response = sendRequest(requestProperties);
-
-    BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
+  BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

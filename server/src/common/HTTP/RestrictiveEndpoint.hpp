@@ -102,7 +102,8 @@ public:
    * @return true - The HTTP method is allowed
    * @return false - The HTTP method is not allowed
    */
-  [[nodiscard]] bool methodIsAllowed(const boost::beast::http::verb &method) const {
+  [[nodiscard]] bool
+  methodIsAllowed(const boost::beast::http::verb &method) const {
     return m_allowedMethods.contains(method);
   }
 

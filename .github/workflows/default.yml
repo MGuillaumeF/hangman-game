@@ -1,4 +1,4 @@
-name: HANGMAN-GAME - RELEASE
+name: HANGMAN-GAME - DEFAULT
 
 on:
   push:
@@ -43,8 +43,27 @@ jobs:
     - name: echo g++ version
       run: g++ -v
 
+    - name: clang format
+      run: |
+        find ./ -regex ".*\.\(h\|c\|cc\|hh\|hxx\|cxx\|hpp\|cpp\)" | xargs clang-format -style=file -i
+        
+    - name: Save server changes
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}
+      run: |
+        git stash
+        git checkout ${{github.head_ref}}
+        git stash pop
+        git config user.name "MGuillaumeF"
+        git config user.email "${{secrets.EMAIL}}"
+        git add server
+        git add data-management
+        (git commit -m "[AUTO] clang format write" && git push) || echo 'No modification to save'
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
     - name: Install dependencies
-      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common odb
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy clang-format cppcheck default-libmysqlclient-dev mysql-common odb
       # add autoconf-archive for libodb-mysql
 
     - name: Create icon Server
@@ -280,7 +299,7 @@ jobs:
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
-      run: npm run prettier
+      run: npm run prettier --config ./.prettierrc
 
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}

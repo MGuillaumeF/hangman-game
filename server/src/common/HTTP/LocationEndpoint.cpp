@@ -1,9 +1,9 @@
 #include "LocationEndpoint.hpp"
 
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -91,8 +91,9 @@ void LocationEndpoint::doGet() {
 
       // Respond to GET request
       boost::beast::http::response<boost::beast::http::string_body> res =
-        http::Utils::wrapper_response(
-            request, boost::beast::http::status::ok, fileContent, http::Utils::getMimeType(path));
+          http::Utils::wrapper_response(request, boost::beast::http::status::ok,
+                                        fileContent,
+                                        http::Utils::getMimeType(path));
       // add length of body in meta data of request
       res.content_length(fileContent.size());
       // prepare response body
@@ -136,8 +137,9 @@ void LocationEndpoint::doDelete() {
     // if file exist remove it
     if (std::filesystem::exists(path)) {
       std::filesystem::remove(path);
-      setResponse(http::Utils::wrapper_response(
-          request, boost::beast::http::status::ok, request.target().to_string(), ""));
+      setResponse(
+          http::Utils::wrapper_response(request, boost::beast::http::status::ok,
+                                        request.target().to_string(), ""));
     }
   }
 }
