@@ -121,7 +121,7 @@ void startTcpServer() {
     boost::asio::io_context ioContext;
     hangman::tcp::Server server(ioContext, 50000);
     ioContext.run();
-  } catch (std::exception &e) {
+  } catch (const std::exception &e) {
     std::cerr << "Exception: " << e.what() << "\n";
   }
 }
@@ -140,11 +140,9 @@ int32_t main(int argc, char *argv[]) {
     boost::asio::connect(s, resolver.resolve("localhost", "50000"));
 
     std::cout << "Enter message: ";
-    // char request[max_length];
-    // std::cin.getline(request, max_length);
-    char *request = "this is a request test";
-    size_t request_length = std::strlen(request);
-    boost::asio::write(s, boost::asio::buffer(request, request_length));
+    const std::string request = "this is a request test";
+    size_t request_length = request.size();
+    boost::asio::write(s, boost::asio::buffer(request.c_str(), request_length));
 
     char reply[max_length];
     size_t reply_length =
@@ -154,7 +152,7 @@ int32_t main(int argc, char *argv[]) {
     std::cout << "\n";
 
     s.close();
-  } catch (std::exception &e) {
+  } catch (const std::exception &e) {
     std::cerr << "Exception: " << e.what() << "\n";
   }
 
