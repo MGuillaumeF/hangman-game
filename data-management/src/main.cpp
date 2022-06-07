@@ -140,7 +140,7 @@ int32_t main(int argc, char *argv[]) {
     boost::asio::connect(s, resolver.resolve("localhost", "50000"));
 
     std::cout << "Enter message: ";
-    const std::string request = "this is a request test";
+    const std::string request = "0009this is a request test";
     size_t request_length = request.size();
     boost::asio::write(s, boost::asio::buffer(request.c_str(), request_length));
 
