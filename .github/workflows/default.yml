@@ -524,6 +524,7 @@ jobs:
     - name: Install ODB_ROOT
       working-directory: ${{github.workspace}}/data-management/tools/
       run: |
+        npm install
         node install-odb.mjs
         echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" >> $GITHUB_PATH
 
