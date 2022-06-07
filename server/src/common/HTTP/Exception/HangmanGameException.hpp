@@ -13,7 +13,8 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit HangmanGameException(const char *const message) : m_message(message) {}
+  explicit HangmanGameException(const char *const message)
+      : m_message(message) {}
 
   /** Constructor
    *  @param message The error message.

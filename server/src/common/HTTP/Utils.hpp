@@ -85,8 +85,7 @@ public:
   static boost::beast::http::response<boost::beast::http::string_body>
   wrapper_response(
       const boost::beast::http::request<boost::beast::http::string_body> &req,
-      const boost::beast::http::status &status,
-      const std::string_view &body,
+      const boost::beast::http::status &status, const std::string_view &body,
       const std::string_view &contentType = "text/html");
 
   /**

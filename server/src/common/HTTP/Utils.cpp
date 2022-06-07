@@ -21,7 +21,8 @@ std::map<std::string, std::string, std::less<>> Utils::s_extTomimtype = {};
  * @return the mime-type of file
  */
 std::string Utils::getMimeType(const std::string &path) {
-  const std::string ext = path.find('.') != std::string::npos ? path.substr(path.rfind('.')) : "";
+  const std::string ext =
+      path.find('.') != std::string::npos ? path.substr(path.rfind('.')) : "";
 
   // set default mime type
   std::string l_sMimeType = "application/text";
@@ -37,8 +38,7 @@ std::string Utils::getMimeType(const std::string &path) {
     l_sMimeType = Utils::s_extTomimtype.at(ext);
   } else {
     logger->warn("HTTP_CONFIGURATION",
-                 "MimeType of File not found for extension : " +
-                     ext);
+                 "MimeType of File not found for extension : " + ext);
   }
   logger->debug("HTTP_CONFIGURATION", "MimeType of File used : " + l_sMimeType);
   return l_sMimeType;
@@ -193,8 +193,7 @@ Utils::server_error(
 boost::beast::http::response<boost::beast::http::string_body>
 Utils::wrapper_response(
     const boost::beast::http::request<boost::beast::http::string_body> &req,
-    const boost::beast::http::status &status,
-    const std::string_view &body,
+    const boost::beast::http::status &status, const std::string_view &body,
     const std::string_view &contentType) {
   boost::beast::http::response<boost::beast::http::string_body> res{
       status, req.version()};

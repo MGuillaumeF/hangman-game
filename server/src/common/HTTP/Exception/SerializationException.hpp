@@ -11,7 +11,8 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit SerializationException(const char * const message) : HangmanGameException(message) {}
+  explicit SerializationException(const char *const message)
+      : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.

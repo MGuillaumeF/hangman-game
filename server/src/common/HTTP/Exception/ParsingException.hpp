@@ -11,12 +11,14 @@ public:
   /** Constructor
    *  @param message The message exception
    */
-  explicit ParsingException(const char * const message) : HangmanGameException(message) {}
+  explicit ParsingException(const char *const message)
+      : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
-  explicit ParsingException(const std::string &message) : HangmanGameException(message) {}
+  explicit ParsingException(const std::string &message)
+      : HangmanGameException(message) {}
 
 private:
   /** Error message.
