@@ -13,6 +13,23 @@ set(CPACK_PACKAGE_VERSION_MINOR "1")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 
+if (SGBD_NAME STREQUAL "SQLITE")
+  set(SGBD_DEPENDENCY "sqlite")
+  elseif (SGBD_NAME STREQUAL "MYSQL")
+  set(SGBD_DEPENDENCY "mysql")
+  elseif (SGBD_NAME STREQUAL "PGSQL")
+  set(SGBD_DEPENDENCY "pgsql")
+  elseif (SGBD_NAME STREQUAL "MSSQL")
+  set(SGBD_DEPENDENCY "mssql")
+  elseif (SGBD_NAME STREQUAL "ORACLE")
+  set(SGBD_DEPENDENCY "oracle")
+  else ()
+    message("SGBD not found, default SGBD sqlite")
+    set(SGBD_NAME "SQLITE")
+    set(SGBD_DEPENDENCY "sqlite")
+endif()
+set(MODEL_SRCS "src/model/${SGBD_DEPENDENCY}/*-odb.cxx" "src/model/${SGBD_DEPENDENCY}/*-odb.hxx")
+  
 # Add name on project 
 project(DataManagement VERSION "${PACKAGE_VERSION}")
 
@@ -36,8 +53,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
   MESSAGE("Compiler used is Microsoft Visual Studio C++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++11")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD -lodb-mysql -lodb")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${EXT_CMAKE_CXX_FLAGS} /std:c++11")
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
 endif()
 
 add_definitions("-Wall")
@@ -50,8 +67,7 @@ file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
 
 # Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
 file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
-     "src/model/*-odb.cxx"
-     "src/model/*-odb.hxx"
+     ${MODEL_SRCS}
      "src/connector/*.hxx"
      "src/TCP/*.hpp"
      "src/TCP/*.cpp"
@@ -60,19 +76,21 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 # search external dependence ODB
-find_package (ODB REQUIRED COMPONENTS sqlite)
+find_package (ODB REQUIRED COMPONENTS ${SGBD_DEPENDENCY})
 find_package (Boost)
 include(${ODB_USE_FILE})
 
 if (ODB_FOUND)
+  # Specify the configuration file from which the header file will be generated
+  configure_file (config.hpp.in config.hpp @ONLY)
   include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${EXTERNAL_INCLUDE_DIRS}) 
 
   # Create application executable files
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
   set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
-  add_executable(${PROJECT_NAME}  src/main.cpp ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
-  add_custom_command(TARGET DataManagement PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagement>/configuration)
-  add_test(DataManagementUnitTests DataManagement)
+  add_executable(${PROJECT_NAME}-${SGBD_DEPENDENCY}  src/main.cpp ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
+  add_custom_command(TARGET ${PROJECT_NAME}-${SGBD_DEPENDENCY} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:${PROJECT_NAME}-${SGBD_DEPENDENCY}>/configuration)
+  add_test(${PROJECT_NAME}-${SGBD_DEPENDENCY}-unit-tests ${PROJECT_NAME}-${SGBD_DEPENDENCY})
   # install(TARGETS DataManagement DESTINATION DataManagement)
   # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
   # add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
@@ -82,9 +100,9 @@ if (ODB_FOUND)
   if(WIN32)
   add_definitions("-D_WIN32_WINNT=0x0601")
     # target_link_libraries(DataManagement wsock32 ws2_32 ${EXTERNAL_LIBS})
-    target_link_libraries(DataManagement ${ODB_LIBRARIES} ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
+    target_link_libraries(${PROJECT_NAME}-${SGBD_DEPENDENCY} ${ODB_LIBRARIES} ${Boost_LIBRARIES} wsock32 ws2_32 ${EXTERNAL_LIBS})
   else ()
-    target_link_libraries(DataManagement ${ODB_LIBRARIES}  ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
+    target_link_libraries(${PROJECT_NAME}-${SGBD_DEPENDENCY} ${ODB_LIBRARIES}  ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
   endif()
   # target_link_libraries(DataManagement PRIVATE odb::libodb-sqlite)
 else ()

@@ -31,7 +31,7 @@ void Session::doReadHead() {
       });
 }
 
-void Session::doReadBody(uint32_t max_content) {
+void Session::doReadBody(const uint32_t &max_content) {
   auto self(shared_from_this());
   m_socket.async_read_some(
       boost::asio::buffer(m_data, max_content),
@@ -43,7 +43,7 @@ void Session::doReadBody(uint32_t max_content) {
       });
 }
 
-void Session::doWrite(std::size_t length) {
+void Session::doWrite(const std::size_t &length) {
   auto self(shared_from_this());
   boost::asio::async_write(
       m_socket, boost::asio::buffer(m_data, length),

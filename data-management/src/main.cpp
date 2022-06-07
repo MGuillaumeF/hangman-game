@@ -1,9 +1,10 @@
-#define DATABASE_SQLITE
-
 #include <exception>
 #include <iostream>
 #include <memory> // unique_ptr
 #include <thread>
+
+// generated configuration
+#include "config.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <odb/transaction.hxx>
@@ -11,8 +12,18 @@
 // create database access
 #include "./connector/database.hxx"
 
-#include "./model/user-odb.hxx"
-#include "./model/user.hxx"
+#if defined(DATABASE_MYSQL)
+#include "./model/mysql/user-odb.hxx"
+#include "./model/mysql/user.hxx"
+#elif defined(DATABASE_SQLITE)
+#include "./model/sqlite/user-odb.hxx"
+#include "./model/sqlite/user.hxx"
+#elif defined(DATABASE_PGSQL)
+#include "./model/pgsql/user-odb.hxx"
+#include "./model/pgsql/user.hxx"
+#else
+#error unknown database; did you forget to define the DATABASE_* macros?
+#endif
 
 #include "./TCP/Server.hpp"
 
@@ -131,7 +142,7 @@ int32_t main(int argc, char *argv[]) {
     std::cout << "Enter message: ";
     // char request[max_length];
     // std::cin.getline(request, max_length);
-    char* request = "this is a request test";
+    char *request = "this is a request test";
     size_t request_length = std::strlen(request);
     boost::asio::write(s, boost::asio::buffer(request, request_length));
 

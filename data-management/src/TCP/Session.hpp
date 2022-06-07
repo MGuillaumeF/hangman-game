@@ -10,6 +10,10 @@
 namespace hangman {
 namespace tcp {
 
+/**
+ * @brief TCP session of exchange
+ *
+ */
 class Session : public std::enable_shared_from_this<Session> {
 public:
   explicit Session(boost::asio::ip::tcp::socket socket);
@@ -19,9 +23,9 @@ public:
 private:
   void doRead();
   void doReadHead();
-  void doReadBody(uint32_t max_content);
+  void doReadBody(const uint32_t &max_content);
 
-  void doWrite(std::size_t length);
+  void doWrite(const std::size_t &length);
 
   boost::asio::ip::tcp::socket m_socket;
   enum { max_length = 1024 };
