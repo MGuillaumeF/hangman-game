@@ -1,17 +1,19 @@
-name: HANGMAN-GAME - DEFAULT
+name: HANGMAN-GAME - RELEASE
 
 on:
   push:
-    branches: [ never ]
+    branches: [ main ]
   pull_request:
     branches: 
-      - never
+      - main
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Debug
+  BUILD_TYPE: Release
   BOOST_VERSION: 1.79.0
+  APPLICATION_VERSION: 0.1.0
   CPP_COSO_VERSION: 0.2.1
+  APPLICATION_NAME: HangmanGame
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
   DB_PWD: root
@@ -19,227 +21,11 @@ env:
 permissions: write-all
 
 jobs:
- build-server-linux:
-    if: github.actor != 'dependabot[bot]'
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v2
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-
-    - name: Install dependencies
-      run: sudo apt-get update -y && sudo apt-get install -y gcovr doxygen graphviz gcovr clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common; odb --version; mysql --version
-    # mysql-community-client-plugins 
-
-    # - name: Download Boost
-    #   uses: wei/wget@v1
-    #   with:
-    #.    args: -O boost_1_78_0.tar.gz https://sourceforge.net/projects/boost/files/boost/78/boost_1_78_0.tar.gz/download
-
-    # - name: Unzip Boost
-    #   run: tar xzvf ${{github.workspace}}/boost_1_78_0.tar.gz
-
-    # - name: Bootstrap Boost
-    #   working-directory: ${{github.workspace}}/boost_1_78_0
-    #   run: |
-    #     sudo ./bootstrap.sh
-    #     sudo ./b2 install
-
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports
-
-    - name: Analyze CPPCheck
-      uses: deep5050/cppcheck-action@main
-      with:
-        github_token: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
-        force_language: c++
-        std: c++20
-        output_file: ${{github.workspace}}/server/reports/cppcheck_report_actions.xml
-        other_options: --xml
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-
-    - name: Generate Model Sources
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
-
-    - name: Start MySQL server
-      run: sudo service mysql start 
-
-    - name: Update Database schema
-      run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
-
-    - name: Update Database schema
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run:  mysql --user=odb_test --database=odb_test < user.sql
-
-    - name: Generate target (data management)
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build Data Management
-      working-directory: ${{github.workspace}}/data-management
-      run: cmake --build ${{github.workspace}}/data-management/bin
-
-    - name: Test Data Management
-      working-directory: ${{github.workspace}}/data-management/bin
-      run: ctest --verbose
-
-    - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server
-      working-directory: ${{github.workspace}}/server
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
-    
-    - name: Archive Server
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game-Linux
-        path: ${{github.workspace}}/server/bin/HangmanGame
-
-    - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/server/bin
-      run: |
-        ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
-        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
-   
-    - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/test
-      run: |
-        chmod +x ./run-tests.sh
-        ./run-tests.sh
-
-    - name: Generate Unit Tests HTML report
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
-      run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
-      
-    - name: Generate Integration Tests HTML report
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
-      run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
-
-    - name: Archive Test report
-      if: always()
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game Unit Test - Reports
-        path: ${{github.workspace}}/server/reports
-
-    - name: Generate Swagger UI
-      uses: Legion2/swagger-ui-action@v1
-      with:
-        output: ${{github.workspace}}/swagger-ui
-        spec-file: ${{github.workspace}}/server/docs/api_doc.json
-
-    - name: Archive Swagger UI
-      uses: actions/upload-artifact@v2
-      with:
-        name: API-Docs-Hangman-Game
-        path: ${{github.workspace}}/swagger-ui
-
-    - name: Doxygen Docs
-      run: doxygen docg.conf
-
-    - name: Archive Docs
-      uses: actions/upload-artifact@v2
-      with:
-        name: Docs-Hangman-Game
-        path: ${{github.workspace}}/docs
-
- build-server-win:
-    if: github.actor != 'dependabot[bot]'
-    runs-on: windows-latest
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-        # OPTIONAL: in workspace by default
-        boost_install_dir: 'D:/'
-
-    - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server windows
-      working-directory: ${{github.workspace}}/server
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
-
-    - name: Archive Server windows 
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game-Win
-        path: ${{github.workspace}}/server/bin/Debug/*.exe
-
-    - name: Unit Tests
-      run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
-
-    - name: Archive Test report
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game Unit Test (win - temp) - Reports
-        path: ${{github.workspace}}/server/reports
-
- build-server-MacOSX:
-    if: github.actor != 'dependabot[bot]'
-    runs-on: macos-11
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-
-    - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server
-      working-directory: ${{github.workspace}}/server
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
-
-    - name: Archive Server
-      uses: actions/upload-artifact@v2
-      with:
-        name: Server-Hangman-Game-MacOSX
-        path: ${{github.workspace}}/server/bin/HangmanGame
-
-    - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/test
-      run: |
-        chmod +x ./run-tests.sh
-        ./run-tests.sh
 
  sonarcloud-analyse:
+    env:
+      BUILD_TYPE: Debug
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
 
     - uses: actions/checkout@v2
@@ -247,9 +33,54 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: github/codeql-action/init@v2
+      with:
+        languages: cpp, javascript
+
+    - name: echo g++ version
+      run: g++ -v
+
     - name: Install dependencies
-      run: sudo apt-get install -y clang-tidy cppcheck default-libmysqlclient-dev odb libodb-dev libodb-mysql-2.4 mysql-common
-    # mysql-community-client-plugins
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy cppcheck default-libmysqlclient-dev mysql-common odb
+      # add autoconf-archive for libodb-mysql
+
+    - name: Create icon Server
+      working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
+      run: |
+        dbus-run-session inkscape -w 16 -h 16 -e hangman-game-16x16.png hangman-game.svg
+        dbus-run-session inkscape -w 32 -h 32 -e hangman-game-32x32.png hangman-game.svg
+        dbus-run-session inkscape -w 48 -h 48 -e hangman-game-48x48.png hangman-game.svg
+        dbus-run-session inkscape -w 256 -h 256 -e hangman-game-256x256.png hangman-game.svg
+        dbus-run-session inkscape -e hangman-game.bmp hangman-game.svg
+        convert hangman-game-16x16.png hangman-game-32x32.png hangman-game-48x48.png hangman-game-256x256.png hangman-game.ico
+
+    - name: Create icon Data Management
+      working-directory: ${{github.workspace}}/data-management/resources/icon/data-management
+      run: |
+        dbus-run-session inkscape -w 16 -h 16 -e data-management-16x16.png data-management.svg
+        dbus-run-session inkscape -w 32 -h 32 -e data-management-32x32.png data-management.svg
+        dbus-run-session inkscape -w 48 -h 48 -e data-management-48x48.png data-management.svg
+        dbus-run-session inkscape -w 256 -h 256 -e data-management-256x256.png data-management.svg
+        dbus-run-session inkscape -e data-management.bmp data-management.svg
+        convert data-management-16x16.png data-management-32x32.png data-management-48x48.png data-management-256x256.png data-management.ico
+
+    - name: Save icon changes
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}
+      run: |
+        git stash
+        git checkout ${{github.head_ref}}
+        git stash pop || echo "Nothing in stashed stack"
+        git config user.name "MGuillaumeF"
+        git config user.email "${{secrets.EMAIL}}"
+        git add server/resources/icon/hangman-game
+        git add data-management/resources/icon/data-management
+        (git commit -m "[AUTO] update icon generated" && git push) || echo 'No modification to save'
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Create reports directory (server)
       run: mkdir ${{github.workspace}}/server/reports
@@ -258,14 +89,54 @@ jobs:
       run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml ${{github.workspace}}/server
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.0.0
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
+        
+
+    - name: Install lib odb
+      working-directory: ${{github.workspace}}/..
+      run: |
+        git clone https://github.com/Microsoft/vcpkg
+        cd vcpkg
+        git pull
+        ./bootstrap-vcpkg.sh
+        ./vcpkg update
+        ./vcpkg integrate install
+        # ./vcpkg install boost
+        ./vcpkg install libodb-sqlite
+        #./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
-      run: odb -d mysql --generate-query --generate-schema user.hxx; ls -a .
+      run: |
+        mkdir sqlite
+        cp ./user.hxx ./sqlite/user.hxx
+        cd sqlite
+        odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx
+        ls -a .
+        cd ..
+        mkdir mysql
+        cp ./user.hxx ./mysql/user.hxx
+        cd mysql
+        odb --database mysql --generate-query --generate-schema --std c++11 user.hxx
+        ls -a .
+
+    # - name: Save model changes
+    #   if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+    #   working-directory: ${{github.workspace}}
+    #   run: |
+    #     git stash
+    #     git checkout ${{github.head_ref}}
+    #     git stash pop || echo "Nothing in stashed stack"
+    #     git config user.name "MGuillaumeF"
+    #     git config user.email "${{secrets.EMAIL}}"
+    #     git add data-management/src/model
+    #     (git commit -m "[AUTO] update model generated" && git push) || echo 'No modification to save'
+    #   env:
+    #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/data-management/reports
@@ -280,11 +151,11 @@ jobs:
       run: sudo mysql -e '${{env.DB_POPULATE}}' --user=${{env.DB_USER}} --password=${{env.DB_PWD}}
 
     - name: Update Database schema
-      working-directory: ${{github.workspace}}/data-management/src/model
+      working-directory: ${{github.workspace}}/data-management/src/model/mysql
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
     - name: Generate target (data management)
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -323,7 +194,7 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
 
     - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -338,16 +209,29 @@ jobs:
     - name: Convert Lint Clang-Tidy to sonarqube format
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
+    - name: Unit Tests Graph
+      working-directory: ${{github.workspace}}/server/bin
+      run: |
+        ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
+        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+   
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
       run: |
         chmod +x ./run-tests.sh
         ./run-tests.sh
 
+    # - name: Generate Unit Tests HTML report
+    #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
+    #   run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameUnitTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
+      
+    # - name: Generate Integration Tests HTML report
+    #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
+    #   run: gcovr --root ${{github.workspace}}/server/src --html-details ${{github.workspace}}/server/reports/HangmanGameIntegrationTestReport.html --html-title "HangmanGame Server Coverage report" ${{github.workspace}}/server/bin/CMakeFiles/HangmanGame.dir/src
+
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
-      continue-on-error: true
-      working-directory: ${{github.workspace}}/server/bin/CMakeFiles
+      working-directory: ${{github.workspace}}/server/bin
       run: find -name '*.gcda' | xargs gcov
 
     - name: Convert Boost Tests UT reports to sonarqube format
@@ -359,11 +243,31 @@ jobs:
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Archive Test report
-      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game - Reports
         path: ${{github.workspace}}/server/reports
+        
+    - name: Generate Swagger UI
+      uses: Legion2/swagger-ui-action@v1
+      with:
+        output: ${{github.workspace}}/swagger-ui
+        spec-file: ${{github.workspace}}/server/docs/api_doc.json
+
+    - name: Archive Swagger UI
+      uses: actions/upload-artifact@v2
+      with:
+        name: API-Docs-Hangman-Game
+        path: ${{github.workspace}}/swagger-ui
+
+    - name: Doxygen Docs
+      run: doxygen docg.conf
+
+    - name: Archive Docs
+      uses: actions/upload-artifact@v2
+      with:
+        name: Docs-Hangman-Game
+        path: ${{github.workspace}}/docs
 
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
@@ -396,6 +300,10 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run build
 
+    - name: Perform CodeQL Analysis
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: github/codeql-action/analyze@v2
+
     - name: Extract Webpack stats
       working-directory: ${{github.workspace}}/client
       run: npm run webpack-stats
@@ -410,8 +318,7 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
 
-    - name: Archive IHM Tests videos
-      if: always()
+    - name: Archive IHM Tests videos 
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Tests-Videos 
@@ -456,7 +363,6 @@ jobs:
       run: npm run build:doc
 
     - name: Archive Analyses reports
-      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: IHM-Hangman-Game-Analyses-report
@@ -493,17 +399,351 @@ jobs:
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
- raspberry-pi-toolchain:
+ build-release-Linux:
+    needs: [sonarcloud-analyse]
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+        
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: 'cpp'
+
+    - name: Generate target
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+    - name: Package server
+      working-directory: ${{github.workspace}}/server/bin
+      # Build your program with the given configuration
+      run: cpack -G "ZIP;DEB"
+
+    - name: Archive Server ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+
+    - name: Archive Server DEB
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+
+ install-server-Linux:
+    needs: [build-release-Linux]
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
+
+    - name: install
+      run: ls -a && sudo dpkg -i ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+
+    - name: display installation tree
+      run: tree /usr/HangmanGame
+
+    # - name: try run
+    #   working-directory: /usr/HangmanGame
+    #   run: ./HangmanGame
+
+ build-debug-Windows:
+    needs: [sonarcloud-analyse]
+    env:
+      BUILD_TYPE: Debug
+    runs-on: windows-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+
+    - uses: actions/checkout@v2
+    
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+        # OPTIONAL: in workspace by default
+        boost_install_dir: 'D:/'
+
+    # - name: Install lib odb
+    #   working-directory: ${{github.workspace}}/..
+    #   run: |
+    #     git clone https://github.com/Microsoft/vcpkg
+    #     cd vcpkg
+    #     git pull
+    #     .\bootstrap-vcpkg.sh
+    #     cmd.exe /C "vcpkg update"
+    #     cmd.exe /C "vcpkg integrate install"
+    #     # cmd.exe /C "vcpkg install boost --triplet x64-windows"
+    #     cmd.exe /C "vcpkg install libodb --triplet x64-windows"
+    #     cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
+
+    - name: Generate target 
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      # -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server windows
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
+
+    # - name: Generate target (data management)
+    #   run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+    #   env:
+    #     BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    # - name: Build Data Management
+    #   working-directory: ${{github.workspace}}/data-management
+    #   run: cmake --build ${{github.workspace}}/data-management/bin
+
+    - name: Unit Tests
+      run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+    
+    - name: Archive Test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Server-Hangman-Game Unit Test (win - temp) - Reports
+        path: ${{github.workspace}}/server/reports
+
+ build-release-Windows:
+    needs: [build-debug-Windows]
+    runs-on: windows-latest
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+        # OPTIONAL: in workspace by default
+        boost_install_dir: 'D:/'
+
+    - name: Generate target 
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server windows
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
+
+    - name: Package server
+      working-directory: ${{github.workspace}}/server/bin
+      # Build your program with the given configuration
+      run: cpack -G "ZIP;NSIS64"
+
+    - name: Archive Application windows ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
+
+    - name: Archive Application windows NSIS 64
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+
+ install-server-Windows:
+    needs: [build-release-Windows]
+    runs-on: windows-latest
+    steps:
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+
+    - name: install
+      run: cmd /C "${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe /S"
+
+    - name: run
+      run: 'tree "C:\program files\${{env.APPLICATION_NAME}}\${{env.APPLICATION_NAME}}"'
+
+ build-debug-MacOSX:
+    needs: [sonarcloud-analyse]
+    env:
+      BUILD_TYPE: Debug
+    runs-on: macos-11
+    if: github.actor != 'dependabot[bot]'
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/server/reports
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+
+    # - name: Install compiler odb
+    #   working-directory: ${{github.workspace}}
+    #   run: |
+    #     brew install tree
+    #     curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
+    #     sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
+    #     tree odb-2.4.0-i686-macosx
+    #     # sudo cp ./odb-2.4.0-i686-macosx/bin/* /usr/bin
+
+    # - name: Install lib odb
+    #   working-directory: ${{github.workspace}}/..
+    #   run: |
+    #     git clone https://github.com/Microsoft/vcpkg
+    #     cd vcpkg
+    #     git pull
+    #     ./bootstrap-vcpkg.sh
+    #     ./vcpkg update
+    #     ./vcpkg integrate install
+    #     # ./vcpkg install boost
+    #     ./vcpkg install libodb
+    #     ./vcpkg install libodb-sqlite
+
+    # - name: Generate target (data management)
+    #   run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+    #   env:
+    #     BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+    #     ODB_ROOT: ${{github.workspace}}/odb-2.4.0-i686-macosx
+    #     EXTERNAL_INCLUDE_DIRS: ${{github.workspace}}/odb-2.4.0-i686-macosx/lib/odb/i686-apple-darwin10/include
+
+    # - name: Build Data Management
+    #   working-directory: ${{github.workspace}}/data-management
+    #   run: cmake --build ${{github.workspace}}/data-management/bin
+
+    - name: Generate target
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Server Tests ctest
+      working-directory: ${{github.workspace}}/server/test
+      run: |
+        chmod +x ./run-tests.sh
+        ./run-tests.sh
+
+ build-release-MacOSX:
+    needs: [build-debug-MacOSX]
+    runs-on: macos-11
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2.3.0
+      id: install-boost
+      with:
+        boost_version: ${{env.BOOST_VERSION}}
+
+    - name: Generate target
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server
+      working-directory: ${{github.workspace}}/server
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Package Application
+      working-directory: ${{github.workspace}}/server/bin
+      run: cpack -G "ZIP;DragNDrop"
+
+    - name: Archive Application ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
+
+    - name: Archive Application DMG
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+
+ build-raspberry-pi-toolchain:
+    needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
     steps:
 
     - uses: actions/checkout@v2
 
+    - uses: actions/download-artifact@v2
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
     - name: Install Raspberry PI x64 toolchain
       run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
     - name: Install Boost
-      uses: MarkusJx/install-boost@ebe4e0e3c10a85635247dc7f6f89b72a4a162b2d
+      uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}} # Currently only works with boost v1.79.0
@@ -517,6 +757,23 @@ jobs:
 
     - name: Build Target 
       run: cmake --build ${{github.workspace}}/server/bin
+
+    - name: Package server
+      working-directory: ${{github.workspace}}/server/bin
+      # Build your program with the given configuration
+      run: cpack -G "ZIP;DEB"
+
+    - name: Archive Server ZIP
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+
+    - name: Archive Server DEB
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
+        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  dependabot:
     needs: [sonarcloud-analyse]
@@ -535,3 +792,63 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+ packaging:
+    needs: [ install-server-Linux, install-server-Windows, build-release-MacOSX, build-raspberry-pi-toolchain]
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+
+    - uses: actions/checkout@v2
+    
+    - name: Checkout Branch
+      run: echo "change git branch to develop"
+
+    - name: Test if version number is available
+      run: echo "test if version ${{env.APPLICATION_VERSION}} is available"
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
+        path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
+
+    - name: Update static files of host page to add new version an change log
+      run: echo "add version ${{env.APPLICATION_VERSION}} of application"
+
+    - name: Save application
+      run: tree ${{github.workspace}}/packaging && echo "save all changes"
