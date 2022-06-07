@@ -44,18 +44,20 @@ jobs:
       run: g++ -v
 
     - name: clang format
-      run: find ./ -iname *.hpp -o -iname *.cpp | xargs clang-format -style=file -i
-
+      run: |
+        find ./ -regex ".*\.\(h\|c\|cc\|hh\|hxx\|cxx\|hpp\|cpp\)" | xargs clang-format -style=file -i
+        
     - name: Save server changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       run: |
         git stash
         git checkout ${{github.head_ref}}
         git stash pop
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add .
+        git add server
+        git add data-management
         (git commit -m "[AUTO] clang format write" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -297,7 +299,7 @@ jobs:
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
-      run: npm run prettier --config ./prettierrc
+      run: npm run prettier --config ./.prettierrc
 
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
