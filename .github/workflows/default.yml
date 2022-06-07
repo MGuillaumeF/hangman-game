@@ -1,4 +1,4 @@
-name: HANGMAN-GAME - RELEASE
+name: HANGMAN-GAME - DEFAULT
 
 on:
   push:
@@ -280,7 +280,7 @@ jobs:
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
-      run: npm run prettier
+      run: npm run prettier --config ./prettierrc
 
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
