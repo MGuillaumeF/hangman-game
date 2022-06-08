@@ -665,6 +665,7 @@ jobs:
         boost_version: ${{env.BOOST_VERSION}}
 
     - name: Install compiler odb
+      if: never()
       working-directory: ${{github.workspace}}
       run: |
         brew install tree
@@ -677,6 +678,7 @@ jobs:
         echo "${{github.workspace}}/odb-2.4.0-i686-macosx/bin" >> $GITHUB_PATH
 
     - name: Generate Model Sources
+      if: never()
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         mkdir sqlite
@@ -692,6 +694,7 @@ jobs:
         ls -a .
 
     - name: Install lib odb
+      if: never()
       working-directory: ${{github.workspace}}/..
       run: |
         git clone https://github.com/Microsoft/vcpkg
@@ -707,11 +710,13 @@ jobs:
         ./vcpkg install libmysql
 
     - name: Generate target (data management)
+      if: never()
       run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSGBD_NAME=MYSQL -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
    
     - name: Build Data Management
+      if: never()
       working-directory: ${{github.workspace}}/data-management
       run: cmake --build ${{github.workspace}}/data-management/bin
 
