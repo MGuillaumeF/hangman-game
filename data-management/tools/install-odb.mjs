@@ -22,13 +22,17 @@ const req = get(url, (res) => {
   const outputfFile = "odb-2.4.0-i686-windows.zip";
   const writeStream = createWriteStream(outputfFile);
 
+  let percent = 0;
   res.on("data", () => {
-    cursorTo(process.stdout, 0);
-    process.stdout.write(
-      `${((statSync(outputfFile).size / fullSize) * 100).toFixed(0)} %`
-        .padStart(6, " ")
-        .padStart(50, "=")
+    const newPercent = ((statSync(outputfFile).size / fullSize) * 100).toFixed(
+      0
     );
+    if (percent !== newPercent) {
+      percent = newPercent;
+
+      cursorTo(process.stdout, 0);
+      process.stdout.write(`${percent} %`.padStart(6, " ").padStart(50, "="));
+    }
   });
 
   res.pipe(writeStream);
