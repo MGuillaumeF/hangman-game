@@ -671,7 +671,7 @@ jobs:
         curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
         sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
         tree odb-2.4.0-i686-macosx
-        echo "./odb-2.4.0-i686-macosx/bin" >> $GITHUB_PATH
+        echo "${{github.workspace}}/odb-2.4.0-i686-macosx/bin" >> $GITHUB_PATH
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
