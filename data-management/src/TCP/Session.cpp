@@ -1,5 +1,8 @@
 #include "./Session.hpp"
+#include <boost/property_tree/xml_parser.hpp>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 namespace hangman {
 namespace tcp {
 
@@ -22,11 +25,14 @@ void Session::doRead() {
 void Session::doReadHead() {
   auto self(shared_from_this());
   m_socket.async_read_some(
-      boost::asio::buffer(m_data, 4),
+      boost::asio::buffer(m_data, 8),
       [this, self](boost::system::error_code ec, std::size_t length) {
         if (!ec) {
-          std::cout << "The head size is : " << m_data << std::endl;
-          doReadBody(atoi(m_data));
+          const std::string messageSizeStr = m_data;
+          uint32_t li_hex = std::stol(messageSizeStr, nullptr, 16);
+          std::cout << "The header size is : " << std::dec << li_hex
+                    << std::endl;
+          doReadBody(li_hex);
         }
       });
 }
@@ -35,8 +41,35 @@ void Session::doReadBody(const uint32_t &max_content) {
   auto self(shared_from_this());
   m_socket.async_read_some(
       boost::asio::buffer(m_data, max_content),
-      [this, self](boost::system::error_code ec, std::size_t length) {
+      [this, self, max_content](boost::system::error_code ec,
+                                std::size_t length) {
         if (!ec) {
+          // Create an empty property tree object
+          boost::property_tree::ptree xmlPtree;
+
+          // Read the XML config string into the property tree. Catch any
+          // exception
+          try {
+            std::ofstream currentFile("./currentOrder.xml");
+            std::string content = m_data;
+            content.resize(max_content - 1);
+            currentFile << content;
+            currentFile.close();
+            boost::property_tree::xml_parser::read_xml("./currentOrder.xml",
+                                                       xmlPtree);
+            std::cout << "OBJECT TYPE : "
+                      << xmlPtree.get<std::string>(
+                             "order.properties.object-type")
+                      << std::endl;
+            std::cout << "ORDER TYPE : "
+                      << xmlPtree.get<std::string>(
+                             "order.properties.order-type")
+                      << std::endl;
+          } catch (
+              const boost::property_tree::xml_parser::xml_parser_error &e) {
+            std::cerr << "Failed to read received xml " << e.what()
+                      << std::endl;
+          }
           std::cout << "The body is : " << m_data << std::endl;
           doWrite(length);
         }
