@@ -667,6 +667,7 @@ jobs:
     - name: Install compiler odb
       working-directory: ${{github.workspace}}
       run: |
+        xcode-select --install
         brew install tree
         curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
         sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
