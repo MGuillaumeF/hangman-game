@@ -115,7 +115,7 @@ void printUserCount(const std::unique_ptr<odb::core::database> &db) {
   // The result of this (aggregate) query always has exactly one element
   // so use the query_value() shortcut.
   //
-  user_stat ps(db->query_value<user_stat>());
+  const user_stat ps(db->query_value<user_stat>());
 
   std::cout << std::endl << "count  : " << ps.count << std::endl;
 
@@ -125,7 +125,7 @@ void printUserCount(const std::unique_ptr<odb::core::database> &db) {
 void startTcpServer() {
   try {
     boost::asio::io_context ioContext;
-    hangman::tcp::Server server(ioContext, 50000);
+    const hangman::tcp::Server server(ioContext, 50000);
     ioContext.run();
   } catch (const std::exception &e) {
     std::cerr << "Exception: " << e.what() << "\n";
