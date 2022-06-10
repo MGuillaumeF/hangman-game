@@ -23,10 +23,10 @@ void Session::doRead() {
 }
 
 void Session::doReadHead() {
-  auto self(shared_from_this());
+  const auto self(shared_from_this());
   m_socket.async_read_some(
       boost::asio::buffer(m_data, 8),
-      [this, self](boost::system::error_code ec, std::size_t length) {
+      [this, self](const boost::system::error_code& ec, const std::size_t& length) {
         if (!ec) {
           const std::string messageSizeStr = m_data;
           uint32_t li_hex = std::stol(messageSizeStr, nullptr, 16);
@@ -38,11 +38,11 @@ void Session::doReadHead() {
 }
 
 void Session::doReadBody(const uint32_t &max_content) {
-  auto self(shared_from_this());
+  const auto self(shared_from_this());
   m_socket.async_read_some(
       boost::asio::buffer(m_data, max_content),
-      [this, self, max_content](boost::system::error_code ec,
-                                std::size_t length) {
+      [this, self, max_content](const boost::system::error_code& ec,
+                                const std::size_t& length) {
         if (!ec) {
           // Create an empty property tree object
           boost::property_tree::ptree xmlPtree;
@@ -77,10 +77,10 @@ void Session::doReadBody(const uint32_t &max_content) {
 }
 
 void Session::doWrite(const std::size_t &length) {
-  auto self(shared_from_this());
+  const auto self(shared_from_this());
   boost::asio::async_write(
       m_socket, boost::asio::buffer(m_data, length),
-      [this, self](boost::system::error_code ec, std::size_t /*length*/) {
+      [this, self](const boost::system::error_code& ec, const std::size_t /*length*/) {
         if (!ec) {
           // doReadHead();
         }
