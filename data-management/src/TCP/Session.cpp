@@ -12,10 +12,10 @@ Session::Session(boost::asio::ip::tcp::socket socket)
 void Session::start() { doReadHead(); }
 
 void Session::doRead() {
-  auto self(shared_from_this());
+  const auto self(shared_from_this());
   m_socket.async_read_some(
       boost::asio::buffer(m_data, max_length),
-      [this, self](boost::system::error_code ec, std::size_t length) {
+      [this, self](const boost::system::error_code& ec, const std::size_t& length) {
         if (!ec) {
           doWrite(length);
         }
@@ -29,7 +29,7 @@ void Session::doReadHead() {
                                         const std::size_t &length) {
                              if (!ec) {
                                const std::string messageSizeStr = m_data;
-                               uint32_t li_hex =
+                               const uint32_t li_hex =
                                    std::stol(messageSizeStr, nullptr, 16);
                                std::cout << "The header size is : " << std::dec
                                          << li_hex << std::endl;
