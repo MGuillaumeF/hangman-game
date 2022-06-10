@@ -13,13 +13,13 @@ void Session::start() { doReadHead(); }
 
 void Session::doRead() {
   const auto self(shared_from_this());
-  m_socket.async_read_some(
-      boost::asio::buffer(m_data, max_length),
-      [this, self](const boost::system::error_code& ec, const std::size_t& length) {
-        if (!ec) {
-          doWrite(length);
-        }
-      });
+  m_socket.async_read_some(boost::asio::buffer(m_data, max_length),
+                           [this, self](const boost::system::error_code &ec,
+                                        const std::size_t &length) {
+                             if (!ec) {
+                               doWrite(length);
+                             }
+                           });
 }
 
 void Session::doReadHead() {
