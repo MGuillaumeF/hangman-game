@@ -52,6 +52,7 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
     odb::mssql::database::print_usage(std::cout);
 #endif
     // compilation failed with unknown database message
+    return nullptr;
   } else {
 
 #if defined(DATABASE_MYSQL)
