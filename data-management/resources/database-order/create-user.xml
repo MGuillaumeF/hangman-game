@@ -5,8 +5,8 @@
         <object-type>user</object-type>
     </properties>
     <user>
-        <login>user1</login>
-        <login>********</login>
-        <salt_user>********</salt_user>
+        <login>PseudoOne</login>
+        <password>@ExAmplpassWORD123@</password>
+        <salt_user>aEhu538Aehk9pHeb1dDboTEvndl00zYL</salt_user>
     </user>
 </order>
