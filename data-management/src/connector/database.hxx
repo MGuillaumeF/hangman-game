@@ -6,8 +6,8 @@
 //
 // Create concrete database instance based on the DATABASE_* macros.
 //
-#ifndef DATABASE_HXX
-#define DATABASE_HXX
+#ifndef __DATABASE_HXX__
+#define __DATABASE_HXX__
 
 #include <iostream>
 #include <memory> // std::unique_ptr
@@ -52,14 +52,13 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
     odb::mssql::database::print_usage(std::cout);
 #endif
     // compilation failed with unknown database message
-    return nullptr;
   } else {
 
 #if defined(DATABASE_MYSQL)
-    db = new odb::mysql::database(argc, argv);
+    db = std::unique_ptr<odb::core::database>(new odb::mysql::database(argc, argv));
 #elif defined(DATABASE_SQLITE)
-    db = new odb::sqlite::database(argc, argv, false,
-                                   SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+    db = std::unique_ptr<odb::core::database>(new odb::sqlite::database(argc, argv, false,
+                                   SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
     // Create the database schema. Due to bugs in SQLite foreign key
     // support for DDL statements, we need to temporarily disable
     // foreign keys.
@@ -74,11 +73,11 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
 
     c->execute("PRAGMA foreign_keys=ON");
 #elif defined(DATABASE_PGSQL)
-    db = new odb::pgsql::database(argc, argv);
+    db = std::unique_ptr<odb::core::database>(new odb::pgsql::database(argc, argv));
 #elif defined(DATABASE_ORACLE)
-    db = new odb::oracle::database(argc, argv);
+    db = std::unique_ptr<odb::core::database>(new odb::oracle::database(argc, argv));
 #elif defined(DATABASE_MSSQL)
-    db = new odb::mssql::database(argc, argv);
+    db = std::unique_ptr<odb::core::database>(new odb::mssql::database(argc, argv));
 #endif
   }
   return db;
