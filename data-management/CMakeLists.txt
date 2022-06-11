@@ -68,10 +68,16 @@ file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
 # Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
 file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
      ${MODEL_SRCS}
+     "src/endpoint/*.hpp"
+     "src/endpoint/*.cpp"
      "src/connector/*.hxx"
+     "src/serializer/*.hpp"
      "src/TCP/*.hpp"
      "src/TCP/*.cpp"
 )
+
+file(GLOB_RECURSE TEST_CLIENT_TCP_SRC_UT_DIR CONFIGURE_DEPENDS
+     "test/TCP/Client.cpp")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
@@ -94,7 +100,8 @@ if (ODB_FOUND)
   add_test(${PROJECT_NAME}-${SGBD_DEPENDENCY}-unit-tests ${PROJECT_NAME}-${SGBD_DEPENDENCY})
   # install(TARGETS DataManagement DESTINATION DataManagement)
   # install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
-  # add_executable(DataManagementTest ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR})
+  add_executable(${PROJECT_NAME}-tcp-client ${TEST_CLIENT_TCP_SRC_UT_DIR})
+  add_custom_command(TARGET ${PROJECT_NAME}-tcp-client PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources/database-order $<TARGET_FILE_DIR:${PROJECT_NAME}-tcp-client>/resources/database-order)
   # add_custom_command(TARGET DataManagementTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:DataManagementTest>/configuration)
   # add_test(DataManagementUnitTests DataManagementTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/reports.xml  --report_sink=../reports/reportUT.xml)
 

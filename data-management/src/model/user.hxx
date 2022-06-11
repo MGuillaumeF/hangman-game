@@ -5,6 +5,7 @@
 
 #include <odb/core.hxx>
 
+
 /**
  * @brief class of Users in model
  *
@@ -118,6 +119,16 @@ public:
   void setLastConnection(const uint32_t &lastConnection) {
     m_lastConnection = lastConnection;
   };
+
+  /**
+   * @brief method to check if all fields of user are valid
+   * 
+   * @return true The content of user object is valid
+   * @return false The content of user object is invalid
+   */
+  static bool isValid(const user& usr) {
+    return usr.getLogin().size() > 3;
+  }
 
 private:
   friend class odb::access;

@@ -17,6 +17,7 @@
 
 // create database access
 #include "./connector/database.hxx"
+#include "./endpoint/UserDBEndpoint.hpp"
 
 #if defined(DATABASE_MYSQL)
 #include "./model/mysql/user-odb.hxx"
@@ -45,68 +46,6 @@ std::unique_ptr<odb::core::database> getDataBaseAccess() {
   int32_t tempArgc = static_cast<int32_t>(sizeof(tempArgv));
 
   return create_database(tempArgc, tempArgv);
-}
-/**
- * @brief Create a User object
- *
- * @param data The property tree data of user to create
- * @return uint32_t The user id after create
- */
-uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
-                    const boost::property_tree::ptree &data) {
-
-  user newUser;
-
-  newUser.setLogin(data.get<std::string>("login"));
-  newUser.setPassword(data.get<std::string>("password"));
-  newUser.setSaltUser(data.get<std::string>("salt_user"));
-
-  odb::core::transaction t(db->begin());
-  const uint32_t id = db->persist(newUser);
-  t.commit();
-
-  return id;
-}
-
-/**
- * @brief function to delete user by id
- *
- * @param db The database access
- * @param id The id of user t delete
- */
-void deleteUser(const std::unique_ptr<odb::core::database> &db,
-                const uint32_t &id) {
-  odb::core::transaction t(db->begin());
-  db->erase<user>(id);
-  t.commit();
-}
-
-/**
- * @brief function to connect user by login and password
- *
- * @param db The database access
- * @param data The property tree data of user to connect
- * @return std::string The new token of connected user
- */
-std::string connectUser(const std::unique_ptr<odb::core::database> &db,
-                        const boost::property_tree::ptree &data) {
-  std::string token = "";
-  odb::core::transaction t(db->begin());
-  std::cout << "here1 " << data.get<std::string>("login") << ":"
-            << data.get<std::string>("password") << std::endl;
-
-  const std::unique_ptr<user> foundUser(db->query_one<user>(
-      odb::query<user>::login == data.get<std::string>("login") &&
-      odb::query<user>::password == data.get<std::string>("password")));
-  if (foundUser.get() != nullptr) {
-    token = "new token";
-    foundUser->setToken(token);
-    db->update(*foundUser);
-  }
-
-  t.commit();
-
-  return token;
 }
 
 void printUserCount(const std::unique_ptr<odb::core::database> &db) {
@@ -137,46 +76,6 @@ int32_t main(int argc, char *argv[]) {
 
   std::thread serv(startTcpServer);
   serv.detach();
-
-  try {
-    boost::asio::io_context io_context;
-
-    boost::asio::ip::tcp::socket s(io_context);
-    boost::asio::ip::tcp::resolver resolver(io_context);
-    boost::asio::connect(s, resolver.resolve("localhost", "50000"));
-
-    std::ifstream createUserFile("./resources/database-order/create-user.xml");
-    std::stringstream createUserFileStream;
-    createUserFileStream << createUserFile.rdbuf();
-
-    std::cout << "Enter message: " << std::endl;
-    const std::string request = createUserFileStream.str();
-
-    std::cout << request << std::endl;
-    std::cout << std::hex << request << std::endl;
-    size_t request_length = request.size();
-
-    std::cout << std::setfill('0') << std::setw(8);
-    std::cout << std::hex << request_length << std::endl;
-
-    std::stringstream ss;
-    ss << std::setfill('0') << std::setw(8);
-    ss << std::hex << request_length;
-    ss << std::hex << request;
-    boost::asio::write(
-        s, boost::asio::buffer(ss.str().c_str(), request_length + 8));
-
-    char reply[max_length];
-    size_t reply_length =
-        boost::asio::read(s, boost::asio::buffer(reply, request_length));
-    std::cout << "Reply is: ";
-    std::cout.write(reply, reply_length);
-    std::cout << "\n";
-
-    s.close();
-  } catch (const std::exception &e) {
-    std::cerr << "Exception: " << e.what() << "\n";
-  }
 
   try {
     std::unique_ptr<odb::core::database> db = create_database(argc, argv);
@@ -265,14 +164,14 @@ int32_t main(int argc, char *argv[]) {
     boost::property_tree::ptree frk;
     frk.put("login", "Frank");
     frk.put("password", "password_4");
-    const std::string tok = connectUser(db, frk);
+    const std::string tok = UserDBEndpoint::connectUser(db, frk);
 
     std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
     printUserCount(db);
 
     // John Doe is no longer in our database.
-    deleteUser(db, john_id);
+    UserDBEndpoint::deleteUser(db, john_id);
 
     printUserCount(db);
 
