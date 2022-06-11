@@ -16,6 +16,9 @@
 
 #include <odb/database.hxx>
 
+// generated configuration
+#include "config.hpp"
+
 #if defined(DATABASE_MYSQL)
 #include <odb/mysql/database.hxx>
 #elif defined(DATABASE_SQLITE)
