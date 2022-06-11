@@ -58,8 +58,8 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
 #if defined(DATABASE_MYSQL)
     db = new odb::mysql::database(argc, argv);
 #elif defined(DATABASE_SQLITE)
-    db = new odb::sqlite::database(
-        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+    db = new odb::sqlite::database(argc, argv, false,
+                                   SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
     // Create the database schema. Due to bugs in SQLite foreign key
     // support for DDL statements, we need to temporarily disable
     // foreign keys.
