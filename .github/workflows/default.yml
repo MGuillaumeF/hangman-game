@@ -224,7 +224,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Lint Clang-Tidy
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
 
     - name: Convert Lint Clang-Tidy to sonarqube format
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
