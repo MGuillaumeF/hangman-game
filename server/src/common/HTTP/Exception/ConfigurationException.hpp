@@ -8,6 +8,7 @@
  */
 class ConfigurationException : public HangmanGameException {
   using HangmanGameException::HangmanGameException;
+
 private:
   /** Error message.
    */
