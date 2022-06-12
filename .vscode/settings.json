@@ -99,6 +99,7 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "*.ixx": "cpp"
+        "*.ixx": "cpp",
+        "cuchar": "cpp"
     }
 }

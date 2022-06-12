@@ -113,7 +113,6 @@ jobs:
       with:
         boost_version: ${{env.BOOST_VERSION}}
         
-
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
       run: |
@@ -131,15 +130,15 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         mkdir sqlite
-        cp ./user.hxx ./sqlite/user.hxx
+        cp ./*.hxx ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
         ls -a .
         cd ..
         mkdir mysql
-        cp ./user.hxx ./mysql/user.hxx
+        cp ./*.hxx ./mysql/
         cd mysql
-        odb --database mysql --generate-query --generate-schema --std c++11 user.hxx
+        odb --database mysql --generate-query --generate-schema --std c++11 *.hxx
         ls -a .
 
     # - name: Save model changes
@@ -521,22 +520,37 @@ jobs:
         # OPTIONAL: in workspace by default
         boost_install_dir: 'D:/'
 
-    # - name: Install lib odb
-    #   working-directory: ${{github.workspace}}/..
-    #   run: |
-    #     git clone https://github.com/Microsoft/vcpkg
-    #     cd vcpkg
-    #     git pull
-    #     .\bootstrap-vcpkg.sh
-    #     cmd.exe /C "vcpkg update"
-    #     cmd.exe /C "vcpkg integrate install"
-    #     # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-    #     cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-    #     cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
+    - name: Install ODB_ROOT
+      working-directory: ${{github.workspace}}/data-management/tools/
+      run: |
+        npm install
+        node install-odb.mjs
+        echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+    - name: generate model
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run: |
+        odb --version
+        mkdir sqlite
+        copy ./*.hxx ./sqlite/
+        cd sqlite
+        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+
+    - name: Install lib odb
+      working-directory: ${{github.workspace}}/..
+      run: |
+        git clone https://github.com/Microsoft/vcpkg
+        cd vcpkg
+        git pull
+        .\bootstrap-vcpkg.sh
+        cmd.exe /C "vcpkg update"
+        cmd.exe /C "vcpkg integrate install"
+        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
+        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
+        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      # -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -545,14 +559,14 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
 
-    # - name: Generate target (data management)
-    #   run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-    #   env:
-    #     BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+    - name: Generate target (data management)
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
-    # - name: Build Data Management
-    #   working-directory: ${{github.workspace}}/data-management
-    #   run: cmake --build ${{github.workspace}}/data-management/bin
+    - name: Build Data Management
+      working-directory: ${{github.workspace}}/data-management
+      run: cmake --build ${{github.workspace}}/data-management/bin
 
     - name: Unit Tests
       run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
@@ -650,38 +664,61 @@ jobs:
       with:
         boost_version: ${{env.BOOST_VERSION}}
 
-    # - name: Install compiler odb
-    #   working-directory: ${{github.workspace}}
-    #   run: |
-    #     brew install tree
-    #     curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
-    #     sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
-    #     tree odb-2.4.0-i686-macosx
-    #     # sudo cp ./odb-2.4.0-i686-macosx/bin/* /usr/bin
+    - name: Install compiler odb
+      if: ${{ false }}
+      working-directory: ${{github.workspace}}
+      run: |
+        brew install tree
+        brew install gcc
+        brew install mysql
+        brew install autoconf-archive
+        curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
+        sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
+        tree odb-2.4.0-i686-macosx
+        echo "${{github.workspace}}/odb-2.4.0-i686-macosx/bin" >> $GITHUB_PATH
 
-    # - name: Install lib odb
-    #   working-directory: ${{github.workspace}}/..
-    #   run: |
-    #     git clone https://github.com/Microsoft/vcpkg
-    #     cd vcpkg
-    #     git pull
-    #     ./bootstrap-vcpkg.sh
-    #     ./vcpkg update
-    #     ./vcpkg integrate install
-    #     # ./vcpkg install boost
-    #     ./vcpkg install libodb
-    #     ./vcpkg install libodb-sqlite
+    - name: Generate Model Sources
+      if: ${{ false }}
+      working-directory: ${{github.workspace}}/data-management/src/model
+      run: |
+        mkdir sqlite
+        cp ./user.hxx ./sqlite/user.hxx
+        cd sqlite
+        odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx || echo "SQLite failed"
+        ls -a .
+        cd ..
+        mkdir mysql
+        cp ./user.hxx ./mysql/user.hxx
+        cd mysql
+        odb --database mysql --generate-query --generate-schema --std c++11 user.hxx || echo "MySQL failed"
+        ls -a .
 
-    # - name: Generate target (data management)
-    #   run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-    #   env:
-    #     BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-    #     ODB_ROOT: ${{github.workspace}}/odb-2.4.0-i686-macosx
-    #     EXTERNAL_INCLUDE_DIRS: ${{github.workspace}}/odb-2.4.0-i686-macosx/lib/odb/i686-apple-darwin10/include
+    - name: Install lib odb
+      if: ${{ false }}
+      working-directory: ${{github.workspace}}/..
+      run: |
+        git clone https://github.com/Microsoft/vcpkg
+        cd vcpkg
+        git pull
+        ./bootstrap-vcpkg.sh
+        ./vcpkg update
+        ./vcpkg integrate install
+        # ./vcpkg install boost
+        ./vcpkg install libodb
+        ./vcpkg install libodb-sqlite
+        ./vcpkg install libodb-mysql
+        ./vcpkg install libmysql
 
-    # - name: Build Data Management
-    #   working-directory: ${{github.workspace}}/data-management
-    #   run: cmake --build ${{github.workspace}}/data-management/bin
+    - name: Generate target (data management)
+      if: ${{ false }}
+      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSGBD_NAME=MYSQL -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+   
+    - name: Build Data Management
+      if: ${{ false }}
+      working-directory: ${{github.workspace}}/data-management
+      run: cmake --build ${{github.workspace}}/data-management/bin
 
     - name: Generate target
       run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}

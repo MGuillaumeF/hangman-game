@@ -1,16 +1,20 @@
 #include <exception>
-#include <iostream>
-#include <memory> // unique_ptr
+#include <fstream>
+#include <iostream> // std::cout
+#include <memory>   // unique_ptr
 #include <thread>
 
-// generated configuration
-#include "config.hpp"
+#include <chrono>
+#include <iomanip>
+#include <sstream> // std::stringstream
+#include <string>  // std::string
 
 #include <boost/property_tree/ptree.hpp>
 #include <odb/transaction.hxx>
 
 // create database access
 #include "./connector/database.hxx"
+#include "./endpoint/UserDBEndpoint.hpp"
 
 #if defined(DATABASE_MYSQL)
 #include "./model/mysql/user-odb.hxx"
@@ -40,68 +44,6 @@ std::unique_ptr<odb::core::database> getDataBaseAccess() {
 
   return create_database(tempArgc, tempArgv);
 }
-/**
- * @brief Create a User object
- *
- * @param data The property tree data of user to create
- * @return uint32_t The user id after create
- */
-uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
-                    const boost::property_tree::ptree &data) {
-
-  user newUser;
-
-  newUser.setLogin(data.get<std::string>("login"));
-  newUser.setPassword(data.get<std::string>("password"));
-  newUser.setSaltUser(data.get<std::string>("salt_user"));
-
-  odb::core::transaction t(db->begin());
-  const uint32_t id = db->persist(newUser);
-  t.commit();
-
-  return id;
-}
-
-/**
- * @brief function to delete user by id
- *
- * @param db The database access
- * @param id The id of user t delete
- */
-void deleteUser(const std::unique_ptr<odb::core::database> &db,
-                const uint32_t &id) {
-  odb::core::transaction t(db->begin());
-  db->erase<user>(id);
-  t.commit();
-}
-
-/**
- * @brief function to connect user by login and password
- *
- * @param db The database access
- * @param data The property tree data of user to connect
- * @return std::string The new token of connected user
- */
-std::string connectUser(const std::unique_ptr<odb::core::database> &db,
-                        const boost::property_tree::ptree &data) {
-  std::string token = "";
-  odb::core::transaction t(db->begin());
-  std::cout << "here1 " << data.get<std::string>("login") << ":"
-            << data.get<std::string>("password") << std::endl;
-
-  const std::unique_ptr<user> foundUser(db->query_one<user>(
-      odb::query<user>::login == data.get<std::string>("login") &&
-      odb::query<user>::password == data.get<std::string>("password")));
-  if (foundUser.get() != nullptr) {
-    token = "new token";
-    foundUser->setToken(token);
-    db->update(*foundUser);
-  }
-
-  t.commit();
-
-  return token;
-}
 
 void printUserCount(const std::unique_ptr<odb::core::database> &db) {
   odb::core::transaction t(db->begin());
@@ -109,7 +51,7 @@ void printUserCount(const std::unique_ptr<odb::core::database> &db) {
   // The result of this (aggregate) query always has exactly one element
   // so use the query_value() shortcut.
   //
-  user_stat ps(db->query_value<user_stat>());
+  const user_stat ps(db->query_value<user_stat>());
 
   std::cout << std::endl << "count  : " << ps.count << std::endl;
 
@@ -119,9 +61,9 @@ void printUserCount(const std::unique_ptr<odb::core::database> &db) {
 void startTcpServer() {
   try {
     boost::asio::io_context ioContext;
-    hangman::tcp::Server server(ioContext, 50000);
+    const hangman::tcp::Server server(ioContext, 50000);
     ioContext.run();
-  } catch (std::exception &e) {
+  } catch (const std::exception &e) {
     std::cerr << "Exception: " << e.what() << "\n";
   }
 }
@@ -130,32 +72,10 @@ int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
 
   std::thread serv(startTcpServer);
-  serv.detach();
-
-  try {
-    boost::asio::io_context io_context;
-
-    boost::asio::ip::tcp::socket s(io_context);
-    boost::asio::ip::tcp::resolver resolver(io_context);
-    boost::asio::connect(s, resolver.resolve("localhost", "50000"));
-
-    std::cout << "Enter message: ";
-    // char request[max_length];
-    // std::cin.getline(request, max_length);
-    char *request = "this is a request test";
-    size_t request_length = std::strlen(request);
-    boost::asio::write(s, boost::asio::buffer(request, request_length));
-
-    char reply[max_length];
-    size_t reply_length =
-        boost::asio::read(s, boost::asio::buffer(reply, request_length));
-    std::cout << "Reply is: ";
-    std::cout.write(reply, reply_length);
-    std::cout << "\n";
-
-    s.close();
-  } catch (std::exception &e) {
-    std::cerr << "Exception: " << e.what() << "\n";
+  if (argc > 1 && std::string("lock").compare(argv[1])) {
+    serv.join();
+  } else {
+    serv.detach();
   }
 
   try {
@@ -245,14 +165,14 @@ int32_t main(int argc, char *argv[]) {
     boost::property_tree::ptree frk;
     frk.put("login", "Frank");
     frk.put("password", "password_4");
-    const std::string tok = connectUser(db, frk);
+    const std::string tok = UserDBEndpoint::connectUser(db, frk);
 
     std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
     printUserCount(db);
 
     // John Doe is no longer in our database.
-    deleteUser(db, john_id);
+    UserDBEndpoint::deleteUser(db, john_id);
 
     printUserCount(db);
 
