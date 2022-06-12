@@ -7,10 +7,12 @@
  * Exception class for configuration error
  */
 class ConfigurationException : public HangmanGameException {
+  /**
+   * call parent constructor
+   */
   using HangmanGameException::HangmanGameException;
-
-private:
-  /** Error message.
+  /**
+   * configuration error message.
    */
   std::string m_message = "Configuration error";
 };
