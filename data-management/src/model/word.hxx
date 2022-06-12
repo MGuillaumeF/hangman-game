@@ -58,7 +58,9 @@ public:
    *
    * @param definition
    */
-  void setDefinition(const std::string &definition) { m_definition = definition; };
+  void setDefinition(const std::string &definition) {
+    m_definition = definition;
+  };
 
   /**
    * @brief method to check if all fields of word are valid
@@ -66,7 +68,9 @@ public:
    * @return true The content of word object is valid
    * @return false The content of word object is invalid
    */
-  static bool isValid(const word &wrd) { return wrd.getValue().size() > 3 && wrd.getDefinition().size() > 3; }
+  static bool isValid(const word &wrd) {
+    return wrd.getValue().size() > 3 && wrd.getDefinition().size() > 3;
+  }
 
 private:
   friend class odb::access;
