@@ -250,7 +250,7 @@ jobs:
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
       working-directory: ${{github.workspace}}/server/bin
-      run: find -name '*.gcda' | xargs gcov
+      run: find -name '*.gcda' | xargs gcov --preserve-paths
 
     - name: Convert Boost Tests UT reports to sonarqube format
       working-directory: ${{github.workspace}}/server/bin
