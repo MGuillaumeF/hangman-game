@@ -20,7 +20,9 @@ public:
    *  @param message The error message.
    */
   explicit ConfigurationException(const std::string_view &message)
-      : HangmanGameException(message) {}
+      : HangmanGameException(message) {
+    using HangmanGameException::HangmanGameException;
+  }
 
 private:
   /** Error message.
