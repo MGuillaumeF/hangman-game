@@ -2,6 +2,7 @@
   "rules": {
     "jest/expect-expect": "off",
     "jest/valid-title": "off",
-    "jest/valid-expect": "off"
+    "jest/valid-expect": "off",
+    "promise/no-nesting": "off"
   }
 }
