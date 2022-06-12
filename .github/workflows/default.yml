@@ -1,6 +1,8 @@
 name: HANGMAN-GAME - DEFAULT
 
 on:
+  schedule:
+    - cron: '* * * 1 *'
   push:
     branches: [ main ]
   pull_request:
@@ -35,7 +37,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/init@v2
       with:
         languages: cpp, javascript
@@ -222,7 +224,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Lint Clang-Tidy
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
 
     - name: Convert Lint Clang-Tidy to sonarqube format
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
@@ -250,7 +252,7 @@ jobs:
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
       working-directory: ${{github.workspace}}/server/bin
-      run: find -name '*.gcda' | xargs gcov
+      run: find -name '*.gcda' | xargs gcov --preserve-paths
 
     - name: Convert Boost Tests UT reports to sonarqube format
       working-directory: ${{github.workspace}}/server/bin
@@ -319,7 +321,7 @@ jobs:
       run: npm run build
 
     - name: Perform CodeQL Analysis
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/analyze@v2
 
     - name: Extract Webpack stats
@@ -441,6 +443,7 @@ jobs:
         
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
+      if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/init@v1
       with:
         languages: 'cpp'
@@ -456,6 +459,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/server/bin
 
     - name: Perform CodeQL Analysis
+      if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/analyze@v1
 
     - name: Package server
