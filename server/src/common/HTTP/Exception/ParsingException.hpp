@@ -7,21 +7,12 @@
  * Exception class for parsing error
  */
 class ParsingException : public HangmanGameException {
-public:
-  /** Constructor
-   *  @param message The message exception
+  /**
+   * call parent constructor
    */
-  explicit ParsingException(const char *const message)
-      : HangmanGameException(message) {}
-
-  /** Constructor
-   *  @param message The error message.
-   */
-  explicit ParsingException(const std::string &message)
-      : HangmanGameException(message) {}
-
-private:
-  /** Error message.
+  using HangmanGameException::HangmanGameException;
+  /**
+   * parsing error message.
    */
   std::string m_message = "Parsing error";
 };
