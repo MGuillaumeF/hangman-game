@@ -12,7 +12,9 @@ public:
    *  @param message The message exception
    */
   explicit ConfigurationException(const char *const message)
-      : HangmanGameException(message) {}
+      : HangmanGameException(message) {
+    using HangmanGameException::HangmanGameException;
+  }
 
   /** Constructor
    *  @param message The error message.
