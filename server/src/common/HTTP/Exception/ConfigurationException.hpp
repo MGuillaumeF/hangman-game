@@ -12,17 +12,13 @@ public:
    *  @param message The message exception
    */
   explicit ConfigurationException(const char *const message)
-      : HangmanGameException(message) {
-    using HangmanGameException::HangmanGameException;
-  }
+      : HangmanGameException(message) {}
 
   /** Constructor
    *  @param message The error message.
    */
   explicit ConfigurationException(const std::string_view &message)
-      : HangmanGameException(message) {
-    using HangmanGameException::HangmanGameException;
-  }
+      : HangmanGameException(message) {}
 
 private:
   /** Error message.
