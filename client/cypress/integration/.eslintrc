@@ -1,5 +1,7 @@
 {
   "rules": {
-    "jest/expect-expect": "off"
+    "jest/expect-expect": "off",
+    "jest/valid-title": "off",
+    "jest/valid-expect": "off"
   }
 }
