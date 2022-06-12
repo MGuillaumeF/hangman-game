@@ -12,9 +12,9 @@ cd src/model
 
 REM SQLITE
 mkdir sqlite
-copy user.hxx sqlite\user.hxx
+copy *.hxx sqlite\
 cd sqlite
-odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx
+odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
 
 cd /D %~dp0
 cd ..
@@ -25,9 +25,9 @@ cmake --build bin/sqlite --config Debug
 REM PGSQL
 cd src/model
 mkdir pgsql
-copy user.hxx pgsql\user.hxx
+copy *.hxx pgsql\
 cd pgsql
-odb --database pgsql --generate-query --generate-schema --std c++11 user.hxx
+odb --database pgsql --generate-query --generate-schema --std c++11 *.hxx
 
 cd /D %~dp0
 cd ..
@@ -38,9 +38,9 @@ cmake --build bin/pgsql --config Debug
 REM MYSQL
 cd src/model
 mkdir mysql
-copy user.hxx mysql\user.hxx
+copy *.hxx mysql\
 cd mysql
-odb --database mysql --generate-query --generate-schema --std c++11 user.hxx
+odb --database mysql --generate-query --generate-schema --std c++11 *.hxx
 
 cd /D %~dp0
 cd ..

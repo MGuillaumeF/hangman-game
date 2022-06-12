@@ -9,9 +9,6 @@
 #include <sstream> // std::stringstream
 #include <string>  // std::string
 
-// generated configuration
-#include "config.hpp"
-
 #include <boost/property_tree/ptree.hpp>
 #include <odb/transaction.hxx>
 
@@ -75,7 +72,11 @@ int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
 
   std::thread serv(startTcpServer);
-  serv.detach();
+  if (argc > 1 && std::string("lock").compare(argv[1])) {
+    serv.join();
+  } else {
+    serv.detach();
+  }
 
   try {
     std::unique_ptr<odb::core::database> db = create_database(argc, argv);

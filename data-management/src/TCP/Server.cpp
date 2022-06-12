@@ -11,6 +11,7 @@ namespace tcp {
 Server::Server(boost::asio::io_context &ioContext, const uint16_t &port)
     : m_acceptor(ioContext, boost::asio::ip::tcp::endpoint(
                                 boost::asio::ip::tcp::v4(), port)) {
+  std::cout << "Server listen at " << port << std::endl;
   doAccept();
 }
 /**
@@ -22,6 +23,7 @@ void Server::doAccept() {
                                  boost::asio::ip::tcp::socket socket) {
     if (!ec) {
       std::make_shared<Session>(std::move(socket))->start();
+      std::cout << "Client connection" << std::endl;
     }
 
     doAccept();

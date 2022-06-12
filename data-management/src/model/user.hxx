@@ -1,5 +1,5 @@
-#ifndef USER_HXX
-#define USER_HXX
+#ifndef __MODEL_USER_HXX__
+#define __MODEL_USER_HXX__
 
 #include <string>
 

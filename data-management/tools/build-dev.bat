@@ -6,6 +6,17 @@ REM vcpkg install libodb-pgsql --triplet=x64-windows
 REM vcpkg install boost --triplet=x64-windows
 
 set start_path=%CD%
+
+cd /D %~dp0
+cd ..
+cd src/model
+
+REM SQLITE
+mkdir sqlite
+copy *.hxx sqlite\
+cd sqlite
+odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+
 cd /D %~dp0
 cd ..
 
