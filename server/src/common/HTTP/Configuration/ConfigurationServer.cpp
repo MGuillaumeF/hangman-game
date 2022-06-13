@@ -30,8 +30,8 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
     // save configuration of server
     m_description =
         configuration_properties.get<std::string>("http-server.description");
-    m_hostname =
-        configuration_properties.get<std::string>("http-server.network.hostname");
+    m_hostname = configuration_properties.get<std::string>(
+        "http-server.network.hostname");
     m_root = configuration_properties.get<std::string>(
         "http-server.endpoints.endpoint.root-directory");
     m_thread = configuration_properties.get<uint8_t>("http-server.thread");
