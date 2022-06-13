@@ -116,8 +116,8 @@ int32_t main(int argc, char *argv[]) {
 
   logger->info("HTTP_CONFIGURATION", "Enpoints configured");
 
-  auto server = http::Server(config.getHostname(), config.getPort(),
-                             config.getThreads());
+  auto server =
+      http::Server(config.getHostname(), config.getPort(), config.getThreads());
 
   return exitStatus;
 }

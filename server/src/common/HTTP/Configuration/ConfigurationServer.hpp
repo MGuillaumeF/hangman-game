@@ -43,7 +43,7 @@ public:
    * @return std::string
    */
   [[nodiscard]] std::string getRoot() const;
- 
+
   /**
    * @brief Get the Threads object
    *
