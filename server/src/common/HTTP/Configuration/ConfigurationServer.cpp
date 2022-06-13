@@ -29,21 +29,18 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
   try {
     // save configuration of server
     m_description =
-        configuration_properties.get<std::string>("servers.server.description");
+        configuration_properties.get<std::string>("http-server.description");
     m_hostname =
-        configuration_properties.get<std::string>("servers.server.hostname");
-    m_ipAddress =
-        configuration_properties.get<std::string>("servers.server.ip-address");
+        configuration_properties.get<std::string>("http-server.network.hostname");
     m_root = configuration_properties.get<std::string>(
-        "servers.server.endpoints.endpoint.root-directory");
-    m_thread = configuration_properties.get<uint8_t>("servers.server.thread");
-    m_port = configuration_properties.get<uint16_t>("servers.server.port");
+        "http-server.endpoints.endpoint.root-directory");
+    m_thread = configuration_properties.get<uint8_t>("http-server.thread");
+    m_port = configuration_properties.get<uint16_t>("http-server.network.port");
 
     logger->info("HTTP_CONFIGURATION",
                  "Configuration reading : "
                  "\n -> Description  : " +
                      m_description + "\n -> Hostname     : " + m_hostname +
-                     "\n -> Ip Address   : " + m_ipAddress +
                      "\n -> Port         : " + std::to_string(m_port) +
                      "\n -> Root         : " + m_root +
                      "\n -> Thread       : " + std::to_string(m_thread));
@@ -64,13 +61,6 @@ ConfigurationServer::ConfigurationServer(const std::string &filename) {
 std::string ConfigurationServer::getDescription() const {
   return m_description;
 };
-
-/**
- * @brief Get the IpAddress object
- *
- * @return std::string
- */
-std::string ConfigurationServer::getIpAddress() const { return m_ipAddress; };
 
 /**
  * @brief Get the Hostname object
