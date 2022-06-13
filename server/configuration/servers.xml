@@ -1,16 +1,25 @@
 <?xml version="1.1" encoding="UTF-8"?>
-<servers>
-  <server>
+<http-server>
     <description>example of server 1 configuration</description>
-    <hostname>localhost</hostname>
-    <ip-address>0.0.0.0</ip-address>
-    <schema>HTTP</schema>
-    <port>8080</port>
+    <network>
+      <hostname>0.0.0.0</hostname>
+      <schema>HTTP</schema>
+      <port>8080</port>
+    </network>
     <thread>1</thread>
     <endpoints>
       <endpoint type="static-files" target="/" keep-prefix="false">
         <root-directory>.</root-directory>
       </endpoint>
     </endpoints>
-  </server>
-</servers>
+</http-server>
+<db-connector>
+  <database>
+    <type>sqlite</type>
+    <name>hangman</name>
+  </database>
+  <network>
+    <hostname>127.0.0.1</hostname>
+    <port>50000</port>
+  </network>
+</db-connector>
