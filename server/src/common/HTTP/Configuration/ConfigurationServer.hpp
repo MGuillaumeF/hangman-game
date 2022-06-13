@@ -43,14 +43,7 @@ public:
    * @return std::string
    */
   [[nodiscard]] std::string getRoot() const;
-
-  /**
-   * @brief Get the ipAddress object
-   *
-   * @return std::string
-   */
-  [[nodiscard]] std::string getIpAddress() const;
-
+ 
   /**
    * @brief Get the Threads object
    *
@@ -68,7 +61,6 @@ public:
 private:
   std::string m_description;
   std::string m_hostname;
-  std::string m_ipAddress;
   std::string m_root;
   uint8_t m_thread;
   uint16_t m_port;
