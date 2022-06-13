@@ -256,7 +256,8 @@ jobs:
       run: |
         mkdir coverage
         find -name '*.gcda' | xargs gcov --preserve-paths
-        find . -name \*.gcov -exec cp {} coverage \;
+        cd ..
+        find . -name \*.gcov -exec cp {} ./bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
       working-directory: ${{github.workspace}}/server/bin
