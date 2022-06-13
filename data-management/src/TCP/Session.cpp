@@ -46,7 +46,7 @@ void Session::doReadHead() {
                              if (!ec) {
                                const std::string messageSizeStr = m_data;
                                const uint32_t li_hex =
-                                   std::stol(messageSizeStr, nullptr, 16);
+                                   std::stoul(messageSizeStr, nullptr, 16);
                                std::cout << "The header size is : " << std::dec
                                          << li_hex << std::endl;
                                doReadBody(li_hex);
