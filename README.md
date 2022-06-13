@@ -28,7 +28,7 @@ L'application est un "jeux du pendu".
   - Bundler: CMake
   - Packager: CPack
   - Docs: Doxygen, Graphviz, Swagger/OpenAPI
-  - Gestionnaire de paquet: vcpk
+  - Gestionnaire de paquet: vcpkg
 
 ### Le serveur TCP
 
@@ -46,7 +46,7 @@ L'application est un "jeux du pendu".
   - Bundler: CMake
   - Packager: CPack
   - Docs: Doxygen, Graphviz, Merise
-  - Gestionnaire de paquet: vcpk
+  - Gestionnaire de paquet: vcpkg
 
 ### L'application Web
 
