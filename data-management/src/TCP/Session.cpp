@@ -14,7 +14,7 @@
  */
 std::unique_ptr<odb::core::database> getDataBaseAccess2() {
   char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data2.db"};
-  int32_t tempArgc = static_cast<int32_t>(sizeof(tempArgv));
+  auto tempArgc = static_cast<int32_t>(sizeof(tempArgv));
 
   return create_database(tempArgc, tempArgv);
 }
@@ -39,8 +39,9 @@ void Session::doRead() {
 }
 
 void Session::doReadHead() {
+  const uint8_t SIZE_ALLOWED_BUFFER = 8;
   const auto self(shared_from_this());
-  m_socket.async_read_some(boost::asio::buffer(m_data, 8),
+  m_socket.async_read_some(boost::asio::buffer(m_data, SIZE_ALLOWED_BUFFER),
                            [this, self](const boost::system::error_code &ec,
                                         const std::size_t &length) {
                              if (!ec) {
