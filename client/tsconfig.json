@@ -34,6 +34,6 @@
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "cypress.config.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "build", "scripts"]
 }
