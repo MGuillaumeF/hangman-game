@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
 import { devServer } from "@cypress/webpack-dev-server";
-import webpackConfig from "./webpack.config";
+import webpackConfig from "../webpack.config";
 
 export default defineConfig({
   component: {
