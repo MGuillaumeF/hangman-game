@@ -7,18 +7,6 @@
 #include "../connector/database.hxx"
 #include "../endpoint/UserDBEndpoint.hpp"
 
-/**
- * @brief Get the Data Base Access object
- *
- * @return std::unique_ptr<odb::core::database>
- */
-std::unique_ptr<odb::core::database> getDataBaseAccess2() {
-  char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data2.db"};
-  auto tempArgc = static_cast<int32_t>(sizeof(tempArgv));
-
-  return create_database(tempArgc, tempArgv);
-}
-
 namespace hangman {
 namespace tcp {
 
@@ -83,16 +71,15 @@ void Session::doReadBody(const uint32_t &max_content) {
                       << xmlPtree.get<std::string>(
                              "order.properties.order-type")
                       << std::endl;
-            // if (xmlPtree.get<std::string>(
-            //                    "order.properties.object-type") == "user") {
+            if (xmlPtree.get<std::string>("order.properties.object-type") ==
+                "user") {
 
-            // Create an empty property tree object
-            // boost::property_tree::ptree userPtree;
-            // const user newUser = user::parseXml(content);
-            // UserDBEndpoint::createUser(getDataBaseAccess2(),
-            // xmlPtree.get_child("order.user"));
-
-            // }
+              // Create an empty property tree object
+              // boost::property_tree::ptree userPtree;
+              // const user newUser = user::parseXml(content);
+              UserDBEndpoint::getInstance()->createUser(
+                  xmlPtree.get_child("order.user"));
+            }
 
           } catch (
               const boost::property_tree::xml_parser::xml_parser_error &e) {
