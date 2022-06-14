@@ -1,15 +1,15 @@
-import { defineConfig } from 'cypress'
-import { devServer } from '@cypress/webpack-dev-server'
-import webpackConfig from './webpack.config'
+import { defineConfig } from "cypress";
+import { devServer } from "@cypress/webpack-dev-server";
+import webpackConfig from "./webpack.config";
 
 export default defineConfig({
   component: {
     devServer(cypressConfig) {
       return devServer({
-        framework: 'react',
+        framework: "react",
         cypressConfig,
-        webpackConfig,
-      })
-    },
-  },
-})
+        webpackConfig
+      });
+    }
+  }
+});
