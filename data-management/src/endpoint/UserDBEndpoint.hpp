@@ -27,13 +27,13 @@
 #endif
 
 class UserDBEndpoint {
-  std::unique_ptr<odb::core::database> m_db;
+  odb::core::database *m_db;
   static UserDBEndpoint *s_instance;
   /**
    * @brief Construct a new User DB Endpoint object
    *
    */
-  UserDBEndpoint();
+  UserDBEndpoint(odb::core::database *db);
 
 public:
   /**
@@ -42,7 +42,7 @@ public:
    */
   ~UserDBEndpoint() = delete;
 
-  static UserDBEndpoint *getInstance();
+  static UserDBEndpoint *getInstance(odb::core::database *db = nullptr);
 
   /**
    * @brief Create a User object

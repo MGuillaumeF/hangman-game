@@ -65,22 +65,13 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
   return token;
 }
 
-UserDBEndpoint *UserDBEndpoint::getInstance() {
+UserDBEndpoint *UserDBEndpoint::getInstance(odb::core::database *db) {
   if (s_instance == nullptr) {
-    s_instance = new UserDBEndpoint();
+    if (db != nullptr) {
+      s_instance = new UserDBEndpoint(db);
+    }
   }
   return s_instance;
 }
 
-UserDBEndpoint::UserDBEndpoint() {
-  char *exec_name = "./HangmanGameTest";
-  char *user_key = "--user";
-  char *user_value = "odb_test";
-  char *database_key = "--database";
-  char *database_value = "odb_test";
-  char *tempArgv[] = {exec_name, user_key, user_value, database_key,
-                      database_value};
-  int tempArgc = 5;
-
-  m_db = create_database(tempArgc, tempArgv);
-}
+UserDBEndpoint::UserDBEndpoint(odb::core::database *db) { m_db = db; }

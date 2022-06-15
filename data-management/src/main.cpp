@@ -31,27 +31,23 @@
 
 #include "./TCP/Server.hpp"
 
+#include "./endpoint/UserDBEndpoint.hpp"
+
 enum { max_length = 1024 };
 
 /**
  * @brief Get the Data Base Access object
  *
- * @return std::unique_ptr<odb::core::database>
+ * @return odb::core::database
  */
-std::unique_ptr<odb::core::database> getDataBaseAccess() {
-  char *exec_name = "./HangmanGameTest";
-  char *user_key = "--user";
-  char *user_value = "odb_test";
-  char *database_key = "--database";
-  char *database_value = "odb_test";
-  char *tempArgv[] = {exec_name, user_key, user_value, database_key,
-                      database_value};
+odb::core::database *getDataBaseAccess() {
+  char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
   int tempArgc = 5;
 
   return create_database(tempArgc, tempArgv);
 }
 
-void printUserCount(const std::unique_ptr<odb::core::database> &db) {
+void printUserCount(odb::core::database *const db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
@@ -67,6 +63,8 @@ void printUserCount(const std::unique_ptr<odb::core::database> &db) {
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
   try {
+    odb::core::database *db = getDataBaseAccess();
+    UserDBEndpoint::getInstance(db);
     boost::asio::io_context ioContext{3};
     const hangman::tcp::Server server(ioContext, 50000);
     ioContext.run();

@@ -37,8 +37,8 @@
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
 
-inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
-  std::unique_ptr<odb::core::database> db = nullptr;
+inline odb::database* create_database(int &argc, char *argv[]) {
+  odb::core::database* db = nullptr;
   if (argc > 1 && argv[1] == std::string("--help")) {
     std::cout << "Usage: " << argv[0] << " [options]" << std::endl
               << "Options:" << std::endl;
@@ -58,11 +58,11 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
   } else {
 
 #if defined(DATABASE_MYSQL)
-    db = std::unique_ptr<odb::core::database>(
-        new odb::mysql::database(argc, argv));
+    db = odb::core::database(
+        new odb::mysql::database(argc, argv);
 #elif defined(DATABASE_SQLITE)
-    db = std::unique_ptr<odb::core::database>(new odb::sqlite::database(
-        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE));
+    db = new odb::sqlite::database(
+        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
     // Create the database schema. Due to bugs in SQLite foreign key
     // support for DDL statements, we need to temporarily disable
     // foreign keys.
@@ -77,14 +77,12 @@ inline std::unique_ptr<odb::database> create_database(int &argc, char *argv[]) {
 
     c->execute("PRAGMA foreign_keys=ON");
 #elif defined(DATABASE_PGSQL)
-    db = std::unique_ptr<odb::core::database>(
-        new odb::pgsql::database(argc, argv));
+    db = new odb::pgsql::database(argc, argv);
 #elif defined(DATABASE_ORACLE)
-    db = std::unique_ptr<odb::core::database>(
-        new odb::oracle::database(argc, argv));
+    db = 
+        new odb::oracle::database(argc, argv);
 #elif defined(DATABASE_MSSQL)
-    db = std::unique_ptr<odb::core::database>(
-        new odb::mssql::database(argc, argv));
+    db = new odb::mssql::database(argc, argv);
 #endif
   }
   return db;
