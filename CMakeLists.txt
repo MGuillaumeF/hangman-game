@@ -38,7 +38,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
 endif()
 
-add_subdirectory(./server ./server/bin)
-# add_subdirectory(./data-management ./data-management/bin)
-
 add_definitions("-Wall")
+
+add_subdirectory(./server ./server/bin)
+add_subdirectory(./data-management ./data-management/bin)
+
