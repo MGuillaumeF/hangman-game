@@ -1,17 +1,6 @@
-# minimum CMake version (minimum feature)
-cmake_minimum_required(VERSION 3.12)
-
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# target_compile_definitions(DATABASE_MYSQL)
-# add_compile_definitions(DATABASE_MYSQL)
-
-set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 
 if (SGBD_NAME STREQUAL "SQLITE")
   set(SGBD_DEPENDENCY "sqlite")
@@ -29,32 +18,13 @@ if (SGBD_NAME STREQUAL "SQLITE")
     set(SGBD_DEPENDENCY "sqlite")
 endif()
 set(MODEL_SRCS "src/model/${SGBD_DEPENDENCY}/*-odb.cxx" "src/model/${SGBD_DEPENDENCY}/*-odb.hxx")
-  
-# Add name on project 
-project(DataManagement VERSION "${PACKAGE_VERSION}")
-
-# activate test on project
-enable_testing()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  # using Clang
-  MESSAGE("Compiler used is Clang")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage -lodb-mysql -lodb") #-stdlib=libc++ -lc++abi
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  # using GCC
-  MESSAGE("Compiler used is g++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fprofile-arcs -ftest-coverage --coverage -pthread")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage -lodb-mysql -lodb")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  # using Intel C++
-  MESSAGE("Compiler used is Intel")
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  # using Visual Studio C++
-  MESSAGE("Compiler used is Microsoft Visual Studio C++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${EXT_CMAKE_CXX_FLAGS} /std:c++11")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++11")
 endif()
 
 add_definitions("-Wall")
