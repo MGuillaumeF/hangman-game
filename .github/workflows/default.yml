@@ -383,7 +383,7 @@ jobs:
       uses: warchant/setup-sonar-scanner@v3
 
     - name: Run SonarQube data-management
-      working-directory: ${{github.workspace}}/data-management
+      working-directory: ${{github.workspace}}
       if: github.actor != 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
@@ -391,6 +391,7 @@ jobs:
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
+        -Dsonar.branch.name=branch-data-management
 
     - name: Run SonarQube
       if: github.actor != 'dependabot[bot]'
