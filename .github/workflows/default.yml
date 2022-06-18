@@ -576,7 +576,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/data-management/bin
 
     - name: Unit Tests
-      run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: ${{github.workspace}}/bin/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
     
     - name: Archive Test report
       uses: actions/upload-artifact@v2
@@ -738,7 +738,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/bin
 
     - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/test
+      working-directory: ${{github.workspace}}/server/test
       run: |
         chmod +x ./run-tests.sh
         ./run-tests.sh
