@@ -194,7 +194,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/bin
 
     - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p bin/data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
+      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
