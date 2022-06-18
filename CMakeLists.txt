@@ -41,5 +41,6 @@ endif()
 add_definitions("-Wall")
 
 add_subdirectory(./server ./server/bin)
-add_subdirectory(./data-management ./data-management/bin)
-
+if (NOT NOT_GENERATE_DB_ACCESS)
+  add_subdirectory(./data-management ./data-management/bin)
+endif()
