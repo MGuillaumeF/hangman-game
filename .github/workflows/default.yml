@@ -215,14 +215,14 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
 
     - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
       working-directory: ${{github.workspace}}/server
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/bin
 
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
@@ -231,7 +231,7 @@ jobs:
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin/server
       run: |
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
@@ -252,7 +252,7 @@ jobs:
 
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin/server
       run: |
         mkdir coverage
         find -name '*.gcda' | xargs gcov --preserve-paths
@@ -260,11 +260,11 @@ jobs:
         find . -name \*.gcov -exec cp {} ./bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin/server
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Convert Boost Tests IT reports to sonarqube format
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin/server
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Archive Test report
