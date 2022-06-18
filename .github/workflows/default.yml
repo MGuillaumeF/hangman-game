@@ -220,7 +220,7 @@ jobs:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/bin
 
@@ -231,7 +231,7 @@ jobs:
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/bin/server
+      working-directory: ${{github.workspace}}/bin/server/bin
       run: |
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
@@ -260,11 +260,9 @@ jobs:
         find . -name \*.gcov -exec cp {} ./bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
-      working-directory: ${{github.workspace}}/bin/server
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Convert Boost Tests IT reports to sonarqube format
-      working-directory: ${{github.workspace}}/bin/server
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Archive Test report
