@@ -239,11 +239,10 @@ jobs:
 
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
-      working-directory: ${{github.workspace}}/bin/server
+      working-directory: ${{github.workspace}}/bin
       run: |
         mkdir coverage
         find -name '*.gcda' | xargs gcov --preserve-paths
-        cd ..
         find . -name \*.gcov -exec cp {} ./bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
