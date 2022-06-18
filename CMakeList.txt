@@ -40,3 +40,5 @@ endif()
 
 add_subdirectory(./server ./server/bin)
 # add_subdirectory(./data-management ./data-management/bin)
+
+add_definitions("-Wall")
