@@ -71,7 +71,7 @@ if (ODB_FOUND)
   # install(TARGETS ${PROJECT_NAME}-data-management DESTINATION DataManagement)
   # install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/configuration/" DESTINATION "DataManagement/configuration")
   add_executable(${PROJECT_NAME}-data-management-tcp-client ${TEST_CLIENT_TCP_SRC_UT_DIR})
-  add_custom_command(TARGET ${PROJECT_NAME}-data-management-tcp-client PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources/database-order ${CMAKE_CURRENT_BINARY_DIR}/resources/database-order)
+  add_custom_command(TARGET ${PROJECT_NAME}-data-management-tcp-client PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/database-order ${CMAKE_CURRENT_BINARY_DIR}/resources/database-order)
   # add_custom_command(TARGET ${PROJECT_NAME}-data-management-unit-tests PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/configuration)
   # add_test(DataManagementUnitTests ${PROJECT_NAME}-data-management-unit-tests --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reports.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml)
 
