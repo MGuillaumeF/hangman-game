@@ -383,7 +383,7 @@ jobs:
       if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
 
-    - name: Run SonarQube data-management
+    - name: Run SonarQube full
       working-directory: ${{github.workspace}}
       if: github.actor != 'dependabot[bot]'
       env:
