@@ -392,7 +392,7 @@ jobs:
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
-        -Dsonar.branch.name=branch-data-management
+        -Dsonar.branch.name=branch-full
 
     - name: Run SonarQube
       if: github.actor != 'dependabot[bot]'
