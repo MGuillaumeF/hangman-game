@@ -404,7 +404,7 @@ jobs:
         -Dsonar.verbose=false
 
     - name: SonarQube Quality Gate check
-      if: github.actor != 'dependabot[bot]'
+      if: github.actor == 'dependabot[bot]'
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
       timeout-minutes: 5
