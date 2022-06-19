@@ -241,9 +241,11 @@ jobs:
       if: github.actor != 'dependabot[bot]'
       working-directory: ${{github.workspace}}/bin
       run: |
-        mkdir coverage
         find -name '*.gcda' | xargs gcov --preserve-paths
-        find . -name \*.gcov -exec cp {} ./bin/coverage \;
+        cd ..
+        mkdir ./server/bin
+        mkdir ./server/bin/coverage
+        find . -name \*.gcov -exec cp {} ./server/bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
