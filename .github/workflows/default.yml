@@ -175,22 +175,6 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/src/model/mysql
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
-    - name: Generate target (data management)
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build Data Management
-      working-directory: ${{github.workspace}}/data-management
-      run: cmake --build ${{github.workspace}}/data-management/bin
-
-    - name: Test Data Management
-      working-directory: ${{github.workspace}}/data-management/bin
-      run: ctest --verbose
-
-    - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p data-management/bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt
-
     - name: Download cpp-coso ${{env.CPP_COSO_VERSION}}
       uses: wei/wget@v1
       with:
@@ -198,6 +182,19 @@ jobs:
 
     - name: Install cpp-coso
       run: sudo dpkg -i cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
+
+    - name: Generate target
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      env:
+        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+    - name: Build server
+      working-directory: ${{github.workspace}}
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/bin
+
+    - name: Lint Clang-Tidy (data-management)
+      run: clang-tidy -checks='*' -header-filter='data-management/src/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
@@ -214,16 +211,6 @@ jobs:
         name: Data-Management-Hangman-Game - Reports
         path: ${{github.workspace}}/data-management/reports
 
-    - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server
-      working-directory: ${{github.workspace}}/server
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
-
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
 
@@ -231,7 +218,7 @@ jobs:
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin/server/bin
       run: |
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
@@ -252,19 +239,18 @@ jobs:
 
     - name: gcov after test
       if: github.actor != 'dependabot[bot]'
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin
       run: |
-        mkdir coverage
         find -name '*.gcda' | xargs gcov --preserve-paths
         cd ..
-        find . -name \*.gcov -exec cp {} ./bin/coverage \;
+        mkdir ./server/bin
+        mkdir ./server/bin/coverage
+        find . -name \*.gcov -exec cp {} ./server/bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
-      working-directory: ${{github.workspace}}/server/bin
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Convert Boost Tests IT reports to sonarqube format
-      working-directory: ${{github.workspace}}/server/bin
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Archive Test report
@@ -398,7 +384,7 @@ jobs:
       uses: warchant/setup-sonar-scanner@v3
 
     - name: Run SonarQube data-management
-      working-directory: ${{github.workspace}}/data-management
+      working-directory: ${{github.workspace}}
       if: github.actor != 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.SONAR_REPO_ACCESS_TOKEN }}
@@ -406,6 +392,7 @@ jobs:
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
         -Dsonar.verbose=false
+        -Dsonar.branch.name=branch-data-management
 
     - name: Run SonarQube
       if: github.actor != 'dependabot[bot]'
@@ -454,21 +441,21 @@ jobs:
         languages: 'cpp'
 
     - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/bin
 
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/analyze@v1
 
     - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin
       # Build your program with the given configuration
       run: cpack -G "ZIP;DEB"
 
@@ -476,13 +463,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  install-server-Linux:
     needs: [build-release-Linux]
@@ -559,26 +546,17 @@ jobs:
         cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server windows
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
-
-    - name: Generate target (data management)
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build Data Management
-      working-directory: ${{github.workspace}}/data-management
-      run: cmake --build ${{github.workspace}}/data-management/bin
+      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
 
     - name: Unit Tests
-      run: ${{github.workspace}}/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: ${{github.workspace}}/bin/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
     
     - name: Archive Test report
       uses: actions/upload-artifact@v2
@@ -608,17 +586,17 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server windows
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
 
     - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin
       # Build your program with the given configuration
       run: cpack -G "ZIP;NSIS64"
 
@@ -626,13 +604,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
 
     - name: Archive Application windows NSIS 64
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
 
  install-server-Windows:
     needs: [build-release-Windows]
@@ -718,26 +696,15 @@ jobs:
         ./vcpkg install libodb-mysql
         ./vcpkg install libmysql
 
-    - name: Generate target (data management)
-      if: ${{ false }}
-      run: cmake -S ${{github.workspace}}/data-management -B ${{github.workspace}}/data-management/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSGBD_NAME=MYSQL -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-   
-    - name: Build Data Management
-      if: ${{ false }}
-      working-directory: ${{github.workspace}}/data-management
-      run: cmake --build ${{github.workspace}}/data-management/bin
-
     - name: Generate target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -D NOT_GENERATE_DB_ACCESS=true
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/bin
 
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
@@ -767,30 +734,30 @@ jobs:
     - name: Generate target
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -D NOT_GENERATE_DB_ACCESS=true
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build server
-      working-directory: ${{github.workspace}}/server
+      working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/bin
 
     - name: Package Application
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin
       run: cpack -G "ZIP;DragNDrop"
 
     - name: Archive Application ZIP
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
 
     - name: Archive Application DMG
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
 
  build-raspberry-pi-toolchain:
     needs: [sonarcloud-analyse]
@@ -816,15 +783,15 @@ jobs:
         arch: aarch64 # Note the new 'arch' option
 
     - name: Generate Target
-      run: cmake -S ${{github.workspace}}/server -B ${{github.workspace}}/server/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE -DBoost_DEBUG=ON -D Boost_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/include
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE -DBoost_DEBUG=ON -D Boost_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/include -D NOT_GENERATE_DB_ACCESS=true
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Build Target 
-      run: cmake --build ${{github.workspace}}/server/bin
+      run: cmake --build ${{github.workspace}}/bin
 
     - name: Package server
-      working-directory: ${{github.workspace}}/server/bin
+      working-directory: ${{github.workspace}}/bin
       # Build your program with the given configuration
       run: cpack -G "ZIP;DEB"
 
@@ -832,13 +799,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
     - name: Archive Server DEB
       uses: actions/upload-artifact@v2
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
-        path: ${{github.workspace}}/server/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
+        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
  dependabot:
     needs: [sonarcloud-analyse]

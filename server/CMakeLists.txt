@@ -1,48 +1,14 @@
-# minimum CMake version (minimum feature)
-cmake_minimum_required(VERSION 3.12)
-
-
-set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-
-
-# Add name on project 
-project(HangmanGame VERSION "${PACKAGE_VERSION}")
-
 # define C++ version on standard
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  MESSAGE("Debug mode activate test")
-  # activate test on project
-  enable_testing()
-endif()
-
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  # using Clang
-  MESSAGE("Compiler used is Clang")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -fprofile-arcs -ftest-coverage --coverage")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -ftest-coverage --coverage") #-stdlib=libc++ -lc++abi
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  # using GCC
-  MESSAGE("Compiler used is g++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2a -g -O0 -fprofile-arcs -ftest-coverage --coverage -fprofile-abs-path")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  # using Intel C++
-  MESSAGE("Compiler used is Intel")
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  # using Visual Studio C++
-  MESSAGE("Compiler used is Microsoft Visual Studio C++")
-  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20")
-  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
 endif()
-
-add_definitions("-Wall")
 
 # Add all srcs files in SRCS variable
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
@@ -90,17 +56,17 @@ if (Boost_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
   set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
   add_executable(${PROJECT_NAME} ${SRCS} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
-  add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGame>/configuration)
+  add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/configuration)
   install(TARGETS HangmanGame DESTINATION HangmanGame)
-  install(DIRECTORY "${PROJECT_SOURCE_DIR}/configuration/" DESTINATION "HangmanGame/configuration")
-  install(DIRECTORY "${PROJECT_SOURCE_DIR}/../client/build/" DESTINATION "HangmanGame/")
+  install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/configuration/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/configuration")
+  install(DIRECTORY "${PROJECT_SOURCE_DIR}/client/build/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
   
   if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
-    add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/configuration $<TARGET_FILE_DIR:HangmanGameTest>/configuration)
-    add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logUT.xml  --report_sink=../reports/reportUT.xml) 
+    add_custom_command(TARGET HangmanGameTest PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/configuration)
+    add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logUT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml) 
     add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
-    add_test(HangmanGameIntegrationTests HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=../reports/logIT.xml  --report_sink=../reports/reportIT.xml)
+    add_test(HangmanGameIntegrationTests HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logIT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportIT.xml)
   endif()
 
   if(WIN32)
