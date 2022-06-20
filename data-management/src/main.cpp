@@ -69,7 +69,7 @@ void startTcpServer() {
   }
 }
 
-int32_t main(const int &argc, const char *const argv[]) {
+int32_t main(const int argc, const char *const argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
 
   std::thread serv(startTcpServer);
