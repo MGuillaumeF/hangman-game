@@ -39,9 +39,9 @@ enum { max_length = 1024 };
  * @return std::unique_ptr<odb::core::database>
  */
 std::unique_ptr<odb::core::database> getDataBaseAccess() {
-  const char *const tempArgv[] = {"_", "--user", "odb_test", "--database",
+  char * tempArgv[] = {"_", "--user", "odb_test", "--database",
                                   "data.db"};
-  const uint8_t tempArgc = 5;
+  uint8_t tempArgc = 5;
 
   return create_database(tempArgc, tempArgv);
 }
