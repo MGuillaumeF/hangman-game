@@ -719,7 +719,7 @@ jobs:
       run: |
         brew install tree
         brew install gcc
-        brew install mysql
+        # brew install mysql
         brew install autoconf-archive
         curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
         sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
@@ -755,8 +755,8 @@ jobs:
         # ./vcpkg install boost
         ./vcpkg install libodb
         ./vcpkg install libodb-sqlite
-        ./vcpkg install libodb-mysql
-        ./vcpkg install libmysql
+        # ./vcpkg install libodb-mysql
+        # ./vcpkg install libmysql
 
     - name: Generate target
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
