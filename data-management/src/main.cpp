@@ -39,8 +39,8 @@ enum { max_length = 1024 };
  * @return std::unique_ptr<odb::core::database>
  */
 std::unique_ptr<odb::core::database> getDataBaseAccess() {
-  char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
-  int32_t tempArgc = static_cast<int32_t>(sizeof(tempArgv));
+  const char* const tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
+  const uint8_t tempArgc = 5;
 
   return create_database(tempArgc, tempArgv);
 }
@@ -68,7 +68,7 @@ void startTcpServer() {
   }
 }
 
-int32_t main(int argc, char *argv[]) {
+int32_t main(const int& argc, const char* const argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
 
   std::thread serv(startTcpServer);
