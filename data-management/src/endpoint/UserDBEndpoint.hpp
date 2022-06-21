@@ -33,7 +33,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  UserDBEndpoint(odb::core::database *db);
+  explicit UserDBEndpoint(odb::core::database *db);
 
 public:
   /**
