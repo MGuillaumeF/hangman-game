@@ -11,7 +11,7 @@ DataAccess::DataAccess() {
 odb::core::database *DataAccess::getDataBase() { return m_db; }
 
 odb::core::database *DataAccess::getDatabaseAccess() {
-  if (s_instance == nullptr) {
+  if (nullptr == s_instance) {
     s_instance = new DataAccess();
   }
   return s_instance->getDataBase();
