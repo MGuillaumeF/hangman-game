@@ -44,7 +44,7 @@ std::size_t printUserCount(odb::core::database *const db) {
   // so use the query_value() shortcut.
   //
   const user_stat ps(db->query_value<user_stat>());
-  const size = ps.count;
+  const std::size_t size = ps.count;
   std::cout << std::endl << "count  : " << size << std::endl;
 
   t.commit();
