@@ -33,8 +33,6 @@
 
 #include "./endpoint/UserDBEndpoint.hpp"
 
-enum { max_length = 1024 };
-
 /**
  * @brief Get the Data Base Access object
  *
