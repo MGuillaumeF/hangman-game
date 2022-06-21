@@ -10,7 +10,6 @@ UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
  * @return uint32_t The user id after create
  */
 uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
-  std::cout << "here";
   user newUser;
 
   newUser.setLogin(data.get<std::string>("login"));
@@ -48,13 +47,13 @@ std::string
 UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
   std::string token = "";
   odb::core::transaction t(m_db->begin());
-  std::cout << "here1 " << data.get<std::string>("login") << ":"
+  std::cout << "user connection " << data.get<std::string>("login") << ":"
             << data.get<std::string>("password") << std::endl;
 
   const std::unique_ptr<user> foundUser(m_db->query_one<user>(
       odb::query<user>::login == data.get<std::string>("login") &&
       odb::query<user>::password == data.get<std::string>("password")));
-  if (foundUser.get() != nullptr) {
+  if (nullptr != foundUser.get()) {
     token = "new token";
     foundUser->setToken(token);
     m_db->update(*foundUser);
@@ -66,8 +65,8 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
 }
 
 UserDBEndpoint *UserDBEndpoint::getInstance(odb::core::database *db) {
-  if (s_instance == nullptr) {
-    if (db != nullptr) {
+  if (nullptr == s_instance) {
+    if (nullptr != db) {
       s_instance = new UserDBEndpoint(db);
     }
   }
