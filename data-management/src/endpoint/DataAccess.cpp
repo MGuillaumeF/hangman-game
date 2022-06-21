@@ -3,7 +3,7 @@ DataAccess *DataAccess::s_instance = nullptr;
 
 DataAccess::DataAccess() {
   char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
-  int tempArgc = 5;
+  uint8_t tempArgc = 5;
 
   m_db = create_database(tempArgc, tempArgv);
 };
