@@ -37,7 +37,7 @@
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
 
-inline odb::database *create_database(uint16_t &argc, char *argv[]) {
+inline odb::database *create_database(int &argc, char *argv[]) {
   odb::core::database *db = nullptr;
   if (argc > 1 && argv[1] == std::string("--help")) {
     std::cout << "Usage: " << argv[0] << " [options]" << std::endl
