@@ -14,7 +14,7 @@
 class DataAccess {
   static DataAccess *s_instance;
   odb::core::database *m_db;
-  DataAccess();
+  explicit DataAccess();
   ~DataAccess() = default;
 
 public:
