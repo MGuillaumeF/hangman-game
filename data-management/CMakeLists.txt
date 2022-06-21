@@ -73,7 +73,7 @@ if (ODB_FOUND)
 
   if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_executable(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
-    add_test(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reports.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml)
+    add_test(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logUT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml)
   endif()
   add_executable(${PROJECT_NAME}-data-management-tcp-client ${TEST_CLIENT_TCP_SRC_UT_DIR})
   add_custom_command(TARGET ${PROJECT_NAME}-data-management-tcp-client PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/database-order ${CMAKE_CURRENT_BINARY_DIR}/resources/database-order)
