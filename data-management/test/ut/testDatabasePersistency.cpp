@@ -37,17 +37,19 @@
 
 BOOST_AUTO_TEST_SUITE(testDatabasePersistency)
 
-void printUserCount(odb::core::database *const db) {
+std::size_t printUserCount(odb::core::database *const db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
   // so use the query_value() shortcut.
   //
   const user_stat ps(db->query_value<user_stat>());
-
-  std::cout << std::endl << "count  : " << ps.count << std::endl;
+  const size = ps.count;
+  std::cout << std::endl << "count  : " << size << std::endl;
 
   t.commit();
+
+  return size;
 }
 
 BOOST_AUTO_TEST_CASE(testCreate) {
@@ -143,12 +145,12 @@ BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
-  printUserCount(db);
+  BOOST_CHECK_EQUAL(4, printUserCount(db));
 
   // John Doe is no longer in our database.
   UserDBEndpoint::getInstance()->deleteUser(john_id);
 
-  printUserCount(db);
+  BOOST_CHECK_EQUAL(3, printUserCount(db));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
