@@ -25,14 +25,29 @@
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
-
+/**
+ * @brief class of user endpoint management
+ *
+ */
 class UserDBEndpoint {
-public:
+  /**
+   * @brief database access pointer of single instance
+   *
+   */
+  odb::core::database *m_db;
+
+  /**
+   * @brief user endpoint pointer of single instance
+   *
+   */
+  static UserDBEndpoint *s_instance;
   /**
    * @brief Construct a new User DB Endpoint object
    *
    */
-  UserDBEndpoint() = delete;
+  explicit UserDBEndpoint(odb::core::database *db);
+
+public:
   /**
    * @brief Destroy the User DB Endpoint object
    *
@@ -40,32 +55,35 @@ public:
   ~UserDBEndpoint() = delete;
 
   /**
+   * @brief methode to get unique instance of USer endpointe
+   *
+   * @param db The database access pointer
+   * @return UserDBEndpoint*
+   */
+  static UserDBEndpoint *getInstance(odb::core::database *db = nullptr);
+
+  /**
    * @brief Create a User object
    *
    * @param data The property tree data of user to create
    * @return uint32_t The user id after create
    */
-  static uint32_t createUser(const std::unique_ptr<odb::core::database> &db,
-                             const boost::property_tree::ptree &data);
+  uint32_t createUser(const boost::property_tree::ptree &data);
 
   /**
    * @brief function to delete user by id
    *
-   * @param db The database access
    * @param id The id of user t delete
    */
-  static void deleteUser(const std::unique_ptr<odb::core::database> &db,
-                         const uint32_t &id);
+  void deleteUser(const uint32_t &id);
 
   /**
    * @brief function to connect user by login and password
    *
-   * @param db The database access
    * @param data The property tree data of user to connect
    * @return std::string The new token of connected user
    */
-  static std::string connectUser(const std::unique_ptr<odb::core::database> &db,
-                                 const boost::property_tree::ptree &data);
+  std::string connectUser(const boost::property_tree::ptree &data);
 };
 
 #endif

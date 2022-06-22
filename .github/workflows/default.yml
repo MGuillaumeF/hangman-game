@@ -245,13 +245,19 @@ jobs:
         cd ..
         mkdir ./server/bin
         mkdir ./server/bin/coverage
+        mkdir ./data-management/bin
+        mkdir ./data-management/bin/coverage
         find . -name \*.gcov -exec cp {} ./server/bin/coverage \;
+        find . -name \*.gcov -exec cp {} ./data-management/bin/coverage \;
 
     - name: Convert Boost Tests UT reports to sonarqube format
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Convert Boost Tests IT reports to sonarqube format
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
+
+    - name: Convert Boost Tests UT reports to sonarqube format (data-management)
+      run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/data-management/reports/reportUT.xml ${{github.workspace}}/data-management/reports/logUT.xml ${{github.workspace}}/data-management/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Archive Test report
       uses: actions/upload-artifact@v2

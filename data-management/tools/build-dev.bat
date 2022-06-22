@@ -18,10 +18,10 @@ cd sqlite
 odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
 
 cd /D %~dp0
-cd ..
+cd ../..
 
-cmake -S . -B bin/sqlite -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake -DSGBD_NAME=SQLITE
-cmake --build bin/sqlite --config Debug
+cmake -S . -B bin -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake -DSGBD_NAME=SQLITE
+cmake --build bin --config Debug
 
 
 cd /D %start_path%
