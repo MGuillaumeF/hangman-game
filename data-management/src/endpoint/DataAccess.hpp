@@ -11,14 +11,44 @@
 // create database access
 #include "../connector/database.hxx"
 
+/**
+ * @brief class to access database
+ *
+ */
 class DataAccess {
+  /**
+   * @brief static instance of singleton to have unique DataAccess instance
+   *
+   */
   static DataAccess *s_instance;
+  /**
+   * @brief The database pointer access is unique for the instance
+   *
+   */
   odb::core::database *m_db;
+  /**
+   * @brief Construct a new Data Access object
+   *
+   */
   explicit DataAccess();
+  /**
+   * @brief Destroy the Data Access object
+   *
+   */
   ~DataAccess() = default;
 
 public:
+  /**
+   * @brief Get the Database Access object
+   *
+   * @return odb::core::database* The database access pointer
+   */
   static odb::core::database *getDatabaseAccess();
+  /**
+   * @brief Get the Data Base object
+   *
+   * @return odb::core::database* The database access pointer
+   */
   odb::core::database *getDataBase();
 };
 

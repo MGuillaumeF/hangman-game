@@ -45,19 +45,6 @@ odb::core::database *getDataBaseAccess() {
   return create_database(tempArgc, tempArgv);
 }
 
-void printUserCount(odb::core::database *const db) {
-  odb::core::transaction t(db->begin());
-
-  // The result of this (aggregate) query always has exactly one element
-  // so use the query_value() shortcut.
-  //
-  const user_stat ps(db->query_value<user_stat>());
-
-  std::cout << std::endl << "count  : " << ps.count << std::endl;
-
-  t.commit();
-}
-
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
   try {

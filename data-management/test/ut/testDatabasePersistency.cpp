@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   odb::core::database *const db = DataAccess::getDatabaseAccess();
   UserDBEndpoint::getInstance(db);
 
-  printUserCount(db);
+  BOOST_CHECK_EQUAL(0, printUserCount(db));
 
   uint32_t john_id = -1;
   uint32_t joe_id = -1;

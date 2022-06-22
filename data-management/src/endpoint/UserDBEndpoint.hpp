@@ -25,9 +25,21 @@
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
-
+/**
+ * @brief class of user endpoint management
+ *
+ */
 class UserDBEndpoint {
+  /**
+   * @brief database access pointer of single instance
+   *
+   */
   odb::core::database *m_db;
+
+  /**
+   * @brief user endpoint pointer of single instance
+   *
+   */
   static UserDBEndpoint *s_instance;
   /**
    * @brief Construct a new User DB Endpoint object
@@ -42,6 +54,12 @@ public:
    */
   ~UserDBEndpoint() = delete;
 
+  /**
+   * @brief methode to get unique instance of USer endpointe
+   *
+   * @param db The database access pointer
+   * @return UserDBEndpoint*
+   */
   static UserDBEndpoint *getInstance(odb::core::database *db = nullptr);
 
   /**

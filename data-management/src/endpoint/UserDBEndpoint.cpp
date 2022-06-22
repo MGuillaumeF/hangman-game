@@ -26,7 +26,6 @@ uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
 /**
  * @brief function to delete user by id
  *
- * @param m_db The database access
  * @param id The id of user t delete
  */
 void UserDBEndpoint::deleteUser(const uint32_t &id) {
@@ -39,7 +38,6 @@ void UserDBEndpoint::deleteUser(const uint32_t &id) {
 /**
  * @brief function to connect user by login and password
  *
- * @param m_db The database access
  * @param data The property tree data of user to connect
  * @return std::string The new token of connected user
  */
@@ -63,12 +61,21 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
 
   return token;
 }
-
+/**
+ * @brief methode to get unique instance of USer endpointe
+ *
+ * @param db The database access pointer
+ * @return UserDBEndpoint* user endpoint pointer of single instance
+ */
 UserDBEndpoint *UserDBEndpoint::getInstance(odb::core::database *db) {
   if (nullptr == s_instance && nullptr != db) {
     s_instance = new UserDBEndpoint(db);
   }
   return s_instance;
 }
-
+/**
+ * @brief Construct a new User D B Endpoint:: User D B Endpoint object
+ *
+ * @param db The database access pointer
+ */
 UserDBEndpoint::UserDBEndpoint(odb::core::database *db) { m_db = db; }
