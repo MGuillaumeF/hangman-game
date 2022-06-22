@@ -45,7 +45,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  explicit UserDBEndpoint(odb::core::database *db);
+  explicit UserDBEndpoint(const odb::core::database * const db);
 
 public:
   /**
@@ -55,12 +55,12 @@ public:
   ~UserDBEndpoint() = delete;
 
   /**
-   * @brief methode to get unique instance of USer endpointe
+   * @brief methode to get unique instance of user endpoint
    *
    * @param db The database access pointer
    * @return UserDBEndpoint*
    */
-  static UserDBEndpoint *getInstance(odb::core::database *db = nullptr);
+  static UserDBEndpoint *getInstance(const odb::core::database * const db = nullptr);
 
   /**
    * @brief Create a User object
