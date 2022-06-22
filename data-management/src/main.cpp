@@ -38,7 +38,7 @@
  *
  * @return odb::core::database
  */
-odb::core::database *getDataBaseAccess() {
+std::unique_ptr<odb::core::database> getDataBaseAccess() {
   char *tempArgv[] = {"_", "--user", "odb_test", "--database", "data.db"};
   int tempArgc = 5;
 
@@ -48,7 +48,7 @@ odb::core::database *getDataBaseAccess() {
 int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
   try {
-    odb::core::database *db = getDataBaseAccess();
+    std::unique_ptr<odb::core::database> db = getDataBaseAccess();
     UserDBEndpoint::getInstance(db);
     boost::asio::io_context ioContext{3};
     const hangman::tcp::Server server(ioContext, 50000);
