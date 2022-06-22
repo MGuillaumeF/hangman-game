@@ -25,7 +25,7 @@ class DataAccess {
    * @brief The database pointer access is unique for the instance
    *
    */
-  odb::core::database *m_db;
+  std::unique_ptr<odb::core::database> m_db;
   /**
    * @brief Construct a new Data Access object
    *
@@ -43,13 +43,13 @@ public:
    *
    * @return odb::core::database* The database access pointer
    */
-  static odb::core::database *getDatabaseAccess();
+  static std::unique_ptr<odb::core::database> getDatabaseAccess();
   /**
    * @brief Get the Data Base object
    *
-   * @return odb::core::database* The database access pointer
+   * @return std::unique_ptr<odb::core::database> The database access pointer
    */
-  odb::core::database *getDataBase();
+  std::unique_ptr<odb::core::database> getDataBase();
 };
 
 #endif
