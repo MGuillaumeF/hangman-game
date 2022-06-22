@@ -45,7 +45,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  explicit UserDBEndpoint(odb::core::database *const db);
+  explicit UserDBEndpoint(odb::core::database * db);
 
 public:
   /**
@@ -60,7 +60,7 @@ public:
    * @param db The database access pointer
    * @return UserDBEndpoint*
    */
-  static UserDBEndpoint *getInstance(odb::core::database *const db = nullptr);
+  static UserDBEndpoint *getInstance(odb::core::database * db = nullptr);
 
   /**
    * @brief Create a User object
