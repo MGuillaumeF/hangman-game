@@ -79,6 +79,6 @@ UserDBEndpoint::getInstance(const odb::core::database *const db) {
  *
  * @param db The database access pointer
  */
-UserDBEndpoint::UserDBEndpoint(const odb::core::database *const db) {
+UserDBEndpoint::UserDBEndpoint(odb::core::database *const db) {
   m_db = db;
 }
