@@ -55,7 +55,7 @@ public:
   ~UserDBEndpoint() = delete;
 
   /**
-   * @brief methode to get unique instance of USer endpointe
+   * @brief methode to get unique instance of user endpoint
    *
    * @param db The database access pointer
    * @return UserDBEndpoint*
