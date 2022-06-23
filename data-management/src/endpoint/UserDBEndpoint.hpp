@@ -69,14 +69,14 @@ public:
    * @param data The property tree data of user to create
    * @return uint32_t The user id after create
    */
-  uint32_t createUser(const boost::property_tree::ptree &data);
+  uint32_t createUser(const boost::property_tree::ptree &data) const;
 
   /**
    * @brief function to delete user by id
    *
    * @param id The id of user t delete
    */
-  void deleteUser(const uint32_t &id);
+  void deleteUser(const uint32_t &id) const;
 
   /**
    * @brief function to connect user by login and password
@@ -84,7 +84,7 @@ public:
    * @param data The property tree data of user to connect
    * @return std::string The new token of connected user
    */
-  std::string connectUser(const boost::property_tree::ptree &data);
+  std::string connectUser(const boost::property_tree::ptree &data) const;
 };
 
 #endif
