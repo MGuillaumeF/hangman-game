@@ -19,7 +19,9 @@ DataAccess::DataAccess() {
  *
  * @return std::unique_ptr<odb::core::database> The database access pointer
  */
-std::shared_ptr<odb::core::database> DataAccess::getDataBase() const { return m_db; }
+std::shared_ptr<odb::core::database> DataAccess::getDataBase() const {
+  return m_db;
+}
 
 /**
  * @brief Get the Database Access object
