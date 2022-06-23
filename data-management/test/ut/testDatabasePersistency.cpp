@@ -145,12 +145,12 @@ BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
-  BOOST_CHECK_EQUAL(4, printUserCount(db));
+  BOOST_CHECK_EQUAL(4, printUserCount(std::move(db)));
 
   // John Doe is no longer in our database.
   UserDBEndpoint::getInstance()->deleteUser(john_id);
 
-  BOOST_CHECK_EQUAL(3, printUserCount(db));
+  BOOST_CHECK_EQUAL(3, printUserCount(std::move(db)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
