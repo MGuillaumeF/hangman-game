@@ -9,7 +9,8 @@ UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
  * @param data The property tree data of user to create
  * @return uint32_t The user id after create
  */
-uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
+uint32_t
+UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   user newUser;
 
   newUser.setLogin(data.get<std::string>("login"));
