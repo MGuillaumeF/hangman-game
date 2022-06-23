@@ -49,7 +49,7 @@ int32_t main(int argc, char *argv[]) {
   int32_t exitStatus = EXIT_SUCCESS;
   try {
     std::unique_ptr<odb::core::database> db = getDataBaseAccess();
-    UserDBEndpoint::getInstance(db);
+    UserDBEndpoint::getInstance(std::move(db));
     boost::asio::io_context ioContext{3};
     const hangman::tcp::Server server(ioContext, 50000);
     ioContext.run();
