@@ -80,5 +80,5 @@ UserDBEndpoint::getInstance(std::unique_ptr<odb::core::database> db) {
  * @param db The database access pointer
  */
 UserDBEndpoint::UserDBEndpoint(std::unique_ptr<odb::core::database> db) {
-  m_db = db;
+  m_db = std::move(db);
 }
