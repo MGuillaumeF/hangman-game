@@ -70,7 +70,7 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
 UserDBEndpoint *
 UserDBEndpoint::getInstance(std::unique_ptr<odb::core::database> db) {
   if (nullptr == s_instance && nullptr != db) {
-    s_instance = new UserDBEndpoint(db);
+    s_instance = new UserDBEndpoint(std::move(db));
   }
   return s_instance;
 }
