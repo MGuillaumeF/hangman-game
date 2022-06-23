@@ -19,16 +19,16 @@ DataAccess::DataAccess() {
  *
  * @return std::unique_ptr<odb::core::database> The database access pointer
  */
-std::unique_ptr<odb::core::database> DataAccess::getDataBase() {
-  return std::move(m_db);
+std::shared_ptr<odb::core::database> DataAccess::getDataBase() {
+  return m_db;
 }
 
 /**
  * @brief Get the Database Access object
  *
- * @return std::unique_ptr<odb::core::database> The database access pointer
+ * @return std::shared_ptr<odb::core::database> The database access pointer
  */
-std::unique_ptr<odb::core::database> DataAccess::getDatabaseAccess() {
+std::shared_ptr<odb::core::database> DataAccess::getDatabaseAccess() {
   if (nullptr == s_instance) {
     s_instance = new DataAccess();
   }
