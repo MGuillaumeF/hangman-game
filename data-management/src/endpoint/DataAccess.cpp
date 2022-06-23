@@ -19,7 +19,7 @@ DataAccess::DataAccess() {
  *
  * @return std::unique_ptr<odb::core::database> The database access pointer
  */
-std::unique_ptr<odb::core::database> DataAccess::getDataBase() { return m_db; }
+std::unique_ptr<odb::core::database> DataAccess::getDataBase() { return std::move(m_db); }
 
 /**
  * @brief Get the Database Access object
