@@ -9,7 +9,7 @@ UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
  * @param data The property tree data of user to create
  * @return uint32_t The user id after create
  */
-uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
+uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   user newUser;
 
   newUser.setLogin(data.get<std::string>("login"));
@@ -28,7 +28,7 @@ uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
  *
  * @param id The id of user t delete
  */
-void UserDBEndpoint::deleteUser(const uint32_t &id) {
+void UserDBEndpoint::deleteUser(const uint32_t &id) const {
 
   odb::core::transaction t(m_db->begin());
   m_db->erase<user>(id);
@@ -42,7 +42,7 @@ void UserDBEndpoint::deleteUser(const uint32_t &id) {
  * @return std::string The new token of connected user
  */
 std::string
-UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
+UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) const {
   std::string token = "";
   odb::core::transaction t(m_db->begin());
   std::cout << "user connection " << data.get<std::string>("login") << ":"
