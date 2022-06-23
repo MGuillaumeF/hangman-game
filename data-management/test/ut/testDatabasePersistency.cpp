@@ -7,7 +7,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream> // std::cout
-#include <memory>   // unique_ptr
+#include <memory>   // shared_ptr
 #include <thread>
 
 #include <chrono>
@@ -37,7 +37,7 @@
 
 BOOST_AUTO_TEST_SUITE(testDatabasePersistency)
 
-std::size_t printUserCount(std::unique_ptr<odb::core::database> db) {
+std::size_t printUserCount(std::shared_ptr<odb::core::database> db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
@@ -54,10 +54,10 @@ std::size_t printUserCount(std::unique_ptr<odb::core::database> db) {
 
 BOOST_AUTO_TEST_CASE(testCreate) {
 
-  std::unique_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
-  UserDBEndpoint::getInstance(std::move(db));
+  std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
+  UserDBEndpoint::getInstance(db);
 
-  BOOST_CHECK_EQUAL(0, printUserCount(std::move(db)));
+  BOOST_CHECK_EQUAL(0, printUserCount(db));
 
   uint32_t john_id = -1;
   uint32_t joe_id = -1;
@@ -145,12 +145,12 @@ BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::cout << "New token found is \"" << tok << "\"" << std::endl;
 
-  BOOST_CHECK_EQUAL(4, printUserCount(std::move(db)));
+  BOOST_CHECK_EQUAL(4, printUserCount(db));
 
   // John Doe is no longer in our database.
   UserDBEndpoint::getInstance()->deleteUser(john_id);
 
-  BOOST_CHECK_EQUAL(3, printUserCount(std::move(db)));
+  BOOST_CHECK_EQUAL(3, printUserCount(db));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
