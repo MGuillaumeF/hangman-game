@@ -55,9 +55,9 @@ std::size_t printUserCount(std::unique_ptr<odb::core::database> db) {
 BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::unique_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
-  UserDBEndpoint::getInstance(db);
+  UserDBEndpoint::getInstance(std::move(db));
 
-  BOOST_CHECK_EQUAL(0, printUserCount(db));
+  BOOST_CHECK_EQUAL(0, printUserCount(std::move(db)));
 
   uint32_t john_id = -1;
   uint32_t joe_id = -1;
