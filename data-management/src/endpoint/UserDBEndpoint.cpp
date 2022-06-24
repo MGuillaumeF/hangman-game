@@ -80,4 +80,5 @@ UserDBEndpoint::getInstance(const std::shared_ptr<odb::core::database> db) {
  *
  * @param db The database access pointer
  */
-UserDBEndpoint::UserDBEndpoint(const std::shared_ptr<odb::core::database> db): m_db(db) {}
+UserDBEndpoint::UserDBEndpoint(const std::shared_ptr<odb::core::database> db)
+    : m_db(db) {}
