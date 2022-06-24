@@ -17,16 +17,18 @@ DataAccess::DataAccess() {
 /**
  * @brief Get the Data Base object
  *
- * @return odb::core::database* The database access pointer
+ * @return std::unique_ptr<odb::core::database> The database access pointer
  */
-odb::core::database *DataAccess::getDataBase() { return m_db; }
+std::shared_ptr<odb::core::database> DataAccess::getDataBase() const {
+  return m_db;
+}
 
 /**
  * @brief Get the Database Access object
  *
- * @return odb::core::database* The database access pointer
+ * @return std::shared_ptr<odb::core::database> The database access pointer
  */
-odb::core::database *DataAccess::getDatabaseAccess() {
+std::shared_ptr<odb::core::database> DataAccess::getDatabaseAccess() {
   if (nullptr == s_instance) {
     s_instance = new DataAccess();
   }

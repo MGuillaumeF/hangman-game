@@ -34,7 +34,7 @@ class UserDBEndpoint {
    * @brief database access pointer of single instance
    *
    */
-  odb::core::database *m_db;
+  std::shared_ptr<odb::core::database> m_db;
 
   /**
    * @brief user endpoint pointer of single instance
@@ -45,7 +45,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  explicit UserDBEndpoint(odb::core::database *db);
+  explicit UserDBEndpoint(std::shared_ptr<odb::core::database> db);
 
 public:
   /**
@@ -60,7 +60,8 @@ public:
    * @param db The database access pointer
    * @return UserDBEndpoint*
    */
-  static UserDBEndpoint *getInstance(odb::core::database *db = nullptr);
+  static UserDBEndpoint *
+  getInstance(std::shared_ptr<odb::core::database> db = nullptr);
 
   /**
    * @brief Create a User object
@@ -68,14 +69,14 @@ public:
    * @param data The property tree data of user to create
    * @return uint32_t The user id after create
    */
-  uint32_t createUser(const boost::property_tree::ptree &data);
+  uint32_t createUser(const boost::property_tree::ptree &data) const;
 
   /**
    * @brief function to delete user by id
    *
    * @param id The id of user t delete
    */
-  void deleteUser(const uint32_t &id);
+  void deleteUser(const uint32_t &id) const;
 
   /**
    * @brief function to connect user by login and password
@@ -83,7 +84,7 @@ public:
    * @param data The property tree data of user to connect
    * @return std::string The new token of connected user
    */
-  std::string connectUser(const boost::property_tree::ptree &data);
+  std::string connectUser(const boost::property_tree::ptree &data) const;
 };
 
 #endif

@@ -9,7 +9,8 @@ UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
  * @param data The property tree data of user to create
  * @return uint32_t The user id after create
  */
-uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
+uint32_t
+UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   user newUser;
 
   newUser.setLogin(data.get<std::string>("login"));
@@ -28,7 +29,7 @@ uint32_t UserDBEndpoint::createUser(const boost::property_tree::ptree &data) {
  *
  * @param id The id of user t delete
  */
-void UserDBEndpoint::deleteUser(const uint32_t &id) {
+void UserDBEndpoint::deleteUser(const uint32_t &id) const {
 
   odb::core::transaction t(m_db->begin());
   m_db->erase<user>(id);
@@ -42,7 +43,7 @@ void UserDBEndpoint::deleteUser(const uint32_t &id) {
  * @return std::string The new token of connected user
  */
 std::string
-UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
+UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) const {
   std::string token = "";
   odb::core::transaction t(m_db->begin());
   std::cout << "user connection " << data.get<std::string>("login") << ":"
@@ -62,12 +63,13 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) {
   return token;
 }
 /**
- * @brief methode to get unique instance of USer endpointe
+ * @brief methode to get unique instance of user endpoint
  *
  * @param db The database access pointer
  * @return UserDBEndpoint* user endpoint pointer of single instance
  */
-UserDBEndpoint *UserDBEndpoint::getInstance(odb::core::database *const db) {
+UserDBEndpoint *
+UserDBEndpoint::getInstance(const std::shared_ptr<odb::core::database> db) {
   if (nullptr == s_instance && nullptr != db) {
     s_instance = new UserDBEndpoint(db);
   }
@@ -78,4 +80,5 @@ UserDBEndpoint *UserDBEndpoint::getInstance(odb::core::database *const db) {
  *
  * @param db The database access pointer
  */
-UserDBEndpoint::UserDBEndpoint(odb::core::database *const db) { m_db = db; }
+UserDBEndpoint::UserDBEndpoint(const std::shared_ptr<odb::core::database> db)
+    : m_db(db) {}

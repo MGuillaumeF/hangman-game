@@ -7,7 +7,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream> // std::cout
-#include <memory>   // unique_ptr
+#include <memory>   // shared_ptr
 #include <thread>
 
 #include <chrono>
@@ -37,7 +37,7 @@
 
 BOOST_AUTO_TEST_SUITE(testDatabasePersistency)
 
-std::size_t printUserCount(odb::core::database *const db) {
+std::size_t printUserCount(std::shared_ptr<odb::core::database> db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
@@ -54,7 +54,7 @@ std::size_t printUserCount(odb::core::database *const db) {
 
 BOOST_AUTO_TEST_CASE(testCreate) {
 
-  odb::core::database *const db = DataAccess::getDatabaseAccess();
+  std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
   UserDBEndpoint::getInstance(db);
 
   BOOST_CHECK_EQUAL(0, printUserCount(db));
