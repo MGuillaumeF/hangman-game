@@ -15,8 +15,23 @@ const runServer = spawn("./HangmanGame", [], {
       : "../../bin/server/bin"
   )
 });
+
+let stdOutServer = '';
+runServer.stdout.on("data", (data) => {
+  let rows = data.split(/\r?\n/);
+  stdOutServer += '[COUT] ' + rows.join('\n[COUT] ');
+});
+
+runServer.stderr.on("data", (data) => {
+  let rows = data.split(/\r?\n/);
+  stdOutServer += '[CERR] ' + rows.join('\n[CERR] ');
+});
+
 runServer.on("close", (code) => {
   console.info("INFO", "sever close with code", code);
+  console.log('******** START OUTPUT SERVER PROCESS ********');
+  console.log(stdOutServer);
+  console.log('********* END OUTPUT SERVER PROCESS *********');
   if (!isNaN(code) && code > 0) {
     process.exit(1);
   }
@@ -44,7 +59,21 @@ try {
     cwd: resolve(__dirname, "../../bin")
   });
 
+  let stdOutTests = '';
+  runTests.stdout.on("data", (data) => {
+    let rows = data.split(/\r?\n/);
+    stdOutTests += '[COUT] ' + rows.join('\n[COUT] ');
+  });
+
+  runTests.stderr.on("data", (data) => {
+    let rows = data.split(/\r?\n/);
+    stdOutTests += '[CERR] ' + rows.join('\n[CERR] ');
+  });
+
   runTests.on("close", (code) => {
+    console.log('******** START OUTPUT TEST PROCESS ********');
+    console.log(stdOutTests);
+    console.log('********* END OUTPUT TEST PROCESS *********');
     console.info("INFO", "tests close with code", code);
     runServer.kill();
     if (!isNaN(code) && code > 0) {
