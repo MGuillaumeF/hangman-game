@@ -255,6 +255,7 @@ jobs:
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportUT.xml ${{github.workspace}}/server/reports/logUT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Convert Boost Tests IT reports to sonarqube format
+      if: ${{false}}
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/server/reports/reportIT.xml ${{github.workspace}}/server/reports/logIT.xml ${{github.workspace}}/server/reports/boost-test-sonarqube-report-IT.xml
 
     - name: Convert Boost Tests UT reports to sonarqube format (data-management)
