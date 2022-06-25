@@ -226,7 +226,7 @@ jobs:
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
       run: |
-        pm install
+        npm install
         chmod +x ./run-tests.mjs
         node run-tests.mjs
 
