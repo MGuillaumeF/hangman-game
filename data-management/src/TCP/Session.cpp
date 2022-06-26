@@ -58,7 +58,7 @@ void Session::doReadBody(const uint32_t &max_content) {
           try {
             std::ofstream currentFile("./currentOrder.xml");
             std::string content = m_data;
-            content.resize(max_content - 1);
+            content.resize(max_content);
             currentFile << content;
             currentFile.close();
             boost::property_tree::xml_parser::read_xml("./currentOrder.xml",
@@ -75,8 +75,6 @@ void Session::doReadBody(const uint32_t &max_content) {
                 "user") {
 
               // Create an empty property tree object
-              // boost::property_tree::ptree userPtree;
-              // const user newUser = user::parseXml(content);
               UserDBEndpoint::getInstance()->createUser(
                   xmlPtree.get_child("order.user"));
             }
@@ -90,9 +88,7 @@ void Session::doReadBody(const uint32_t &max_content) {
                       << std::endl;
           }
           std::cout << "The body is : " << m_data << std::endl;
-          if (nullptr != this) {
-            doWrite(length);
-          }
+          doWrite(length);
         }
       });
 }
