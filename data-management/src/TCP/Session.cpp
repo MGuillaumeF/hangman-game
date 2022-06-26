@@ -90,7 +90,9 @@ void Session::doReadBody(const uint32_t &max_content) {
                       << std::endl;
           }
           std::cout << "The body is : " << m_data << std::endl;
-          doWrite(length);
+          if (nullptr != this) {
+            doWrite(length);
+          }
         }
       });
 }
