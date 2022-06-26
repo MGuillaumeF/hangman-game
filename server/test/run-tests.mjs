@@ -18,12 +18,12 @@ const runServer = spawn("./HangmanGame", [], {
 
 let stdOutServer = '';
 runServer.stdout.on("data", (data) => {
-  let rows = data.split(/\r?\n/);
+  let rows = `${data}`.split(/\r?\n/);
   stdOutServer += '[COUT] ' + rows.join('\n[COUT] ');
 });
 
 runServer.stderr.on("data", (data) => {
-  let rows = data.split(/\r?\n/);
+  let rows = `${data}`.split(/\r?\n/);
   stdOutServer += '[CERR] ' + rows.join('\n[CERR] ');
 });
 
@@ -61,12 +61,12 @@ try {
 
   let stdOutTests = '';
   runTests.stdout.on("data", (data) => {
-    let rows = data.split(/\r?\n/);
+    let rows = `${data}`.split(/\r?\n/);
     stdOutTests += '[COUT] ' + rows.join('\n[COUT] ');
   });
 
   runTests.stderr.on("data", (data) => {
-    let rows = data.split(/\r?\n/);
+    let rows = `${data}`.split(/\r?\n/);
     stdOutTests += '[CERR] ' + rows.join('\n[CERR] ');
   });
 
