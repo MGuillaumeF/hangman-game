@@ -20,11 +20,13 @@ let stdOutServer = '';
 runServer.stdout.on("data", (data) => {
   let rows = `${data}`.split(/\r?\n/);
   stdOutServer += '[COUT] ' + rows.join('\n[COUT] ');
+  stdOutServer = stdOutServer.replace(/(\[COUT\]\s){2,}/g, '[COUT] ');
 });
 
 runServer.stderr.on("data", (data) => {
   let rows = `${data}`.split(/\r?\n/);
   stdOutServer += '[CERR] ' + rows.join('\n[CERR] ');
+  stdOutServer = stdOutServer.replace(/(\[CERR\]\s){2,}/g, '[CERR] ');
 });
 
 runServer.on("close", (code) => {
@@ -63,11 +65,13 @@ try {
   runTests.stdout.on("data", (data) => {
     let rows = `${data}`.split(/\r?\n/);
     stdOutTests += '[COUT] ' + rows.join('\n[COUT] ');
+    stdOutTests = stdOutTests.replace(/(\[COUT\]\s){2,}/g, '[COUT] ');
   });
 
   runTests.stderr.on("data", (data) => {
     let rows = `${data}`.split(/\r?\n/);
     stdOutTests += '[CERR] ' + rows.join('\n[CERR] ');
+    stdOutTests = stdOutTests.replace(/(\[CERR\]\s){2,}/g, '[CERR] ');
   });
 
   runTests.on("close", (code) => {
