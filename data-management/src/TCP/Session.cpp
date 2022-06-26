@@ -76,7 +76,7 @@ void Session::doReadBody(const uint32_t &max_content) {
 
               // Create an empty property tree object
               UserDBEndpoint::getInstance()->createUser(
-                  xmlPtree.get_child("order.user"));
+                  xmlPtree.get_child("order.data.user"));
             }
 
           } catch (
