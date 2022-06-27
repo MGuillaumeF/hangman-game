@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "../connector/database.hxx"
-#include "../endpoint/UserDBEndpoint.hpp"
+#include "../endpoint/GroupeOrderDispatcher.hpp"
 
 namespace hangman {
 namespace tcp {
@@ -63,21 +63,10 @@ void Session::doReadBody(const uint32_t &max_content) {
             currentFile.close();
             boost::property_tree::xml_parser::read_xml("./currentOrder.xml",
                                                        xmlPtree);
-            std::cout << "OBJECT TYPE : "
-                      << xmlPtree.get<std::string>(
-                             "order.properties.object-type")
-                      << std::endl;
-            std::cout << "ORDER TYPE : "
-                      << xmlPtree.get<std::string>(
-                             "order.properties.order-type")
-                      << std::endl;
-            if (xmlPtree.get<std::string>("order.properties.object-type") ==
-                "user") {
-
-              // Create an empty property tree object
-              UserDBEndpoint::getInstance()->createUser(
-                  xmlPtree.get_child("order.data.user"));
-            }
+            GroupeOrderDispatcher::route(
+                xmlPtree.get<std::string>("order.properties.order-group"),
+                xmlPtree.get_child("order.properties"),
+                xmlPtree.get_child("order.data"));
 
           } catch (
               const boost::property_tree::xml_parser::xml_parser_error &e) {
