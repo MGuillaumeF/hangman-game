@@ -28,7 +28,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
     if (userList) {
       for (const auto &userItem2 : userList) {
         if ("user" == userItem2.first) {
-          userdbendpoint::createUser(userItem2);
+          UserDBEndpoint::createUser(userItem2);
         }
       }
     }
