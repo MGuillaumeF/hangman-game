@@ -15,9 +15,9 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
       data.get_child_optional("user");
   if (userItem) {
     user newUser;
-    newUser.setLogin(userItem.get<std::string>("login"));
-    newUser.setPassword(userItem.get<std::string>("password"));
-    newUser.setSaltUser(userItem.get<std::string>("salt_user"));
+    newUser.setLogin((*userItem).get<std::string>("login"));
+    newUser.setPassword((*userItem).get<std::string>("password"));
+    newUser.setSaltUser((*userItem).get<std::string>("salt_user"));
 
     odb::core::transaction t(m_db->begin());
     const uint32_t id = m_db->persist(newUser);
@@ -26,7 +26,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
     boost::optional<const boost::property_tree::ptree &> userList =
         data.get_child_optional("users");
     if (userList) {
-      for (const auto &userItem2 : userList.second) {
+      for (const auto &userItem2 : (*userList)) {
         if ("user" == userItem2.first) {
           UserDBEndpoint::createUser(userItem2);
         }
