@@ -11,17 +11,27 @@ UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
  */
 uint32_t
 UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
-  user newUser;
+  boost::optional< const boost::property_tree::ptree& > userItem = data.get_child_optional( "user" );
+  if( userItem ) {
+    user newUser;
+    newUser.setLogin(userItem.get<std::string>("login"));
+    newUser.setPassword(userItem.get<std::string>("password"));
+    newUser.setSaltUser(userItem.get<std::string>("salt_user"));
 
-  newUser.setLogin(data.get<std::string>("login"));
-  newUser.setPassword(data.get<std::string>("password"));
-  newUser.setSaltUser(data.get<std::string>("salt_user"));
-
-  odb::core::transaction t(m_db->begin());
-  const uint32_t id = m_db->persist(newUser);
-  t.commit();
-
-  return id;
+    odb::core::transaction t(m_db->begin());
+    const uint32_t id = m_db->persist(newUser);
+    t.commit();
+  } else {
+    boost::optional< const boost::property_tree::ptree& > userList = data.get_child_optional( "users" );
+    if( userList )  {
+      for (const auto& userItem2 : userList) {
+        if ("user" == userItem2.first) {
+          userdbendpoint::createUser(userItem2);
+        }
+      }
+    }
+  }
+  return 0;
 }
 
 /**
