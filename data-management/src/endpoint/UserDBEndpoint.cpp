@@ -26,7 +26,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
     boost::optional<const boost::property_tree::ptree &> userList =
         data.get_child_optional("users");
     if (userList) {
-      for (const auto &userItem2 : userList) {
+      for (const auto &userItem2 : userList.second) {
         if ("user" == userItem2.first) {
           UserDBEndpoint::createUser(userItem2);
         }
