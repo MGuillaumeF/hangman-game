@@ -134,6 +134,7 @@ private:
   uint32_t m_id;
 
 #pragma db options() options("CHECK(login != '')")
+#pragma db unique
   std::string m_login;
 #pragma db options() options("CHECK(password != '')")
   std::string m_password;
