@@ -31,11 +31,6 @@ class DataAccess {
    *
    */
   explicit DataAccess();
-  /**
-   * @brief Destroy the Data Access object
-   *
-   */
-  ~DataAccess() = default;
 
 public:
   /**
@@ -50,6 +45,13 @@ public:
    * @return std::shared_ptr<odb::core::database> The database access pointer
    */
   std::shared_ptr<odb::core::database> getDataBase() const;
+
+  /**
+   * @brief Destroy the Data Access object
+   *
+   */
+  ~DataAccess() = default;
+
 };
 
 #endif
