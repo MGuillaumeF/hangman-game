@@ -67,7 +67,7 @@ void UserDBEndpoint::deleteUser(const boost::property_tree::ptree &data) const {
     }
   }
   odb::core::transaction t(m_db->begin());
-  for (uint32_t userToDelete : userIds) {
+  for (const uint32_t userToDelete : userIds) {
     m_db->erase<user>(userToDelete);
   }
   t.commit();
