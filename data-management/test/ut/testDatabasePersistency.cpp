@@ -148,7 +148,9 @@ BOOST_AUTO_TEST_CASE(testCreate) {
   BOOST_CHECK_EQUAL(4, printUserCount(db));
 
   // John Doe is no longer in our database.
-  UserDBEndpoint::getInstance()->deleteUser(john_id);
+  boost::property_tree::ptree del;
+  del.put("user.id", john_id);
+  UserDBEndpoint::getInstance()->deleteUser(del);
 
   BOOST_CHECK_EQUAL(3, printUserCount(db));
 }

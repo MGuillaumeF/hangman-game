@@ -13,4 +13,10 @@ updates:
     directory: "/data-management/tools " # Location of package manifests
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/server/test " # Location of package manifests
+    schedule:
+      interval: "daily"
+
+
 

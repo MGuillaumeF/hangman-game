@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "../connector/database.hxx"
-#include "../endpoint/UserDBEndpoint.hpp"
+#include "../endpoint/GroupeOrderDispatcher.hpp"
 
 namespace hangman {
 namespace tcp {
@@ -14,17 +14,6 @@ Session::Session(boost::asio::ip::tcp::socket socket)
     : m_socket(std::move(socket)) {}
 
 void Session::start() { doReadHead(); }
-
-void Session::doRead() {
-  const auto self(shared_from_this());
-  m_socket.async_read_some(boost::asio::buffer(m_data, max_length),
-                           [this, self](const boost::system::error_code &ec,
-                                        const std::size_t &length) {
-                             if (!ec) {
-                               doWrite(length);
-                             }
-                           });
-}
 
 void Session::doReadHead() {
   const uint8_t SIZE_ALLOWED_BUFFER = 8;
@@ -56,30 +45,16 @@ void Session::doReadBody(const uint32_t &max_content) {
           // Read the XML config string into the property tree. Catch any
           // exception
           try {
-            std::ofstream currentFile("./currentOrder.xml");
+            std::stringstream currentRequest;
             std::string content = m_data;
-            content.resize(max_content - 1);
-            currentFile << content;
-            currentFile.close();
-            boost::property_tree::xml_parser::read_xml("./currentOrder.xml",
+            content.resize(max_content);
+            currentRequest << content;
+            boost::property_tree::xml_parser::read_xml(currentRequest,
                                                        xmlPtree);
-            std::cout << "OBJECT TYPE : "
-                      << xmlPtree.get<std::string>(
-                             "order.properties.object-type")
-                      << std::endl;
-            std::cout << "ORDER TYPE : "
-                      << xmlPtree.get<std::string>(
-                             "order.properties.order-type")
-                      << std::endl;
-            if (xmlPtree.get<std::string>("order.properties.object-type") ==
-                "user") {
-
-              // Create an empty property tree object
-              // boost::property_tree::ptree userPtree;
-              // const user newUser = user::parseXml(content);
-              UserDBEndpoint::getInstance()->createUser(
-                  xmlPtree.get_child("order.user"));
-            }
+            GroupeOrderDispatcher::route(
+                xmlPtree.get<std::string>("order.properties.order-group"),
+                xmlPtree.get_child("order.properties"),
+                xmlPtree.get_child("order.data"));
 
           } catch (
               const boost::property_tree::xml_parser::xml_parser_error &e) {

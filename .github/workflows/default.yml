@@ -226,8 +226,9 @@ jobs:
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
       run: |
-        chmod +x ./run-tests.sh
-        ./run-tests.sh
+        npm install
+        chmod +x ./run-tests.mjs
+        node run-tests.mjs
 
     # - name: Generate Unit Tests HTML report
     #   working-directory: ${{github.workspace}}/server/bin/CMakeFiles/HangmanGameTest.dir/src
