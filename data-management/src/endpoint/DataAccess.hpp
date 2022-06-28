@@ -20,7 +20,7 @@ class DataAccess {
    * @brief static instance of singleton to have unique DataAccess instance
    *
    */
-  static DataAccess *s_instance;
+  static std::unique_ptr<DataAccess> s_instance;
   /**
    * @brief The database pointer access is unique for the instance
    *
