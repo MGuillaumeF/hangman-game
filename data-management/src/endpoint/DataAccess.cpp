@@ -1,7 +1,7 @@
 #include "./DataAccess.hpp"
 
 // init instance as nullptr before first init
-std::unique_ptr<DataAccess> DataAccess::s_instance = nullptr;
+std::unique_ptr<DataAccess> DataAccess::s_instance = std::make_unique<>(DataAccess);
 
 /**
  * @brief Construct a new Data Access:: Data Access object
@@ -29,8 +29,5 @@ std::shared_ptr<odb::core::database> DataAccess::getDataBase() const {
  * @return std::shared_ptr<odb::core::database> The database access pointer
  */
 std::shared_ptr<odb::core::database> DataAccess::getDatabaseAccess() {
-  if (nullptr == s_instance) {
-    s_instance = std::unique_ptr<DataAccess>();
-  }
   return s_instance->getDataBase();
 }
