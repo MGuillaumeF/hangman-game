@@ -17,7 +17,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
-    users.push_back(UserDBEndpoint::parse((*userItem)));
+    users.push_back(UserDBEndpoint::parse(*userItem));
 
   } else {
     boost::optional<const boost::property_tree::ptree &> userList =
