@@ -14,13 +14,13 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   std::list<user> users;
   boost::property_tree::ptree ids;
 
-  boost::optional<const boost::property_tree::ptree &> userItem =
+  const boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
     users.push_back(UserDBEndpoint::parse(*userItem));
 
   } else {
-    boost::optional<const boost::property_tree::ptree &> userList =
+    const boost::optional<const boost::property_tree::ptree &> userList =
         data.get_child_optional("users");
     if (userList) {
       for (const auto &userItem2 : (*userList)) {
@@ -50,13 +50,13 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
 void UserDBEndpoint::deleteUser(const boost::property_tree::ptree &data) const {
 
   std::list<uint32_t> userIds;
-  boost::optional<const boost::property_tree::ptree &> userItem =
+  const boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
     userIds.push_back((*userItem).get<uint32_t>("id"));
 
   } else {
-    boost::optional<const boost::property_tree::ptree &> userList =
+    const boost::optional<const boost::property_tree::ptree &> userList =
         data.get_child_optional("users");
     if (userList) {
       for (const auto &userItem2 : (*userList)) {
