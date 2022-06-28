@@ -1,7 +1,8 @@
 #include "./DataAccess.hpp"
 
 // init instance as nullptr before first init
-std::unique_ptr<DataAccess> DataAccess::s_instance = std::make_unique<>(DataAccess);
+std::unique_ptr<DataAccess> DataAccess::s_instance =
+    std::make_unique<>(DataAccess);
 
 /**
  * @brief Construct a new Data Access:: Data Access object
