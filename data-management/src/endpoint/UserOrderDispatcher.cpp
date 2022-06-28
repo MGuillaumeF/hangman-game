@@ -16,13 +16,13 @@ void UserOrderDispatcher::route(const std::string &orderType,
   std::cout << "ORDER TYPE : " << properties.get<std::string>("order-type")
             << std::endl;
   if ("create" == orderType) {
-    UserDBEndpoint::getInstance()->createUser(data.get_child("user"));
+    UserDBEndpoint::getInstance()->createUser(data);
   } else if ("read" == orderType) {
 
   } else if ("update" == orderType) {
 
   } else if ("delete" == orderType) {
-
+    UserDBEndpoint::getInstance()->deleteUser(data);
   } else if ("patch" == orderType) {
   }
 }

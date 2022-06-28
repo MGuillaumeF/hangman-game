@@ -21,7 +21,6 @@ public:
   void start();
 
 private:
-  void doRead();
   void doReadHead();
   void doReadBody(const uint32_t &max_content);
 

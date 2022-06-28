@@ -15,17 +15,6 @@ Session::Session(boost::asio::ip::tcp::socket socket)
 
 void Session::start() { doReadHead(); }
 
-void Session::doRead() {
-  const auto self(shared_from_this());
-  m_socket.async_read_some(boost::asio::buffer(m_data, max_length),
-                           [this, self](const boost::system::error_code &ec,
-                                        const std::size_t &length) {
-                             if (!ec) {
-                               doWrite(length);
-                             }
-                           });
-}
-
 void Session::doReadHead() {
   const uint8_t SIZE_ALLOWED_BUFFER = 8;
   const auto self(shared_from_this());
@@ -56,12 +45,11 @@ void Session::doReadBody(const uint32_t &max_content) {
           // Read the XML config string into the property tree. Catch any
           // exception
           try {
-            std::ofstream currentFile("./currentOrder.xml");
+            std::stringstream currentRequest;
             std::string content = m_data;
             content.resize(max_content);
-            currentFile << content;
-            currentFile.close();
-            boost::property_tree::xml_parser::read_xml("./currentOrder.xml",
+            currentRequest << content;
+            boost::property_tree::xml_parser::read_xml(currentRequest,
                                                        xmlPtree);
             GroupeOrderDispatcher::route(
                 xmlPtree.get<std::string>("order.properties.order-group"),

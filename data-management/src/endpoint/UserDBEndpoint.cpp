@@ -4,47 +4,72 @@
 UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
 
 /**
- * @brief Create a User object
+ * @brief Create User(s) object(s)
  *
- * @param data The property tree data of user to create
- * @return uint32_t The user id after create
+ * @param data The property tree data of user(s) to create
+ * @return boost::property_tree::ptree The user(s) id(s) list after create
  */
-uint32_t
+boost::property_tree::ptree
 UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
+  std::list<user> users;
+  boost::property_tree::ptree ids;
+
   boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
-    user newUser;
-    newUser.setLogin((*userItem).get<std::string>("login"));
-    newUser.setPassword((*userItem).get<std::string>("password"));
-    newUser.setSaltUser((*userItem).get<std::string>("salt_user"));
+    users.push_back(UserDBEndpoint::parse((*userItem)));
 
-    odb::core::transaction t(m_db->begin());
-    const uint32_t id = m_db->persist(newUser);
-    t.commit();
   } else {
     boost::optional<const boost::property_tree::ptree &> userList =
         data.get_child_optional("users");
     if (userList) {
       for (const auto &userItem2 : (*userList)) {
         if ("user" == userItem2.first) {
-          UserDBEndpoint::createUser(userItem2.second);
+          users.push_back(UserDBEndpoint::parse(userItem2.second));
         }
       }
     }
   }
-  return 0;
+  odb::core::transaction t(m_db->begin());
+  for (user userToPersist : users) {
+    const uint32_t id = m_db->persist(userToPersist);
+
+    boost::property_tree::ptree userId;
+    userId.put("id", id);
+    ids.add_child("user", userId);
+  }
+  t.commit();
+  return ids;
 }
 
 /**
  * @brief function to delete user by id
  *
- * @param id The id of user t delete
+ * @param data The property tree data of user(s) to delete
  */
-void UserDBEndpoint::deleteUser(const uint32_t &id) const {
+void UserDBEndpoint::deleteUser(const boost::property_tree::ptree &data) const {
 
+  std::list<uint32_t> userIds;
+  boost::optional<const boost::property_tree::ptree &> userItem =
+      data.get_child_optional("user");
+  if (userItem) {
+    userIds.push_back((*userItem).get<uint32_t>("id"));
+
+  } else {
+    boost::optional<const boost::property_tree::ptree &> userList =
+        data.get_child_optional("users");
+    if (userList) {
+      for (const auto &userItem2 : (*userList)) {
+        if ("user" == userItem2.first) {
+          userIds.push_back(userItem2.second.get<uint32_t>("id"));
+        }
+      }
+    }
+  }
   odb::core::transaction t(m_db->begin());
-  m_db->erase<user>(id);
+  for (uint32_t userToDelete : userIds) {
+    m_db->erase<user>(userToDelete);
+  }
   t.commit();
 }
 
@@ -94,3 +119,17 @@ UserDBEndpoint::getInstance(const std::shared_ptr<odb::core::database> db) {
  */
 UserDBEndpoint::UserDBEndpoint(const std::shared_ptr<odb::core::database> db)
     : m_db(db) {}
+
+/**
+ * @brief method to parse user from property tree
+ *
+ * @param data The boost proerty tree of user
+ * @return user User object
+ */
+user UserDBEndpoint::parse(const boost::property_tree::ptree &data) {
+  user newUser;
+  newUser.setLogin(data.get<std::string>("login"));
+  newUser.setPassword(data.get<std::string>("password"));
+  newUser.setSaltUser(data.get<std::string>("salt_user"));
+  return newUser;
+}

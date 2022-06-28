@@ -64,19 +64,20 @@ public:
   getInstance(std::shared_ptr<odb::core::database> db = nullptr);
 
   /**
-   * @brief Create a User object
+   * @brief Create User(s) object(s)
    *
-   * @param data The property tree data of user to create
-   * @return uint32_t The user id after create
+   * @param data The property tree data of user(s) to create
+   * @return boost::property_tree::ptree The user(s) id(s) list after create
    */
-  uint32_t createUser(const boost::property_tree::ptree &data) const;
+  boost::property_tree::ptree
+  createUser(const boost::property_tree::ptree &data) const;
 
   /**
    * @brief function to delete user by id
    *
-   * @param id The id of user t delete
+   * @param data The property tree data of user(s) to delete
    */
-  void deleteUser(const uint32_t &id) const;
+  void deleteUser(const boost::property_tree::ptree &data) const;
 
   /**
    * @brief function to connect user by login and password
@@ -85,6 +86,14 @@ public:
    * @return std::string The new token of connected user
    */
   std::string connectUser(const boost::property_tree::ptree &data) const;
+
+  /**
+   * @brief method to parse user from property tree
+   *
+   * @param data The boost proerty tree of user
+   * @return user User object
+   */
+  static user parse(const boost::property_tree::ptree &data);
 };
 
 #endif
