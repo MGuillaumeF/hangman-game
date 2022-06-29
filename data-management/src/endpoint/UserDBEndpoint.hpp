@@ -60,7 +60,8 @@ public:
    * @param db The database access pointer
    * @return UserDBEndpoint*
    */
-  static std::unique_ptr<UserDBEndpoint> getInstance(std::shared_ptr<odb::core::database> db = nullptr);
+  static std::unique_ptr<UserDBEndpoint>
+  getInstance(std::shared_ptr<odb::core::database> db = nullptr);
 
   /**
    * @brief Create User(s) object(s)
