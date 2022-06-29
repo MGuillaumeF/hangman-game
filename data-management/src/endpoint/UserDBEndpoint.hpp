@@ -52,7 +52,7 @@ public:
    * @brief Destroy the User DB Endpoint object
    *
    */
-  ~UserDBEndpoint() = delete;
+  ~UserDBEndpoint() = default;
 
   /**
    * @brief methode to get unique instance of user endpoint
