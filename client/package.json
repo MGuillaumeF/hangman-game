@@ -81,7 +81,7 @@
     "i18next": "^21.8.11",
     "i18next-browser-languagedetector": "^6.1.4",
     "imports-loader": "^4.0.0",
-    "jest": "^28.1.1",
+    "jest": "^28.1.2",
     "mini-css-extract-plugin": "^2.6.1",
     "mocha": "^10.0.0",
     "mochawesome": "^7.1.3",
