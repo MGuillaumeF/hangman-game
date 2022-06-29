@@ -29,7 +29,7 @@ std::shared_ptr<odb::core::database> DataAccess::getDataBase() const {
  */
 std::shared_ptr<odb::core::database> DataAccess::getDatabaseAccess() {
   if (nullptr == s_instance) {
-     s_instance = new DataAccess();
-   }
+    s_instance = new DataAccess();
+  }
   return s_instance->getDataBase();
 }
