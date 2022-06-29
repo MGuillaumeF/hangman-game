@@ -51,7 +51,6 @@ public:
    * @return std::shared_ptr<odb::core::database> The database access pointer
    */
   std::shared_ptr<odb::core::database> getDataBase() const;
-
 };
 
 #endif
