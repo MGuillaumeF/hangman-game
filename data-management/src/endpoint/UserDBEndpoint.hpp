@@ -40,7 +40,7 @@ class UserDBEndpoint {
    * @brief user endpoint pointer of single instance
    *
    */
-  static UserDBEndpoint *s_instance;
+  static std::unique_ptr<UserDBEndpoint> s_instance;
   /**
    * @brief Construct a new User DB Endpoint object
    *
@@ -52,7 +52,7 @@ public:
    * @brief Destroy the User DB Endpoint object
    *
    */
-  ~UserDBEndpoint() = delete;
+  ~UserDBEndpoint() = default;
 
   /**
    * @brief methode to get unique instance of user endpoint
@@ -60,7 +60,7 @@ public:
    * @param db The database access pointer
    * @return UserDBEndpoint*
    */
-  static UserDBEndpoint *
+  static std::unique_ptr<UserDBEndpoint> &
   getInstance(std::shared_ptr<odb::core::database> db = nullptr);
 
   /**

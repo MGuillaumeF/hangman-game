@@ -20,7 +20,7 @@ class DataAccess {
    * @brief static instance of singleton to have unique DataAccess instance
    *
    */
-  static DataAccess *s_instance;
+  static std::unique_ptr<DataAccess> s_instance;
   /**
    * @brief The database pointer access is unique for the instance
    *
@@ -31,11 +31,6 @@ class DataAccess {
    *
    */
   explicit DataAccess();
-  /**
-   * @brief Destroy the Data Access object
-   *
-   */
-  ~DataAccess() = default;
 
 public:
   /**
@@ -50,6 +45,11 @@ public:
    * @return std::shared_ptr<odb::core::database> The database access pointer
    */
   std::shared_ptr<odb::core::database> getDataBase() const;
+  /**
+   * @brief Destroy the Data Access object
+   *
+   */
+  ~DataAccess() = default;
 };
 
 #endif

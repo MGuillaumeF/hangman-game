@@ -1,7 +1,7 @@
 #include "./UserDBEndpoint.hpp"
 #include <iostream>
 
-UserDBEndpoint *UserDBEndpoint::s_instance = nullptr;
+std::unique_ptr<UserDBEndpoint> UserDBEndpoint::s_instance = nullptr;
 
 /**
  * @brief Create User(s) object(s)
@@ -105,10 +105,10 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) const {
  * @param db The database access pointer
  * @return UserDBEndpoint* user endpoint pointer of single instance
  */
-UserDBEndpoint *
+std::unique_ptr<UserDBEndpoint> &
 UserDBEndpoint::getInstance(const std::shared_ptr<odb::core::database> db) {
   if (nullptr == s_instance && nullptr != db) {
-    s_instance = new UserDBEndpoint(db);
+    s_instance = std::unique_ptr<UserDBEndpoint>(new UserDBEndpoint(db));
   }
   return s_instance;
 }
