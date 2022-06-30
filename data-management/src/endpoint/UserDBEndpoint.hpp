@@ -45,7 +45,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  explicit UserDBEndpoint(std::shared_ptr<odb::core::database> db);
+  explicit UserDBEndpoint();
 
 public:
   /**
@@ -57,11 +57,10 @@ public:
   /**
    * @brief methode to get unique instance of user endpoint
    *
-   * @param db The database access pointer
    * @return UserDBEndpoint*
    */
   static std::unique_ptr<UserDBEndpoint> &
-  getInstance(std::shared_ptr<odb::core::database> db = nullptr);
+  getInstance();
 
   /**
    * @brief Create User(s) object(s)
