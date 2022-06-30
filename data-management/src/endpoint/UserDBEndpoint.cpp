@@ -106,13 +106,13 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) const {
  * @return UserDBEndpoint* user endpoint pointer of single instance
  */
 std::unique_ptr<UserDBEndpoint>& UserDBEndpoint::getInstance() {
-  if (nullptr == s_instance && nullptr != db) {
+  if (nullptr == s_instance) {
     s_instance = std::unique_ptr<UserDBEndpoint>(new UserDBEndpoint());
   }
   return s_instance;
 }
 /**
- * @brief Construct a new User D B Endpoint:: User DB Endpoint object
+ * @brief Construct a new User DB Endpoint:: User DB Endpoint object
  *
  */
 UserDBEndpoint::UserDBEndpoint(){
