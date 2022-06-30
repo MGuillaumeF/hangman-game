@@ -55,7 +55,7 @@ std::size_t printUserCount(std::shared_ptr<odb::core::database> db) {
 BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
-  UserDBEndpoint::getInstance(db);
+
 
   BOOST_CHECK_EQUAL(0, printUserCount(db));
 
