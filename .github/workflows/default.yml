@@ -50,8 +50,7 @@ jobs:
         find ./ -regex ".*\.\(h\|c\|cc\|hh\|hxx\|cxx\|hpp\|cpp\)" | xargs clang-format -style=file -i
         
     - name: Save server changes
-      #if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      if: ${{ false }}
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
       run: |
         git stash
@@ -90,8 +89,7 @@ jobs:
         convert data-management-16x16.png data-management-32x32.png data-management-48x48.png data-management-256x256.png data-management.ico
 
     - name: Save icon changes
-      if: ${{ false }}
-      # if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
       run: |
         git stash
