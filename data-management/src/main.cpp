@@ -10,24 +10,10 @@
 #include <string>  // std::string
 
 #include <boost/property_tree/ptree.hpp>
-#include <odb/transaction.hxx>
 
 // create database access
 #include "./endpoint/DataAccess.hpp"
 #include "./endpoint/UserDBEndpoint.hpp"
-
-#if defined(DATABASE_MYSQL)
-#include "./model/mysql/user-odb.hxx"
-#include "./model/mysql/user.hxx"
-#elif defined(DATABASE_SQLITE)
-#include "./model/sqlite/user-odb.hxx"
-#include "./model/sqlite/user.hxx"
-#elif defined(DATABASE_PGSQL)
-#include "./model/pgsql/user-odb.hxx"
-#include "./model/pgsql/user.hxx"
-#else
-#error unknown database; did you forget to define the DATABASE_* macros?
-#endif
 
 #include "./TCP/Server.hpp"
 
