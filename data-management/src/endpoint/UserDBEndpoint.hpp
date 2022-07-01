@@ -59,8 +59,7 @@ public:
    *
    * @return UserDBEndpoint*
    */
-  static std::unique_ptr<UserDBEndpoint> &
-  getInstance();
+  static std::unique_ptr<UserDBEndpoint> &getInstance();
 
   /**
    * @brief Create User(s) object(s)
