@@ -56,7 +56,6 @@ BOOST_AUTO_TEST_CASE(testCreate) {
 
   std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
 
-
   BOOST_CHECK_EQUAL(0, printUserCount(db));
 
   uint32_t john_id = -1;
