@@ -1,5 +1,4 @@
 #include "./UserDBEndpoint.hpp"
-#include "./DataAccess.hpp"
 #include <iostream>
 
 std::unique_ptr<UserDBEndpoint> UserDBEndpoint::s_instance = nullptr;
