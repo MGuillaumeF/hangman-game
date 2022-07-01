@@ -47,7 +47,7 @@ class UserDBEndpoint {
    * @brief Construct a new User DB Endpoint object
    *
    */
-  explicit UserDBEndpoint();
+  explicit UserDBEndpoint()=default;
 
 public:
   /**
