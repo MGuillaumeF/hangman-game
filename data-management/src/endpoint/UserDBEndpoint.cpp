@@ -115,7 +115,7 @@ std::unique_ptr<UserDBEndpoint> &UserDBEndpoint::getInstance() {
  * @brief Construct a new User DB Endpoint:: User DB Endpoint object
  *
  */
-UserDBEndpoint::UserDBEndpoint() : m_db(DataAccess::getDatabaseAccess()) {}
+UserDBEndpoint::UserDBEndpoint() {}
 
 /**
  * @brief method to parse user from property tree
