@@ -27,10 +27,12 @@ public:
    * @param groupeId The groupe id to dispatch requested
    * @param properties The properties part of request
    * @param data The data part of request
+   * @return The result of request process
    */
-  static void route(const std::string &groupeId,
-                    const boost::property_tree::ptree &properties,
-                    const boost::property_tree::ptree &data);
+  static boost::property_tree::ptree
+  route(const std::string &groupeId,
+        const boost::property_tree::ptree &properties,
+        const boost::property_tree::ptree &data);
 };
 
 #endif

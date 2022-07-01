@@ -8,15 +8,18 @@
  * @param orderType The order type requested
  * @param properties The properties part of request
  * @param data The data part of request
+ * @return The result of request process
  */
-void UserOrderDispatcher::route(const std::string &orderType,
-                                const boost::property_tree::ptree &properties,
-                                const boost::property_tree::ptree &data) {
+boost::property_tree::ptree
+UserOrderDispatcher::route(const std::string &orderType,
+                           const boost::property_tree::ptree &properties,
+                           const boost::property_tree::ptree &data) {
+  boost::property_tree::ptree response;
 
   std::cout << "ORDER TYPE : " << properties.get<std::string>("order-type")
             << std::endl;
   if ("create" == orderType) {
-    UserDBEndpoint::getInstance()->createUser(data);
+    response = UserDBEndpoint::getInstance()->createUser(data);
   } else if ("read" == orderType) {
 
   } else if ("update" == orderType) {
@@ -25,4 +28,5 @@ void UserOrderDispatcher::route(const std::string &orderType,
     UserDBEndpoint::getInstance()->deleteUser(data);
   } else if ("patch" == orderType) {
   }
+  return response;
 }
