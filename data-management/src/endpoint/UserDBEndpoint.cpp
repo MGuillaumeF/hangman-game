@@ -110,11 +110,6 @@ std::unique_ptr<UserDBEndpoint> &UserDBEndpoint::getInstance() {
   }
   return s_instance;
 }
-/**
- * @brief Construct a new User DB Endpoint:: User DB Endpoint object
- *
- */
-UserDBEndpoint::UserDBEndpoint() {}
 
 /**
  * @brief method to parse user from property tree
