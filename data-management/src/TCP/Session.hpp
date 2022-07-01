@@ -24,7 +24,7 @@ private:
   void doReadHead();
   void doReadBody(const uint32_t &max_content);
 
-  void doWrite(const std::size_t &length);
+  void doWrite(const std::string &response);
 
   boost::asio::ip::tcp::socket m_socket;
   enum { max_length = 1024 };

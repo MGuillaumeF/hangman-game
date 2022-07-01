@@ -53,9 +53,9 @@ int32_t main(int argc, char *argv[]) {
           socket, boost::asio::buffer(stream.str().c_str(),
                                       request.size() + OCTETS_SIZE_MESSAGE));
 
-      char reply[1024];
+      char reply[60];
       const size_t reply_length =
-          boost::asio::read(socket, boost::asio::buffer(reply, request.size()));
+          boost::asio::read(socket, boost::asio::buffer(reply, 60));
       std::cout << "Message response is: " << std::endl;
       std::cout.write(reply, reply_length);
       std::cout << std::endl;
