@@ -34,7 +34,7 @@ class UserDBEndpoint {
    * @brief database access pointer of single instance
    *
    */
-  std::shared_ptr<odb::core::database> m_db;
+  std::shared_ptr<odb::core::database> m_db = DataAccess::getDatabaseAccess();
 
   /**
    * @brief user endpoint pointer of single instance
