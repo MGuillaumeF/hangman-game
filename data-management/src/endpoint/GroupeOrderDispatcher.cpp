@@ -7,16 +7,20 @@
  * @param groupeId The groupe id to dispatch requested
  * @param properties The properties part of request
  * @param data The data part of request
+ * @return The result of request process
  */
-void GroupeOrderDispatcher::route(const std::string &groupeId,
-                                  const boost::property_tree::ptree &properties,
-                                  const boost::property_tree::ptree &data) {
+boost::property_tree::ptree
+GroupeOrderDispatcher::route(const std::string &groupeId,
+                             const boost::property_tree::ptree &properties,
+                             const boost::property_tree::ptree &data) {
+  boost::property_tree::ptree response;
   if ("CRUD" == groupeId) {
-    CRUDOrderDispatcher::route(properties.get<std::string>("object-type"),
-                               properties, data);
+    response = CRUDOrderDispatcher::route(
+        properties.get<std::string>("object-type"), properties, data);
   } else if ("CUSTOM" == groupeId) {
 
   } else {
     // unknown order groupe
   }
+  return response;
 }

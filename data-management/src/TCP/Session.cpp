@@ -39,6 +39,7 @@ void Session::doReadBody(const uint32_t &max_content) {
       [this, self, max_content](const boost::system::error_code &ec,
                                 const std::size_t &length) {
         if (!ec) {
+          std::stringstream responseStr;
           // Create an empty property tree object
           boost::property_tree::ptree xmlPtree;
 
@@ -51,10 +52,13 @@ void Session::doReadBody(const uint32_t &max_content) {
             currentRequest << content;
             boost::property_tree::xml_parser::read_xml(currentRequest,
                                                        xmlPtree);
-            GroupeOrderDispatcher::route(
-                xmlPtree.get<std::string>("order.properties.order-group"),
-                xmlPtree.get_child("order.properties"),
-                xmlPtree.get_child("order.data"));
+            const boost::property_tree::ptree response =
+                GroupeOrderDispatcher::route(
+                    xmlPtree.get<std::string>("order.properties.order-group"),
+                    xmlPtree.get_child("order.properties"),
+                    xmlPtree.get_child("order.data"));
+
+            boost::property_tree::xml_parser::write_xml(responseStr, response);
 
           } catch (
               const boost::property_tree::xml_parser::xml_parser_error &e) {
@@ -64,21 +68,24 @@ void Session::doReadBody(const uint32_t &max_content) {
             std::cerr << "Failed to read received xml2 " << ee.what()
                       << std::endl;
           }
-          std::cout << "The body is : " << m_data << std::endl;
-          doWrite(length);
+          std::cout << "The body is of request : " << m_data << std::endl;
+          std::cout << "The body is of response : " << responseStr.str()
+                    << std::endl;
+          doWrite(responseStr.str());
         }
       });
 }
 
-void Session::doWrite(const std::size_t &length) {
+void Session::doWrite(const std::string &response) {
   const auto self(shared_from_this());
-  boost::asio::async_write(m_socket, boost::asio::buffer(m_data, length),
-                           [this, self](const boost::system::error_code &ec,
-                                        const std::size_t /*length*/) {
-                             if (!ec) {
-                               // doReadHead();
-                             }
-                           });
+  boost::asio::async_write(
+      m_socket, boost::asio::buffer(response.c_str(), response.size()),
+      [this, self](const boost::system::error_code &ec,
+                   const std::size_t /*length*/) {
+        if (!ec) {
+          // doReadHead();
+        }
+      });
 }
 } // namespace tcp
 } // namespace hangman

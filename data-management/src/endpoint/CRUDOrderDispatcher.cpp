@@ -9,19 +9,23 @@
  * @param objectType The object requested
  * @param properties The properties part of request
  * @param data The data part of request
+ * @return The result of request process
  */
-void CRUDOrderDispatcher::route(const std::string &objectType,
-                                const boost::property_tree::ptree &properties,
-                                const boost::property_tree::ptree &data) {
+boost::property_tree::ptree
+CRUDOrderDispatcher::route(const std::string &objectType,
+                           const boost::property_tree::ptree &properties,
+                           const boost::property_tree::ptree &data) {
+  boost::property_tree::ptree response;
 
   std::cout << "OBJECT TYPE : " << properties.get<std::string>("object-type")
             << std::endl;
   if ("user" == objectType) {
-    UserOrderDispatcher::route(properties.get<std::string>("order-type"),
-                               properties, data);
+    response = UserOrderDispatcher::route(
+        properties.get<std::string>("order-type"), properties, data);
   } else if ("word" == objectType) {
     // TODO add WordOrderDispatcher
   } else {
     // TODO add exception : unknown object type
   }
+  return response;
 }
