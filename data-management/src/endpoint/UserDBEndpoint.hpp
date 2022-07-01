@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 
+#include "./DataAccess.hpp"
+
 // generated configuration
 #include "config.hpp"
 
