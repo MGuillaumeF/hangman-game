@@ -218,10 +218,14 @@ jobs:
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/bin/server/bin
+      working-directory: ${{github.workspace}}/bin
       run: |
+        cd server/bin
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+        cd ../../data-management/bin
+        ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/data-management/reports/content.dot 2>&1
+        dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/data-management/reports/content.svg
    
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
