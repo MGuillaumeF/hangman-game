@@ -222,10 +222,10 @@ jobs:
       run: |
         cd server/bin
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
-        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/server-ut-tests.svg
         cd ../../data-management/bin
         ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/data-management/reports/content.dot 2>&1
-        dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/data-management/reports/content.svg
+        dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/data-management/reports/data-management-ut-tests.svg
    
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
