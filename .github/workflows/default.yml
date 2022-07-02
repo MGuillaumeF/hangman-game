@@ -223,6 +223,7 @@ jobs:
         cd server/bin
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/content.svg
+        cd ../../data-management/bin
         ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/data-management/reports/content.svg
    
