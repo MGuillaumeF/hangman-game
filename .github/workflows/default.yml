@@ -273,14 +273,14 @@ jobs:
     - name: Generate Swagger UI
       uses: Legion2/swagger-ui-action@v1
       with:
-        output: ${{github.workspace}}/swagger-ui
+        output: ${{github.workspace}}/api-docs
         spec-file: ${{github.workspace}}/server/docs/api_doc.json
 
     - name: Archive Swagger UI
       uses: actions/upload-artifact@v2
       with:
         name: API-Docs-Hangman-Game
-        path: ${{github.workspace}}/swagger-ui
+        path: ${{github.workspace}}/api-docs
 
     - name: Doxygen Docs
       run: doxygen docg.conf
