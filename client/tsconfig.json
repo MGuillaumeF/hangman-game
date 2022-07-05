@@ -34,6 +34,6 @@
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     }
   },
-  "include": ["./**/*"],
-  "exclude": ["node_modules", "build", "scripts"]
+  "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["node_modules", "build", "scripts", "test"]
 }
