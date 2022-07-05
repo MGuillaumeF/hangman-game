@@ -53,7 +53,7 @@ declare global {
       /**
        * Provides a working example
        */
-      clearViewport(): Cypress.Chainable<Element>;
+      clearViewport(): void;
     }
   }
 }
