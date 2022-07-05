@@ -1,11 +1,11 @@
-const { defineConfig } = require("cypress");
-const webpackConfig = require("./webpack.config.js");
-const fs = require("fs");
-const path = require("path");
+import { defineConfig } from "cypress";
+import webpackConfig from "./webpack.config";
+import fs from "fs";
+import path from "path";
 
-const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
-
-module.exports = defineConfig({
+import registerCodeCoverageTasks from "@cypress/code-coverage/task";
+import mergeReports from "cypress-sonarqube-reporter/mergeReports";
+export default defineConfig({
   component: {
     devServer(cypressConfig) {
       return devServer({
@@ -48,7 +48,7 @@ module.exports = defineConfig({
       // https://docs.cypress.io/api/plugins/after-run-api
       on("after:run", (results) => {
         // /!\ don't forget to return the Promise /!\
-        return require("cypress-sonarqube-reporter/mergeReports")(results, {
+        return mergeReports(results, {
           reportsOutputDir: "cypress/reports/sonar",
           mergeOutputDir: "cypress/reports/sonar",
           // see "Merge Plugin Options" section for all available options
