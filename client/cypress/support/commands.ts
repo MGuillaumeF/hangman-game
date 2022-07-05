@@ -47,7 +47,6 @@ for (const command of [
   });
 }
 
-
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
