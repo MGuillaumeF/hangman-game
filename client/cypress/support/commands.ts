@@ -47,6 +47,18 @@ for (const command of [
   });
 }
 
+
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      /**
+       * Provides a working example
+       */
+      clearViewport(): Cypress.Chainable<Element>;
+    }
+  }
+}
+
 Cypress.Commands.add("clearViewport", () => {
   const runnerContainer =
     window.parent.document.getElementsByClassName("iframes-container")[0];
