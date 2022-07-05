@@ -12,7 +12,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "rootDir": "src",
+    "rootDir": ".",
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -34,6 +34,6 @@
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["./**/*"],
   "exclude": ["node_modules", "build", "scripts"]
 }
