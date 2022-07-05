@@ -52,6 +52,43 @@ Les logger doivent remplir la liste d’obligations suivante :
 
 ## Organisation des tests
 
+### Objectifs
+
+Les tests ont pour objectif de garantir que le fonctionnement du code est conforme à ce qui est attendu, la granularité des tests varie du test le plus précis (les tests unitaires) au test plus global (le test de fumée).
+
+### Critères de validation d’un test
+
+Pour être de qualité un test doit :
+
+- Être simple à relire
+- Être correctement documenté
+- Avoir un attendu clair
+- Avoir un périmètre défini et restreint
+- Avoir des assertions utiles et susceptibles d’échouer en cas de régression ou de dysfonctionnement
+- Être rejouable sans action manuelle (qu’il soit échoué ou réussi)
+- Ne pas être dépendant d’un autre test
+- Laisser un environnement de test propre après exécution.
+
+### Types de test
+
+Type de test ordonnés par priorité :
+
+- Test unitaire, les nouvelles fonctionnalités développées doivent être testées en prenant en compte un maximum de cas potentiels pour un périmètre restreint.
+
+- Test d’intégration, la compatibilité des différentes parties du logiciel est vérifié par les tests d’intégration. Les tests d’intégration ne vérifient pas l’intégralité des branches du codes déjà couvertes par les tests d’intégration mais le bon fonctionnement des échanges de chaque composant.
+
+- Test de fumée, les fonctionnalités sont vérifiées à partir des accès utilisateurs sur le logiciel complet en réalisant des parcours utilisateurs nominaux pour vérifier la conformité du logiciel avec le cahier des charges initiales
+
+Sujets de test :
+
+- Test IHM (intégration, fumée), l’objectif du test est de garantir la conformité des comportement de l’IHM avec l’attendu, qu’il s’agisse du point de vue graphique (saisie de formulaire, transition, placement) ou réseau (entrées/sorties HTTP).
+
+- Test d’API (intégration) les API exposées doivent être conformes à la documentation publiée en terme de ressources fournies et reçues. Les tests sont rédigés et maintenu à partir de la documentation produite
+
+- Test de performance IHM (fumée) la réactivité de l’IHM est mesurée à partir du temps de chargement initiale (chargement des sources et des données), de la vitesse de rafraîchissement de la page (avec cache), de la réactivité de la mise à jour graphique local (sans rafraîchissement)
+
+- Test de performance Server (intégration) la performance du serveur se mesure à partir du nombre de demande pouvant être traitée simultanément pour des requêtes simple, le temps de persistance d’un nombre de données (jeu de données fixe avec un nombre de relation entre objets identifiés)
+
 ### Règle communes
 
 Les fonctionnalités doivent être testées de manière suffisantes avec un objectif de couverture de code > 80%, pour se faire la planification de TDD est à mettre en place.
