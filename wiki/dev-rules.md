@@ -110,6 +110,7 @@ Pour les interfaces complexes (notamment la partie réseaux) il est possible de 
 Les API REST proposées par le serveur doivent être testé avec un utilitaire facilement maintenable
 
 Les exceptions de mauvaise configuration et mauvais lancement doivent être testées
+![Les tests unitaires de l'API HTTP du server](server-ut-tests.svg)
 
 ### Tests models
 
@@ -118,6 +119,8 @@ le model est testé de 3 façon :
   - par le client pour tester ce qui sort en HTTP
   - par le serveur pour tester ce qui rentre en HTTP
   - par un utilitaire pour comparer les flux client et serveur
+  
+![Les tests unitaires du connecteur de base de données](data-management-ut-tests.svg)
 
 ## Convention de syntaxe : 
 
