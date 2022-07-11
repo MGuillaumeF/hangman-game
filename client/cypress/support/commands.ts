@@ -49,11 +49,11 @@ for (const command of [
 
 declare global {
   namespace Cypress {
-    interface Chainable<Subject> {
+    interface Chainable {
       /**
        * Provides a working example
        */
-      clearViewport(): void;
+      clearViewport(): Chainable;
     }
   }
 }
@@ -78,4 +78,6 @@ Cypress.Commands.add("clearViewport", () => {
     ".runner.container header"
   );
   header.setAttribute("style", "opacity: 0");
+
+  return runnerContainer;
 });
