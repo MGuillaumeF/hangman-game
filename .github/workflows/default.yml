@@ -218,14 +218,28 @@ jobs:
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
 
     - name: Unit Tests Graph
-      working-directory: ${{github.workspace}}/bin
+      working-directory: ${{github.workspace}}
       run: |
-        cd server/bin
+        cd ${{github.workspace}}/bin/server/bin
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
-        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/server/reports/server-ut-tests.svg
-        cd ../../data-management/bin
+        dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/wiki/server-ut-tests.svg
+        cd ${{github.workspace}}/bin/data-management/bin
         ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/data-management/reports/content.dot 2>&1
-        dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/data-management/reports/data-management-ut-tests.svg
+        dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/wiki/data-management-ut-tests.svg
+
+    - name: Save tests graph
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}
+      run: |
+        git stash
+        git checkout ${{github.head_ref}}
+        git stash pop || echo "Nothing in stashed stack"
+        git config user.name "MGuillaumeF"
+        git config user.email "${{secrets.EMAIL}}"
+        git add wiki
+        (git commit -m "[AUTO] update test unit test graph generated" && git push) || echo 'No modification to save'
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
    
     - name: Server Tests ctest
       working-directory: ${{github.workspace}}/server/test
