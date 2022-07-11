@@ -47,6 +47,17 @@ for (const command of [
   });
 }
 
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Provides a working example
+       */
+      clearViewport(): Chainable;
+    }
+  }
+}
+
 Cypress.Commands.add("clearViewport", () => {
   const runnerContainer =
     window.parent.document.getElementsByClassName("iframes-container")[0];
@@ -67,4 +78,6 @@ Cypress.Commands.add("clearViewport", () => {
     ".runner.container header"
   );
   header.setAttribute("style", "opacity: 0");
+
+  return runnerContainer;
 });
