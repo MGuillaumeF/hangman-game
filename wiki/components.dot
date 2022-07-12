@@ -2,15 +2,15 @@ digraph Component {
 
   node [shape=record];
 
-  subgraph client {
+  subgraph cluster_client {
     label = "CLIENT";
-    subgraph browser {
+    subgraph cluster_browser {
       label = "BROWSER";
       nd_1 [label = "HMI"];
     }
   }
 
-  subgraph server {
+  subgraph cluster_server {
     label = "SERVER";
     {
       rank=same 
