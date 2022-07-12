@@ -42,13 +42,16 @@
 
 ## Conception du model
 
-| Object-Type     | Description                                                     |
-| :-------------- | :-------------------------------------------------------------- |
-| User            | Les objets utilisateurs pour la connexion à l'application.      |
-| Group           | Les group d'utilisateurs pour les restrictions d'application.   |
-| Dictionary      | Le dictionnaire pour regrouper les mots par langues.            |
-| Word            | Les mots pour le jeu du pendu.                                  |
-| Game            | Les parties jouées.                                             |
+| Object-Type     | Description                                                                        |
+| :-------------- | :--------------------------------------------------------------------------------- |
+| User            | Les objets utilisateurs pour la connexion à l'application.                         |
+| Group           | Les group d'utilisateurs pour les restrictions d'application.                      |
+| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               |
+| Word            | Les mots pour le jeu du pendu.                                                     |
+| Party           | Les parties jouées.                                                                |
+| Message         | Les messages entre joueurs.                                                        |
+| Friend          | Les amis pour les parties de groupe et les messages.                               |
+| Team            | Les regroupements de joueur pour les parties de groupe et les messages.            |
 
 
 ## Stratégie des scripts.
