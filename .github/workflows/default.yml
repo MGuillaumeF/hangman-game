@@ -226,6 +226,7 @@ jobs:
         cd ${{github.workspace}}/bin/data-management/bin
         ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/data-management/reports/content.dot 2>&1
         dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/wiki/data-management-ut-tests.svg
+        dot ${{github.workspace}}/wiki/components.dot -Tsvg -o ${{github.workspace}}/wiki/components-diagram.svg
 
     - name: Save tests graph
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
