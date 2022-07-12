@@ -13,7 +13,48 @@
 - L’analyse de la qualité doit être rapidement démontrable (automatisation et agrégation des résultats sur SonarCloud).
 - Les composants et les fonctions doivent être typées et avoir des performances acceptables
 
-## Stratégie des scripts
+## Stratégie de conception des composants.
+
+### Liste des composants.
+
+1. La base de données (SQLite, MySQL, PostgreSQL, ...).
+2. Le model de données (lib-ODB).
+3. Le connecteur de base de données, le serveur TCP qui sert de couche d'abstraction de la base de données qui prend de l'XML en entrée et retourne les résultats en XML.
+4. Le serveur Web qui sert les fichiers statiques de l'IHM et fournit une interface HTTP vers la base de données avec une API REST.
+5. La documentation de l'application et des interfaces.
+6. Les pages Web qui forment l'IHM pour fournir l'interface utilisateur.
+
+### Ordonnancement des conceptions.
+
+> **Règle numéro 1:** Les données doivent toujours être considérées comme des éléments pivot de l'application, c'est le cycle de vie de la données qui impose les comportements et les contraintes IHM.
+
+- (2) Le model et les modificateurs d'objets persistés sont générés à partir du déclaratif des classes.
+- (3) Les points d'entrée du connecteur de base de données sont générés à partir d'un fichier déclaratif et d'un script pour activer les comportements classiques (CRUD), les comportements spécifiques sont à créer et tester manuellement.
+- (4) Les points d'entrée du serveur HTTP sont générés en même temps que les points d'entrée du connecteur de base de données pour les interfaces classique (CREATE = POST, READ = GET/POST, UPDATE = PUT/PATCH, DELETE = DELETE).
+- (5) La documentation des API HTTP est généré à partir du fichier déclaratif qui est à l'origine des points d'entrée HTTP.
+- (6) Les formulaires de l'IHM utilisent la documentation JSON des API HTTP pour leurs constructions.
+
+> Utiliser cette génération centralisée permet de garantir l'unicité des comportements autour de la données. 
+
+## Diagramme de déploiement
+
+![Diagramme de composants](./components-diagram.svg)
+
+## Conception du model
+
+| Object-Type     | Description                                                                        | Relations                       |
+| :-------------- | :--------------------------------------------------------------------------------- | ------------------------------- |
+| User            | Les objets utilisateurs pour la connexion à l'application.                         | 1 User appartient à 1 à N Group. 1 User peut avoir 0 à N User en amis. 1 User participe à 0 à N Party |
+| Group           | Les group d'utilisateurs pour les restrictions d'application.                      | 1 Group contient plusieurs User |
+| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               |                                 |
+| Word            | Les mots pour le jeu du pendu.                                                     |                                 |
+| Party           | Les parties jouées.                                                                |                                 |
+| Message         | Les messages entre joueurs.                                                        |                                 |
+| Chat            | Les chats sont les discutions entre User ou Team.                                  |                                 |
+| Team            | Les regroupements de joueur pour les parties de groupe et les messages.            |                                 |
+
+
+## Stratégie des scripts.
 
 Les scripts ont pour objectif d’automatiser les tâches récurrentes ou complexes.
 
@@ -52,6 +93,43 @@ Les logger doivent remplir la liste d’obligations suivante :
 
 ## Organisation des tests
 
+### Objectifs
+
+Les tests ont pour objectif de garantir que le fonctionnement du code est conforme à ce qui est attendu, la granularité des tests varie du test le plus précis (les tests unitaires) au test plus global (le test de fumée).
+
+### Critères de validation d’un test
+
+Pour être de qualité un test doit :
+
+- Être simple à relire
+- Être correctement documenté
+- Avoir un attendu clair
+- Avoir un périmètre défini et restreint
+- Avoir des assertions utiles et susceptibles d’échouer en cas de régression ou de dysfonctionnement
+- Être rejouable sans action manuelle (qu’il soit échoué ou réussi)
+- Ne pas être dépendant d’un autre test
+- Laisser un environnement de test propre après exécution.
+
+### Types de test
+
+Type de test ordonnés par priorité :
+
+- **Test unitaire**, les nouvelles fonctionnalités développées doivent être testées en prenant en compte un maximum de cas potentiels pour un périmètre restreint.
+
+- **Test d’intégration**, la compatibilité des différentes parties du logiciel est vérifié par les tests d’intégration. Les tests d’intégration ne vérifient pas l’intégralité des branches du codes déjà couvertes par les tests d’intégration mais le bon fonctionnement des échanges de chaque composant.
+
+- **Test de fumée**, les fonctionnalités sont vérifiées à partir des accès utilisateurs sur le logiciel complet en réalisant des parcours utilisateurs nominaux pour vérifier la conformité du logiciel avec le cahier des charges initiales
+
+Sujets de test :
+
+- **Test IHM** (intégration, fumée), l’objectif du test est de garantir la conformité des comportement de l’IHM avec l’attendu, qu’il s’agisse du point de vue graphique (saisie de formulaire, transition, placement) ou réseau (entrées/sorties HTTP).
+
+- **Test d’API** (intégration) les API exposées doivent être conformes à la documentation publiée en terme de ressources fournies et reçues. Les tests sont rédigés et maintenu à partir de la documentation produite
+
+- **Test de performance IHM** (fumée) la réactivité de l’IHM est mesurée à partir du temps de chargement initiale (chargement des sources et des données), de la vitesse de rafraîchissement de la page (avec cache), de la réactivité de la mise à jour graphique local (sans rafraîchissement)
+
+- **Test de performance Server** (intégration) la performance du serveur se mesure à partir du nombre de demande pouvant être traitée simultanément pour des requêtes simple, le temps de persistance d’un nombre de données (jeu de données fixe avec un nombre de relation entre objets identifiés)
+
 ### Règle communes
 
 Les fonctionnalités doivent être testées de manière suffisantes avec un objectif de couverture de code > 80%, pour se faire la planification de TDD est à mettre en place.
@@ -62,25 +140,29 @@ En prenant de la hauteur on identifie le code « mort » et on peut l’élimi
 
 ### Tests client
 
-Les fonctionnalités qui ne sont pas graphiques sont à tester avec un environnement JavaScript allégé
+Les fonctionnalités qui ne sont pas graphiques sont à tester avec un environnement Front allégé (sans DOM)
 
-Les fonctionnalités graphiques sont à tester sur un résultat du code source en version de dev ou en version bundle.
+Les fonctionnalités graphiques sont à tester sur un résultat du code source en version de dev ou en version bundle (en version de deg de préférence pour collecter la couverture de code).
 
-Pour les interfaces complexes (notamment la partie réseaux) il est possible de fournir des utilitaires de test pour simplifier les futures tests
+Pour les interfaces complexes (notamment la partie réseaux) il est possible de fournir des utilitaires de test pour simplifier les futures tests.
 
 ### Tests serveur
 
-Les API REST proposées par le serveur doivent être testé avec un utilitaire facilement maintenable
+Les API REST proposées par le serveur doivent être testé avec un utilitaire facilement maintenable.
 
-Les exceptions de mauvaise configuration et mauvais lancement doivent être testées
+Les exceptions de mauvaise configuration et mauvais lancement doivent être testées, les traces dans la console ou les logs doivent être suffisantes pour comprendre l'origine du mauvais usage.
+
+![Les tests unitaires de l'API HTTP du server](server-ut-tests.svg)
 
 ### Tests models
 
 le model est testé de 3 façon : 
 
-  - par le client pour tester ce qui sort en HTTP
-  - par le serveur pour tester ce qui rentre en HTTP
-  - par un utilitaire pour comparer les flux client et serveur
+  - par des **tests unitaires** du connecteur de base de données.
+  - par des **tests d'intégration IHM** à partir de parcours utilisateur pour tester les données sortantes en HTTP.
+  - par des **tests d'intégration/interface serveur** pour tester ce qui rentre/sort en HTTP.
+
+![Les tests unitaires du connecteur de base de données](data-management-ut-tests.svg)
 
 ## Convention de syntaxe : 
 

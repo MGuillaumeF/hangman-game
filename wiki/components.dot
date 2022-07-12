@@ -1,0 +1,23 @@
+digraph Component {
+
+  node [shape=record];
+
+  subgraph cluster_client {
+    label = "CLIENT";
+    subgraph cluster_browser {
+      label = "BROWSER";
+      nd_1 [label = "HMI"];
+    }
+  }
+
+  subgraph cluster_server {
+    label = "SERVER";
+    {
+      rank=same 
+      nd_2 [label = "WEB SERVER"];
+      nd_3 [label = "DATA CONNECTOR"];
+      nd_4 [label = "DB"];
+    }
+  }
+  nd_1 -> nd_2 [color=blue];
+}
