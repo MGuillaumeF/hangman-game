@@ -42,16 +42,16 @@
 
 ## Conception du model
 
-| Object-Type     | Description                                                                        | Relations                    |
-| :-------------- | :--------------------------------------------------------------------------------- | ---------------------------- |
-| User            | Les objets utilisateurs pour la connexion à l'application.                         | 1 User appartient à N Group  |
-| Group           | Les group d'utilisateurs pour les restrictions d'application.                      |                              |
-| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               |                              |
-| Word            | Les mots pour le jeu du pendu.                                                     |                              |
-| Party           | Les parties jouées.                                                                |                              |
-| Message         | Les messages entre joueurs.                                                        |                              |
-| Friend          | Les amis pour les parties de groupe et les messages.                               |                              |
-| Team            | Les regroupements de joueur pour les parties de groupe et les messages.            |                              |
+| Object-Type     | Description                                                                        | Relations                       |
+| :-------------- | :--------------------------------------------------------------------------------- | ------------------------------- |
+| User            | Les objets utilisateurs pour la connexion à l'application.                         | 1 User appartient à 1 à N Group. 1 User peut avoir 0 à N User en amis. 1 User participe à 0 à N Party |
+| Group           | Les group d'utilisateurs pour les restrictions d'application.                      | 1 Group contient plusieurs User |
+| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               |                                 |
+| Word            | Les mots pour le jeu du pendu.                                                     |                                 |
+| Party           | Les parties jouées.                                                                |                                 |
+| Message         | Les messages entre joueurs.                                                        |                                 |
+| Chat            | Les chats sont les discutions entre User ou Team.                                  |                                 |
+| Team            | Les regroupements de joueur pour les parties de groupe et les messages.            |                                 |
 
 
 ## Stratégie des scripts.
