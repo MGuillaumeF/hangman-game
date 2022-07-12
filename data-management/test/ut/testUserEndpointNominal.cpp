@@ -65,7 +65,7 @@ boost::property_tree::ptree sendRequest(const std::string &orderFile) {
   std::cout << "Size of response is: " << std::endl << li_hex << std::endl;
 
   std::string cleaned(replyBody);
-  delete replyBody;
+  delete[] replyBody;
   cleaned.resize(li_hex);
   std::cout << "Message response is: " << std::endl << cleaned << std::endl;
 
