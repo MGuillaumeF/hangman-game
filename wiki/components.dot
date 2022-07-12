@@ -19,4 +19,5 @@ digraph Component {
       nd_4 [label = "DB"];
     }
   }
+  nd_1 -> nd_2;
 }
