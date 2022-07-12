@@ -36,6 +36,14 @@
 
 > Utiliser cette génération centralisée permet de garantir l'unicité des comportements autour de la données. 
 
+## Conception du model
+
+| Object-Type | Description                                                |
+| ----------- | ---------------------------------------------------------- |
+| User        | Les objets utilisateurs pour la connexion à l'application  |
+| Word        | Les mots pour le jeu du pendu                              |
+
+
 ## Stratégie des scripts.
 
 Les scripts ont pour objectif d’automatiser les tâches récurrentes ou complexes.
