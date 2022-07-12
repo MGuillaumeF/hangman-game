@@ -64,7 +64,7 @@ export function addPresentation(
     pVersion.textContent = version;
 
     const date = $document.createElement("span");
-    date.textContent = new Date().toISOString().split("T")[0];
+    date.textContent = new Date().toISOString().split("T")[0] || null;
     date.style.position = "fixed";
     date.style.bottom = "0.5em";
     date.style.right = "0.5em";
