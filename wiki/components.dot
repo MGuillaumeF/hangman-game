@@ -1,0 +1,23 @@
+digraph Component {
+
+  node [shape=record];
+
+  nd_1 [label = "HMI"];
+  nd_2 [label = "BROWSER"];
+
+  nd_4 [label = "WEB SERVER"];
+  nd_5 [label = "DATA CONNECTOR"];
+  nd_6 [label = "DB"];
+
+  subgraph server {
+    label = "SERVER";
+
+    {rank=same nd_4 nd_5 nd_6}
+  }
+
+  subgraph client {
+    label = "CLIENT";
+    {rank=same nd_1 nd_2}
+  }
+  nd_2 -> nd_4 -> nd_5 -> nd_6 -> nd_5 -> nd_4 -> nd_2;
+}
