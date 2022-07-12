@@ -39,8 +39,8 @@
 <!-- nd_1&#45;&gt;nd_2 -->
 <g id="edge1" class="edge">
 <title>nd_1&#45;&gt;nd_2</title>
-<path fill="none" stroke="black" d="M322,-108.15C322,-95.32 322,-77.61 322,-62.88"/>
-<polygon fill="black" stroke="black" points="325.5,-62.8 322,-52.8 318.5,-62.8 325.5,-62.8"/>
+<path fill="none" stroke="blue" d="M322,-108.15C322,-95.32 322,-77.61 322,-62.88"/>
+<polygon fill="blue" stroke="blue" points="325.5,-62.8 322,-52.8 318.5,-62.8 325.5,-62.8"/>
 </g>
 <!-- nd_3 -->
 <g id="node3" class="node">
