@@ -53,12 +53,21 @@ int32_t main(int argc, char *argv[]) {
           socket, boost::asio::buffer(stream.str().c_str(),
                                       request.size() + OCTETS_SIZE_MESSAGE));
 
-      char reply[60];
-      const size_t reply_length =
-          boost::asio::read(socket, boost::asio::buffer(reply, 60));
-      std::cout << "Message response is: " << std::endl;
-      std::cout.write(reply, reply_length);
-      std::cout << std::endl;
+      char reply[OCTETS_SIZE_MESSAGE];
+      const size_t reply_length = boost::asio::read(
+          socket, boost::asio::buffer(reply, OCTETS_SIZE_MESSAGE));
+      const std::string messageSizeStr = reply;
+      const uint32_t li_hex = std::stoul(messageSizeStr, nullptr, 16);
+
+      char *replyBody = new char[li_hex];
+      boost::asio::read(socket, boost::asio::buffer(replyBody, li_hex));
+
+      std::cout << "Size of response is: " << std::endl << li_hex << std::endl;
+
+      std::string cleaned(replyBody);
+      delete replyBody;
+      cleaned.resize(li_hex);
+      std::cout << "Message response is: " << std::endl << cleaned << std::endl;
     } catch (const std::exception &e) {
       std::cerr << "Exception: " << e.what() << std::endl;
     }
