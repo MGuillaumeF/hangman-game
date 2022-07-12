@@ -19,5 +19,7 @@ digraph Component {
       nd_4 [label = "DB"];
     }
   }
-  nd_1 -> nd_2;
+  nd_1 -- nd_2 [color=blue];
+  nd_2 -- nd_3 [color=purple];
+  nd_3 -- nd_4 [color=gray];
 }
