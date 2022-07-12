@@ -9,9 +9,6 @@ digraph Component {
   nd_5 [label = "DATA CONNECTOR"];
   nd_6 [label = "DB"];
 
-  nd_2 -> nd_4 -> nd_5 -> nd_6;
-  nd_6 -> nd_5 -> nd_4 -> nd_2;
-
   subgraph server {
     label = "SERVER";
     {rank=same nd_4 nd_5 nd_6}
@@ -19,6 +16,9 @@ digraph Component {
 
   subgraph client {
     label = "CLIENT";
-    {rank=same nd_1 nd_2}
+    subgraph browser {
+      label = "BROWSER";
+      nd_2;
+    }
   }
 }
