@@ -36,12 +36,19 @@
 
 > Utiliser cette génération centralisée permet de garantir l'unicité des comportements autour de la données. 
 
+## Diagramme de déploiement
+
+![Diagramme de composants](./components-diagram.svg)
+
 ## Conception du model
 
-| Object-Type | Description                                                |
-| ----------- | ---------------------------------------------------------- |
-| User        | Les objets utilisateurs pour la connexion à l'application  |
-| Word        | Les mots pour le jeu du pendu                              |
+| Object-Type     | Description                                                     |
+| :-------------- | :-------------------------------------------------------------- |
+| User            | Les objets utilisateurs pour la connexion à l'application.      |
+| Group           | Les group d'utilisateurs pour les restrictions d'application.   |
+| Dictionary      | Le dictionnaire pour regrouper les mots par langues.            |
+| Word            | Les mots pour le jeu du pendu.                                  |
+| Game            | Les parties jouées.                                             |
 
 
 ## Stratégie des scripts.
