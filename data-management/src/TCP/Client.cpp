@@ -30,7 +30,8 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
   // connect tcp socket
   boost::asio::ip::tcp::socket socket(ioContext);
   boost::asio::ip::tcp::resolver resolver(ioContext);
-  boost::asio::connect(socket, resolver.resolve(hostname, std::to_string(port).c_str()));
+  boost::asio::connect(
+      socket, resolver.resolve(hostname, std::to_string(port).c_str()));
 
   std::cout << "Connect with server at " << hostname << ":" << port
             << std::endl;
