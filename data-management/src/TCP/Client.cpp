@@ -37,7 +37,7 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
 
   // read file to send over TCP socket example :
   // "./resources/database-order/create-user.xml"
-  const std::ifstream fileToSend(orderFile);
+  const std::ifstream fileToSend(filename);
   std::stringstream fileToSendStream;
   fileToSendStream << fileToSend.rdbuf();
   const std::string request = fileToSendStream.str();
