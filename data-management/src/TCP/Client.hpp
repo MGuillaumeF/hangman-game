@@ -1,11 +1,10 @@
 #ifndef __TCP_CLIENT_HPP__
 #define __TCP_CLIENT_HPP__
 
-#include <boost/asio.hpp>
-#include <cstdlib>
-#include <iostream>
-#include <memory>
-#include <utility>
+#include <string>  // std::string
+
+#include <boost/property_tree/ptree.hpp>
+
 
 namespace hangman {
 namespace tcp {
@@ -29,7 +28,7 @@ public:
    * @return The data manager response
    */
   static boost::property_tree::ptree sendRequest(const std::string &hostname,
-                                                 const uint16_t &port,
+                                         const uint16_t &port,
                                                  const std::string filename);
 };
 
