@@ -47,7 +47,10 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 )
 
 file(GLOB_RECURSE TEST_CLIENT_TCP_SRC_UT_DIR CONFIGURE_DEPENDS
-     "src/ext/Client.cpp")
+     "src/ext/Client.cpp"
+     "src/TCP/Client.hpp"
+     "src/TCP/Client.cpp"
+)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
