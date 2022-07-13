@@ -21,7 +21,7 @@ int32_t main(int argc, char *argv[]) {
       // "./resources/database-order/create-user.xml"
 
       // send tcp request over socket
-      Client::sendRequest(hostname, , argv[ARG_FILEPATH_TO_SEND_INDEX]);
+      Client::sendRequest(hostname, port, argv[ARG_FILEPATH_TO_SEND_INDEX]);
     } catch (const std::exception &e) {
       std::cerr << "Exception: " << e.what() << std::endl;
     }
