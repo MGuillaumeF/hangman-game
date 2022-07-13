@@ -16,7 +16,7 @@
 
 BOOST_AUTO_TEST_SUITE(testUserEndpointNominal)
 
-BOOST_AUTO_TEST_CASE(test_create) {
+BOOST_AUTO_TEST_CASE(test_create_one) {
 
   boost::asio::io_context ioContext;
   const hangman::tcp::Server server(ioContext, 50000);
@@ -35,6 +35,32 @@ BOOST_AUTO_TEST_CASE(test_create) {
   const boost::property_tree::ptree response =
       hangman::tcp::Client::sendRequest(
           "127.0.0.1", 50000, "./resources/database-order/create-user.xml");
+  ioContext.stop();
+
+  for (size_t i = 0; i < threads.size(); ++i) {
+    threads[i].join();
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_create_many) {
+
+  boost::asio::io_context ioContext;
+  const hangman::tcp::Server server(ioContext, 50000);
+  std::vector<std::thread> threads;
+  threads.reserve(1);
+
+  threads.emplace_back([&ioContext] { ioContext.run(); });
+
+  // open transaction
+  // count user as A
+  // create user as User1 and User2
+  // count user as B
+  // except B == A + 2
+  // close transaction
+
+  const boost::property_tree::ptree response =
+      hangman::tcp::Client::sendRequest(
+          "127.0.0.1", 50000, "./resources/database-order/create-users.xml");
   ioContext.stop();
 
   for (size_t i = 0; i < threads.size(); ++i) {
