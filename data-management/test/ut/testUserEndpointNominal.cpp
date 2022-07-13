@@ -7,12 +7,12 @@
 #include <thread>
 #include <vector>
 
-#include <string>  // std::string
+#include <string> // std::string
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "../../src/TCP/Server.hpp"
 #include "../../src/TCP/Client.hpp"
+#include "../../src/TCP/Server.hpp"
 
 BOOST_AUTO_TEST_SUITE(testUserEndpointNominal)
 
@@ -32,7 +32,9 @@ BOOST_AUTO_TEST_CASE(test_create) {
   // except B == A + 1
   // close transaction
 
-  const boost::property_tree::ptree response = hangman::tcp::Client::sendRequest("127.0.0.1", 50000, "./resources/database-order/create-user.xml");
+  const boost::property_tree::ptree response =
+      hangman::tcp::Client::sendRequest(
+          "127.0.0.1", 50000, "./resources/database-order/create-user.xml");
   ioContext.stop();
 
   for (size_t i = 0; i < threads.size(); ++i) {
