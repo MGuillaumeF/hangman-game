@@ -28,7 +28,7 @@ public:
    */
   static boost::property_tree::ptree sendRequest(const std::string &hostname,
                                                  const uint16_t &port,
-                                                 const std::string filename);
+                                                 const std::string &filename);
 };
 
 } // namespace tcp
