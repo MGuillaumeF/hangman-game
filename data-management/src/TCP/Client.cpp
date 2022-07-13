@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <sstream> // std::stringstream
 
+#include <boost/asio.hpp>
+
 namespace hangman {
 namespace tcp {
 
