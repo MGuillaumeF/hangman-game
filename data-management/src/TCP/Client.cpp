@@ -12,6 +12,13 @@
 namespace hangman {
 namespace tcp {
 
+/**
+ * method to send file with TCP Request to the data manager
+ * @param hostname The hostname of data manager to join
+ * @param port The port of data manager to join
+ * @param filename The file to send over TCP request
+ * @return The data manager response
+ */
 boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
                                                 const uint16_t &port,
                                                 const std::string &filename) {
