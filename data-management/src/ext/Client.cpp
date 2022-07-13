@@ -1,4 +1,4 @@
-#include "../TCP/Client.hpp"
+#include "../TCP/ClientDataManager.hpp"
 #include <exception>
 #include <fstream>
 #include <iostream> // std::cout
