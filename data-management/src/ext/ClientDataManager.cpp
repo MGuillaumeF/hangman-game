@@ -21,7 +21,8 @@ int32_t main(int argc, char *argv[]) {
       // "./resources/database-order/create-user.xml"
 
       // send tcp request over socket
-      hangman::tcp::Client::sendRequest(hostname, port, argv[ARG_FILEPATH_TO_SEND_INDEX]);
+      hangman::tcp::Client::sendRequest(hostname, port,
+                                        argv[ARG_FILEPATH_TO_SEND_INDEX]);
     } catch (const std::exception &e) {
       std::cerr << "Exception: " << e.what() << std::endl;
     }
