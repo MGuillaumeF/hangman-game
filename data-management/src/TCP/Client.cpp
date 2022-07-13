@@ -12,7 +12,9 @@
 namespace hangman {
 namespace tcp {
 
-boost::property_tree::ptree Client::sendRequest(const std::string &hostname, const uint16_t& port, const std::string &filename) {
+boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
+                                                const uint16_t &port,
+                                                const std::string &filename) {
   const uint8_t OCTETS_SIZE_MESSAGE = 8;
   boost::asio::io_context ioContext;
 
