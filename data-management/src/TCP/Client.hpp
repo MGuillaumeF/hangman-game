@@ -19,7 +19,7 @@ public:
    * @brief Construct a new TCP Client object
    *
    */
-  Client()=delete;
+  Client() = delete;
 
   /**
    * method to send file with TCP Request to the data manager
@@ -28,7 +28,9 @@ public:
    * @param filename The file to send over TCP request
    * @return The data manager response
    */
-   static boost::property_tree::ptree sendRequest(const std::string& hostname, const uint16_t& port, const std::string filename); 
+  static boost::property_tree::ptree sendRequest(const std::string &hostname,
+                                                 const uint16_t &port,
+                                                 const std::string filename);
 };
 
 } // namespace tcp
