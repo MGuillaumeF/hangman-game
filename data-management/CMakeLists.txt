@@ -47,7 +47,7 @@ file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
 )
 
 file(GLOB_RECURSE TEST_CLIENT_TCP_SRC_UT_DIR CONFIGURE_DEPENDS
-     "src/ext/Client.cpp"
+     "src/ext/*.cpp"
      "src/TCP/Client.hpp"
      "src/TCP/Client.cpp"
 )
