@@ -54,7 +54,8 @@ int32_t main(int argc, char *argv[]) {
                                       request.size() + OCTETS_SIZE_MESSAGE));
 
       char reply[OCTETS_SIZE_MESSAGE];
-      boost::asio::read(socket, boost::asio::buffer(reply, OCTETS_SIZE_MESSAGE));
+      boost::asio::read(socket,
+                        boost::asio::buffer(reply, OCTETS_SIZE_MESSAGE));
       const std::string messageSizeStr = reply;
       const uint32_t li_hex = std::stoul(messageSizeStr, nullptr, 16);
 
