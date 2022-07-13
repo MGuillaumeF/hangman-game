@@ -15,7 +15,7 @@ int32_t main(int argc, char *argv[]) {
 
     try {
       const std::string hostname = argv[ARG_CLI_HOSTNAME_INDEX];
-      const uint16_t port = std::strtoul(argv[ARG_CLI_PORT_INDEX], nullptr);
+      const uint16_t port = std::strtoul(argv[ARG_CLI_PORT_INDEX], nullptr, 10);
 
       // read file to send over TCP socket example :
       // "./resources/database-order/create-user.xml"
