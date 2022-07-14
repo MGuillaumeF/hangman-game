@@ -57,14 +57,26 @@
 ```mermaid
 classDiagram
 RootModelObject <|-- User : extends
-Class03 *-- Class04
-Class05 o-- Class06
+RootModelObject <|-- Group : extends
+RootModelObject <|-- Word : extends
+RootModelObject <|-- Dictionary : extends
+RootModelObject <|-- Party : extends
+RootModelObject <|-- Message : extends
+RootModelObject <|-- Chat : extends
+RootModelObject <|-- Team : extends
+Chat *-- Message
+Chat o-- User
+Chat o-- Party
+Chat o-- Team
+Team *-- User
+Group *-- User
+Dictionary *-- Word
+Party o-- User
+Party o-- Word
 Class07 .. Class08
 Class09 --> C2 : Where am i?
 Class09 --* C3
 Class09 --|> Class07
-Class07 : equals()
-Class07 : Object[] elementData
 RootModelObject : bool readonly
 RootModelObject : uint32_t id
 RootModelObject : uint32_t version
@@ -78,6 +90,19 @@ User : uint32_t last_connection
 User : string salt_user
 User : string salt_session
 User : string token
+Group : User[] members
+Group : string name
+Dictionary : string name
+Dictionary : string[] country_codes
+Dictionary : Word[] words
+Word : string name
+Word : string[] definitions
+Party : uint32_t start_date
+Party : uint32_t end_date
+Party : uint32_t score
+Party : bool win
+Party : User[] members
+Party : Word word
 Class08 <--> C2: Cool label
 
 ```
