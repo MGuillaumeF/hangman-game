@@ -56,7 +56,7 @@
 
 ```mermaid
 classDiagram
-Class01 <|-- AveryLongClass : Cool
+RootModelObject <|-- AveryLongClass : Cool
 Class03 *-- Class04
 Class05 o-- Class06
 Class07 .. Class08
@@ -65,9 +65,12 @@ Class09 --* C3
 Class09 --|> Class07
 Class07 : equals()
 Class07 : Object[] elementData
-Class01 : size()
-Class01 : bool write
-Class01 : int gorilla
+RootModelObject : bool readonly
+RootModelObject : uint32_t version
+RootModelObject : string created_by
+RootModelObject : uint32_t created_at
+RootModelObject : string updated_by
+RootModelObject : uint32_t updated_at
 Class08 <--> C2: Cool label
 
 ```
