@@ -56,7 +56,7 @@
 
 ```mermaid
 classDiagram
-RootModelObject <|-- AveryLongClass : Cool
+RootModelObject <|-- User : extends
 Class03 *-- Class04
 Class05 o-- Class06
 Class07 .. Class08
@@ -66,11 +66,18 @@ Class09 --|> Class07
 Class07 : equals()
 Class07 : Object[] elementData
 RootModelObject : bool readonly
+RootModelObject : uint32_t id
 RootModelObject : uint32_t version
 RootModelObject : string created_by
 RootModelObject : uint32_t created_at
 RootModelObject : string updated_by
 RootModelObject : uint32_t updated_at
+User : string login
+User : string password
+User : uint32_t last_connection
+User : string salt_user
+User : string salt_session
+User : string token
 Class08 <--> C2: Cool label
 
 ```
