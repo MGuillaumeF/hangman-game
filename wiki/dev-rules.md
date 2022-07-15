@@ -103,6 +103,9 @@ Party : uint32_t score
 Party : bool win
 Party : User[] members
 Party : Word word
+Message : string content
+Message : User sender
+Message : User[] receivers
 Class08 <--> C2: Cool label
 
 ```
