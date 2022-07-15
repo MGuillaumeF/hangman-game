@@ -73,10 +73,6 @@ Group *-- User
 Dictionary *-- Word
 Party o-- User
 Party o-- Word
-Class07 .. Class08
-Class09 --> C2 : Where am i?
-Class09 --* C3
-Class09 --|> Class07
 RootModelObject : bool readonly
 RootModelObject : uint32_t id
 RootModelObject : uint32_t version
@@ -106,8 +102,13 @@ Party : Word word
 Message : string content
 Message : User sender
 Message : User[] receivers
-Class08 <--> C2: Cool label
-
+Message : Chat chat
+Chat : Message[] messages
+Chat : User[] members
+Chat : string name
+Team : Chat chat
+Team : User[] members
+Team : string name
 ```
 
 ## Stratégie des scripts.
