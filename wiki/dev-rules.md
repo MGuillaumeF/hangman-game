@@ -56,6 +56,8 @@
 
 ```mermaid
 classDiagram
+class RootModelObject
+<<abstract>> RootModelObject
 RootModelObject <|-- User : extends
 RootModelObject <|-- Group : extends
 RootModelObject <|-- Word : extends
@@ -64,12 +66,12 @@ RootModelObject <|-- Party : extends
 RootModelObject <|-- Message : extends
 RootModelObject <|-- Chat : extends
 RootModelObject <|-- Team : extends
-Chat *-- Message
+Chat "1" *-- "0.N" Message
 Chat o-- User
 Chat o-- Party
 Chat o-- Team
-Team *-- User
-Group *-- User
+Team "1" *-- "1.N" User
+Group "1" *-- "0.N" User
 Dictionary *-- Word
 Party o-- User
 Party o-- Word
