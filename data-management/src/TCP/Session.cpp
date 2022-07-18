@@ -43,13 +43,13 @@ void Session::doReadBody(const uint32_t &max_content) {
           // Create an empty property tree object
           boost::property_tree::ptree xmlPtree;
 
+          std::stringstream currentRequest;
+          std::string content = m_data;
+          content.resize(max_content);
+          currentRequest << content;
           // Read the XML config string into the property tree. Catch any
           // exception
           try {
-            std::stringstream currentRequest;
-            std::string content = m_data;
-            content.resize(max_content);
-            currentRequest << content;
             boost::property_tree::xml_parser::read_xml(currentRequest,
                                                        xmlPtree);
             const boost::property_tree::ptree response =
@@ -68,10 +68,17 @@ void Session::doReadBody(const uint32_t &max_content) {
             std::cerr << "Failed to read received xml2 " << ee.what()
                       << std::endl;
           }
-          std::cout << "The body is of request : " << m_data << std::endl;
+          std::cout << "The body is of request : " << content << std::endl;
           std::cout << "The body is of response : " << responseStr.str()
                     << std::endl;
-          doWrite(responseStr.str());
+
+          // format response
+          std::stringstream stream;
+          stream << std::setfill('0') << std::setw(8);
+          stream << std::hex << responseStr.str().size();
+          stream << std::hex << responseStr.str();
+
+          doWrite(stream.str());
         }
       });
 }
