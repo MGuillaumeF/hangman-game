@@ -38,9 +38,9 @@ public:
    * @return true The content of object is valid
    * @return false The content of object is invalid
    */
-  static bool isValid(const root_model_object &rootModelObject);
+  bool isValid();
 
-private:
+protected:
   friend class odb::access;
 
 #pragma db id auto
