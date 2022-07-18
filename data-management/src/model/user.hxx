@@ -113,10 +113,9 @@ public:
    * @return true The content of user object is valid
    * @return false The content of user object is invalid
    */
-   bool isValid() { return getLogin().size() > 3; }
+  bool isValid() { return getLogin().size() > 3; }
 
 private:
-
 #pragma db unique not_null type("VARCHAR(255)")
   std::string m_login;
 #pragma db options() options("CHECK(password != '')")
