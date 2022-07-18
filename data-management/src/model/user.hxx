@@ -129,4 +129,10 @@ private:
 
 #pragma db object(user)
 
+#pragma db view object(user)
+struct user_stat {
+#pragma db column("count(" + user::m_id + ")")
+  std::size_t count;
+};
+
 #endif // USER_HXX
