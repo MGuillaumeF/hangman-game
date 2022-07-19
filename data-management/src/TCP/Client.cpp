@@ -70,7 +70,11 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
   cleaned.resize(li_hex);
   std::cout << "Message response is: " << std::endl << cleaned << std::endl;
 
-  return boost::property_tree::ptree();
+  boost::property_tree::ptree response;
+  
+  
+
+  return response;
 }
 
 } // namespace tcp
