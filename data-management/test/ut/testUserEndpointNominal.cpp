@@ -32,6 +32,8 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   // except B == A + 1
   // close transaction
 
+  uint8_t counter = 0;
+
   const boost::property_tree::ptree response =
       hangman::tcp::Client::sendRequest(
           "127.0.0.1", 50000, "./resources/database-order/create-user.xml");
@@ -39,6 +41,12 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
 
   for (size_t i = 0; i < threads.size(); ++i) {
     threads[i].join();
+  }
+  
+  for (const auto&[nodeName, nodeContent] : response) {
+    if (nodeName == "user") {
+      counter += 1;
+    }
   }
 }
 
