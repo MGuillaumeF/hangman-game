@@ -56,8 +56,7 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
                                          request.size() + OCTETS_SIZE_MESSAGE));
 
   char reply[OCTETS_SIZE_MESSAGE];
-  const size_t reply_length = boost::asio::read(
-      socket, boost::asio::buffer(reply, OCTETS_SIZE_MESSAGE));
+  boost::asio::read(socket, boost::asio::buffer(reply, OCTETS_SIZE_MESSAGE));
   const std::string messageSizeStr = reply;
   const uint32_t li_hex = std::stoul(messageSizeStr, nullptr, 16);
 

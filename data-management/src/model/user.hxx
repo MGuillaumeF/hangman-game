@@ -5,32 +5,20 @@
 
 #include <odb/core.hxx>
 
+#include "./root_model_object.hxx"
+
 /**
  * @brief class of Users in model
  *
  */
 #pragma db object
-class user {
+class user final : public root_model_object {
 public:
   /**
    * @brief Construct a new user object
    *
    */
   user() = default;
-
-  /**
-   * @brief Get the Id object
-   *
-   * @return const uint32_t&
-   */
-  const uint32_t &getId() const { return m_id; };
-
-  /**
-   * @brief Set the Id object
-   *
-   * @param id
-   */
-  void setId(const uint32_t &id) { m_id = id; };
 
   /**
    * @brief Get the Login object
@@ -125,14 +113,9 @@ public:
    * @return true The content of user object is valid
    * @return false The content of user object is invalid
    */
-  static bool isValid(const user &usr) { return usr.getLogin().size() > 3; }
+  bool isValid() { return getLogin().size() > 3; }
 
 private:
-  friend class odb::access;
-
-#pragma db id auto
-  uint32_t m_id;
-
 #pragma db unique not_null type("VARCHAR(255)")
   std::string m_login;
 #pragma db options() options("CHECK(password != '')")
