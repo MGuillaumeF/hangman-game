@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   for (size_t i = 0; i < threads.size(); ++i) {
     threads[i].join();
   }
-  
-  for (const auto&[nodeName, nodeContent] : response) {
+
+  for (const auto &[nodeName, nodeContent] : response) {
     if (nodeName == "user") {
       counter += 1;
     }
