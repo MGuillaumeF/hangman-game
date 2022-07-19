@@ -148,7 +148,7 @@
 <path fill="none" stroke="green" d="M1076.98,-195.5C1076.98,-195.5 1855.98,-195.5 1855.98,-195.5 1861.98,-195.5 1867.98,-201.5 1867.98,-207.5 1867.98,-207.5 1867.98,-229.5 1867.98,-229.5 1867.98,-235.5 1861.98,-241.5 1855.98,-241.5 1855.98,-241.5 1076.98,-241.5 1076.98,-241.5 1070.98,-241.5 1064.98,-235.5 1064.98,-229.5 1064.98,-229.5 1064.98,-207.5 1064.98,-207.5 1064.98,-201.5 1070.98,-195.5 1076.98,-195.5"/>
 <text text-anchor="middle" x="1466.48" y="-226.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_create_many</text>
 <polyline fill="none" stroke="green" points="1064.98,-218.5 1867.98,-218.5 "/>
-<text text-anchor="middle" x="1466.48" y="-203.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(45)</text>
+<text text-anchor="middle" x="1466.48" y="-203.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(53)</text>
 </g>
 <!-- tu4&#45;&gt;tu65542 -->
 <g id="edge10" class="edge">
@@ -162,7 +162,7 @@
 <path fill="none" stroke="green" d="M1076.98,-130.5C1076.98,-130.5 1855.98,-130.5 1855.98,-130.5 1861.98,-130.5 1867.98,-136.5 1867.98,-142.5 1867.98,-142.5 1867.98,-164.5 1867.98,-164.5 1867.98,-170.5 1861.98,-176.5 1855.98,-176.5 1855.98,-176.5 1076.98,-176.5 1076.98,-176.5 1070.98,-176.5 1064.98,-170.5 1064.98,-164.5 1064.98,-164.5 1064.98,-142.5 1064.98,-142.5 1064.98,-136.5 1070.98,-130.5 1076.98,-130.5"/>
 <text text-anchor="middle" x="1466.48" y="-161.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_read</text>
 <polyline fill="none" stroke="green" points="1064.98,-153.5 1867.98,-153.5 "/>
-<text text-anchor="middle" x="1466.48" y="-138.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(71)</text>
+<text text-anchor="middle" x="1466.48" y="-138.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(79)</text>
 </g>
 <!-- tu4&#45;&gt;tu65543 -->
 <g id="edge11" class="edge">
@@ -176,7 +176,7 @@
 <path fill="none" stroke="green" d="M1076.98,-65.5C1076.98,-65.5 1855.98,-65.5 1855.98,-65.5 1861.98,-65.5 1867.98,-71.5 1867.98,-77.5 1867.98,-77.5 1867.98,-99.5 1867.98,-99.5 1867.98,-105.5 1861.98,-111.5 1855.98,-111.5 1855.98,-111.5 1076.98,-111.5 1076.98,-111.5 1070.98,-111.5 1064.98,-105.5 1064.98,-99.5 1064.98,-99.5 1064.98,-77.5 1064.98,-77.5 1064.98,-71.5 1070.98,-65.5 1076.98,-65.5"/>
 <text text-anchor="middle" x="1466.48" y="-96.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_update</text>
 <polyline fill="none" stroke="green" points="1064.98,-88.5 1867.98,-88.5 "/>
-<text text-anchor="middle" x="1466.48" y="-73.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(78)</text>
+<text text-anchor="middle" x="1466.48" y="-73.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(86)</text>
 </g>
 <!-- tu4&#45;&gt;tu65544 -->
 <g id="edge12" class="edge">
@@ -190,7 +190,7 @@
 <path fill="none" stroke="green" d="M1076.98,-0.5C1076.98,-0.5 1855.98,-0.5 1855.98,-0.5 1861.98,-0.5 1867.98,-6.5 1867.98,-12.5 1867.98,-12.5 1867.98,-34.5 1867.98,-34.5 1867.98,-40.5 1861.98,-46.5 1855.98,-46.5 1855.98,-46.5 1076.98,-46.5 1076.98,-46.5 1070.98,-46.5 1064.98,-40.5 1064.98,-34.5 1064.98,-34.5 1064.98,-12.5 1064.98,-12.5 1064.98,-6.5 1070.98,-0.5 1076.98,-0.5"/>
 <text text-anchor="middle" x="1466.48" y="-31.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_delete</text>
 <polyline fill="none" stroke="green" points="1064.98,-23.5 1867.98,-23.5 "/>
-<text text-anchor="middle" x="1466.48" y="-8.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(91)</text>
+<text text-anchor="middle" x="1466.48" y="-8.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testUserEndpointNominal.cpp(99)</text>
 </g>
 <!-- tu4&#45;&gt;tu65545 -->
 <g id="edge13" class="edge">
