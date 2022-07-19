@@ -20,7 +20,7 @@ UserOrderDispatcher::route(const std::string &orderType,
   std::cout << "ORDER TYPE : " << properties.get<std::string>("order-type")
             << std::endl;
   if ("create" == orderType) {
-    // create users from data of property tree 
+    // create users from data of property tree
     response = UserDBEndpoint::getInstance()->createUser(data);
   } else if ("read" == orderType) {
     // read users from database, by key of property tree
