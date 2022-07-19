@@ -32,7 +32,6 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   // except B == A + 1
   // close transaction
 
-
   const boost::property_tree::ptree response =
       hangman::tcp::Client::sendRequest(
           "127.0.0.1", 50000, "./resources/database-order/create-user.xml");
