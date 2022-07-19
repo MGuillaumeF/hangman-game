@@ -32,7 +32,6 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   // except B == A + 1
   // close transaction
 
-  uint8_t counter = 0;
 
   const boost::property_tree::ptree response =
       hangman::tcp::Client::sendRequest(
@@ -43,11 +42,13 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
     threads[i].join();
   }
 
+  uint8_t counter = 0;
   for (const auto &[nodeName, nodeContent] : response) {
     if (nodeName == "user") {
       counter += 1;
     }
   }
+  BOOST_CHECK_EQUAL(1, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_create_many) {
@@ -74,6 +75,14 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
   for (size_t i = 0; i < threads.size(); ++i) {
     threads[i].join();
   }
+
+  uint8_t counter = 0;
+  for (const auto &[nodeName, nodeContent] : response) {
+    if (nodeName == "user") {
+      counter += 1;
+    }
+  }
+  BOOST_CHECK_EQUAL(2, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {
