@@ -10,6 +10,7 @@
 #include <sstream> // std::stringstream
 
 #include <boost/asio.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace hangman {
 namespace tcp {
@@ -72,7 +73,10 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
 
   boost::property_tree::ptree response;
   
-  
+  std::stringstream responseStream;
+  responseStream << cleaned;
+
+  boost::property_tree::xml_parser::read_xml(responseStream, response);
 
   return response;
 }
