@@ -72,7 +72,7 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
   std::cout << "Message response is: " << std::endl << cleaned << std::endl;
 
   boost::property_tree::ptree response;
-  
+
   std::stringstream responseStream;
   responseStream << cleaned;
 
