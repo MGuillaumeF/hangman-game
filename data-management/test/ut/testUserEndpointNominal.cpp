@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
       counter += 1;
     }
   }
-  // BOOST_CHECK_EQUAL(1, counter);
+  BOOST_CHECK_EQUAL(1, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_create_many) {
@@ -77,14 +77,12 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
   }
 
   uint8_t counter = 0;
-  /*
-  for (const auto &[nodeName, nodeContent] : response) {
-    if (nodeName == "user") {
+  for (const auto &node : response) {
+    if (node.first == "user") {
       counter += 1;
     }
   }
   BOOST_CHECK_EQUAL(2, counter);
-  */
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {
