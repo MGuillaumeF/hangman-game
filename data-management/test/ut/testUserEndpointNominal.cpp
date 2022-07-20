@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   }
 
   uint8_t counter = 0;
-  for (const auto &[nodeName, nodeContent] : response) {
-    if (nodeName == "user") {
+  for (const auto & node : response) {
+    if (node.first == "user") {
       counter += 1;
     }
   }
