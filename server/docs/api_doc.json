@@ -1,5 +1,5 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "description": "This API is REST service to access hangman game data.",
         "version": "1.0.0",
@@ -13,7 +13,12 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "host": "hangman-game.swagger.io",
+    "servers": [
+      {
+        "url": "http://dev-server/hangman-game/v1",
+        "description": "Linux dev server"
+      }
+    ],
     "basePath": "/v1",
     "tags": [
         {
