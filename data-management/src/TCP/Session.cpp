@@ -39,6 +39,7 @@ void Session::doReadBody(const uint32_t &max_content) {
       [this, self, max_content](const boost::system::error_code &ec,
                                 const std::size_t &length) {
         if (!ec) {
+          const uint8_t SIZE_ALLOWED_BUFFER = 8;
           std::stringstream responseStr;
           // Create an empty property tree object
           boost::property_tree::ptree xmlPtree;
@@ -74,7 +75,7 @@ void Session::doReadBody(const uint32_t &max_content) {
 
           // format response
           std::stringstream stream;
-          stream << std::setfill('0') << std::setw(8);
+          stream << std::setfill('0') << std::setw(SIZE_ALLOWED_BUFFER);
           stream << std::hex << responseStr.str().size();
           stream << std::hex << responseStr.str();
 
