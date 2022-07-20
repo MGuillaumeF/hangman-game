@@ -69,7 +69,7 @@ boost::property_tree::ptree Client::sendRequest(const std::string &hostname,
   const uint32_t li_hex = std::stoul(messageSizeStr, nullptr, 16);
 
   // read xml data from TCP buffer response
-  char *replyBody = new char[li_hex];
+  auto replyBody = new char[li_hex];
   boost::asio::read(socket, boost::asio::buffer(replyBody, li_hex));
 
   std::cout << "Size of response is: " << std::endl << li_hex << std::endl;
