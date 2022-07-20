@@ -2,11 +2,11 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <cstdint>
 #include <exception>
 #include <iostream> // std::cout
 #include <thread>
 #include <vector>
-#include <cstdint>
 
 #include <string> // std::string
 
