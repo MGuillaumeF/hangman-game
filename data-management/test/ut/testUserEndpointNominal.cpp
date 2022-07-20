@@ -2,6 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <cstdint>
 #include <exception>
 #include <iostream> // std::cout
 #include <thread>
@@ -40,6 +41,14 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
   for (size_t i = 0; i < threads.size(); ++i) {
     threads[i].join();
   }
+
+  uint8_t counter = 0;
+  for (const auto &node : response) {
+    if (node.first == "user") {
+      counter += 1;
+    }
+  }
+  BOOST_CHECK_EQUAL(1, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_create_many) {
@@ -66,6 +75,14 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
   for (size_t i = 0; i < threads.size(); ++i) {
     threads[i].join();
   }
+
+  uint8_t counter = 0;
+  for (const auto &node : response) {
+    if (node.first == "user") {
+      counter += 1;
+    }
+  }
+  BOOST_CHECK_EQUAL(2, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {
