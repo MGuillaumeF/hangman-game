@@ -118,7 +118,7 @@ protected:
    * @brief Method not Allowed default error
    *
    */
-  void writeMethodNotAllowed() {
+  static void writeMethodNotAllowed() {
     // write method is not allowed http response
     boost::beast::http::response<boost::beast::http::string_body> res;
 
@@ -135,7 +135,7 @@ protected:
    * @brief Not Implemented result
    *
    */
-  void writeNotImplementedResponse() {
+  static void writeNotImplementedResponse() {
     // write not implemented http response
     boost::beast::http::response<boost::beast::http::string_body> res;
 
