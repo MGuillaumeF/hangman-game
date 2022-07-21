@@ -18,24 +18,22 @@ void Session::start() { doReadHead(); }
 void Session::doReadHead() {
   const uint8_t SIZE_ALLOWED_BUFFER = 8;
   const auto self(shared_from_this());
-  m_socket.async_read_some(boost::asio::buffer(m_data, SIZE_ALLOWED_BUFFER),
-                           [this, self](const boost::system::error_code &ec,
-                                        const std::size_t) {
-                             if (!ec) {
-                               const std::string messageSizeStr = m_data;
-                               const uint32_t li_hex =
-                                   std::stoul(messageSizeStr, nullptr, 16);
-                               std::cout << "The header size is : " << std::dec
-                                         << li_hex << std::endl;
-                               doReadBody(li_hex);
-                             } else {
-                               // add log of error code during header reading
-                               // tcp request
-                               std::cerr
-                                   << "Error : TCP header reading raise error"
-                                   << ec.value() << std::endl;
-                             }
-                           });
+  m_socket.async_read_some(
+      boost::asio::buffer(m_data, SIZE_ALLOWED_BUFFER),
+      [this, self](const boost::system::error_code &ec, const std::size_t) {
+        if (!ec) {
+          const std::string messageSizeStr = m_data;
+          const uint32_t li_hex = std::stoul(messageSizeStr, nullptr, 16);
+          std::cout << "The header size is : " << std::dec << li_hex
+                    << std::endl;
+          doReadBody(li_hex);
+        } else {
+          // add log of error code during header reading
+          // tcp request
+          std::cerr << "Error : TCP header reading raise error" << ec.value()
+                    << std::endl;
+        }
+      });
 }
 
 void Session::doReadBody(const uint32_t &max_content) {
