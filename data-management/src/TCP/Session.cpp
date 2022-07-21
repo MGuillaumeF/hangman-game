@@ -20,7 +20,7 @@ void Session::doReadHead() {
   const auto self(shared_from_this());
   m_socket.async_read_some(boost::asio::buffer(m_data, SIZE_ALLOWED_BUFFER),
                            [this, self](const boost::system::error_code &ec,
-                                        const std::size_t &length) {
+                                        const std::size_t) {
                              if (!ec) {
                                const std::string messageSizeStr = m_data;
                                const uint32_t li_hex =
@@ -43,7 +43,7 @@ void Session::doReadBody(const uint32_t &max_content) {
   m_socket.async_read_some(
       boost::asio::buffer(m_data, max_content),
       [this, self, max_content](const boost::system::error_code &ec,
-                                const std::size_t &length) {
+                                const std::size_t) {
         if (!ec) {
           const uint8_t SIZE_ALLOWED_BUFFER = 8;
           std::stringstream responseStr;
