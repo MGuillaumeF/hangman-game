@@ -28,6 +28,12 @@ void Session::doReadHead() {
                                std::cout << "The header size is : " << std::dec
                                          << li_hex << std::endl;
                                doReadBody(li_hex);
+                             } else {
+                               // add log of error code during header reading
+                               // tcp request
+                               std::cerr
+                                   << "Error : TCP header reading raise error"
+                                   << ec.value() << std::endl;
                              }
                            });
 }
@@ -80,6 +86,10 @@ void Session::doReadBody(const uint32_t &max_content) {
           stream << std::hex << responseStr.str();
 
           doWrite(stream.str());
+        } else {
+          // add log of error code during body reading tcp request
+          std::cerr << "Error : TCP body reading raise error" << ec.value()
+                    << std::endl;
         }
       });
 }
@@ -88,10 +98,11 @@ void Session::doWrite(const std::string &response) {
   const auto self(shared_from_this());
   boost::asio::async_write(
       m_socket, boost::asio::buffer(response.c_str(), response.size()),
-      [this, self](const boost::system::error_code &ec,
-                   const std::size_t /*length*/) {
-        if (!ec) {
-          // doReadHead();
+      [self](const boost::system::error_code &ec, const std::size_t) {
+        if (ec) {
+          // add log of error code during write tcp response
+          std::cerr << "Error : TCP write raise error" << ec.value()
+                    << std::endl;
         }
       });
 }
