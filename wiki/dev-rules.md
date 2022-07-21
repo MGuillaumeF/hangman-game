@@ -105,22 +105,42 @@ Dictionary : + string getName()
 Dictionary : + void setName(string name)
 Word : - string name
 Word : - string[] definitions
+Word : + string getName()
+Word : + void setName(string name)
+Word : + string[] getDefinitions()
+Word : + void setDefinitions(string[] definitions)
 Party : - uint32_t start_date
 Party : - uint32_t end_date
 Party : - uint32_t score
 Party : - bool win
 Party : - User[] members
 Party : - Word word
+Party : + User[] getMembers()
+Party : + void setMembers(User[] users)
 Message : - string content
 Message : - User sender
 Message : - User[] receivers
 Message : - Chat chat
+Message : + Chat getChat()
+Message : + void setChat(Chat chat)
 Chat : - Message[] messages
 Chat : - User[] members
 Chat : - string name
+Chat : + User[] getMembers()
+Chat : + void setMembers(User[] users)
+Chat : + Message[] getMessages()
+Chat : + void setMessages(Message[] messages)
+Chat : + string getName()
+Chat : + void setName(string name)
 Team : - Chat chat
 Team : - User[] members
 Team : - string name
+Team : + Chat getChat()
+Team : + void setChat(Chat chat)
+Team : + User[] getMembers()
+Team : + void setMembers(User[] users)
+Team : + string getName()
+Team : + void setName(string name)
 ```
 
 ## Stratégie des scripts.
