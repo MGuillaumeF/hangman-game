@@ -6,8 +6,9 @@
 #include <boost/asio.hpp>
 
 /**
- * @brief This entry point is Client tcp application, to send tcp xml file to tcp server with command
- */ 
+ * @brief This entry point is Client tcp application, to send tcp xml file to
+ * tcp server with command
+ */
 int32_t main(int argc, char *argv[]) {
   // by default exit code is success
   int32_t exitCode = EXIT_SUCCESS;
@@ -39,7 +40,7 @@ int32_t main(int argc, char *argv[]) {
       std::cerr << "Exception: " << e.what() << std::endl;
     }
   } else {
-    // if arguments number invalid log explaination 
+    // if arguments number invalid log explaination
     std::cerr << "bad use of tcp client, use it with : " << std::endl
               << "client.exe hostname port file_to_send.txt" << std::endl;
     exitCode = EXIT_FAILURE;
