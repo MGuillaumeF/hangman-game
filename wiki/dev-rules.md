@@ -75,46 +75,52 @@ Group "1" *-- "0.N" User
 Dictionary *-- Word
 Party o-- User
 Party o-- Word
-RootModelObject : #bool readonly
-RootModelObject : #uint32_t id
-RootModelObject : #uint32_t version
-RootModelObject : #string created_by
-RootModelObject : #uint32_t created_at
-RootModelObject : #string updated_by
-RootModelObject : #uint32_t updated_at
-RootModelObject : +bool isValid()
-RootModelObject : +ptree toPtree()
-RootModelObject : +string toXML()
-RootModelObject : +string toJson()
-User : -string login
-User : -string password
-User : -uint32_t last_connection
-User : -string salt_user
-User : -string salt_session
-User : -string token
-Group : -User[] members
-Group : -string name
-Dictionary : -string name
-Dictionary : -string[] country_codes
-Dictionary : -Word[] words
-Word : -string name
-Word : -string[] definitions
-Party : -uint32_t start_date
-Party : -uint32_t end_date
-Party : -uint32_t score
-Party : -bool win
-Party : -User[] members
-Party : -Word word
-Message : -string content
-Message : -User sender
-Message : -User[] receivers
-Message : -Chat chat
-Chat : -Message[] messages
-Chat : -User[] members
-Chat : -string name
-Team : -Chat chat
-Team : -User[] members
-Team : -string name
+RootModelObject : # bool readonly
+RootModelObject : # uint32_t id
+RootModelObject : # uint32_t version
+RootModelObject : # string created_by
+RootModelObject : # uint32_t created_at
+RootModelObject : # string updated_by
+RootModelObject : # uint32_t updated_at
+RootModelObject : + bool isValid()
+RootModelObject : + ptree toPtree()
+RootModelObject : + string toXML()
+RootModelObject : + string toJson()
+User : - string login
+User : - string password
+User : - uint32_t last_connection
+User : - string salt_user
+User : - string salt_session
+User : - string token
+Group : - User[] m_members
+Group : - string m_name
+Group : + User[] getMembers()
+Group : + void setMembers(User[] users)
+Group : + string getName()
+Group : + void setName(string name)
+Dictionary : - string name
+Dictionary : - string[] country_codes
+Dictionary : - Word[] words
+Dictionary : + string getName()
+Dictionary : + void setName(string name)
+Word : - string name
+Word : - string[] definitions
+Party : - uint32_t start_date
+Party : - uint32_t end_date
+Party : - uint32_t score
+Party : - bool win
+Party : - User[] members
+Party : - Word word
+Message : - string content
+Message : - User sender
+Message : - User[] receivers
+Message : - Chat chat
+Chat : - Message[] messages
+Chat : - User[] members
+Chat : - string name
+Team : - Chat chat
+Team : - User[] members
+Team : - string name
 ```
 
 ## Stratégie des scripts.
