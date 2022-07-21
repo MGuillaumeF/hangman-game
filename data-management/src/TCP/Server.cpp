@@ -5,7 +5,7 @@ namespace hangman {
 namespace tcp {
 
 /**
- * @brief TCP Server class constructor
+ * @brief Construct a new TCP Server object
  *
  * @param ioContext The input/output context to use to run TCP server
  * @param port The port to use to listen connection and content
