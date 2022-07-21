@@ -39,7 +39,7 @@ Server::Server(const std::string &address, const uint16_t &port,
   // subscription on signal action to soft stop listener context
   signals.async_wait(
       [&ioc](const boost::system::error_code &ec, const int32_t &n) {
-        // log stop message 
+        // log stop message
         Logger::getInstance()->info(
             "HTTP_CONFIGURATION",
             std::string("IO Context stop with ") + ec.message() +

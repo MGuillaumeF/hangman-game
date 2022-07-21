@@ -18,8 +18,8 @@ public:
   /**
    * @brief Construct a new TCP Server object
    *
-   * @param ioContext connection context
-   * @param port The connection port
+   * @param ioContext The input/output context to use to run TCP server
+   * @param port The port to use to listen connection and content
    */
   Server(boost::asio::io_context &ioContext, const uint16_t &port);
 
