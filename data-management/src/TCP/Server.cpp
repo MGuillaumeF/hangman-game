@@ -33,7 +33,8 @@ void Server::doAccept() {
       // trace Client is connected
       std::cout << "Client connection" << std::endl;
     } else {
-      std::cerr << "[ERROR] Client connection denied with error " << ec.value() << std::endl;
+      std::cerr << "[ERROR] Client connection denied with error " << ec.value()
+                << std::endl;
     }
     // loop accept another content
     doAccept();
