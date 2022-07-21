@@ -31,7 +31,7 @@ void Session::doReadHead() {
         } else {
           // add log of error code during header reading tcp request
           std::cerr
-              << "Error : TCP header reading raise error << ec.value() << std::endl;
+              << "Error : TCP header reading raise error" << ec.value() << std::endl;
         }
       });
 }
@@ -87,7 +87,7 @@ void Session::doReadBody(const uint32_t &max_content) {
         } else {
           // add log of error code during body reading tcp request
           std::cerr
-              << "Error : TCP body reading raise error << ec.value() << std::endl;
+              << "Error : TCP body reading raise error" << ec.value() << std::endl;
         }
       });
 }
@@ -100,7 +100,7 @@ void Session::doWrite(const std::string &response) {
         if (ec) {
           // add log of error code during write tcp response
           std::cerr
-              << "Error : TCP write raise error << ec.value() << std::endl;
+              << "Error : TCP write raise error" << ec.value() << std::endl;
         }
       });
 }
