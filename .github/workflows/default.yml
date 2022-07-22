@@ -107,9 +107,6 @@ jobs:
       run: |
         mkdir ${{github.workspace}}/server/reports
 
-    - name: Lint Cpp Check (server)
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/server
-
     - name: Install boost
       uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
@@ -162,9 +159,6 @@ jobs:
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/data-management/reports
 
-    - name: Lint Cpp Check
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++11 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
-
     - name: Start MySQL server
       run: sudo service mysql start 
 
@@ -192,6 +186,12 @@ jobs:
       working-directory: ${{github.workspace}}
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/bin
+
+    - name: Lint Cpp Check (server)
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/server
+
+    - name: Lint Cpp Check (data-management)
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++11 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
 
     - name: Lint Clang-Tidy (data-management)
       run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='data-management/src/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
