@@ -69,10 +69,10 @@ jobs:
       # add autoconf-archive for libodb-mysql
 
     - name: Lint Cpp Check (server)
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml --check-config --suppress=*:data-management/**/*
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml --check-config --suppress=*:data-management/*
 
     - name: Lint Cpp Check (data-management)
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++11 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --check-config --suppress=*:${{github.workspace}}/server/**/*
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++11 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --check-config --suppress=*:${{github.workspace}}/server/*
 
 
     - name: Create icon Server
