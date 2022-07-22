@@ -82,6 +82,8 @@ RootModelObject : # string created_by
 RootModelObject : # uint32_t created_at
 RootModelObject : # string updated_by
 RootModelObject : # uint32_t updated_at
+RootModelObject : + bool getReadOnly()
+RootModelObject : + void setReadOnly(bool readOnly)
 RootModelObject : + bool isValid()
 RootModelObject : + ptree toPtree()
 RootModelObject : + string toXML()
