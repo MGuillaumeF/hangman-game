@@ -163,7 +163,7 @@ jobs:
       run: mkdir ${{github.workspace}}/data-management/reports
 
     - name: Lint Cpp Check
-      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++20 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
+      run: cppcheck --enable=all --inconclusive --language=c++ --std=c++11 --xml --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
 
     - name: Start MySQL server
       run: sudo service mysql start 
