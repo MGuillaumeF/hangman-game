@@ -11,6 +11,7 @@
  */
 #pragma db object
 class root_model_object {
+
 public:
   /**
    * @brief Construct a new Root Model Object
@@ -42,7 +43,6 @@ public:
 
 protected:
   friend class odb::access;
-
 #pragma db id auto
   uint32_t m_id;
   uint32_t m_version;
@@ -53,11 +53,5 @@ protected:
 };
 
 #pragma db object(root_model_object)
-
-#pragma db view object(root_model_object)
-struct root_model_object_stat {
-#pragma db column("count(" + root_model_object::m_id + ")")
-  std::size_t count;
-};
 
 #endif // ROOT_MODEL_OBJECT_HXX
