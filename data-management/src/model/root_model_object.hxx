@@ -53,7 +53,8 @@ public:
    *
    * @return The object found
    */
-  static root_model_object parse(boost::property_tree::ptree property_tree);
+  template<typename T, typename std::enable_if<std::is_base_of<root_model_object, T>::value>::type* = nullptr>
+  static T parse(boost::property_tree::ptree property_tree);
 
 protected:
   friend class odb::access;
