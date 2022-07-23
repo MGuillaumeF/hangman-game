@@ -86,9 +86,9 @@ public:
    *
    * @return The object found
    */
-  static root_model_object parse(boost::property_tree::ptree property_tree) {
-    user parsedUser();
-    return parsedUser;
+  static word parse(boost::property_tree::ptree property_tree) {
+    word parsedWord();
+    return parsedWord;
   }
 
 private:
