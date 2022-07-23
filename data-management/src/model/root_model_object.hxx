@@ -2,7 +2,7 @@
 #define __ROOT_MODEL_OBJECT_HXX__
 
 #include <string>
-
+#include <boost/property_tree/ptree.hpp>
 #include <odb/core.hxx>
 
 /**
@@ -40,6 +40,20 @@ public:
    * @return false The content of object is invalid
    */
   bool isValid();
+
+  /**
+   * @brief method to convert object to property tree
+   *
+   * @return The object on property tree format
+   */
+  boost::property_tree::ptree toPtree();
+
+  /**
+   * @brief method to extract object from property tree
+   *
+   * @return The object found
+   */
+  static root_model_object parse(boost::property_tree::ptree property_tree);
 
 protected:
   friend class odb::access;
