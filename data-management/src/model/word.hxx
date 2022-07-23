@@ -2,8 +2,7 @@
 #define __MODEL_WORD_HXX__
 
 #include <string>
-
-#include <odb/core.hxx>
+#include "./root_model_object.hxx"
 
 /**
  * @brief class of Words in model
@@ -87,7 +86,7 @@ public:
    * @return The object found
    */
   static word parse(boost::property_tree::ptree property_tree) {
-    word parsedWord();
+    word parsedWord;
     return parsedWord;
   }
 
