@@ -1,9 +1,9 @@
 #ifndef __ROOT_MODEL_OBJECT_HXX__
 #define __ROOT_MODEL_OBJECT_HXX__
 
-#include <string>
 #include <boost/property_tree/ptree.hpp>
 #include <odb/core.hxx>
+#include <string>
 
 /**
  * @brief class of Root Model Object in model
