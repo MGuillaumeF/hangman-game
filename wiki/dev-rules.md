@@ -44,9 +44,9 @@
 
 | Object-Type     | Description                                                                        | Relations                       |
 | :-------------- | :--------------------------------------------------------------------------------- | ------------------------------- |
-| User            | Les objets utilisateurs pour la connexion à l'application.                         | 1 User appartient à 1 à N Group. 1 User peut avoir 0 à N User en amis. 1 User participe à 0 à N Party |
-| Group           | Les group d'utilisateurs pour les restrictions d'application.                      | 1 Group contient plusieurs User |
-| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               |                                 |
+| User            | Les objets utilisateurs pour la connexion à l'application.                         | <ul><li>1 User appartient à 1 à N Group.</li><li>1 User peut avoir 0 à N User en amis.</li><li>1 User participe à 0 à N Party</li><li>1 User appartient à 0 à N Team</li></ul> |
+| Group           | Les group d'utilisateurs pour les restrictions d'application.                      | <ul><li>1 Group contient 1 à N User</li></ul> |
+| Dictionary      | Le dictionnaire pour regrouper les mots par langues.                               | <ul><li>1 Dictionnary contient 1 à N Word</li></ul> |
 | Word            | Les mots pour le jeu du pendu.                                                     |                                 |
 | Party           | Les parties jouées.                                                                |                                 |
 | Message         | Les messages entre joueurs.                                                        |                                 |
@@ -125,6 +125,14 @@ User : + string getSaltUser()
 User : + void setSaltUser(string salt_user)
 User : + string getToken()
 User : + void setToken(string token)
+User : + Group[] getGroups()
+User : + void setGroups(Group[] groups)
+User : + User[] getFriends()
+User : + void setFriends(User[] friends)
+User : + Party[] getParties()
+User : + void setParties(Party[] parties)
+User : + Team[] getTeams()
+User : + void setTeams(Team[] teams)
 Group : - User[] m_members
 Group : - string m_name
 Group : + User[] getMembers()
