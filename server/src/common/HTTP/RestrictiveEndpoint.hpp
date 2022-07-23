@@ -3,7 +3,7 @@
 
 #include <set>
 
-// #include <boost/beast/http.hpp>
+#include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
 #include "../Logger/Logger.hpp"
