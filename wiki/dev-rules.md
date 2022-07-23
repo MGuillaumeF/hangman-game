@@ -100,12 +100,22 @@ RootModelObject : + bool isValid()
 RootModelObject : + ptree toPtree()
 RootModelObject : + string toXML()
 RootModelObject : + string toJson()
-User : - string login
-User : - string password
-User : - uint32_t last_connection
-User : - string salt_user
-User : - string salt_session
-User : - string token
+User : - string m_login
+User : - string m_password
+User : - uint32_t m_last_connection
+User : - string m_salt_user
+User : - string m_salt_session
+User : - string m_token
+User : + string getLogin()
+User : + void setLogin(string login)
+User : + string getPassword()
+User : + void setPassword(string password)
+User : + uint32_t getLastConnection()
+User : + void setLastConnection(uint32_t last_connection)
+User : + string getSaltSession()
+User : + void setSalSession(string salt_session)
+User : + string getSaltUser()
+User : + void setSaltUser(string salt_user)
 Group : - User[] m_members
 Group : - string m_name
 Group : + User[] getMembers()
