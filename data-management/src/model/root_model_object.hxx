@@ -9,7 +9,9 @@
  * @brief class of Root Model Object in model
  *
  */
+#pragma db object
 class root_model_object {
+
 public:
   /**
    * @brief Construct a new Root Model Object
@@ -41,7 +43,6 @@ public:
 
 protected:
   friend class odb::access;
-
 #pragma db id auto
   uint32_t m_id;
   uint32_t m_version;
@@ -50,5 +51,7 @@ protected:
   std::string m_updated_by;
   uint32_t m_updated_at;
 };
+
+#pragma db object(root_model_object)
 
 #endif // ROOT_MODEL_OBJECT_HXX
