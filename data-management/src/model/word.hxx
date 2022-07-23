@@ -90,6 +90,7 @@ public:
     user parsedUser();
     return parsedUser;
   }
+
 private:
   friend class odb::access;
 
