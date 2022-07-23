@@ -40,7 +40,7 @@ std::list<request_test> requests_tests = {
 
 BOOST_AUTO_TEST_SUITE(testsRestrictiveEndpoint)
 
-BOOST_AUTO_TEST_CASE(testsRestrictiveEndpointMethods) {
+BOOST_AUTO_TEST_CASE(tests_restrictive_endpoint_methods) {
   boost::beast::http::request<boost::beast::http::string_body> request;
   request.target("/");
   for (const request_test &rt : requests_tests) {
