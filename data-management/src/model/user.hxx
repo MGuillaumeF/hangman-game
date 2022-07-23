@@ -130,7 +130,7 @@ public:
    * @return The object found
    */
   static user parse(boost::property_tree::ptree property_tree) {
-    user parsedUser();
+    user parsedUser;
     return parsedUser;
   }
 
