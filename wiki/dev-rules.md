@@ -75,15 +75,27 @@ Group "1" *-- "0.N" User
 Dictionary *-- Word
 Party o-- User
 Party o-- Word
-RootModelObject : # bool readonly
-RootModelObject : # uint32_t id
-RootModelObject : # uint32_t version
-RootModelObject : # string created_by
-RootModelObject : # uint32_t created_at
-RootModelObject : # string updated_by
-RootModelObject : # uint32_t updated_at
-RootModelObject : + bool getReadOnly()
-RootModelObject : + void setReadOnly(bool readOnly)
+RootModelObject : # bool m_readonly
+RootModelObject : # uint32_t m_id
+RootModelObject : # uint32_t m_version
+RootModelObject : # string m_created_by
+RootModelObject : # uint32_t m_created_at
+RootModelObject : # string m_updated_by
+RootModelObject : # uint32_t m_updated_at
+RootModelObject : + bool getReadonly()
+RootModelObject : + void setReadonly(bool readonly)
+RootModelObject : + uint32_t getId()
+RootModelObject : + void setId(uint32_t id)
+RootModelObject : + uint32_t getVersion()
+RootModelObject : + void setVersion(uint32_t version)
+RootModelObject : + string getCreatedBy()
+RootModelObject : + void setCreatedBy(string created_by)
+RootModelObject : + uint32_t getCreatedAt()
+RootModelObject : + void setCreatedAt(uint32_t created_at)
+RootModelObject : + string getUpdatedBy()
+RootModelObject : + void setUpdatedBy(string updated_by)
+RootModelObject : + uint32_t getUpdatedAt()
+RootModelObject : + void setUpdatedAt(uint32_t updated_at)
 RootModelObject : + bool isValid()
 RootModelObject : + ptree toPtree()
 RootModelObject : + string toXML()
