@@ -116,49 +116,55 @@ User : + string getSaltSession()
 User : + void setSalSession(string salt_session)
 User : + string getSaltUser()
 User : + void setSaltUser(string salt_user)
+User : + string getToken()
+User : + void setToken(string token)
 Group : - User[] m_members
 Group : - string m_name
 Group : + User[] getMembers()
 Group : + void setMembers(User[] users)
 Group : + string getName()
 Group : + void setName(string name)
-Dictionary : - string name
-Dictionary : - string[] country_codes
-Dictionary : - Word[] words
+Dictionary : - string m_name
+Dictionary : - string[] m_country_codes
+Dictionary : - Word[] m_words
 Dictionary : + string getName()
 Dictionary : + void setName(string name)
-Word : - string name
-Word : - string[] definitions
+Dictionary : + string[] getCountryCodes()
+Dictionary : + void setCountryCodes(string[] country_codes)
+Dictionary : + Word[] getWords()
+Dictionary : + void setName(Word[] words)
+Word : - string m_name
+Word : - string[] m_definitions
 Word : + string getName()
 Word : + void setName(string name)
 Word : + string[] getDefinitions()
 Word : + void setDefinitions(string[] definitions)
-Party : - uint32_t start_date
-Party : - uint32_t end_date
-Party : - uint32_t score
-Party : - bool win
-Party : - User[] members
-Party : - Word word
+Party : - uint32_t m_start_date
+Party : - uint32_t m_end_date
+Party : - uint32_t m_score
+Party : - bool m_win
+Party : - User[] m_members
+Party : - Word m_word
 Party : + User[] getMembers()
 Party : + void setMembers(User[] users)
-Message : - string content
-Message : - User sender
-Message : - User[] receivers
-Message : - Chat chat
+Message : - string m_content
+Message : - User m_sender
+Message : - User[] m_receivers
+Message : - Chat m_chat
 Message : + Chat getChat()
 Message : + void setChat(Chat chat)
-Chat : - Message[] messages
-Chat : - User[] members
-Chat : - string name
+Chat : - Message[] m_messages
+Chat : - User[] m_members
+Chat : - string m_name
 Chat : + User[] getMembers()
 Chat : + void setMembers(User[] users)
 Chat : + Message[] getMessages()
 Chat : + void setMessages(Message[] messages)
 Chat : + string getName()
 Chat : + void setName(string name)
-Team : - Chat chat
-Team : - User[] members
-Team : - string name
+Team : - Chat m_chat
+Team : - User[] m_members
+Team : - string m_name
 Team : + Chat getChat()
 Team : + void setChat(Chat chat)
 Team : + User[] getMembers()
