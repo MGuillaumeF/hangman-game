@@ -145,12 +145,28 @@ Party : - uint32_t m_score
 Party : - bool m_win
 Party : - User[] m_members
 Party : - Word m_word
+Party : + uint32_t getStartDate()
+Party : + void setStartDate(uint32_t start_date)
+Party : + uint32_t getEndDate()
+Party : + void setEndDate(uint32_t end_date)
+Party : + uint32_t getScore()
+Party : + void setScore(uint32_t score)
+Party : + bool getWin()
+Party : + void setWin(bool win)
 Party : + User[] getMembers()
 Party : + void setMembers(User[] users)
+Party : + Word getWord()
+Party : + void setWord(Word word)
 Message : - string m_content
 Message : - User m_sender
 Message : - User[] m_receivers
 Message : - Chat m_chat
+Message : + string getContent()
+Message : + void setContent(string content)
+Message : + User getSender()
+Message : + void setSender(User sender)
+Message : + User[] getReceivers()
+Message : + void setReceivers(User[] receivers)
 Message : + Chat getChat()
 Message : + void setChat(Chat chat)
 Chat : - Message[] m_messages
