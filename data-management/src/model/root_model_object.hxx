@@ -55,7 +55,10 @@ public:
    */
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
-  static T parse(boost::property_tree::ptree property_tree);
+  static T parse(boost::property_tree::ptree property_tree) {
+    T childObject;
+    return childObject;
+  };
 
 protected:
   friend class odb::access;
