@@ -193,7 +193,7 @@ jobs:
       # --suppress=*:${{github.workspace}}/data-management/*
 
     - name: Lint Cpp Check (data-management)
-      run: cppcheck --enable=all --language=c++ --std=c++11 --xml --verbose --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
+      run: cppcheck --enable=all --language=c++ --std=c++14 --xml --verbose --output-file=${{github.workspace}}/data-management/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/data-management
       # --suppress=*:${{github.workspace}}/server/*
 
     - name: Lint Clang-Tidy (data-management)
