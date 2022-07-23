@@ -67,14 +67,17 @@ RootModelObject <|-- Message : extends
 RootModelObject <|-- Chat : extends
 RootModelObject <|-- Team : extends
 Chat "1" *-- "0.N" Message
-Chat o-- User
-Chat o-- Party
-Chat o-- Team
-Team "1" *-- "1.N" User
-Group "1" *-- "0.N" User
-Dictionary *-- Word
-Party o-- User
-Party o-- Word
+Chat "1" o-- "1.N" User
+Chat "1" o-- "1" Party
+Chat "1" o-- "1" Team
+Team "1" o-- "1.N" User
+Group "1" o-- "0.N" User
+Dictionary "1" *-- "1.N" Word
+Party "1" o-- "1.N" User
+User "1" o-- "0.N" User
+Party "1" o-- "1" Word
+Message "1" o-- "1" User
+Message "1" o-- "1.N" User
 RootModelObject : # bool m_readonly
 RootModelObject : # uint32_t m_id
 RootModelObject : # uint32_t m_version
@@ -106,6 +109,10 @@ User : - uint32_t m_last_connection
 User : - string m_salt_user
 User : - string m_salt_session
 User : - string m_token
+User : - Group[] m_groups
+User : - User[] m_friends
+User : - Party[] m_parties
+User : - Team[] m_teams
 User : + string getLogin()
 User : + void setLogin(string login)
 User : + string getPassword()
