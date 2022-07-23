@@ -109,6 +109,7 @@ User : - uint32_t m_last_connection
 User : - string m_salt_user
 User : - string m_salt_session
 User : - string m_token
+User : - Chat[] m_chats
 User : - Group[] m_groups
 User : - User[] m_friends
 User : - Party[] m_parties
@@ -125,6 +126,8 @@ User : + string getSaltUser()
 User : + void setSaltUser(string salt_user)
 User : + string getToken()
 User : + void setToken(string token)
+User : + Chat[] getChats()
+User : + void setChats(Chat[] chats)
 User : + Group[] getGroups()
 User : + void setGroups(Group[] groups)
 User : + User[] getFriends()
@@ -159,6 +162,7 @@ Party : - uint32_t m_end_date
 Party : - uint32_t m_score
 Party : - bool m_win
 Party : - User[] m_members
+Party : - Chat m_chat
 Party : - Word m_word
 Party : + uint32_t getStartDate()
 Party : + void setStartDate(uint32_t start_date)
@@ -170,6 +174,8 @@ Party : + bool getWin()
 Party : + void setWin(bool win)
 Party : + User[] getMembers()
 Party : + void setMembers(User[] users)
+Party : + Chat getChat()
+Party : + void setChat(Chat chat)
 Party : + Word getWord()
 Party : + void setWord(Word word)
 Message : - string m_content
