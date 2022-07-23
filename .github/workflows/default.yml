@@ -111,6 +111,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
+        platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         boost_version: ${{env.BOOST_VERSION}}
         
     - name: Install lib odb
@@ -132,13 +133,13 @@ jobs:
         mkdir sqlite
         cp ./*.hxx ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
         cd ..
         mkdir mysql
         cp ./*.hxx ./mysql/
         cd mysql
-        odb --database mysql --generate-query --generate-schema --std c++11 *.hxx
+        odb --database mysql --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
 
     # - name: Save model changes
@@ -463,6 +464,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
       with:
+        platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         boost_version: ${{env.BOOST_VERSION}}
 
     - name: Install lib odb
@@ -484,13 +486,13 @@ jobs:
         mkdir sqlite
         cp ./*.hxx ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
         cd ..
         mkdir mysql
         cp ./*.hxx ./mysql/
         cd mysql
-        odb --database mysql --generate-query --generate-schema --std c++11 *.hxx
+        odb --database mysql --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
         
     # Initializes the CodeQL tools for scanning.
@@ -590,7 +592,7 @@ jobs:
         mkdir sqlite
         copy ./*.hxx ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
@@ -659,7 +661,7 @@ jobs:
         mkdir sqlite
         copy ./*.hxx ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++11 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..

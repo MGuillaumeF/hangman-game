@@ -1,9 +1,8 @@
 #ifndef __MODEL_WORD_HXX__
 #define __MODEL_WORD_HXX__
 
+#include "./root_model_object.hxx"
 #include <string>
-
-#include <odb/core.hxx>
 
 /**
  * @brief class of Words in model
@@ -70,6 +69,25 @@ public:
    */
   static bool isValid(const word &wrd) {
     return wrd.getValue().size() > 3 && wrd.getDefinition().size() > 3;
+  }
+
+  /**
+   * @brief method to convert object to property tree
+   *
+   * @return The object on property tree format
+   */
+  boost::property_tree::ptree toPtree() {
+    return boost::property_tree::ptree();
+  }
+
+  /**
+   * @brief method to extract object from property tree
+   *
+   * @return The object found
+   */
+  static word parse(boost::property_tree::ptree property_tree) {
+    word parsedWord;
+    return parsedWord;
   }
 
 private:

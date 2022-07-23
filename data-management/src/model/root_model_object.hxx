@@ -1,9 +1,9 @@
 #ifndef __ROOT_MODEL_OBJECT_HXX__
 #define __ROOT_MODEL_OBJECT_HXX__
 
-#include <string>
-
+#include <boost/property_tree/ptree.hpp>
 #include <odb/core.hxx>
+#include <string>
 
 /**
  * @brief class of Root Model Object in model
@@ -40,6 +40,25 @@ public:
    * @return false The content of object is invalid
    */
   bool isValid();
+
+  /**
+   * @brief method to convert object to property tree
+   *
+   * @return The object on property tree format
+   */
+  boost::property_tree::ptree toPtree();
+
+  /**
+   * @brief method to extract object from property tree
+   *
+   * @return The object found
+   */
+  template <typename T, typename std::enable_if<std::is_base_of<
+                            root_model_object, T>::value>::type * = nullptr>
+  static T parse(boost::property_tree::ptree property_tree) {
+    T childObject;
+    return childObject;
+  };
 
 protected:
   friend class odb::access;
