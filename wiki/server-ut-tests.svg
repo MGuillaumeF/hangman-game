@@ -62,7 +62,7 @@
 <g id="node3" class="node">
 <title>tu65536</title>
 <path fill="none" stroke="green" d="M996.08,-195.5C996.08,-195.5 1669.08,-195.5 1669.08,-195.5 1675.08,-195.5 1681.08,-201.5 1681.08,-207.5 1681.08,-207.5 1681.08,-229.5 1681.08,-229.5 1681.08,-235.5 1675.08,-241.5 1669.08,-241.5 1669.08,-241.5 996.08,-241.5 996.08,-241.5 990.08,-241.5 984.08,-235.5 984.08,-229.5 984.08,-229.5 984.08,-207.5 984.08,-207.5 984.08,-201.5 990.08,-195.5 996.08,-195.5"/>
-<text text-anchor="middle" x="1332.58" y="-226.3" font-family="Helvetica,sans-Serif" font-size="14.00">testHttpConfigurationServer</text>
+<text text-anchor="middle" x="1332.58" y="-226.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_http_configuration_server</text>
 <polyline fill="none" stroke="green" points="984.08,-218.5 1681.08,-218.5 "/>
 <text text-anchor="middle" x="1332.58" y="-203.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/server/test/ut/testConfigurationServer.cpp(9)</text>
 </g>
@@ -90,7 +90,7 @@
 <g id="node6" class="node">
 <title>tu65538</title>
 <path fill="none" stroke="green" d="M1035.08,-65.5C1035.08,-65.5 1630.08,-65.5 1630.08,-65.5 1636.08,-65.5 1642.08,-71.5 1642.08,-77.5 1642.08,-77.5 1642.08,-99.5 1642.08,-99.5 1642.08,-105.5 1636.08,-111.5 1630.08,-111.5 1630.08,-111.5 1035.08,-111.5 1035.08,-111.5 1029.08,-111.5 1023.08,-105.5 1023.08,-99.5 1023.08,-99.5 1023.08,-77.5 1023.08,-77.5 1023.08,-71.5 1029.08,-65.5 1035.08,-65.5"/>
-<text text-anchor="middle" x="1332.58" y="-96.3" font-family="Helvetica,sans-Serif" font-size="14.00">testMimeType</text>
+<text text-anchor="middle" x="1332.58" y="-96.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_mime_type</text>
 <polyline fill="none" stroke="green" points="1023.08,-88.5 1642.08,-88.5 "/>
 <text text-anchor="middle" x="1332.58" y="-73.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/server/test/ut/testHttpUtils.cpp(8)</text>
 </g>
@@ -104,7 +104,7 @@
 <g id="node8" class="node">
 <title>tu65539</title>
 <path fill="none" stroke="green" d="M993.58,-0.5C993.58,-0.5 1671.58,-0.5 1671.58,-0.5 1677.58,-0.5 1683.58,-6.5 1683.58,-12.5 1683.58,-12.5 1683.58,-34.5 1683.58,-34.5 1683.58,-40.5 1677.58,-46.5 1671.58,-46.5 1671.58,-46.5 993.58,-46.5 993.58,-46.5 987.58,-46.5 981.58,-40.5 981.58,-34.5 981.58,-34.5 981.58,-12.5 981.58,-12.5 981.58,-6.5 987.58,-0.5 993.58,-0.5"/>
-<text text-anchor="middle" x="1332.58" y="-31.3" font-family="Helvetica,sans-Serif" font-size="14.00">testsRestrictiveEndpointMethods</text>
+<text text-anchor="middle" x="1332.58" y="-31.3" font-family="Helvetica,sans-Serif" font-size="14.00">tests_restrictive_endpoint_methods</text>
 <polyline fill="none" stroke="green" points="981.58,-23.5 1683.58,-23.5 "/>
 <text text-anchor="middle" x="1332.58" y="-8.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/server/test/ut/testRestrictiveEndpoint.cpp(43)</text>
 </g>

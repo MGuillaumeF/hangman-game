@@ -62,7 +62,7 @@
 <g id="node3" class="node">
 <title>tu65536</title>
 <path fill="none" stroke="green" d="M1085.98,-585.5C1085.98,-585.5 1855.98,-585.5 1855.98,-585.5 1861.98,-585.5 1867.98,-591.5 1867.98,-597.5 1867.98,-597.5 1867.98,-619.5 1867.98,-619.5 1867.98,-625.5 1861.98,-631.5 1855.98,-631.5 1855.98,-631.5 1085.98,-631.5 1085.98,-631.5 1079.98,-631.5 1073.98,-625.5 1073.98,-619.5 1073.98,-619.5 1073.98,-597.5 1073.98,-597.5 1073.98,-591.5 1079.98,-585.5 1085.98,-585.5"/>
-<text text-anchor="middle" x="1470.98" y="-616.3" font-family="Helvetica,sans-Serif" font-size="14.00">testCreate</text>
+<text text-anchor="middle" x="1470.98" y="-616.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_create</text>
 <polyline fill="none" stroke="green" points="1073.98,-608.5 1867.98,-608.5 "/>
 <text text-anchor="middle" x="1470.98" y="-593.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testDatabasePersistency.cpp(55)</text>
 </g>
