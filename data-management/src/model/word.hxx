@@ -1,8 +1,8 @@
 #ifndef __MODEL_WORD_HXX__
 #define __MODEL_WORD_HXX__
 
-#include <string>
 #include "./root_model_object.hxx"
+#include <string>
 
 /**
  * @brief class of Words in model
