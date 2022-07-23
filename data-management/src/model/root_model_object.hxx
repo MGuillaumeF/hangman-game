@@ -9,7 +9,6 @@
  * @brief class of Root Model Object in model
  *
  */
-#pragma db object
 class root_model_object {
 public:
   /**
@@ -50,14 +49,6 @@ protected:
   uint32_t m_created_at;
   std::string m_updated_by;
   uint32_t m_updated_at;
-};
-
-#pragma db object(root_model_object)
-
-#pragma db view object(root_model_object)
-struct root_model_object_stat {
-#pragma db column("count(" + root_model_object::m_id + ")")
-  std::size_t count;
 };
 
 #endif // ROOT_MODEL_OBJECT_HXX
