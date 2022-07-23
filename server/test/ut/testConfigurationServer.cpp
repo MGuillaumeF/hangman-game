@@ -6,7 +6,7 @@
 
 BOOST_AUTO_TEST_SUITE(testConfigurationServer)
 
-BOOST_AUTO_TEST_CASE(testHttpConfigurationServer) {
+BOOST_AUTO_TEST_CASE(test_http_configuration_server) {
   auto config = ConfigurationServer();
   BOOST_CHECK(0 == config.getDescription().compare(
                        "example of server 1 configuration"));
