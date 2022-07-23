@@ -52,7 +52,7 @@ std::size_t printUserCount(std::shared_ptr<odb::core::database> db) {
   return size;
 }
 
-BOOST_AUTO_TEST_CASE(testCreate) {
+BOOST_AUTO_TEST_CASE(test_create) {
 
   std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
 
