@@ -86,14 +86,7 @@ public:
    * @return std::string The new token of connected user
    */
   std::string connectUser(const boost::property_tree::ptree &data) const;
-
-  /**
-   * @brief method to parse user from property tree
-   *
-   * @param data The boost proerty tree of user
-   * @return user User object
-   */
-  static user parse(const boost::property_tree::ptree &data);
+ 
 };
 
 #endif
