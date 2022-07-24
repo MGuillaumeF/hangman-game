@@ -131,21 +131,21 @@ public:
    */
   static user parse(const boost::property_tree::ptree &property_tree) {
     user parsedUser = root_model_object::parse<user>(property_tree);
-    parsedUser.setLogin(data.get<std::string>("login"));
-    parsedUser.setPassword(data.get<std::string>("password"));
-    parsedUser.setSaltUser(data.get<std::string>("salt_user"));
+    parsedUser.setLogin(property_tree.get<std::string>("login"));
+    parsedUser.setPassword(property_tree.get<std::string>("password"));
+    parsedUser.setSaltUser(property_tree.get<std::string>("salt_user"));
     const boost::optional<std::string> saltSession =
-        data.get_optional<std::string>("salt_session");
+        property_tree.get_optional<std::string>("salt_session");
     if (saltSession) {
       parsedUser.setSaltSession(*saltSession);
     }
     const boost::optional<std::string> token =
-        data.get_optional<std::string>("token");
+        property_tree.get_optional<std::string>("token");
     if (token) {
       parsedUser.setToken(*token);
     }
     const boost::optional<uint32_t> lastConnection =
-        data.get_optional<uint32_t>("last_connection");
+        property_tree.get_optional<uint32_t>("last_connection");
     if (lastConnection) {
       parsedUser.setLastConnection(*lastConnection);
     }
