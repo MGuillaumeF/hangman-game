@@ -17,7 +17,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   const boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
-    users.push_back(UserDBEndpoint::parse(*userItem));
+    users.push_back(user::parse(*userItem));
 
   } else {
     const boost::optional<const boost::property_tree::ptree &> userList =
@@ -25,7 +25,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
     if (userList) {
       for (const auto &userItem2 : (*userList)) {
         if ("user" == userItem2.first) {
-          users.push_back(UserDBEndpoint::parse(userItem2.second));
+          users.push_back(user::parse(userItem2.second));
         }
       }
     }
