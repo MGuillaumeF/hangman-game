@@ -23,7 +23,7 @@
 #include "../model/sqlite/user.hxx"
 #elif defined(DATABASE_PGSQL)
 #include "../model/pgsql/user-odb.hxx"
-#include ".;/model/pgsql/user.hxx"
+#include "../model/pgsql/user.hxx"
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
@@ -43,13 +43,14 @@ class UserDBEndpoint {
    *
    */
   static std::unique_ptr<UserDBEndpoint> s_instance;
+
+public:
   /**
    * @brief Construct a new User DB Endpoint object
    *
    */
   explicit UserDBEndpoint() = default;
 
-public:
   /**
    * @brief Destroy the User DB Endpoint object
    *
@@ -86,14 +87,6 @@ public:
    * @return std::string The new token of connected user
    */
   std::string connectUser(const boost::property_tree::ptree &data) const;
-
-  /**
-   * @brief method to parse user from property tree
-   *
-   * @param data The boost proerty tree of user
-   * @return user User object
-   */
-  static user parse(const boost::property_tree::ptree &data);
 };
 
 #endif

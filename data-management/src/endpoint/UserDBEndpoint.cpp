@@ -17,7 +17,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   const boost::optional<const boost::property_tree::ptree &> userItem =
       data.get_child_optional("user");
   if (userItem) {
-    users.push_back(UserDBEndpoint::parse(*userItem));
+    users.push_back(user::parse(*userItem));
 
   } else {
     const boost::optional<const boost::property_tree::ptree &> userList =
@@ -25,7 +25,7 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
     if (userList) {
       for (const auto &userItem2 : (*userList)) {
         if ("user" == userItem2.first) {
-          users.push_back(UserDBEndpoint::parse(userItem2.second));
+          users.push_back(user::parse(userItem2.second));
         }
       }
     }
@@ -106,40 +106,7 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &data) const {
  */
 std::unique_ptr<UserDBEndpoint> &UserDBEndpoint::getInstance() {
   if (nullptr == s_instance) {
-    s_instance = std::unique_ptr<UserDBEndpoint>(new UserDBEndpoint());
+    s_instance = std::make_unique<UserDBEndpoint>();
   }
   return s_instance;
-}
-
-/**
- * @brief method to parse user from property tree
- *
- * @param data The boost proerty tree of user
- * @return user User object
- */
-user UserDBEndpoint::parse(const boost::property_tree::ptree &data) {
-  user newUser;
-  const boost::optional<uint32_t> id = data.get_optional<uint32_t>("id");
-  if (id) {
-    newUser.setId(*id);
-  }
-  newUser.setLogin(data.get<std::string>("login"));
-  newUser.setPassword(data.get<std::string>("password"));
-  newUser.setSaltUser(data.get<std::string>("salt_user"));
-  const boost::optional<std::string> saltSession =
-      data.get_optional<std::string>("salt_session");
-  if (saltSession) {
-    newUser.setSaltSession(*saltSession);
-  }
-  const boost::optional<std::string> token =
-      data.get_optional<std::string>("token");
-  if (token) {
-    newUser.setToken(*token);
-  }
-  const boost::optional<uint32_t> lastConnection =
-      data.get_optional<uint32_t>("last_connection");
-  if (lastConnection) {
-    newUser.setLastConnection(*lastConnection);
-  }
-  return newUser;
 }
