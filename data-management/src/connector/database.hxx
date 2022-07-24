@@ -60,7 +60,8 @@ inline std::shared_ptr<odb::database> create_database(int &argc, char *argv[]) {
 #if defined(DATABASE_MYSQL)
     db = std::make_shared<odb::mysql::database>(argc, argv);
 #elif defined(DATABASE_SQLITE)
-    db = std::make_shared<odb::sqlite::database>(argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+    db = std::make_shared<odb::sqlite::database>(
+        argc, argv, false, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
     // Create the database schema. Due to bugs in SQLite foreign key
     // support for DDL statements, we need to temporarily disable
     // foreign keys.
