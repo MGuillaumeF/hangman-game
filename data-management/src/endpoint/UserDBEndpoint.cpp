@@ -110,36 +110,3 @@ std::unique_ptr<UserDBEndpoint> &UserDBEndpoint::getInstance() {
   }
   return s_instance;
 }
-
-/**
- * @brief method to parse user from property tree
- *
- * @param data The boost proerty tree of user
- * @return user User object
- */
-user UserDBEndpoint::parse(const boost::property_tree::ptree &data) {
-  user newUser;
-  const boost::optional<uint32_t> id = data.get_optional<uint32_t>("id");
-  if (id) {
-    newUser.setId(*id);
-  }
-  newUser.setLogin(data.get<std::string>("login"));
-  newUser.setPassword(data.get<std::string>("password"));
-  newUser.setSaltUser(data.get<std::string>("salt_user"));
-  const boost::optional<std::string> saltSession =
-      data.get_optional<std::string>("salt_session");
-  if (saltSession) {
-    newUser.setSaltSession(*saltSession);
-  }
-  const boost::optional<std::string> token =
-      data.get_optional<std::string>("token");
-  if (token) {
-    newUser.setToken(*token);
-  }
-  const boost::optional<uint32_t> lastConnection =
-      data.get_optional<uint32_t>("last_connection");
-  if (lastConnection) {
-    newUser.setLastConnection(*lastConnection);
-  }
-  return newUser;
-}
