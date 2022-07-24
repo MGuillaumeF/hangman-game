@@ -129,8 +129,26 @@ public:
    *
    * @return The object found
    */
-  static user parse(boost::property_tree::ptree property_tree) {
+  static user parse(const boost::property_tree::ptree& property_tree) {
     user parsedUser = root_model_object::parse<user>(property_tree);
+    parsedUser.setLogin(data.get<std::string>("login"));
+    parsedUser.setPassword(data.get<std::string>("password"));
+    parsedUser.setSaltUser(data.get<std::string>("salt_user"));
+    const boost::optional<std::string> saltSession =
+      data.get_optional<std::string>("salt_session");
+    if (saltSession) {
+      parsedUser.setSaltSession(*saltSession);
+    }
+    const boost::optional<std::string> token =
+        data.get_optional<std::string>("token");
+    if (token) {
+      parsedUser.setToken(*token);
+    }
+    const boost::optional<uint32_t> lastConnection =
+        data.get_optional<uint32_t>("last_connection");
+    if (lastConnection) {
+      parsedUser.setLastConnection(*lastConnection);
+    }
     return parsedUser;
   }
 
