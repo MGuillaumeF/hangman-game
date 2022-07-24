@@ -26,13 +26,14 @@ class DataAccess {
    *
    */
   std::shared_ptr<odb::core::database> m_db;
+
+public:
   /**
    * @brief Construct a new Data Access object
    *
    */
   explicit DataAccess();
 
-public:
   /**
    * @brief Get the Database Access object
    *
