@@ -2,8 +2,8 @@
 #define __ROOT_MODEL_OBJECT_HXX__
 
 #include <boost/property_tree/ptree.hpp>
-#include <ctime>
 #include <odb/core.hxx>
+#include <ctime>
 #include <string>
 
 /**
@@ -42,6 +42,13 @@ public:
   const uint32_t &getVersion() const { return m_version; };
 
   /**
+   * @brief Set the Version of object
+   *
+   * @param version The version of object
+   */
+  void setVersion(const uint32_t &version) { m_version = version; };
+
+  /**
    * @brief Get the creation user of object
    *
    * @return const std::string& the creation user of object
@@ -49,11 +56,25 @@ public:
   const std::string &getCreatedBy() const { return m_created_by; };
 
   /**
-   * @brief Get the creation timestamp of object
+   * @brief Set the creation user of object
    *
-   * @return const uint32_t& the creation timestamp of object
+   * @param created_by The creation user of object
    */
-  const uint32_t &getCreatedAt() const { return m_created_at; };
+  void setCreatedBy(const std::string &created_by) { m_created_by = created_by; };
+
+  /**
+   * @brief Get the creation datetime of object
+   *
+   * @return const std::time_t& the creation datetime of object
+   */
+  const std::time_t &getCreatedAt() const { return m_created_at; };
+
+  /**
+   * @brief Set the create datetime of object
+   *
+   * @param created_at The create datetime of object
+   */
+  void setCreatedAt(const std::time_t &created_at) { m_created_at = created_at; };
 
   /**
    * @brief Get the updater user of object
@@ -63,11 +84,25 @@ public:
   const std::string &getUpdatedBy() const { return m_updated_by; };
 
   /**
-   * @brief Get the update timestamp of object
+   * @brief Set the update user of object
    *
-   * @return const uint32_t& the update timestamp of object
+   * @param updated_by The update user of object
    */
-  const uint32_t &getUpdatedAt() const { return m_updated_at; };
+  void setUpdatedBy(const std::string &updated_by) { m_updated_by = updated_by; };
+
+  /**
+   * @brief Get the update datetime of object
+   *
+   * @return const std::time_t& the update datetime of object
+   */
+  const std::time_t &getUpdatedAt() const { return m_updated_at; };
+
+  /**
+   * @brief Set the update datetime of object
+   *
+   * @param updated_at The update datetime of object
+   */
+  void setUpdatedAt(const std::time_t &updated_at) { m_updated_at = updated_at; };
 
   /**
    * @brief method to check if all fields of object are valid
@@ -97,6 +132,21 @@ public:
         property_tree.get_optional<uint32_t>("id");
     if (id) {
       childObject.setId(*id);
+    }
+    const boost::optional<uint32_t> version =
+        property_tree.get_optional<uint32_t>("version");
+    if (version) { 
+      childObject.setVersion(*version);
+    }
+    const boost::optional<std::string> created_by =
+        property_tree.get_optional<std::string>("created_by");
+    if (created_by) { 
+      childObject.setCreatedBy(*created_by);
+    }
+    const boost::optional<std::string> updated_by =
+        property_tree.get_optional<std::string>("updated_by");
+    if (updated_by) { 
+      childObject.setUpdatedBy(*updated_by);
     }
     return childObject;
   };
