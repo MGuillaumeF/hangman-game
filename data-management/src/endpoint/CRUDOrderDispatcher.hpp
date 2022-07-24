@@ -4,6 +4,7 @@
 #include "../model/root_model_object.hxx"
 #include <boost/property_tree/ptree.hpp>
 #include <string>
+#include <iostream>
 
 /**
  * @brief This class goal it's dispatch al order received by order object type
