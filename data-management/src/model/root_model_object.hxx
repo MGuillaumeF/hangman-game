@@ -4,6 +4,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <odb/core.hxx>
 #include <string>
+#include <ctime>
 
 /**
  * @brief class of Root Model Object in model
@@ -103,12 +104,12 @@ public:
 protected:
   friend class odb::access;
 #pragma db id auto
-  uint32_t m_id;
-  uint32_t m_version;
-  std::string m_created_by;
-  uint32_t m_created_at;
-  std::string m_updated_by;
-  uint32_t m_updated_at;
+  uint32_t m_id = 0;
+  uint32_t m_version = 0;
+  std::string m_created_by = "anonymous";
+  std::time_t m_created_at = std::time(nullptr);
+  std::string m_updated_by = "anonymous";
+  std::time_t m_updated_at = std::time(nullptr);
 };
 
 #pragma db object(root_model_object)
