@@ -1,5 +1,6 @@
 #include "./CRUDOrderDispatcher.hpp"
-#include "./UserOrderDispatcher.hpp"
+#include "../model/user.hpp"
+#include "../model/word.hpp"
 
 #include <iostream>
 
@@ -20,10 +21,13 @@ CRUDOrderDispatcher::route(const std::string &objectType,
   std::cout << "OBJECT TYPE : " << properties.get<std::string>("object-type")
             << std::endl;
   if ("user" == objectType) {
-    response = UserOrderDispatcher::route(
+     // dispatch crud user orders
+    response = routeObjectType::route<user>(
         properties.get<std::string>("order-type"), properties, data);
   } else if ("word" == objectType) {
-    // TODO add WordOrderDispatcher
+    // dispatch crud word orders
+    response = routeObjectType::route<word>(
+        properties.get<std::string>("order-type"), properties, data);
   } else {
     // TODO add exception : unknown object type
   }
