@@ -21,7 +21,7 @@ CRUDOrderDispatcher::route(const std::string &objectType,
   std::cout << "OBJECT TYPE : " << properties.get<std::string>("object-type")
             << std::endl;
   if ("user" == objectType) {
-     // dispatch crud user orders
+    // dispatch crud user orders
     response = routeObjectType::route<user>(
         properties.get<std::string>("order-type"), properties, data);
   } else if ("word" == objectType) {
