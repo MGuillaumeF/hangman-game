@@ -57,6 +57,10 @@ public:
                             root_model_object, T>::value>::type * = nullptr>
   static T parse(boost::property_tree::ptree property_tree) {
     T childObject;
+    const boost::optional<uint32_t> id = data.get_optional<uint32_t>("id");
+    if (id) {
+      childObject.setId(*id);
+    }
     return childObject;
   };
 
