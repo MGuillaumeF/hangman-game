@@ -1,6 +1,6 @@
 #include "./CRUDOrderDispatcher.hpp"
-#include "../model/user.hpp"
-#include "../model/word.hpp"
+#include "../model/user.hxx"
+#include "../model/word.hxx"
 
 #include <iostream>
 
