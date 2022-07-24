@@ -2,9 +2,9 @@
 #define __ROOT_MODEL_OBJECT_HXX__
 
 #include <boost/property_tree/ptree.hpp>
+#include <ctime>
 #include <odb/core.hxx>
 #include <string>
-#include <ctime>
 
 /**
  * @brief class of Root Model Object in model
