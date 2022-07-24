@@ -32,6 +32,17 @@ UserDBEndpoint::createUser(const boost::property_tree::ptree &data) const {
   }
   odb::core::transaction t(m_db->begin());
   for (user userToPersist : users) {
+    if (0 != userToPersist.getId()) {
+      std::cerr
+          << "[WARNNING] create content ignored : the id must be 0, value "
+          << userToPersist.getId() << " ignored" << std::endl;
+    }
+    if (0 != userToPersist.getVersion()) {
+      std::cerr << "[WARNNING] create content ignored : the version will be "
+                   "overrided to 1, value "
+                << userToPersist.getVersion() << " ignored" << std::endl;
+    }
+    userToPersist.setVersion(1);
     const uint32_t id = m_db->persist(userToPersist);
 
     boost::property_tree::ptree userId;

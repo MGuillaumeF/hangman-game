@@ -2,6 +2,7 @@
 <order>
     <properties>
         <order-group>CRUD</order-group>
+        <order-author>administrator</order-author>
         <order-type>create</order-type>
         <object-type>user</object-type>
     </properties>
