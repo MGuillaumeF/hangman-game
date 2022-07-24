@@ -1,7 +1,7 @@
 #ifndef __CRUD_ORDER_DISPATCHER_HPP__
 #define __CRUD_ORDER_DISPATCHER_HPP__
 
-#include "../model/root_model_object.hpp"
+#include "../model/root_model_object.hxx"
 #include <boost/property_tree/ptree.hpp>
 #include <string>
 
