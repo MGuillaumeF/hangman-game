@@ -47,7 +47,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  routeObjectType(const T& obj, const std::string &orderType,
+  routeObjectType(const T &obj, const std::string &orderType,
                   const boost::property_tree::ptree &properties,
                   const boost::property_tree::ptree &data) {
     // response data property tree
@@ -84,7 +84,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  createObject(const T& obj, const boost::property_tree::ptree &properties,
+  createObject(const T &obj, const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
 
@@ -102,7 +102,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  updateObject(const T& obj, const boost::property_tree::ptree &properties,
+  updateObject(const T &obj, const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data, bool full = true) {
     boost::property_tree::ptree response;
 
@@ -119,7 +119,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  readObject(const T& obj, const boost::property_tree::ptree &properties,
+  readObject(const T &obj, const boost::property_tree::ptree &properties,
              const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
 
@@ -136,7 +136,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  deleteObject(const T& obj, const boost::property_tree::ptree &properties,
+  deleteObject(const T &obj, const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
 
