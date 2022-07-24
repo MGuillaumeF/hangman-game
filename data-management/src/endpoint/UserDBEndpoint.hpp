@@ -86,7 +86,6 @@ public:
    * @return std::string The new token of connected user
    */
   std::string connectUser(const boost::property_tree::ptree &data) const;
- 
 };
 
 #endif
