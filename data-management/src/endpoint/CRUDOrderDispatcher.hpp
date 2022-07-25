@@ -2,6 +2,14 @@
 #define __CRUD_ORDER_DISPATCHER_HPP__
 
 #include "../model/root_model_object.hxx"
+
+#include <memory>
+
+// generated configuration
+#include "config.hpp"
+#include "./DataAccess.hpp"
+#include <odb/transaction.hxx>
+
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <string>
@@ -22,6 +30,13 @@ class CRUDOrderDispatcher {
    * @note deleted
    */
   ~CRUDOrderDispatcher() = delete;
+
+  /**
+   * @brief database access pointer of single instance
+   *
+   */
+  static std::shared_ptr<odb::core::database> s_db = DataAccess::getDatabaseAccess();
+
 
 public:
   /**
@@ -119,7 +134,7 @@ public:
                   << objectToPersist.getVersion() << " ignored" << std::endl;
       }
       objectToPersist.setVersion(1);
-      const uint32_t id = m_db->persist(objectToPersist);
+      const uint32_t id = s_db->persist(objectToPersist);
 
       boost::property_tree::ptree objectId;
       objectId.put("id", id);
