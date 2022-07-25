@@ -20,6 +20,7 @@
 #include "../../src/connector/database.hxx" // create database access
 #include "../../src/endpoint/DataAccess.hpp"
 #include "../../src/endpoint/UserDBEndpoint.hpp"
+#include "../../src/endpoint/CRUDOrderDispatcher.hpp"
 #include <boost/property_tree/ptree.hpp>
 
 #if defined(DATABASE_MYSQL)
@@ -149,7 +150,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   // John Doe is no longer in our database.
   boost::property_tree::ptree del;
   del.put("user.id", john_id);
-  CRUDEndpoint::deleteObject<user>(boost::property_tree::ptree(), del);
+  CRUDOrderDispatcher::deleteObject<user>(boost::property_tree::ptree(), del);
 
   BOOST_CHECK_EQUAL(3, printUserCount(db));
 }
