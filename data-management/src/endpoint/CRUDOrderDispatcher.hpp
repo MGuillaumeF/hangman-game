@@ -6,8 +6,8 @@
 #include <memory>
 
 // generated configuration
-#include "config.hpp"
 #include "./DataAccess.hpp"
+#include "config.hpp"
 #include <odb/transaction.hxx>
 
 #include <boost/property_tree/ptree.hpp>
@@ -35,8 +35,8 @@ class CRUDOrderDispatcher {
    * @brief database access pointer of single instance
    *
    */
-  static std::shared_ptr<odb::core::database> s_db = DataAccess::getDatabaseAccess();
-
+  static std::shared_ptr<odb::core::database> s_db =
+      DataAccess::getDatabaseAccess();
 
 public:
   /**
