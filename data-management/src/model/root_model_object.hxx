@@ -170,7 +170,7 @@ protected:
   std::time_t m_updated_at = std::time(nullptr);
 
 public:
-  static constexpr chat object_type[];
+  static constexpr char object_type[];
   static constexpr char plurial_object_type[];
 };
 
