@@ -31,13 +31,6 @@ class CRUDOrderDispatcher {
    */
   ~CRUDOrderDispatcher() = delete;
 
-  /**
-   * @brief database access pointer of single instance
-   *
-   */
-  static std::shared_ptr<odb::core::database> s_db =
-      DataAccess::getDatabaseAccess();
-
 public:
   /**
    * @brief Route to dispatch crud order by object type
@@ -121,7 +114,7 @@ public:
         }
       }
     }
-    odb::core::transaction t(s_db->begin());
+    odb::core::transaction t(DatabaseAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
       if (0 != objectToPersist.getId()) {
         std::cerr
@@ -134,7 +127,7 @@ public:
                   << objectToPersist.getVersion() << " ignored" << std::endl;
       }
       objectToPersist.setVersion(1);
-      const uint32_t id = s_db->persist(objectToPersist);
+      const uint32_t id = DatabaseAccess::getDatabaseAccess()->persist(objectToPersist);
 
       boost::property_tree::ptree objectId;
       objectId.put("id", id);
