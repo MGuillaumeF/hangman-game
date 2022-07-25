@@ -9,7 +9,7 @@
  *
  */
 #pragma db object
-class word {
+class word final : public root_model_object {
 public:
   /**
    * @brief Construct a new word object
