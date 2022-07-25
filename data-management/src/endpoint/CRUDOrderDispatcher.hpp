@@ -187,26 +187,26 @@ public:
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
     std::list<uint32_t> objectIds;
-  const boost::optional<const boost::property_tree::ptree &> objectItem =
-      data.get_child_optional(T::getObjectType());
-  if (objectItem) {
-    objectIds.push_back((*objectItem).get<uint32_t>("id"));
-  } else {
-    const boost::optional<const boost::property_tree::ptree &> objectList =
-        data.get_child_optional(T::getPlurialObjectType());
-    if (objectList) {
-      for (const auto &objectItem2 : (*objectList)) {
-        if (T::getObjectType() == objectItem2.first) {
-          objectIds.push_back(objectItem.second.get<uint32_t>("id"));
+    const boost::optional<const boost::property_tree::ptree &> objectItem =
+        data.get_child_optional(T::getObjectType());
+    if (objectItem) {
+      objectIds.push_back((*objectItem).get<uint32_t>("id"));
+    } else {
+      const boost::optional<const boost::property_tree::ptree &> objectList =
+          data.get_child_optional(T::getPlurialObjectType());
+      if (objectList) {
+        for (const auto &objectItem2 : (*objectList)) {
+          if (T::getObjectType() == objectItem2.first) {
+            objectIds.push_back(objectItem.second.get<uint32_t>("id"));
+          }
         }
       }
     }
-  }
-  odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
-  for (const uint32_t objectToDelete : objectIds) {
-    DataAccess::getDatabaseAccess()->erase<T>(objectToDelete);
-  }
-  t.commit();
+    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
+    for (const uint32_t objectToDelete : objectIds) {
+      DataAccess::getDatabaseAccess()->erase<T>(objectToDelete);
+    }
+    t.commit();
     return response;
   }
 };
