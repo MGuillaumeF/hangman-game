@@ -127,7 +127,8 @@ public:
                   << objectToPersist.getVersion() << " ignored" << std::endl;
       }
       objectToPersist.setVersion(1);
-      const uint32_t id = DatabaseAccess::getDatabaseAccess()->persist(objectToPersist);
+      const uint32_t id =
+          DatabaseAccess::getDatabaseAccess()->persist(objectToPersist);
 
       boost::property_tree::ptree objectId;
       objectId.put("id", id);
