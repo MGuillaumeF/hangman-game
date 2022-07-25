@@ -90,42 +90,42 @@ public:
     boost::property_tree::ptree response;
     std::list<T> objects;
 
-  const boost::optional<const boost::property_tree::ptree &> objectItem =
-      data.get_child_optional(T::object_type);
-  if (objectItem) {
-    users.push_back(user::parse(*objectItem));
+    const boost::optional<const boost::property_tree::ptree &> objectItem =
+        data.get_child_optional(T::object_type);
+    if (objectItem) {
+      users.push_back(user::parse(*objectItem));
 
-  } else {
-    const boost::optional<const boost::property_tree::ptree &> objectList =
-        data.get_child_optional(T::plurial_object_type);
-    if (objectList) {
-      for (const auto &objectItem2 : (*objectList)) {
-        if (T::object_type == objectItem2.first) {
-          objects.push_back(user::parse(objectItem2.second));
+    } else {
+      const boost::optional<const boost::property_tree::ptree &> objectList =
+          data.get_child_optional(T::plurial_object_type);
+      if (objectList) {
+        for (const auto &objectItem2 : (*objectList)) {
+          if (T::object_type == objectItem2.first) {
+            objects.push_back(user::parse(objectItem2.second));
+          }
         }
       }
     }
-  }
-  odb::core::transaction t(m_db->begin());
-  for (T objectToPersist : objects) {
-    if (0 != objectToPersist.getId()) {
-      std::cerr
-          << "[WARNNING] create content ignored : the id must be 0, value "
-          << objectToPersist.getId() << " ignored" << std::endl;
-    }
-    if (0 != objectToPersist.getVersion()) {
-      std::cerr << "[WARNNING] create content ignored : the version will be "
-                   "overrided to 1, value "
-                << objectToPersist.getVersion() << " ignored" << std::endl;
-    }
-    objectToPersist.setVersion(1);
-    const uint32_t id = m_db->persist(objectToPersist);
+    odb::core::transaction t(m_db->begin());
+    for (T objectToPersist : objects) {
+      if (0 != objectToPersist.getId()) {
+        std::cerr
+            << "[WARNNING] create content ignored : the id must be 0, value "
+            << objectToPersist.getId() << " ignored" << std::endl;
+      }
+      if (0 != objectToPersist.getVersion()) {
+        std::cerr << "[WARNNING] create content ignored : the version will be "
+                     "overrided to 1, value "
+                  << objectToPersist.getVersion() << " ignored" << std::endl;
+      }
+      objectToPersist.setVersion(1);
+      const uint32_t id = m_db->persist(objectToPersist);
 
-    boost::property_tree::ptree objectId;
-    objectId.put("id", id);
-    response.add_child(T::object_type, objectId);
-  }
-  t.commit();
+      boost::property_tree::ptree objectId;
+      objectId.put("id", id);
+      response.add_child(T::object_type, objectId);
+    }
+    t.commit();
     return response;
   }
 
