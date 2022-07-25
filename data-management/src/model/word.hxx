@@ -18,20 +18,6 @@ public:
   word() = default;
 
   /**
-   * @brief Get the Id object
-   *
-   * @return const uint32_t&
-   */
-  const uint32_t &getId() const { return m_id; };
-
-  /**
-   * @brief Set the Id object
-   *
-   * @param id
-   */
-  void setId(const uint32_t &id) { m_id = id; };
-
-  /**
    * @brief Get the Value object
    *
    * @return const std::string&
@@ -85,16 +71,13 @@ public:
    *
    * @return The object found
    */
-  static word parse(boost::property_tree::ptree property_tree) {
+  static word parse(const boost::property_tree::ptree& property_tree) {
     word parsedWord;
     return parsedWord;
   }
 
 private:
   friend class odb::access;
-
-#pragma db id auto
-  uint32_t m_id;
 
 #pragma db options() options("CHECK(value != '')")
   std::string m_value;
