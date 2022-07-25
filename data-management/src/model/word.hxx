@@ -71,7 +71,7 @@ public:
    *
    * @return The object found
    */
-  static word parse(const boost::property_tree::ptree& property_tree) {
+  static word parse(const boost::property_tree::ptree &property_tree) {
     word parsedWord;
     return parsedWord;
   }
