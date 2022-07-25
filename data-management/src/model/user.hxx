@@ -152,7 +152,7 @@ public:
     return parsedUser;
   }
 
-  static constexpr chat object_type[] = "user";
+  static constexpr char object_type[] = "user";
   static constexpr char plurial_object_type[] = "users";
 
 private:
