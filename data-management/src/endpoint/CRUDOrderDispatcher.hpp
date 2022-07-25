@@ -2,17 +2,17 @@
 #define __CRUD_ORDER_DISPATCHER_HPP__
 
 #include "../model/root_model_object.hxx"
-
-#include <memory>
-
 // generated configuration
 #include "./DataAccess.hpp"
 #include "config.hpp"
+
 #include <odb/transaction.hxx>
 
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <string>
+#include <list>
+#include <memory>
 
 /**
  * @brief This class goal it's dispatch al order received by order object type
