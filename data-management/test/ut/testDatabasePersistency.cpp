@@ -18,9 +18,9 @@
 #include <odb/transaction.hxx>
 
 #include "../../src/connector/database.hxx" // create database access
+#include "../../src/endpoint/CRUDOrderDispatcher.hpp"
 #include "../../src/endpoint/DataAccess.hpp"
 #include "../../src/endpoint/UserDBEndpoint.hpp"
-#include "../../src/endpoint/CRUDOrderDispatcher.hpp"
 #include <boost/property_tree/ptree.hpp>
 
 #if defined(DATABASE_MYSQL)
