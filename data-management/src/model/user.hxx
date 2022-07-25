@@ -152,8 +152,8 @@ public:
     return parsedUser;
   }
 
-  static std::string object_type = std::string("user");
-  static std::string plurial_object_type = std::string("users");
+  static constexpr chat object_type[] = "user";
+  static constexpr char plurial_object_type[] = "users";
 
 private:
 #pragma db unique not_null type("VARCHAR(255)")
