@@ -170,8 +170,8 @@ protected:
   std::time_t m_updated_at = std::time(nullptr);
 
 public:
-  static std::string object_type;
-  static std::string plurial_object_type;
+  static constexpr chat object_type[];
+  static constexpr char plurial_object_type[];
 };
 
 #pragma db object(root_model_object)
