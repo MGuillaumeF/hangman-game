@@ -164,14 +164,14 @@ public:
    *
    * @return The object type
    */
-  virtual std::string getObjectType();
+  static std::string getObjectType() { return "root_model_object"; }
 
   /**
    * @brief method to get plurial object type
    *
    * @return The plurial object type
    */
-  virtual std::string getPlurialObjectType;
+  static std::string getPlurialObjectType() { return "root_model_objects"; }
 
 protected:
   friend class odb::access;
