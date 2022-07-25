@@ -152,9 +152,6 @@ public:
     return parsedUser;
   }
 
-  static constexpr char object_type[] = "user";
-  static constexpr char plurial_object_type[] = "users";
-
 private:
 #pragma db unique not_null type("VARCHAR(255)")
   std::string m_login;
