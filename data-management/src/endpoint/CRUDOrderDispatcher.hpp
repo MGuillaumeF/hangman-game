@@ -69,16 +69,16 @@ public:
       response = createObject<T>(properties, data);
     } else if ("read" == orderType) {
       // read from database, by key of property tree
-      response = readObject<T>(T(), properties, data);
+      response = readObject<T>(properties, data);
     } else if ("update" == orderType) {
       // full update with full replace
-      response = updateObject<T>(T(), properties, data);
+      response = updateObject<T>(properties, data);
     } else if ("delete" == orderType) {
       // delete object
-      response = deleteObject<T>(T(), properties, data);
+      response = deleteObject<T>(properties, data);
     } else if ("patch" == orderType) {
       // partial update of users
-      response = updateObject<T>(T(), properties, data, false);
+      response = updateObject<T>(properties, data, false);
     }
     return response;
   }
