@@ -168,6 +168,7 @@ protected:
   std::time_t m_created_at = std::time(nullptr);
   std::string m_updated_by = "anonymous";
   std::time_t m_updated_at = std::time(nullptr);
+
 public:
   static std::string object_type;
   static std::string plurial_object_type;
