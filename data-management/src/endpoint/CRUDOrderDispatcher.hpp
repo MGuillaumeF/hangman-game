@@ -197,7 +197,7 @@ public:
       if (objectList) {
         for (const auto &objectItem2 : (*objectList)) {
           if (T::getObjectType() == objectItem2.first) {
-            objectIds.push_back(objectItem.second.get<uint32_t>("id"));
+            objectIds.push_back(objectItem2.second.get<uint32_t>("id"));
           }
         }
       }
