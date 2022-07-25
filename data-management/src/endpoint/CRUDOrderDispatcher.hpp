@@ -121,7 +121,7 @@ public:
         }
       }
     }
-    odb::core::transaction t(m_db->begin());
+    odb::core::transaction t(s_db->begin());
     for (T objectToPersist : objects) {
       if (0 != objectToPersist.getId()) {
         std::cerr
