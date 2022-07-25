@@ -108,7 +108,7 @@ public:
     const boost::optional<const boost::property_tree::ptree &> objectItem =
         data.get_child_optional(T::object_type);
     if (objectItem) {
-      users.push_back(user::parse(*objectItem));
+      objects.push_back(user::parse(*objectItem));
 
     } else {
       const boost::optional<const boost::property_tree::ptree &> objectList =
@@ -116,7 +116,7 @@ public:
       if (objectList) {
         for (const auto &objectItem2 : (*objectList)) {
           if (T::object_type == objectItem2.first) {
-            objects.push_back(user::parse(objectItem2.second));
+            objects.push_back(T::parse(objectItem2.second));
           }
         }
       }
