@@ -76,8 +76,8 @@ public:
     return parsedWord;
   }
 
-  static std::string object_type = std::string("word");
-  static std::string plurial_object_type = std::string("words");
+  static constexpr char object_type[] = word";
+  static constexpr char plurial_object_type[] = "words";
 
 private:
   friend class odb::access;
