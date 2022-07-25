@@ -152,6 +152,24 @@ public:
     return parsedUser;
   }
 
+  /**
+   * @brief method to get object type
+   *
+   * @return The object type
+   */
+   static std::string getObjectType() {
+     return "user";
+   }
+
+  /**
+   * @brief method to get plurial object type
+   *
+   * @return The plurial object type
+   */
+   static std::string getPlurialObjectType {
+     return "users";
+   }
+
 private:
 #pragma db unique not_null type("VARCHAR(255)")
   std::string m_login;
