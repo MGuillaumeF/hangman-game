@@ -88,7 +88,7 @@ public:
    *
    * @return The plurial object type
    */
-  static std::string getPlurialObjectType { return "words"; }
+  static std::string getPlurialObjectType() { return "words"; }
 
 private:
   friend class odb::access;
