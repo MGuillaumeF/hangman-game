@@ -10,9 +10,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
-#include <string>
 #include <list>
 #include <memory>
+#include <string>
 
 /**
  * @brief This class goal it's dispatch al order received by order object type
