@@ -66,7 +66,7 @@ public:
               << std::endl;
     if ("create" == orderType) {
       // create object from data of property tree
-      response = createObject<T>(T(), properties, data);
+      response = createObject<T>(properties, data);
     } else if ("read" == orderType) {
       // read from database, by key of property tree
       response = readObject<T>(T(), properties, data);
@@ -93,7 +93,7 @@ public:
   template <typename T, typename std::enable_if<std::is_base_of<
                             root_model_object, T>::value>::type * = nullptr>
   static boost::property_tree::ptree
-  createObject(const T &obj, const boost::property_tree::ptree &properties,
+  createObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
     std::list<T> objects;
