@@ -161,6 +161,8 @@ public:
 
 protected:
   friend class odb::access;
+  static std::string object_type;
+  static std::string plurial_object_type;
 #pragma db id auto
   uint32_t m_id = 0;
   uint32_t m_version = 0;
