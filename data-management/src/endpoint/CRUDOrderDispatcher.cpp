@@ -3,12 +3,18 @@
 #if defined(DATABASE_MYSQL)
 #include "../model/mysql/user-odb.hxx"
 #include "../model/mysql/user.hxx"
+#include "../model/mysql/word-odb.hxx"
+#include "../model/mysql/word.hxx"
 #elif defined(DATABASE_SQLITE)
 #include "../model/sqlite/user-odb.hxx"
 #include "../model/sqlite/user.hxx"
+#include "../model/sqlite/word-odb.hxx"
+#include "../model/sqlite/word.hxx"
 #elif defined(DATABASE_PGSQL)
 #include "../model/pgsql/user-odb.hxx"
 #include "../model/pgsql/user.hxx"
+#include "../model/pgsql/word-odb.hxx"
+#include "../model/pgsql/word.hxx"
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
