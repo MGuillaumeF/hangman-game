@@ -76,9 +76,6 @@ public:
     return parsedWord;
   }
 
-  static constexpr char object_type[] = "word";
-  static constexpr char plurial_object_type[] = "words";
-
 private:
   friend class odb::access;
 
