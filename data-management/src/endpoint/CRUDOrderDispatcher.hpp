@@ -99,16 +99,16 @@ public:
     std::list<T> objects;
 
     const boost::optional<const boost::property_tree::ptree &> objectItem =
-        data.get_child_optional(T::object_type);
+        data.get_child_optional(T::getObjectType());
     if (objectItem) {
       objects.push_back(T::parse(*objectItem));
 
     } else {
       const boost::optional<const boost::property_tree::ptree &> objectList =
-          data.get_child_optional(T::plurial_object_type);
+          data.get_child_optional(T::getPlurialObjectType());
       if (objectList) {
         for (const auto &objectItem2 : (*objectList)) {
-          if (T::object_type == objectItem2.first) {
+          if (T::getObjectType() == objectItem2.first) {
             objects.push_back(T::parse(objectItem2.second));
           }
         }
@@ -132,7 +132,7 @@ public:
 
       boost::property_tree::ptree objectId;
       objectId.put("id", id);
-      response.add_child(T::object_type, objectId);
+      response.add_child(T::getObjectType(), objectId);
     }
     t.commit();
     return response;
