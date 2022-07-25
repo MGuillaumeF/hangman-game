@@ -157,18 +157,14 @@ public:
    *
    * @return The object type
    */
-   static std::string getObjectType() {
-     return "user";
-   }
+  static std::string getObjectType() { return "user"; }
 
   /**
    * @brief method to get plurial object type
    *
    * @return The plurial object type
    */
-   static std::string getPlurialObjectType {
-     return "users";
-   }
+  static std::string getPlurialObjectType { return "users"; }
 
 private:
 #pragma db unique not_null type("VARCHAR(255)")
