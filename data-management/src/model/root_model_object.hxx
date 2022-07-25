@@ -159,6 +159,20 @@ public:
     return childObject;
   };
 
+  /**
+   * @brief method to get object type
+   *
+   * @return The object type
+   */
+  virtual std::string getObjectType();
+
+  /**
+   * @brief method to get plurial object type
+   *
+   * @return The plurial object type
+   */
+  virtual std::string getPlurialObjectType;
+
 protected:
   friend class odb::access;
 #pragma db id auto
@@ -168,10 +182,6 @@ protected:
   std::time_t m_created_at = std::time(nullptr);
   std::string m_updated_by = "anonymous";
   std::time_t m_updated_at = std::time(nullptr);
-
-public:
-  static std::string object_type;
-  static std::string plurial_object_type;
 };
 
 #pragma db object(root_model_object)
