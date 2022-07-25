@@ -1,5 +1,23 @@
 #include "./CRUDOrderDispatcher.hpp"
-#include "./UserOrderDispatcher.hpp"
+
+#if defined(DATABASE_MYSQL)
+#include "../model/mysql/user-odb.hxx"
+#include "../model/mysql/user.hxx"
+#include "../model/mysql/word-odb.hxx"
+#include "../model/mysql/word.hxx"
+#elif defined(DATABASE_SQLITE)
+#include "../model/sqlite/user-odb.hxx"
+#include "../model/sqlite/user.hxx"
+#include "../model/sqlite/word-odb.hxx"
+#include "../model/sqlite/word.hxx"
+#elif defined(DATABASE_PGSQL)
+#include "../model/pgsql/user-odb.hxx"
+#include "../model/pgsql/user.hxx"
+#include "../model/pgsql/word-odb.hxx"
+#include "../model/pgsql/word.hxx"
+#else
+#error unknown database; did you forget to define the DATABASE_* macros?
+#endif
 
 #include <iostream>
 
@@ -20,10 +38,13 @@ CRUDOrderDispatcher::route(const std::string &objectType,
   std::cout << "OBJECT TYPE : " << properties.get<std::string>("object-type")
             << std::endl;
   if ("user" == objectType) {
-    response = UserOrderDispatcher::route(
-        properties.get<std::string>("order-type"), properties, data);
+    // dispatch crud user orders
+    response = routeObjectType<user>(properties.get<std::string>("order-type"),
+                                     properties, data);
   } else if ("word" == objectType) {
-    // TODO add WordOrderDispatcher
+    // dispatch crud word orders
+    response = routeObjectType<word>(properties.get<std::string>("order-type"),
+                                     properties, data);
   } else {
     // TODO add exception : unknown object type
   }

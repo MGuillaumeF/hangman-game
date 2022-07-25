@@ -65,22 +65,6 @@ public:
   static std::unique_ptr<UserDBEndpoint> &getInstance();
 
   /**
-   * @brief Create User(s) object(s)
-   *
-   * @param data The property tree data of user(s) to create
-   * @return boost::property_tree::ptree The user(s) id(s) list after create
-   */
-  boost::property_tree::ptree
-  createUser(const boost::property_tree::ptree &data) const;
-
-  /**
-   * @brief function to delete user by id
-   *
-   * @param data The property tree data of user(s) to delete
-   */
-  void deleteUser(const boost::property_tree::ptree &data) const;
-
-  /**
    * @brief function to connect user by login and password
    *
    * @param data The property tree data of user to connect

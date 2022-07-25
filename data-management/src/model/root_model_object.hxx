@@ -159,6 +159,20 @@ public:
     return childObject;
   };
 
+  /**
+   * @brief method to get object type
+   *
+   * @return The object type
+   */
+  static std::string getObjectType() { return "root_model_object"; }
+
+  /**
+   * @brief method to get plurial object type
+   *
+   * @return The plurial object type
+   */
+  static std::string getPlurialObjectType() { return "root_model_objects"; }
+
 protected:
   friend class odb::access;
 #pragma db id auto

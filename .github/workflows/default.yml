@@ -131,13 +131,13 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         mkdir sqlite
-        cp ./*.hxx ./sqlite/
+        cp ./*.*xx ./sqlite/
         cd sqlite
         odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
         cd ..
         mkdir mysql
-        cp ./*.hxx ./mysql/
+        cp ./*.*xx ./mysql/
         cd mysql
         odb --database mysql --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
@@ -484,13 +484,13 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         mkdir sqlite
-        cp ./*.hxx ./sqlite/
+        cp ./*.*xx ./sqlite/
         cd sqlite
         odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
         cd ..
         mkdir mysql
-        cp ./*.hxx ./mysql/
+        cp ./*.*xx ./mysql/
         cd mysql
         odb --database mysql --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
         ls -a .
@@ -590,7 +590,7 @@ jobs:
       run: |
         odb --version
         mkdir sqlite
-        copy ./*.hxx ./sqlite/
+        copy ./*.*xx ./sqlite/
         cd sqlite
         odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
 
@@ -659,7 +659,7 @@ jobs:
       run: |
         odb --version
         mkdir sqlite
-        copy ./*.hxx ./sqlite/
+        copy ./*.*xx ./sqlite/
         cd sqlite
         odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
 
