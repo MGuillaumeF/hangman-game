@@ -114,7 +114,7 @@ public:
         }
       }
     }
-    odb::core::transaction t(DatabaseAccess::getDatabaseAccess()->begin());
+    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
       if (0 != objectToPersist.getId()) {
         std::cerr
@@ -128,7 +128,7 @@ public:
       }
       objectToPersist.setVersion(1);
       const uint32_t id =
-          DatabaseAccess::getDatabaseAccess()->persist(objectToPersist);
+          DataAccess::getDatabaseAccess()->persist(objectToPersist);
 
       boost::property_tree::ptree objectId;
       objectId.put("id", id);
