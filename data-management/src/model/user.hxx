@@ -1,9 +1,9 @@
 #ifndef __MODEL_USER_HXX__
 #define __MODEL_USER_HXX__
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include <odb/core.hxx>
 
