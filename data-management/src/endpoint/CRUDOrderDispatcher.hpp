@@ -164,7 +164,7 @@ public:
    * @return The result of request process
    */
   template <typename T, typename std::enable_if_t<std::is_base_of<
-                            root_model_object, T>::value>* = nullptr>
+                            root_model_object, T>::value> * = nullptr>
   static boost::property_tree::ptree
   readObject(const boost::property_tree::ptree &properties,
              const boost::property_tree::ptree &data) {
