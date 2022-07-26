@@ -123,9 +123,7 @@ public:
    *
    * @param friends The friend list of user
    */
-  void setFriends(const std::vector<user> &friends) {
-    m_friends = friends;
-  };
+  void setFriends(const std::vector<user> &friends) { m_friends = friends; };
 
   /**
    * @brief method to check if all fields of user are valid
