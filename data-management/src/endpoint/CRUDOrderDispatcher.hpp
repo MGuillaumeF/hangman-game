@@ -53,8 +53,8 @@ public:
    * @param data The data part of request
    * @return The result of request process
    */
-  template <typename T, typename std::enable_if<std::is_base_of<
-                            root_model_object, T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value>* = nullptr>
   static boost::property_tree::ptree
   routeObjectType(const std::string &orderType,
                   const boost::property_tree::ptree &properties,
@@ -90,8 +90,8 @@ public:
    * @param data The data part of request
    * @return The result of request process
    */
-  template <typename T, typename std::enable_if<std::is_base_of<
-                            root_model_object, T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value>* = nullptr>
   static boost::property_tree::ptree
   createObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
@@ -146,8 +146,8 @@ public:
    * @param full The update is a full replace if true
    * @return The result of request process
    */
-  template <typename T, typename std::enable_if<std::is_base_of<
-                            root_model_object, T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value> * = nullptr>
   static boost::property_tree::ptree
   updateObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data, bool full = true) {
@@ -180,8 +180,8 @@ public:
    * @param data The data part of request
    * @return The result of request process
    */
-  template <typename T, typename std::enable_if<std::is_base_of<
-                            root_model_object, T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value>* = nullptr>
   static boost::property_tree::ptree
   deleteObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
