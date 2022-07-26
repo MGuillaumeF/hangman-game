@@ -175,6 +175,8 @@ public:
 
 protected:
   friend class odb::access;
+
+private:
 #pragma db id auto
   uint32_t m_id = 0;
   uint32_t m_version = 0;
