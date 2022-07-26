@@ -150,7 +150,7 @@ public:
                             root_model_object, T>::value> * = nullptr>
   static boost::property_tree::ptree
   updateObject(const boost::property_tree::ptree &properties,
-               const boost::property_tree::ptree &data, bool full = true) {
+               const boost::property_tree::ptree &data, const bool &full = true) {
     boost::property_tree::ptree response;
 
     return response;
