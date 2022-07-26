@@ -132,8 +132,8 @@ public:
    *
    * @return The object found
    */
-  template <typename T, typename std::enable_if<std::is_base_of<
-                            root_model_object, T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value> * = nullptr>
   static T parse(const boost::property_tree::ptree &property_tree) {
     T childObject;
     const boost::optional<uint32_t> id =
@@ -175,6 +175,8 @@ public:
 
 protected:
   friend class odb::access;
+
+private:
 #pragma db id auto
   uint32_t m_id = 0;
   uint32_t m_version = 0;
