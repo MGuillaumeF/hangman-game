@@ -2,6 +2,7 @@
 #define __MODEL_USER_HXX__
 
 #include <string>
+#include <vector>
 
 #include <odb/core.hxx>
 
@@ -176,6 +177,8 @@ private:
   std::string m_saltSession;
   std::string m_token;
   uint32_t m_lastConnection;
+#pragma db value_not_null unordered
+  std::vector<shared_ptr<user>> m_friends;
 };
 
 #pragma db object(user)
