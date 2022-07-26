@@ -92,6 +92,7 @@ public:
    *
    * @param token
    */
+
   void setToken(const std::string &token) { m_token = token; };
   /**
    * @brief Get the Last connection object
@@ -107,6 +108,23 @@ public:
    */
   void setLastConnection(const uint32_t &lastConnection) {
     m_lastConnection = lastConnection;
+  };
+
+  void setToken(const std::string &token) { m_token = token; };
+  /**
+   * @brief Get the friends list of object
+   *
+   * @return const std::vector<user>& The user list of users
+   */
+  const std::vector<user> &getFriends() const { return m_friends; };
+
+  /**
+   * @brief Set the users friends list
+   *
+   * @param friends The friend list of user
+   */
+  void setFriends(const std::vector<user> &friends) {
+    m_friends = friends;
   };
 
   /**
