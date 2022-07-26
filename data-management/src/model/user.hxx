@@ -179,7 +179,7 @@ private:
   std::string m_token;
   uint32_t m_lastConnection;
 #pragma db value_not_null unordered
-  std::vector<shared_ptr<user>> m_friends;
+  std::vector<std::shared_ptr<user>> m_friends;
 };
 
 #pragma db object(user)
