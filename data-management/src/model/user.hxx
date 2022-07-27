@@ -219,7 +219,7 @@ private:
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<user>> m_friends;
 #pragma db value_not_null unordered
-  std::vector<shared_ptr<group>> m_groups;
+  std::vector<std::shared_ptr<group>> m_groups;
 };
 
 #pragma db object(user)
