@@ -7,8 +7,10 @@
 
 #include <odb/core.hxx>
 
-#include "./group.hxx"
+// #include "./group.hxx"
 #include "./root_model_object.hxx"
+
+class group;
 
 /**
  * @brief class of Users in model
