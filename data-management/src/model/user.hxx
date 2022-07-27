@@ -7,8 +7,8 @@
 
 #include <odb/core.hxx>
 
-#include "./root_model_object.hxx"
 #include "./group.hxx"
+#include "./root_model_object.hxx"
 
 /**
  * @brief class of Users in model
@@ -129,7 +129,7 @@ public:
     m_friends = friends;
   };
 
-    /**
+  /**
    * @brief Get the groups list of object
    *
    * @return const std::vector<group>& The group list of user
@@ -219,8 +219,7 @@ private:
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<user>> m_friends;
 #pragma db value_not_null unordered
-  std::vector<shared_ptr<group> > m_groups;
-
+  std::vector<shared_ptr<group>> m_groups;
 };
 
 #pragma db object(user)
