@@ -76,7 +76,7 @@ public:
    *
    * @return The object found
    */
-  static word parse(const boost::property_tree::ptree &property_tree) {
+  static group parse(const boost::property_tree::ptree &property_tree) {
     group parsedGroup;
     return parsedGroup;
   }
