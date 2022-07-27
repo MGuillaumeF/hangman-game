@@ -3,9 +3,9 @@
 
 #include "./root_model_object.hxx"
 #include "./user.hxx"
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 /**
  * @brief class of Groups in model
