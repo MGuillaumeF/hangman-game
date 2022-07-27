@@ -2,10 +2,12 @@
 #define __MODEL_GROUP_HXX__
 
 #include "./root_model_object.hxx"
-#include "./user.hxx"
+// #include "./user.hxx"
 #include <memory>
 #include <string>
 #include <vector>
+
+class user;
 
 /**
  * @brief class of Groups in model
