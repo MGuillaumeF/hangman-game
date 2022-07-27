@@ -115,14 +115,14 @@ public:
    *
    * @return const std::vector<user>& The user list of users
    */
-  const std::vector<user> &getFriends() const { return m_friends; };
+  const std::vector<std::shared_ptr<user>> &getFriends() const { return m_friends; };
 
   /**
    * @brief Set the users friends list
    *
    * @param friends The friend list of user
    */
-  void setFriends(const std::vector<user> &friends) { m_friends = friends; };
+  void setFriends(const std::vector<std::shared_ptr<user>> &friends) { m_friends = friends; };
 
   /**
    * @brief method to check if all fields of user are valid
