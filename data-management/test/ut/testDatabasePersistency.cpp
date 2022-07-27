@@ -24,20 +24,20 @@
 #include <boost/property_tree/ptree.hpp>
 
 #if defined(DATABASE_MYSQL)
-#include "../../src/model/mysql/user-odb.hxx"
-#include "../../src/model/mysql/user.hxx"
 #include "../../src/model/mysql/group-odb.hxx"
 #include "../../src/model/mysql/group.hxx"
+#include "../../src/model/mysql/user-odb.hxx"
+#include "../../src/model/mysql/user.hxx"
 #elif defined(DATABASE_SQLITE)
-#include "../../src/model/sqlite/user-odb.hxx"
-#include "../../src/model/sqlite/user.hxx"
 #include "../../src/model/sqlite/group-odb.hxx"
 #include "../../src/model/sqlite/group.hxx"
+#include "../../src/model/sqlite/user-odb.hxx"
+#include "../../src/model/sqlite/user.hxx"
 #elif defined(DATABASE_PGSQL)
-#include "../../src/model/pgsql/user-odb.hxx"
-#include "../../src/model/pgsql/user.hxx"
 #include "../../src/model/pgsql/group-odb.hxx"
 #include "../../src/model/pgsql/group.hxx"
+#include "../../src/model/pgsql/user-odb.hxx"
+#include "../../src/model/pgsql/user.hxx"
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
     jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
-  
+
     user_group_id = db->persist(userGroup);
 
     t.commit();
