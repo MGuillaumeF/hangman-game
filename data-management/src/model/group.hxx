@@ -5,6 +5,7 @@
 #include "./user.hxx"
 #include <string>
 #include <vector>
+#include <memory>
 
 /**
  * @brief class of Groups in model
@@ -98,7 +99,7 @@ private:
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
 #pragma db value_not_null inverse(m_groups)
-  std::vector<weak_ptr<user>> m_members;
+  std::vector<std::weak_ptr<user>> m_members;
 };
 
 #pragma db object(group)
