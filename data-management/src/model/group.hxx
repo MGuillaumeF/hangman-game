@@ -58,7 +58,7 @@ public:
    * @return true The content of group object is valid
    * @return false The content of group object is invalid
    */
-  static bool isValid(const word &wrd) { return grp.getName().size() > 3; }
+  static bool isValid(const group &grp) { return grp.getName().size() > 3; }
 
   /**
    * @brief method to convert object to property tree
