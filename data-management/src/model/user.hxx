@@ -8,6 +8,7 @@
 #include <odb/core.hxx>
 
 #include "./root_model_object.hxx"
+#include "./group.hxx"
 
 /**
  * @brief class of Users in model
@@ -128,6 +129,24 @@ public:
     m_friends = friends;
   };
 
+    /**
+   * @brief Get the groups list of object
+   *
+   * @return const std::vector<group>& The group list of user
+   */
+  const std::vector<std::shared_ptr<group>> &getGroups() const {
+    return m_groups;
+  };
+
+  /**
+   * @brief Set the user groups list
+   *
+   * @param groups The group list of user
+   */
+  void setGroups(const std::vector<std::shared_ptr<group>> &groups) {
+    m_groups = groups;
+  };
+
   /**
    * @brief method to check if all fields of user are valid
    *
@@ -199,6 +218,9 @@ private:
   uint32_t m_lastConnection;
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<user>> m_friends;
+#pragma db value_not_null unordered
+  std::vector<shared_ptr<group> > m_groups;
+
 };
 
 #pragma db object(user)
