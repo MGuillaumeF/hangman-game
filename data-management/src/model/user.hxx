@@ -10,10 +10,8 @@
 #include "./group.hxx"
 #include "./root_model_object.hxx"
 
-
 class group;
 #pragma db object(group)
-
 
 /**
  * @brief class of Users in model
