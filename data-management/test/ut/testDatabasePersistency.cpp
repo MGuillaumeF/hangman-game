@@ -63,7 +63,6 @@ BOOST_AUTO_TEST_CASE(test_create) {
   uint32_t joe_id = -1;
   uint32_t jane_id = -1;
 
-
   // Create a few persistent user objects.
   //
   user john;
@@ -134,12 +133,11 @@ BOOST_AUTO_TEST_CASE(test_create) {
     t.commit();
   }
 
-
-   // Joe and Jane are friends
-   //
+  // Joe and Jane are friends
+  //
   {
     odb::core::transaction t(db->begin());
-    std::vector<std::shared_ptr<user> friends;
+    std::vector < std::shared_ptr<user> friends;
     std::shared_ptr<user> joe(db->load<user>(joe_id));
     std::shared_ptr<user> jane(db->load<user>(jane_id));
     friends.push_back(jane);
@@ -148,11 +146,11 @@ BOOST_AUTO_TEST_CASE(test_create) {
     t.commit();
   }
 
-   // Joe and Jane are friends check
-   //
+  // Joe and Jane are friends check
+  //
   {
     odb::core::transaction t(db->begin());
-    std::vector<std::shared_ptr<user> friends;
+    std::vector < std::shared_ptr<user> friends;
     std::shared_ptr<user> joe(db->load<user>(joe_id));
     std::shared_ptr<user> jane(db->load<user>(jane_id));
     friends = joe->getFriends(friends);
@@ -164,7 +162,6 @@ BOOST_AUTO_TEST_CASE(test_create) {
     }
     t.commit();
   }
-
 
   // Alternative implementation without using the id.
   //
