@@ -38,7 +38,9 @@ public:
    *
    * @return const std::vector<std::weak_ptr<user>>&
    */
-  const std::vector<std::weak_ptr<user>> &getMembers() const { return m_members; };
+  const std::vector<std::weak_ptr<user>> &getMembers() const {
+    return m_members;
+  };
 
   /**
    * @brief Set members of group object
@@ -55,9 +57,7 @@ public:
    * @return true The content of group object is valid
    * @return false The content of group object is invalid
    */
-  static bool isValid(const word &wrd) {
-    return grp.getName().size() > 3;
-  }
+  static bool isValid(const word &wrd) { return grp.getName().size() > 3; }
 
   /**
    * @brief method to convert object to property tree
