@@ -61,6 +61,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
   uint32_t john_id = -1;
   uint32_t joe_id = -1;
+  uint32_t jane_id = -1;
+
 
   // Create a few persistent user objects.
   //
@@ -98,7 +100,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
     odb::core::transaction t(db->begin());
 
     john_id = db->persist(john);
-    db->persist(jane);
+    jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
 
@@ -131,6 +133,38 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
     t.commit();
   }
+
+
+   // Joe and Jane are friends
+   //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<user> friends;
+    std::shared_ptr<user> joe(db->load<user>(joe_id));
+    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    friends.push_back(jane);
+    joe->setFriends(friends);
+    db->update(*joe);
+    t.commit();
+  }
+
+   // Joe and Jane are friends check
+   //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<user> friends;
+    std::shared_ptr<user> joe(db->load<user>(joe_id));
+    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    friends = joe->getFriends(friends);
+    std::cout << "Joe has " << friends.size() << " friends" << std::endl;
+    BOOST_CHECK_EQUAL(1, friends.size());
+    if (friends.size() > 0) {
+      BOOST_CHECK_EQUAL("jane", friends.front()->getLogin());
+      BOOST_CHECK_EQUAL(0, friends.front()->getFriends().size());
+    }
+    t.commit();
+  }
+
 
   // Alternative implementation without using the id.
   //
