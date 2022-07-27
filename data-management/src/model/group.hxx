@@ -108,7 +108,7 @@ private:
 #pragma db object(group)
 
 #pragma db view object(group)
-struct word_stat {
+struct group_stat {
 #pragma db column("count(" + group::m_id + ")")
   std::size_t count;
 };
