@@ -26,12 +26,18 @@
 #if defined(DATABASE_MYSQL)
 #include "../../src/model/mysql/user-odb.hxx"
 #include "../../src/model/mysql/user.hxx"
+#include "../../src/model/mysql/group-odb.hxx"
+#include "../../src/model/mysql/group.hxx"
 #elif defined(DATABASE_SQLITE)
 #include "../../src/model/sqlite/user-odb.hxx"
 #include "../../src/model/sqlite/user.hxx"
+#include "../../src/model/sqlite/group-odb.hxx"
+#include "../../src/model/sqlite/group.hxx"
 #elif defined(DATABASE_PGSQL)
 #include "../../src/model/pgsql/user-odb.hxx"
 #include "../../src/model/pgsql/user.hxx"
+#include "../../src/model/pgsql/group-odb.hxx"
+#include "../../src/model/pgsql/group.hxx"
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
@@ -62,6 +68,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   uint32_t john_id = -1;
   uint32_t joe_id = -1;
   uint32_t jane_id = -1;
+  uint32_t user_group_id = -1;
 
   // Create a few persistent user objects.
   //
@@ -93,6 +100,9 @@ BOOST_AUTO_TEST_CASE(test_create) {
   frank.setSaltSession("salt_session_4");
   frank.setToken("token_4");
 
+  group userGroup;
+  userGroup.setName("User");
+
   // Make objects persistent and save their ids for later use.
   //
   {
@@ -102,6 +112,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
     jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
+  
+    user_group_id = db->persist(userGroup);
 
     t.commit();
   }
@@ -159,6 +171,46 @@ BOOST_AUTO_TEST_CASE(test_create) {
     if (friends.size() > 0) {
       BOOST_CHECK_EQUAL("Jane", friends.front()->getLogin());
       BOOST_CHECK_EQUAL(0, friends.front()->getFriends().size());
+    }
+    t.commit();
+  }
+
+  // Joe and Jane are in user group
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<user>> members;
+    std::shared_ptr<user> joe(db->load<user>(joe_id));
+    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
+    members.push_back(jane);
+    members.push_back(joe);
+    userGroup->setMembers(members);
+    db->update(*userGroup);
+    t.commit();
+  }
+
+  // Joe and Jane are friends check
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<group>> joeGroups;
+    std::vector<std::shared_ptr<group>> janeGroups;
+    std::shared_ptr<user> joe(db->load<user>(joe_id));
+    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    joeGroups = joe->getGroups();
+    janeGroups = jane->getGroups();
+    std::cout << "Joe has " << joeGroups.size() << " groups" << std::endl;
+    std::cout << "Jane has " << janeGroups.size() << " groups" << std::endl;
+    BOOST_CHECK_EQUAL(1, joeGroups.size());
+    if (joeGroups.size() > 0) {
+      BOOST_CHECK_EQUAL("User", joeGroups.front()->getName());
+      BOOST_CHECK_EQUAL(2, joeGroups.front()->getMembers().size());
+    }
+    BOOST_CHECK_EQUAL(1, janeGroups.size());
+    if (janeGroups.size() > 0) {
+      BOOST_CHECK_EQUAL("User", janeGroups.front()->getName());
+      BOOST_CHECK_EQUAL(2, janeGroups.front()->getMembers().size());
     }
     t.commit();
   }
