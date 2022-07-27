@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
     std::cout << "Joe has " << friends.size() << " friends" << std::endl;
     BOOST_CHECK_EQUAL(1, friends.size());
     if (friends.size() > 0) {
-      BOOST_CHECK_EQUAL("jane", friends.front()->getLogin());
+      BOOST_CHECK_EQUAL("Jane", friends.front()->getLogin());
       BOOST_CHECK_EQUAL(0, friends.front()->getFriends().size());
     }
     t.commit();
