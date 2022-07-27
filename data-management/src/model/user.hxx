@@ -92,9 +92,9 @@ public:
    *
    * @param token
    */
-
   void setToken(const std::string &token) { m_token = token; };
   /**
+
    * @brief Get the Last connection object
    *
    * @return const uint32_t&
@@ -110,7 +110,6 @@ public:
     m_lastConnection = lastConnection;
   };
 
-  void setToken(const std::string &token) { m_token = token; };
   /**
    * @brief Get the friends list of object
    *
