@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
     std::vector<std::shared_ptr<user>> friends;
     std::shared_ptr<user> joe(db->load<user>(joe_id));
     std::shared_ptr<user> jane(db->load<user>(jane_id));
-    friends = joe->getFriends(friends);
+    friends = joe->getFriends();
     std::cout << "Joe has " << friends.size() << " friends" << std::endl;
     BOOST_CHECK_EQUAL(1, friends.size());
     if (friends.size() > 0) {
