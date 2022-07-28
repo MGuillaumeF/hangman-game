@@ -7,8 +7,8 @@
 #include <string>
 // #include <vector>
 
-class user;
-#pragma db object(user)
+// class user;
+// #pragma db object(user)
 
 /**
  * @brief class of Groups in model
