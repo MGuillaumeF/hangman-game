@@ -76,7 +76,7 @@ public:
    *
    * @return The object found
    */
-  static group parse(const boost::property_tree::ptree &property_tree) {
+  static dictionary parse(const boost::property_tree::ptree &property_tree) {
     dictionary parsedDictionary;
     return parsedDictionary;
   }
@@ -101,7 +101,7 @@ private:
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
 #pragma db value_not_null unordered
-  std::vector<std::weak_ptr<user>> m_dictionaries;
+  std::vector<std::weak_ptr<dictionary>> m_dictionaries;
 };
 
 #pragma db object(dictionary)
