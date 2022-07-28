@@ -196,12 +196,18 @@ BOOST_AUTO_TEST_CASE(test_create) {
     odb::core::transaction t(db->begin());
     std::vector<std::shared_ptr<group>> joeGroups;
     std::vector<std::shared_ptr<group>> janeGroups;
+    std::vector<std::shared_ptr<user>> userGroupUsers;
+    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
     std::shared_ptr<user> joe(db->load<user>(joe_id));
     std::shared_ptr<user> jane(db->load<user>(jane_id));
     joeGroups = joe->getGroups();
     janeGroups = jane->getGroups();
+    userGroupUsers = userGroup->getMembers();
     std::cout << "Joe has " << joeGroups.size() << " groups" << std::endl;
     std::cout << "Jane has " << janeGroups.size() << " groups" << std::endl;
+    std::cout << "The user group has " << userGroupUsers.size() << " members" << std::endl;
+    BOOST_CHECK_EQUAL(2, userGroupUsers.size());
+   
     BOOST_CHECK_EQUAL(1, joeGroups.size());
     if (joeGroups.size() > 0) {
       BOOST_CHECK_EQUAL("User", joeGroups.front()->getName());
