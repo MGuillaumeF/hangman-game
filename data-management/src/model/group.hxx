@@ -101,16 +101,16 @@ private:
 
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
-// #pragma db value_not_null inverse(m_groups)
-//  std::vector<std::weak_ptr<user>> m_members;
-//};
+  // #pragma db value_not_null inverse(m_groups)
+  //  std::vector<std::weak_ptr<user>> m_members;
+  //};
 
 #pragma db object(group)
 
 #pragma db view object(group)
-struct group_stat {
+  struct group_stat {
 #pragma db column("count(" + group::m_id + ")")
-  std::size_t count;
-};
+    std::size_t count;
+  };
 
 #endif // __MODEL_GROUP_HXX__
