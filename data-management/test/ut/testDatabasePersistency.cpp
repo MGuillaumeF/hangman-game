@@ -205,9 +205,10 @@ BOOST_AUTO_TEST_CASE(test_create) {
     userGroupUsers = userGroup->getMembers();
     std::cout << "Joe has " << joeGroups.size() << " groups" << std::endl;
     std::cout << "Jane has " << janeGroups.size() << " groups" << std::endl;
-    std::cout << "The user group has " << userGroupUsers.size() << " members" << std::endl;
+    std::cout << "The user group has " << userGroupUsers.size() << " members"
+              << std::endl;
     BOOST_CHECK_EQUAL(2, userGroupUsers.size());
-   
+
     BOOST_CHECK_EQUAL(1, joeGroups.size());
     if (joeGroups.size() > 0) {
       BOOST_CHECK_EQUAL("User", joeGroups.front()->getName());
