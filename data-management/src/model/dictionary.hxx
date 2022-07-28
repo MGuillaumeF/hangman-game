@@ -58,7 +58,9 @@ public:
    * @return true The content of group object is valid
    * @return false The content of group object is invalid
    */
-  static bool isValid(const dictionary &dict) { return dict.getName().size() > 3; }
+  static bool isValid(const dictionary &dict) {
+    return dict.getName().size() > 3;
+  }
 
   /**
    * @brief method to convert object to property tree
@@ -105,9 +107,9 @@ private:
 #pragma db object(dictionary)
 
 #pragma db view object(dictionary)
-  struct dictionary_stat {
+struct dictionary_stat {
 #pragma db column("count(" + dictionary::m_id + ")")
-    std::size_t count;
-  };
+  std::size_t count;
+};
 
 #endif // __MODEL_DICTIONARY_HXX__
