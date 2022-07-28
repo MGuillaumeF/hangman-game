@@ -2,10 +2,10 @@
 #define __MODEL_GROUP_HXX__
 
 #include "./root_model_object.hxx"
-#include "./user.hxx"
-#include <memory>
+// #include "./user.hxx"
+// #include <memory>
 #include <string>
-#include <vector>
+// #include <vector>
 
 class user;
 #pragma db object(user)
@@ -42,18 +42,18 @@ public:
    *
    * @return const std::vector<std::weak_ptr<user>>&
    */
-  const std::vector<std::weak_ptr<user>> &getMembers() const {
+  /*const std::vector<std::weak_ptr<user>> &getMembers() const {
     return m_members;
-  };
+  };*/
 
   /**
    * @brief Set members of group object
    *
    * @param members
    */
-  void setMembers(const std::vector<std::weak_ptr<user>> &members) {
+  /*void setMembers(const std::vector<std::weak_ptr<user>> &members) {
     m_members = members;
-  };
+  };*/
 
   /**
    * @brief method to check if all fields of group are valid
@@ -101,9 +101,9 @@ private:
 
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
-#pragma db value_not_null inverse(m_groups)
-  std::vector<std::weak_ptr<user>> m_members;
-};
+// #pragma db value_not_null inverse(m_groups)
+//  std::vector<std::weak_ptr<user>> m_members;
+//};
 
 #pragma db object(group)
 
