@@ -163,8 +163,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
   {
     odb::core::transaction t(db->begin());
     std::vector<std::shared_ptr<user>> friends;
-    std::shared_ptr<user> joe(db->load<user>(joe_id));
-    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> jane(db->load<user>(jane_id));
     friends = joe->getFriends();
     std::cout << "Joe has " << friends.size() << " friends" << std::endl;
     BOOST_CHECK_EQUAL(1, friends.size());
@@ -179,10 +179,10 @@ BOOST_AUTO_TEST_CASE(test_create) {
   //
   {
     odb::core::transaction t(db->begin());
-    std::vector<std::shared_ptr<user>> members;
-    std::shared_ptr<user> joe(db->load<user>(joe_id));
-    std::shared_ptr<user> jane(db->load<user>(jane_id));
-    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
+    std::vector<std::weak_ptr<user>> members;
+    std::weak_ptr<user> joe(db->load<user>(joe_id));
+    std::weak_ptr<user> jane(db->load<user>(jane_id));
+    std::unique_ptr<group> userGroup(db->load<group>(user_group_id));
     members.push_back(jane);
     members.push_back(joe);
     userGroup->setMembers(members);
@@ -190,16 +190,16 @@ BOOST_AUTO_TEST_CASE(test_create) {
     t.commit();
   }
 
-  // Joe and Jane are friends check
+  // Joe and Jane are group check
   //
   {
     odb::core::transaction t(db->begin());
     std::vector<std::shared_ptr<group>> joeGroups;
     std::vector<std::shared_ptr<group>> janeGroups;
-    std::vector<std::shared_ptr<user>> userGroupUsers;
-    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
-    std::shared_ptr<user> joe(db->load<user>(joe_id));
-    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    std::vector<std::weak_ptr<user>> userGroupUsers;
+    std::unique_ptr<group> userGroup(db->load<group>(user_group_id));
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> jane(db->load<user>(jane_id));
     joeGroups = joe->getGroups();
     janeGroups = jane->getGroups();
     userGroupUsers = userGroup->getMembers();
