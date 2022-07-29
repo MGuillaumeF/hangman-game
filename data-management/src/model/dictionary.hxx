@@ -101,7 +101,7 @@ private:
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
 #pragma db value_not_null unordered
-  std::vector<std::weak_ptr<word>> m_words;
+  std::vector<std::shared_ptr<word>> m_words;
 };
 
 #pragma db object(dictionary)
