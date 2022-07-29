@@ -2,7 +2,11 @@
 #define __MODEL_GROUP_HXX__
 
 #include "./root_model_object.hxx"
+#include <memory>
 #include <string>
+#include <vector>
+
+#include <odb/core.hxx>
 
 /**
  * @brief class of Groups in model
