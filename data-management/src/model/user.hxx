@@ -1,10 +1,13 @@
 #ifndef __MODEL_USER_HXX__
 #define __MODEL_USER_HXX__
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include <odb/core.hxx>
 
+#include "./group.hxx"
 #include "./root_model_object.hxx"
 
 /**
@@ -92,6 +95,7 @@ public:
    */
   void setToken(const std::string &token) { m_token = token; };
   /**
+
    * @brief Get the Last connection object
    *
    * @return const uint32_t&
@@ -105,6 +109,42 @@ public:
    */
   void setLastConnection(const uint32_t &lastConnection) {
     m_lastConnection = lastConnection;
+  };
+
+  /**
+   * @brief Get the friends list of object
+   *
+   * @return const std::vector<user>& The user list of users
+   */
+  const std::vector<std::shared_ptr<user>> &getFriends() const {
+    return m_friends;
+  };
+
+  /**
+   * @brief Set the users friends list
+   *
+   * @param friends The friend list of user
+   */
+  void setFriends(const std::vector<std::shared_ptr<user>> &friends) {
+    m_friends = friends;
+  };
+
+  /**
+   * @brief Get the groups list of object
+   *
+   * @return const std::vector<group>& The group list of user
+   */
+  const std::vector<std::shared_ptr<group>> &getGroups() const {
+    return m_groups;
+  };
+
+  /**
+   * @brief Set the user groups list
+   *
+   * @param groups The group list of user
+   */
+  void setGroups(const std::vector<std::shared_ptr<group>> &groups) {
+    m_groups = groups;
   };
 
   /**
@@ -176,6 +216,10 @@ private:
   std::string m_saltSession;
   std::string m_token;
   uint32_t m_lastConnection;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<user>> m_friends;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<group>> m_groups;
 };
 
 #pragma db object(user)

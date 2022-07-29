@@ -22,7 +22,7 @@
 <path fill="none" stroke="green" d="M242.48,-536.5C242.48,-536.5 1012.48,-536.5 1012.48,-536.5 1018.48,-536.5 1024.48,-542.5 1024.48,-548.5 1024.48,-548.5 1024.48,-570.5 1024.48,-570.5 1024.48,-576.5 1018.48,-582.5 1012.48,-582.5 1012.48,-582.5 242.48,-582.5 242.48,-582.5 236.48,-582.5 230.48,-576.5 230.48,-570.5 230.48,-570.5 230.48,-548.5 230.48,-548.5 230.48,-542.5 236.48,-536.5 242.48,-536.5"/>
 <text text-anchor="middle" x="627.48" y="-567.3" font-family="Helvetica,sans-Serif" font-size="14.00">testDatabasePersistency</text>
 <polyline fill="none" stroke="green" points="230.48,-559.5 1024.48,-559.5 "/>
-<text text-anchor="middle" x="627.48" y="-544.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testDatabasePersistency.cpp(39)</text>
+<text text-anchor="middle" x="627.48" y="-544.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testDatabasePersistency.cpp(45)</text>
 </g>
 <!-- tu1&#45;&gt;tu2 -->
 <g id="edge1" class="edge">
@@ -64,7 +64,7 @@
 <path fill="none" stroke="green" d="M1085.98,-585.5C1085.98,-585.5 1855.98,-585.5 1855.98,-585.5 1861.98,-585.5 1867.98,-591.5 1867.98,-597.5 1867.98,-597.5 1867.98,-619.5 1867.98,-619.5 1867.98,-625.5 1861.98,-631.5 1855.98,-631.5 1855.98,-631.5 1085.98,-631.5 1085.98,-631.5 1079.98,-631.5 1073.98,-625.5 1073.98,-619.5 1073.98,-619.5 1073.98,-597.5 1073.98,-597.5 1073.98,-591.5 1079.98,-585.5 1085.98,-585.5"/>
 <text text-anchor="middle" x="1470.98" y="-616.3" font-family="Helvetica,sans-Serif" font-size="14.00">test_create</text>
 <polyline fill="none" stroke="green" points="1073.98,-608.5 1867.98,-608.5 "/>
-<text text-anchor="middle" x="1470.98" y="-593.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testDatabasePersistency.cpp(56)</text>
+<text text-anchor="middle" x="1470.98" y="-593.3" font-family="Helvetica,sans-Serif" font-size="14.00">/home/runner/work/hangman&#45;game/hangman&#45;game/data&#45;management/test/ut/testDatabasePersistency.cpp(62)</text>
 </g>
 <!-- tu2&#45;&gt;tu65536 -->
 <g id="edge2" class="edge">

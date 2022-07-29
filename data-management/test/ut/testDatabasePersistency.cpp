@@ -24,12 +24,18 @@
 #include <boost/property_tree/ptree.hpp>
 
 #if defined(DATABASE_MYSQL)
+#include "../../src/model/mysql/group-odb.hxx"
+#include "../../src/model/mysql/group.hxx"
 #include "../../src/model/mysql/user-odb.hxx"
 #include "../../src/model/mysql/user.hxx"
 #elif defined(DATABASE_SQLITE)
+#include "../../src/model/sqlite/group-odb.hxx"
+#include "../../src/model/sqlite/group.hxx"
 #include "../../src/model/sqlite/user-odb.hxx"
 #include "../../src/model/sqlite/user.hxx"
 #elif defined(DATABASE_PGSQL)
+#include "../../src/model/pgsql/group-odb.hxx"
+#include "../../src/model/pgsql/group.hxx"
 #include "../../src/model/pgsql/user-odb.hxx"
 #include "../../src/model/pgsql/user.hxx"
 #else
@@ -61,6 +67,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
   uint32_t john_id = -1;
   uint32_t joe_id = -1;
+  uint32_t jane_id = -1;
+  uint32_t user_group_id = -1;
 
   // Create a few persistent user objects.
   //
@@ -92,15 +100,20 @@ BOOST_AUTO_TEST_CASE(test_create) {
   frank.setSaltSession("salt_session_4");
   frank.setToken("token_4");
 
+  group userGroup;
+  userGroup.setName("User");
+
   // Make objects persistent and save their ids for later use.
   //
   {
     odb::core::transaction t(db->begin());
 
     john_id = db->persist(john);
-    db->persist(jane);
+    jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
+
+    user_group_id = db->persist(userGroup);
 
     t.commit();
   }
@@ -129,6 +142,80 @@ BOOST_AUTO_TEST_CASE(test_create) {
     joe->setToken("new token");
     db->update(*joe);
 
+    t.commit();
+  }
+
+  // Joe and Jane are friends
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<user>> friends;
+    std::shared_ptr<user> joe(db->load<user>(joe_id));
+    std::shared_ptr<user> jane(db->load<user>(jane_id));
+    friends.push_back(jane);
+    joe->setFriends(friends);
+    db->update(*joe);
+    t.commit();
+  }
+
+  // Joe and Jane are friends check
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<user>> friends;
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> jane(db->load<user>(jane_id));
+    friends = joe->getFriends();
+    std::cout << "Joe has " << friends.size() << " friends" << std::endl;
+    BOOST_CHECK_EQUAL(1, friends.size());
+    if (friends.size() > 0) {
+      BOOST_CHECK_EQUAL("Jane", friends.front()->getLogin());
+      BOOST_CHECK_EQUAL(0, friends.front()->getFriends().size());
+    }
+    t.commit();
+  }
+
+  // Joe and Jane are in user group
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<group>> groups;
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> jane(db->load<user>(jane_id));
+    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
+    groups.push_back(userGroup);
+    joe->setGroups(groups);
+    jane->setGroups(groups);
+    db->update(*joe);
+    db->update(*jane);
+    t.commit();
+  }
+
+  // Joe and Jane are group check
+  //
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<group>> joeGroups;
+    std::vector<std::shared_ptr<group>> janeGroups;
+    std::vector<std::weak_ptr<user>> userGroupUsers;
+    std::unique_ptr<group> userGroup(db->load<group>(user_group_id));
+    std::unique_ptr<user> joe(db->load<user>(joe_id));
+    std::unique_ptr<user> jane(db->load<user>(jane_id));
+    joeGroups = joe->getGroups();
+    janeGroups = jane->getGroups();
+    std::cout << "Joe has " << joeGroups.size() << " groups" << std::endl;
+    std::cout << "Jane has " << janeGroups.size() << " groups" << std::endl;
+
+    BOOST_CHECK_EQUAL(1, joeGroups.size());
+    if (joeGroups.size() > 0) {
+      BOOST_CHECK_EQUAL("User", joeGroups.front()->getName());
+      // BOOST_CHECK_EQUAL(2, joeGroups.front()->getMembers().size());
+    }
+    BOOST_CHECK_EQUAL(1, janeGroups.size());
+    if (janeGroups.size() > 0) {
+      BOOST_CHECK_EQUAL("User", janeGroups.front()->getName());
+      // BOOST_CHECK_EQUAL(2, janeGroups.front()->getMembers().size());
+    }
     t.commit();
   }
 
