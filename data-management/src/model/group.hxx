@@ -85,9 +85,9 @@ private:
 #pragma db object(group)
 
 #pragma db view object(group)
-  struct group_stat {
+struct group_stat {
 #pragma db column("count(" + group::m_id + ")")
-    std::size_t count;
-  };
+  std::size_t count;
+};
 
 #endif // __MODEL_GROUP_HXX__
