@@ -81,7 +81,7 @@ private:
 
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
-
+};
 #pragma db object(group)
 
 #pragma db view object(group)
