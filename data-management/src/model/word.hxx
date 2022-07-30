@@ -3,6 +3,7 @@
 
 #include "./root_model_object.hxx"
 #include <string>
+#include <vector>
 
 /**
  * @brief class of Words in model
