@@ -36,7 +36,9 @@ public:
    *
    * @return const std::vector<std::string>&
    */
-  const std::vector<std::string> &getDefinitions() const { return m_definitions; };
+  const std::vector<std::string> &getDefinitions() const {
+    return m_definitions;
+  };
 
   /**
    * @brief Set the Definition object
