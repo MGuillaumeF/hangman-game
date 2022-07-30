@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<order>
+    <properties>
+        <order-group>CRUD</order-group>
+        <order-author>administrator</order-author>
+        <order-type>create</order-type>
+        <object-type>word</object-type>
+    </properties>
+    <data>
+        <word>
+            <name>bonjour</name>
+            <definitions>bonjour est un mot</definitions>
+        </word>
+    </data>
+</order>
