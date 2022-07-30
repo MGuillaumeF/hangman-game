@@ -76,7 +76,7 @@ public:
    */
   static word parse(const boost::property_tree::ptree &property_tree) {
     word parsedWord;
-    parsedWord.setName(property_tree.get<std::string>("name");
+    parsedWord.setName(property_tree.get<std::string>("name"));
     return parsedWord;
   }
 
