@@ -18,33 +18,33 @@ public:
   word() = default;
 
   /**
-   * @brief Get the Value object
+   * @brief Get the Name of object
    *
    * @return const std::string&
    */
-  const std::string &getValue() const { return m_value; };
+  const std::string &getName() const { return m_name; };
 
   /**
-   * @brief Set the Value object
+   * @brief Set the Name of object
    *
-   * @param value
+   * @param name The new name of object
    */
-  void setValue(const std::string &value) { m_value = value; };
+  void setValue(const std::string &name) { m_name = name; };
 
   /**
-   * @brief Get the Definition object
+   * @brief Get the Definitions object
    *
-   * @return const std::string&
+   * @return const std::vector<std::string>&
    */
-  const std::string &getDefinition() const { return m_definition; };
+  const std::vector<std::string> &getDefinitions() const { return m_definitions; };
 
   /**
    * @brief Set the Definition object
    *
-   * @param definition
+   * @param definitions
    */
-  void setDefinition(const std::string &definition) {
-    m_definition = definition;
+  void setDefinitions(const std::string<std::string> &definitions) {
+    m_definitions = definitions;
   };
 
   /**
@@ -54,7 +54,7 @@ public:
    * @return false The content of word object is invalid
    */
   static bool isValid(const word &wrd) {
-    return wrd.getValue().size() > 3 && wrd.getDefinition().size() > 3;
+    return wrd.getValue().size() > 3 && wrd.getDefinitions().size() > 1;
   }
 
   /**
@@ -73,6 +73,7 @@ public:
    */
   static word parse(const boost::property_tree::ptree &property_tree) {
     word parsedWord;
+    parsedWord.setName(property_tree.get<std::string>("name");
     return parsedWord;
   }
 
@@ -96,7 +97,7 @@ private:
 #pragma db options() options("CHECK(value != '')")
   std::string m_value;
 #pragma db options() options("CHECK(definition != '')")
-  std::string m_definition;
+  std::vector<std::string> m_definitions;
 };
 
 #pragma db object(word)
