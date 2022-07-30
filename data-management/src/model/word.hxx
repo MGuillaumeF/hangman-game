@@ -30,7 +30,7 @@ public:
    *
    * @param name The new name of object
    */
-  void setValue(const std::string &name) { m_name = name; };
+  void setName(const std::string &name) { m_name = name; };
 
   /**
    * @brief Get the Definitions object
@@ -57,7 +57,7 @@ public:
    * @return false The content of word object is invalid
    */
   static bool isValid(const word &wrd) {
-    return wrd.getValue().size() > 3 && wrd.getDefinitions().size() > 1;
+    return wrd.getName().size() > 3 && wrd.getDefinitions().size() > 1;
   }
 
   /**
@@ -98,8 +98,7 @@ private:
   friend class odb::access;
 
 #pragma db options() options("CHECK(value != '')")
-  std::string m_value;
-#pragma db options() options("CHECK(definition != '')")
+  std::string m_name;
   std::vector<std::string> m_definitions;
 };
 
