@@ -46,7 +46,7 @@ public:
    *
    * @param definitions
    */
-  void setDefinitions(const std::string<std::string> &definitions) {
+  void setDefinitions(const std::vector<std::string> &definitions) {
     m_definitions = definitions;
   };
 
