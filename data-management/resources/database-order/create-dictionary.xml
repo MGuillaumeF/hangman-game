@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<order>
+    <properties>
+        <order-group>CRUD</order-group>
+        <order-author>administrator</order-author>
+        <order-type>create</order-type>
+        <object-type>dictionary</object-type>
+    </properties>
+    <data>
+        <dictionary>
+            <name>Français</name>
+            <country_code>FR</country_code>
+        </dictionary>
+    </data>
+</order>
