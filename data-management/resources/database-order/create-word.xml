@@ -9,7 +9,9 @@
     <data>
         <word>
             <name>bonjour</name>
-            <definitions>bonjour est un mot</definitions>
+            <definitions>
+              <definition>bonjour est un mot</definition>
+            </definitions>
         </word>
     </data>
 </order>
