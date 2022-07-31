@@ -99,6 +99,7 @@ private:
 
 #pragma db options() options("CHECK(value != '')")
   std::string m_name;
+#pragma db value_not_null unordered
   std::vector<std::string> m_definitions;
 };
 
