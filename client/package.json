@@ -121,6 +121,6 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^11.18.3",
     "react-router-dom": "^6.3.0",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   }
 }
