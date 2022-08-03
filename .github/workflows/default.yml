@@ -283,6 +283,7 @@ jobs:
       run: /usr/cpp-coso/cpp-coso boost-test ${{github.workspace}}/data-management/reports/reportUT.xml ${{github.workspace}}/data-management/reports/logUT.xml ${{github.workspace}}/data-management/reports/boost-test-sonarqube-report-UT.xml
 
     - name: Archive Test report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: Server-Hangman-Game - Reports
