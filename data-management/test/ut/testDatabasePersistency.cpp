@@ -70,6 +70,11 @@ BOOST_AUTO_TEST_CASE(test_create) {
   uint32_t jane_id = -1;
   uint32_t user_group_id = -1;
 
+  group userGroup;
+  userGroup.setName("User");
+  std::vector<std::shared_ptr<group>> groups;
+  groups.push_back(userGroup);
+
   // Create a few persistent user objects.
   //
   user john;
@@ -78,6 +83,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   john.setSaltUser("salt_user_1");
   john.setSaltSession("salt_session_1");
   john.setToken("token_1");
+  john->setGroups(groups);
 
   user jane;
   jane.setLogin("Jane");
@@ -85,6 +91,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   jane.setSaltUser("salt_user_2");
   jane.setSaltSession("salt_session_2");
   jane.setToken("token_2");
+  jane->setGroups(groups);
 
   user joe;
   joe.setLogin("Joe");
@@ -92,6 +99,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   joe.setSaltUser("salt_user_3");
   joe.setSaltSession("salt_session_3");
   joe.setToken("token_3");
+  joe->setGroups(groups);
 
   user frank;
   frank.setLogin("Frank");
@@ -99,22 +107,20 @@ BOOST_AUTO_TEST_CASE(test_create) {
   frank.setSaltUser("salt_user_4");
   frank.setSaltSession("salt_session_4");
   frank.setToken("token_4");
-
-  group userGroup;
-  userGroup.setName("User");
+  frank->setGroups(groups);
 
   // Make objects persistent and save their ids for later use.
   //
   {
     odb::core::transaction t(db->begin());
 
+    user_group_id = db->persist(userGroup);
+
     john_id = db->persist(john);
     jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
-
-    user_group_id = db->persist(userGroup);
-
+    
     t.commit();
   }
 
@@ -172,22 +178,6 @@ BOOST_AUTO_TEST_CASE(test_create) {
       BOOST_CHECK_EQUAL("Jane", friends.front()->getLogin());
       BOOST_CHECK_EQUAL(0, friends.front()->getFriends().size());
     }
-    t.commit();
-  }
-
-  // Joe and Jane are in user group
-  //
-  {
-    odb::core::transaction t(db->begin());
-    std::vector<std::shared_ptr<group>> groups;
-    std::unique_ptr<user> joe(db->load<user>(joe_id));
-    std::unique_ptr<user> jane(db->load<user>(jane_id));
-    std::shared_ptr<group> userGroup(db->load<group>(user_group_id));
-    groups.push_back(userGroup);
-    joe->setGroups(groups);
-    jane->setGroups(groups);
-    db->update(*joe);
-    db->update(*jane);
     t.commit();
   }
 
