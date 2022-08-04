@@ -147,8 +147,8 @@ Dictionary : - string[] m_country_codes
 Dictionary : - Word[] m_words
 Dictionary : + string getName()
 Dictionary : + void setName(string name)
-Dictionary : + string[] getCountryCodes()
-Dictionary : + void setCountryCodes(string[] country_codes)
+Dictionary : + string getCountryCode()
+Dictionary : + void setCountryCode(string country_code)
 Dictionary : + Word[] getWords()
 Dictionary : + void setName(Word[] words)
 Word : - string m_name
