@@ -97,7 +97,7 @@ public:
 private:
   friend class odb::access;
 
-#pragma db options() options("CHECK(value != '')")
+#pragma db options() options("CHECK(name != '')")
   std::string m_name;
 #pragma db value_not_null unordered
   std::vector<std::string> m_definitions;
