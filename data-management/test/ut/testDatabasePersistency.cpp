@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   john.setSaltUser("salt_user_1");
   john.setSaltSession("salt_session_1");
   john.setToken("token_1");
-  john->setGroups(groups);
+  john.setGroups(groups);
 
   user jane;
   jane.setLogin("Jane");
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   jane.setSaltUser("salt_user_2");
   jane.setSaltSession("salt_session_2");
   jane.setToken("token_2");
-  jane->setGroups(groups);
+  jane.setGroups(groups);
 
   user joe;
   joe.setLogin("Joe");
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   joe.setSaltUser("salt_user_3");
   joe.setSaltSession("salt_session_3");
   joe.setToken("token_3");
-  joe->setGroups(groups);
+  joe.setGroups(groups);
 
   user frank;
   frank.setLogin("Frank");
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   frank.setSaltUser("salt_user_4");
   frank.setSaltSession("salt_session_4");
   frank.setToken("token_4");
-  frank->setGroups(groups);
+  frank.setGroups(groups);
 
   // Make objects persistent and save their ids for later use.
   //
