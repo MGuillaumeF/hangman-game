@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
   {
     odb::core::transaction t(db->begin());
 
-    user_group_id = db->persist(userGroup);
+    user_group_id = db->persist(*userGroup);
 
     john_id = db->persist(john);
     jane_id = db->persist(jane);
