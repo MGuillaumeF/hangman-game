@@ -109,19 +109,32 @@ BOOST_AUTO_TEST_CASE(test_create) {
   frank.setToken("token_4");
   frank.setGroups(groups);
 
+  std::cout << "[INFO] init objects out of transactions" << std::endl;
+
   // Make objects persistent and save their ids for later use.
   //
   {
+    std::cout << "[INFO] open transaction" << std::endl;
     odb::core::transaction t(db->begin());
 
     user_group_id = db->persist(*userGroup);
+    std::cout << "[INFO] persist group" << std::endl;
 
     john_id = db->persist(john);
+    std::cout << "[INFO] persist john" << std::endl;
+
     jane_id = db->persist(jane);
+    std::cout << "[INFO] persist jane" << std::endl;
+
     joe_id = db->persist(joe);
+    std::cout << "[INFO] persist joe" << std::endl;
+
     db->persist(frank);
+    std::cout << "[INFO] persist frank" << std::endl;
 
     t.commit();
+
+    std::cout << "[INFO] first commit" << std::endl;
   }
 
   // Say hello to those have id under 2.
