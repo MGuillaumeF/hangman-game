@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
     jane_id = db->persist(jane);
     joe_id = db->persist(joe);
     db->persist(frank);
-    
+
     t.commit();
   }
 
