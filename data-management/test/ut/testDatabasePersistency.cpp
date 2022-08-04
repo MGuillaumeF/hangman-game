@@ -70,8 +70,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
   uint32_t jane_id = -1;
   uint32_t user_group_id = -1;
 
-  group userGroup;
-  userGroup.setName("User");
+  std::shared_ptr<group> userGroup = std::make_shared<group>();
+  userGroup->setName("User");
   std::vector<std::shared_ptr<group>> groups;
   groups.push_back(userGroup);
 
