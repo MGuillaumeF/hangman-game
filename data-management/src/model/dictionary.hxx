@@ -67,13 +67,21 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of dictionary are valid
-   *
-   * @return true The content of group object is valid
-   * @return false The content of group object is invalid
+   * @brief method to check if all fields of object are valid
+   * 
+   * @return the error list of validation
    */
-   bool isValid() {
-    return getName().size() > 3 && getCountryCode().size() > 0;
+  const boost::property_tree::ptree& getErrors() {
+      boost::property_tree::ptree errors;
+      if (getName().size() < 3) {
+        errors.add("errors.error.field", "name");
+        errors.add("errors.error.message", "SIZE");
+      }
+      if (getCountryCode().size() <= 0) {
+        errors.add("errors.error.field", "country_code");
+        errors.add("errors.error.message", "SIZE");
+      }
+      return errors;
   }
 
   /**
