@@ -148,12 +148,18 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of user are valid
-   *
-   * @return true The content of user object is valid
-   * @return false The content of user object is invalid
+   * @brief method to check if all fields of object are valid
+   * 
+   * @return the error list of validation
    */
-  bool isValid() { return getLogin().size() > 3; }
+  const boost::property_tree::ptree& getErrors() {
+      boost::property_tree::ptree errors;
+      if (getLogin().size() < 3) {
+        errors.put("errors.error.field", "name");
+        errors.put("errors.error.message", "SIZE");
+      }
+      return errors;
+  }
 
   /**
    * @brief method to convert object to property tree
