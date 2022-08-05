@@ -37,7 +37,7 @@
     "@cypress/code-coverage": "^3.10.0",
     "@gfx/zopfli": "^1.0.15",
     "@mguillaumef/audiso": "^0.0.4",
-    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.4.1",
     "@types/core-js": "^2.5.5",
