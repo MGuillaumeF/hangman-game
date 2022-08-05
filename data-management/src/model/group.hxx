@@ -36,13 +36,18 @@ public:
   void setName(const std::string &name) { m_name = name; };
 
   /**
-   * @brief method to check if all fields of group are valid
-   *
-   * @return true The content of group object is valid
-   * @return false The content of group object is invalid
+   * @brief method to check if all fields of object are valid
+   * 
+   * @return the error list of validation
    */
-  static bool isValid(const group &grp) { return grp.getName().size() > 3; }
-
+  const boost::property_tree::ptree& getErrors() {
+      boost::property_tree::ptree errors;
+      if (getName().size() < 3) {
+        errors.put("errors.error.field", "name");
+        errors.put("errors.error.message", "SIZE");
+      }
+      return errors;
+  }
   /**
    * @brief method to convert object to property tree
    *
