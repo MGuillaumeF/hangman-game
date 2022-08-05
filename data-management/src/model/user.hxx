@@ -155,7 +155,7 @@ public:
   const boost::property_tree::ptree& getErrors() {
       boost::property_tree::ptree errors;
       if (getLogin().size() < 3) {
-        errors.put("errors.error.field", "name");
+        errors.put("errors.error.field", "login");
         errors.put("errors.error.message", "SIZE");
       }
       return errors;
