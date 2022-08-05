@@ -92,8 +92,8 @@ public:
    */
   static dictionary parse(const boost::property_tree::ptree &property_tree) {
     dictionary parsedDictionary = root_model_object::parse<dictionary>(property_tree);
-    parsedDictionary.setName(parsedDictionary.get<std::string>("name));
-    parsedDictionary.setCountryCode(parsedDictionary.get<std::string>("country_code));
+    parsedDictionary.setName(property_tree.get<std::string>("name"));
+    parsedDictionary.setCountryCode(property_tree.get<std::string>("country_code"));
     return parsedDictionary;
   }
 
