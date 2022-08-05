@@ -67,13 +67,13 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of group are valid
+   * @brief method to check if all fields of dictionary are valid
    *
    * @return true The content of group object is valid
    * @return false The content of group object is invalid
    */
-  static bool isValid(const dictionary &dict) {
-    return dict.getName().size() > 3 && dict.getCountryCode().size() > 0;
+   bool isValid() {
+    return getName().size() > 3 && getCountryCode().size() > 0;
   }
 
   /**
