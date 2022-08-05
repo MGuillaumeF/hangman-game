@@ -115,10 +115,12 @@ public:
   /**
    * @brief method to check if all fields of object are valid
    *
+   * @param errors the error list of validation 
+   * 
    * @return true The content of object is valid
    * @return false The content of object is invalid
    */
-  bool isValid();
+  bool isValid(boost::property_tree::ptree& errors);
 
   /**
    * @brief method to convert object to property tree
