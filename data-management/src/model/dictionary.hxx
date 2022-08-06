@@ -73,15 +73,19 @@ public:
    *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree &getErrors() {
-    boost::property_tree::ptree errors;
+   const std::list<boost::property_tree::ptree> &getErrors() {
+    std::list<boost::property_tree::ptree> errors;
     if (getName().size() < 3) {
-      errors.add("errors.error.field", "name");
-      errors.add("errors.error.message", "SIZE");
+      boost::property_tree::ptree error;
+      error.put("field", "name");
+      error.put("message", "SIZE");
+      errors.add(error);
     }
-    if (getCountryCode().size() <= 0) {
-      errors.add("errors.error.field", "country_code");
-      errors.add("errors.error.message", "SIZE");
+    if (getCountryCode().size() < 3) {
+      boost::property_tree::ptree error;
+      error.put("field", "country_code");
+      error.put("message", "SIZE");
+      errors.add(error);
     }
     return errors;
   }
