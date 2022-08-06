@@ -117,7 +117,7 @@ public:
     }
     for (T objectToPersist : objects) {
       auto errorList = objectToPersist.getErrors();
-      for (const auto& errorItem : errorItem) {
+      for (const auto &errorItem : errorItem) {
         errors.add_child("error", errorItem);
       }
       if (0 != objectToPersist.getId()) {
@@ -132,17 +132,17 @@ public:
       }
     }
     if (errors.empty()) {
-    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
-    for (T objectToPersist : objects) {
-      objectToPersist.setVersion(1);
-      const uint32_t id =
-          DataAccess::getDatabaseAccess()->persist(objectToPersist);
+      odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
+      for (T objectToPersist : objects) {
+        objectToPersist.setVersion(1);
+        const uint32_t id =
+            DataAccess::getDatabaseAccess()->persist(objectToPersist);
 
-      boost::property_tree::ptree objectId;
-      objectId.put("id", id);
-      response.add_child(T::getObjectType(), objectId);
-    }
-    t.commit();
+        boost::property_tree::ptree objectId;
+        objectId.put("id", id);
+        response.add_child(T::getObjectType(), objectId);
+      }
+      t.commit();
     } else {
       response.add_child("errors", errors);
     }
