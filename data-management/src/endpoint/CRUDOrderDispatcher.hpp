@@ -117,7 +117,7 @@ public:
     }
     for (T objectToPersist : objects) {
       auto errorList = objectToPersist.getErrors();
-      for (const auto &errorItem : errorItem) {
+      for (const auto &errorItem : errorList) {
         errors.add_child("error", errorItem);
       }
       if (0 != objectToPersist.getId()) {
