@@ -115,11 +115,10 @@ public:
         }
       }
     }
-    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
-      auto errorsItem = objectToPersist.getErrors();
-      if (!errorsItem.empty()) {
-        errors.add_child("error", errorsItem);
+      auto errorList = objectToPersist.getErrors();
+      for (const auto& errorItem : errorItem) {
+        errors.add_child("error", errorItem);
       }
       if (0 != objectToPersist.getId()) {
         std::cerr
@@ -131,6 +130,10 @@ public:
                      "overrided to 1, value "
                   << objectToPersist.getVersion() << " ignored" << std::endl;
       }
+    }
+    if (errors.empty()) {
+    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
+    for (T objectToPersist : objects) {
       objectToPersist.setVersion(1);
       const uint32_t id =
           DataAccess::getDatabaseAccess()->persist(objectToPersist);
@@ -140,6 +143,9 @@ public:
       response.add_child(T::getObjectType(), objectId);
     }
     t.commit();
+    } else {
+      response.add_child("errors", errors);
+    }
     return response;
   }
 
