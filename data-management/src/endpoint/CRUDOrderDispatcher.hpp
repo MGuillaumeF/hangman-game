@@ -116,7 +116,8 @@ public:
     }
     odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
-      auto Errors = objectToPersist.getErrors() if (!errors.empty()) {
+      auto errors = objectToPersist.getErrors();
+      if (!errors.empty()) {
         response = errors;
       }
       if (0 != objectToPersist.getId()) {
