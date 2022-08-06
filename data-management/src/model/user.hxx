@@ -158,7 +158,7 @@ public:
       boost::property_tree::ptree error;
       error.put("field", "login");
       error.put("message", "SIZE");
-      errors.add(error);
+      errors.emplace_back(error);
     }
     return errors;
   }
