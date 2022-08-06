@@ -152,11 +152,13 @@ public:
    *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree &getErrors() {
-    boost::property_tree::ptree errors;
+  const std::list<boost::property_tree::ptree> &getErrors() {
+    std::list<boost::property_tree::ptree> errors;
     if (getLogin().size() < 3) {
-      errors.put("errors.error.field", "login");
-      errors.put("errors.error.message", "SIZE");
+      boost::property_tree::ptree error;
+      error.put("field", "login");
+      error.put("message", "SIZE");
+      errors.add(error);
     }
     return errors;
   }
