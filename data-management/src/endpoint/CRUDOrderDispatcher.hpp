@@ -96,6 +96,7 @@ public:
   createObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
+    boost::property_tree::ptree errors;
     std::list<T> objects;
 
     const boost::optional<const boost::property_tree::ptree &> objectItem =
@@ -116,9 +117,9 @@ public:
     }
     odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
-      auto errors = objectToPersist.getErrors();
-      if (!errors.empty()) {
-        response = errors;
+      auto errorsItem = objectToPersist.getErrors();
+      if (!errorsItem.empty()) {
+        errors.add_child("error", errorsItem);
       }
       if (0 != objectToPersist.getId()) {
         std::cerr
