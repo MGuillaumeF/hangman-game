@@ -51,13 +51,19 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of word are valid
+   * @brief method to check if all fields of object are valid
    *
-   * @return true The content of word object is valid
-   * @return false The content of word object is invalid
+   * @return the error list of validation
    */
-  static bool isValid(const word &wrd) {
-    return wrd.getName().size() > 3 && wrd.getDefinitions().size() > 1;
+  std::list<boost::property_tree::ptree> getErrors() {
+    std::list<boost::property_tree::ptree> errors;
+    if (getName().size() < 3) {
+      boost::property_tree::ptree error;
+      error.put("field", "name");
+      error.put("message", "SIZE");
+      errors.emplace_back(error);
+    }
+    return errors;
   }
 
   /**

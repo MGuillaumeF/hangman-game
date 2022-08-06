@@ -96,6 +96,7 @@ public:
   createObject(const boost::property_tree::ptree &properties,
                const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
+    boost::property_tree::ptree errors;
     std::list<T> objects;
 
     const boost::optional<const boost::property_tree::ptree &> objectItem =
@@ -114,8 +115,11 @@ public:
         }
       }
     }
-    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
     for (T objectToPersist : objects) {
+      auto errorList = objectToPersist.getErrors();
+      for (const auto &errorItem : errorList) {
+        errors.add_child("error", errorItem);
+      }
       if (0 != objectToPersist.getId()) {
         std::cerr
             << "[WARNNING] create content ignored : the id must be 0, value "
@@ -126,15 +130,22 @@ public:
                      "overrided to 1, value "
                   << objectToPersist.getVersion() << " ignored" << std::endl;
       }
-      objectToPersist.setVersion(1);
-      const uint32_t id =
-          DataAccess::getDatabaseAccess()->persist(objectToPersist);
-
-      boost::property_tree::ptree objectId;
-      objectId.put("id", id);
-      response.add_child(T::getObjectType(), objectId);
     }
-    t.commit();
+    if (errors.empty()) {
+      odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
+      for (T objectToPersist : objects) {
+        objectToPersist.setVersion(1);
+        const uint32_t id =
+            DataAccess::getDatabaseAccess()->persist(objectToPersist);
+
+        boost::property_tree::ptree objectId;
+        objectId.put("id", id);
+        response.add_child(T::getObjectType(), objectId);
+      }
+      t.commit();
+    } else {
+      response.add_child("errors", errors);
+    }
     return response;
   }
 

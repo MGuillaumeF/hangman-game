@@ -3,6 +3,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <ctime>
+#include <list>
 #include <odb/core.hxx>
 #include <string>
 
@@ -115,10 +116,11 @@ public:
   /**
    * @brief method to check if all fields of object are valid
    *
-   * @return true The content of object is valid
-   * @return false The content of object is invalid
+   * @return the error list of validation
    */
-  bool isValid();
+  std::list<boost::property_tree::ptree> getErrors() {
+    return std::list<boost::property_tree::ptree>();
+  }
 
   /**
    * @brief method to convert object to property tree

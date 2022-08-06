@@ -35,6 +35,22 @@ public:
   void setName(const std::string &name) { m_name = name; };
 
   /**
+   * @brief Get the country_code of dictionary object
+   *
+   * @return const std::string&
+   */
+  const std::string &getCountryCode() const { return m_country_code; };
+
+  /**
+   * @brief Set the country_code of dictionary object
+   *
+   * @param country_code
+   */
+  void setCountryCode(const std::string &country_code) {
+    m_country_code = country_code;
+  };
+
+  /**
    * @brief Get words of dictionary object
    *
    * @return const std::vector<std::shared_ptr<word>>&
@@ -53,13 +69,25 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of group are valid
+   * @brief method to check if all fields of object are valid
    *
-   * @return true The content of group object is valid
-   * @return false The content of group object is invalid
+   * @return the error list of validation
    */
-  static bool isValid(const dictionary &dict) {
-    return dict.getName().size() > 3;
+  std::list<boost::property_tree::ptree> getErrors() {
+    std::list<boost::property_tree::ptree> errors;
+    if (getName().size() < 3) {
+      boost::property_tree::ptree error;
+      error.put("field", "name");
+      error.put("message", "SIZE");
+      errors.emplace_back(error);
+    }
+    if (getCountryCode().size() < 3) {
+      boost::property_tree::ptree error;
+      error.put("field", "country_code");
+      error.put("message", "SIZE");
+      errors.emplace_back(error);
+    }
+    return errors;
   }
 
   /**
@@ -77,7 +105,11 @@ public:
    * @return The object found
    */
   static dictionary parse(const boost::property_tree::ptree &property_tree) {
-    dictionary parsedDictionary;
+    dictionary parsedDictionary =
+        root_model_object::parse<dictionary>(property_tree);
+    parsedDictionary.setName(property_tree.get<std::string>("name"));
+    parsedDictionary.setCountryCode(
+        property_tree.get<std::string>("country_code"));
     return parsedDictionary;
   }
 
@@ -100,6 +132,8 @@ private:
 
 #pragma db options() options("CHECK(name != '')")
   std::string m_name;
+#pragma db options() options("CHECK(country_code != '')")
+  std::string m_country_code;
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<word>> m_words;
 };
