@@ -114,10 +114,10 @@ public:
 
   /**
    * @brief method to check if all fields of object are valid
-   * 
+   *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree& getErrors();
+  const boost::property_tree::ptree &getErrors();
 
   /**
    * @brief method to convert object to property tree

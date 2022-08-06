@@ -37,16 +37,16 @@ public:
 
   /**
    * @brief method to check if all fields of object are valid
-   * 
+   *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree& getErrors() {
-      boost::property_tree::ptree errors;
-      if (getName().size() < 3) {
-        errors.put("errors.error.field", "name");
-        errors.put("errors.error.message", "SIZE");
-      }
-      return errors;
+  const boost::property_tree::ptree &getErrors() {
+    boost::property_tree::ptree errors;
+    if (getName().size() < 3) {
+      errors.put("errors.error.field", "name");
+      errors.put("errors.error.message", "SIZE");
+    }
+    return errors;
   }
   /**
    * @brief method to convert object to property tree

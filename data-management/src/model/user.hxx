@@ -149,16 +149,16 @@ public:
 
   /**
    * @brief method to check if all fields of object are valid
-   * 
+   *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree& getErrors() {
-      boost::property_tree::ptree errors;
-      if (getLogin().size() < 3) {
-        errors.put("errors.error.field", "login");
-        errors.put("errors.error.message", "SIZE");
-      }
-      return errors;
+  const boost::property_tree::ptree &getErrors() {
+    boost::property_tree::ptree errors;
+    if (getLogin().size() < 3) {
+      errors.put("errors.error.field", "login");
+      errors.put("errors.error.message", "SIZE");
+    }
+    return errors;
   }
 
   /**

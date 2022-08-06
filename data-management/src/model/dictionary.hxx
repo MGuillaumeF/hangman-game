@@ -46,7 +46,9 @@ public:
    *
    * @param country_code
    */
-  void setCountryCode(const std::string &country_code) { m_country_code = country_code; };
+  void setCountryCode(const std::string &country_code) {
+    m_country_code = country_code;
+  };
 
   /**
    * @brief Get words of dictionary object
@@ -68,20 +70,20 @@ public:
 
   /**
    * @brief method to check if all fields of object are valid
-   * 
+   *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree& getErrors() {
-      boost::property_tree::ptree errors;
-      if (getName().size() < 3) {
-        errors.add("errors.error.field", "name");
-        errors.add("errors.error.message", "SIZE");
-      }
-      if (getCountryCode().size() <= 0) {
-        errors.add("errors.error.field", "country_code");
-        errors.add("errors.error.message", "SIZE");
-      }
-      return errors;
+  const boost::property_tree::ptree &getErrors() {
+    boost::property_tree::ptree errors;
+    if (getName().size() < 3) {
+      errors.add("errors.error.field", "name");
+      errors.add("errors.error.message", "SIZE");
+    }
+    if (getCountryCode().size() <= 0) {
+      errors.add("errors.error.field", "country_code");
+      errors.add("errors.error.message", "SIZE");
+    }
+    return errors;
   }
 
   /**
@@ -99,9 +101,11 @@ public:
    * @return The object found
    */
   static dictionary parse(const boost::property_tree::ptree &property_tree) {
-    dictionary parsedDictionary = root_model_object::parse<dictionary>(property_tree);
+    dictionary parsedDictionary =
+        root_model_object::parse<dictionary>(property_tree);
     parsedDictionary.setName(property_tree.get<std::string>("name"));
-    parsedDictionary.setCountryCode(property_tree.get<std::string>("country_code"));
+    parsedDictionary.setCountryCode(
+        property_tree.get<std::string>("country_code"));
     return parsedDictionary;
   }
 
