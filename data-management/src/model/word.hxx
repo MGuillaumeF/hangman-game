@@ -64,7 +64,6 @@ public:
     return errors;
   }
 
-
   /**
    * @brief method to convert object to property tree
    *
