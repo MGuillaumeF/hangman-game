@@ -117,7 +117,7 @@ public:
    *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree &getErrors();
+  virtual const boost::property_tree::ptree &getErrors();
 
   /**
    * @brief method to convert object to property tree
