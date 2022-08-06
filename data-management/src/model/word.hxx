@@ -51,14 +51,19 @@ public:
   };
 
   /**
-   * @brief method to check if all fields of word are valid
+   * @brief method to check if all fields of object are valid
    *
-   * @return true The content of word object is valid
-   * @return false The content of word object is invalid
+   * @return the error list of validation
    */
-  static bool isValid(const word &wrd) {
-    return wrd.getName().size() > 3 && wrd.getDefinitions().size() > 1;
+  const boost::property_tree::ptree &getErrors() {
+    boost::property_tree::ptree errors;
+    if (getName().size() < 3) {
+      errors.put("errors.error.field", "name");
+      errors.put("errors.error.message", "SIZE");
+    }
+    return errors;
   }
+
 
   /**
    * @brief method to convert object to property tree
