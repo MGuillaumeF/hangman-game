@@ -68,16 +68,21 @@ public:
   /**
    * @brief Get the creation datetime of object
    *
-   * @return const std::chrono::time_point<std::chrono::system_clock>& the creation datetime of object
+   * @return const std::chrono::time_point<std::chrono::system_clock>& the
+   * creation datetime of object
    */
-  const std::chrono::time_point<std::chrono::system_clock> &getCreatedAt() const { return m_created_at; };
+  const std::chrono::time_point<std::chrono::system_clock> &
+  getCreatedAt() const {
+    return m_created_at;
+  };
 
   /**
    * @brief Set the create datetime of object
    *
    * @param created_at The create datetime of object
    */
-  void setCreatedAt(const std::chrono::time_point<std::chrono::system_clock> &created_at) {
+  void setCreatedAt(
+      const std::chrono::time_point<std::chrono::system_clock> &created_at) {
     m_created_at = created_at;
   };
 
@@ -100,16 +105,21 @@ public:
   /**
    * @brief Get the update datetime of object
    *
-   * @return const std::chrono::time_point<std::chrono::system_clock>& the update datetime of object
+   * @return const std::chrono::time_point<std::chrono::system_clock>& the
+   * update datetime of object
    */
-  const std::chrono::time_point<std::chrono::system_clock> &getUpdatedAt() const { return m_updated_at; };
+  const std::chrono::time_point<std::chrono::system_clock> &
+  getUpdatedAt() const {
+    return m_updated_at;
+  };
 
   /**
    * @brief Set the update datetime of object
    *
    * @param updated_at The update datetime of object
    */
-  void setUpdatedAt(const std::chrono::time_point<std::chrono::system_clock> &updated_at) {
+  void setUpdatedAt(
+      const std::chrono::time_point<std::chrono::system_clock> &updated_at) {
     m_updated_at = updated_at;
   };
 
@@ -183,9 +193,11 @@ private:
   uint32_t m_id = 0;
   uint32_t m_version = 0;
   std::string m_created_by = "anonymous";
-  std::chrono::time_point<std::chrono::system_clock> m_created_at = std::chrono::system_clock::now();
+  std::chrono::time_point<std::chrono::system_clock> m_created_at =
+      std::chrono::system_clock::now();
   std::string m_updated_by = "anonymous";
-  std::chrono::time_point<std::chrono::system_clock> m_updated_at = std::chrono::system_clock::now();
+  std::chrono::time_point<std::chrono::system_clock> m_updated_at =
+      std::chrono::system_clock::now();
 };
 
 #pragma db object(root_model_object)
