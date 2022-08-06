@@ -5,6 +5,7 @@
 #include <ctime>
 #include <odb/core.hxx>
 #include <string>
+#include <list>
 
 /**
  * @brief class of Root Model Object in model
@@ -117,8 +118,8 @@ public:
    *
    * @return the error list of validation
    */
-  const boost::property_tree::ptree &getErrors() {
-    return boost::property_tree::ptree();
+  const std::list<boost::property_tree::ptree> &getErrors() {
+    return std::list<boost::property_tree::ptree>();
   }
 
   /**
