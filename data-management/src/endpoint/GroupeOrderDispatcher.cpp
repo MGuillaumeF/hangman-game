@@ -20,7 +20,9 @@ GroupeOrderDispatcher::route(const std::string &groupeId,
   } else if ("CUSTOM" == groupeId) {
 
   } else {
-    // unknown order groupe
+    // unknown order group
+    // unknown object type
+    response.put("status-code", status_code::NOT_FOUND);
   }
   return response;
 }
