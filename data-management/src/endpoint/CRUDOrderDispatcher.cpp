@@ -1,18 +1,30 @@
 #include "./CRUDOrderDispatcher.hpp"
 
 #if defined(DATABASE_MYSQL)
+#include "../model/mysql/group-odb.hxx"
+#include "../model/mysql/group.hxx"
 #include "../model/mysql/user-odb.hxx"
 #include "../model/mysql/user.hxx"
+#include "../model/mysql/dictionary-odb.hxx"
+#include "../model/mysql/dictionary.hxx"
 #include "../model/mysql/word-odb.hxx"
 #include "../model/mysql/word.hxx"
 #elif defined(DATABASE_SQLITE)
+#include "../model/sqlite/group-odb.hxx"
+#include "../model/sqlite/group.hxx"
 #include "../model/sqlite/user-odb.hxx"
 #include "../model/sqlite/user.hxx"
+#include "../model/sqlite/dictionary-odb.hxx"
+#include "../model/sqlite/dictionary.hxx"
 #include "../model/sqlite/word-odb.hxx"
 #include "../model/sqlite/word.hxx"
 #elif defined(DATABASE_PGSQL)
+#include "../model/pgsql/group-odb.hxx"
+#include "../model/pgsql/group.hxx"
 #include "../model/pgsql/user-odb.hxx"
 #include "../model/pgsql/user.hxx"
+#include "../model/pgsql/dictionary-odb.hxx"
+#include "../model/pgsql/dictionary.hxx"
 #include "../model/pgsql/word-odb.hxx"
 #include "../model/pgsql/word.hxx"
 #else
@@ -44,6 +56,14 @@ CRUDOrderDispatcher::route(const std::string &objectType,
   } else if ("word" == objectType) {
     // dispatch crud word orders
     response = routeObjectType<word>(properties.get<std::string>("order-type"),
+                                     properties, data);
+  } else if ("dictionary" == objectType) {
+    // dispatch crud dictionary orders
+    response = routeObjectType<dictionary>(properties.get<std::string>("order-type"),
+                                     properties, data);
+  } else if ("group" == objectType) {
+    // dispatch crud group orders
+    response = routeObjectType<group>(properties.get<std::string>("order-type"),
                                      properties, data);
   } else {
     // TODO add exception : unknown object type
