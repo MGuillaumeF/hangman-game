@@ -231,7 +231,9 @@ BOOST_AUTO_TEST_CASE(test_create) {
   boost::property_tree::ptree frk;
   frk.put("login", "Frank");
   frk.put("password", "password_4");
-  const std::string tok = UserDBEndpoint::getInstance()->connectUser(frk);
+  const std::string tok = UserDBEndpoint::getInstance()
+                              ->connectUser(boost::property_tree::ptree(), frk)
+                              .get<std::string>("data.token");
 
   std::cout << "New token found is \"" << tok << "\"" << std::endl;
 

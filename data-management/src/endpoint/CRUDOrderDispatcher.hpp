@@ -170,6 +170,7 @@ public:
                const bool &full = true) {
     boost::property_tree::ptree response;
 
+    response.put("status-code", uint16_t(status_code::OK));
     return response;
   }
 
@@ -187,6 +188,7 @@ public:
              const boost::property_tree::ptree &data) {
     boost::property_tree::ptree response;
 
+    response.put("status-code", uint16_t(status_code::OK));
     return response;
   }
 

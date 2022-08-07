@@ -1,5 +1,6 @@
 #include "./GroupeOrderDispatcher.hpp"
 #include "./CRUDOrderDispatcher.hpp"
+#include "./UserDBEndpoint.hpp"
 
 /**
  * @brief Route to dispatch order by groupe id
@@ -17,11 +18,12 @@ GroupeOrderDispatcher::route(const std::string &groupeId,
   if ("CRUD" == groupeId) {
     response = CRUDOrderDispatcher::route(
         properties.get<std::string>("object-type"), properties, data);
-  } else if ("CUSTOM" == groupeId) {
-
+  } else if ("login" == groupeId) {
+    response = UserDBEndpoint::getInstance()->connectUser(properties, data);
+  } else if ("logout" == groupeId) {
+    response = UserDBEndpoint::getInstance()->disconnectUser(properties, data);
   } else {
     // unknown order group
-    // unknown object type
     response.put("status-code", uint16_t(status_code::NOT_FOUND));
   }
   return response;

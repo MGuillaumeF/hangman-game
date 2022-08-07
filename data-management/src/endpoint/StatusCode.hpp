@@ -5,9 +5,9 @@
  * @brief all status code
  */
 enum class status_code {
- /**
-  * status when request processing success
-  */
+  /**
+   * status when request processing success
+   */
   OK = 200,
   /**
    * status when request content has bad format or content
@@ -19,11 +19,12 @@ enum class status_code {
    */
   NOT_FOUND = 404,
   /**
-   * status when request of type CRUD has bad method 
+   * status when request of type CRUD has bad method
    */
   METHOD_NOT_ALLOWED = 405,
   /**
-   * status when request has deprecated data, because of version of at least one object is not the last version in database
+   * status when request has deprecated data, because of version of at least one
+   * object is not the last version in database
    */
   CONFLICT = 409,
   /**

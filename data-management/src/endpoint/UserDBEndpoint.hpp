@@ -39,6 +39,12 @@ class UserDBEndpoint {
   std::shared_ptr<odb::core::database> m_db = DataAccess::getDatabaseAccess();
 
   /**
+   * @brief user connected to the connetor
+   *
+   */
+  std::set<std::string> m_connectedUsers;
+
+  /**
    * @brief user endpoint pointer of single instance
    *
    */
@@ -67,10 +73,24 @@ public:
   /**
    * @brief function to connect user by login and password
    *
+   * @param properties The properties part of request
    * @param data The property tree data of user to connect
-   * @return std::string The new token of connected user
+   * @return The result of request process
    */
-  std::string connectUser(const boost::property_tree::ptree &data) const;
+  boost::property_tree::ptree
+  connectUser(const boost::property_tree::ptree &properties,
+              const boost::property_tree::ptree &data);
+
+  /**
+   * @brief function to disconnect user by login and token
+   *
+   * @param properties The properties part of request
+   * @param data The property tree data of user to disconnect
+   * @return The result of request process
+   */
+  boost::property_tree::ptree
+  disconnectUser(const boost::property_tree::ptree &properties,
+                 const boost::property_tree::ptree &data);
 };
 
 #endif

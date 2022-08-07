@@ -14,7 +14,7 @@ REM SQLITE
 mkdir sqlite
 copy *.hxx sqlite\
 cd sqlite
-odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+odb --database sqlite --generate-query --generate-schema --std c++14 -IC:/dev/vcpkg/installed/x64-windows/include/ *.hxx
 
 cd /D %~dp0
 cd ..
@@ -27,7 +27,7 @@ cd src/model
 mkdir pgsql
 copy *.hxx pgsql\
 cd pgsql
-odb --database pgsql --generate-query --generate-schema --std c++11 *.hxx
+odb --database pgsql --generate-query --generate-schema --std c++14 -IC:/dev/vcpkg/installed/x64-windows/include/ *.hxx
 
 cd /D %~dp0
 cd ..
@@ -40,7 +40,7 @@ cd src/model
 mkdir mysql
 copy *.hxx mysql\
 cd mysql
-odb --database mysql --generate-query --generate-schema --std c++11 *.hxx
+odb --database mysql --generate-query --generate-schema --std c++14 -IC:/dev/vcpkg/installed/x64-windows/include/ *.hxx
 
 cd /D %~dp0
 cd ..
