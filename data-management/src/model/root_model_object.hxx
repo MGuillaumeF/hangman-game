@@ -11,7 +11,7 @@
  * @brief class of Root Model Object in model
  *
  */
-#pragma db object
+#pragma db object // This pragma class is a database object definition
 class root_model_object {
 
 public:
@@ -203,6 +203,7 @@ protected:
   friend class odb::access;
 
 private:
+// The pragma id auto is the primary key of table, with auto incremented value
 #pragma db id auto
   uint32_t m_id = 0;
   uint32_t m_version = 0;
@@ -212,6 +213,7 @@ private:
   std::time_t m_updated_at = std::time(nullptr);
 };
 
+// This class is a database object definition
 #pragma db object(root_model_object)
 
 #endif // ROOT_MODEL_OBJECT_HXX

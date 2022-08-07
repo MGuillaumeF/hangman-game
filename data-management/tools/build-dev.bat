@@ -15,7 +15,7 @@ REM SQLITE
 mkdir sqlite
 copy *.hxx sqlite\
 cd sqlite
-odb --database sqlite --generate-query --generate-schema --std c++11 *.hxx
+odb --database sqlite --generate-query --generate-schema --std c++14 -IC:/dev/vcpkg/installed/x64-windows/include/ *.hxx
 
 cd /D %~dp0
 cd ../..

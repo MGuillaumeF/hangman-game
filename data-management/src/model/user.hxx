@@ -192,8 +192,8 @@ public:
     if (token) {
       parsedUser.setToken(*token);
     }
-    const boost::optional<uint32_t> lastConnection =
-        property_tree.get_optional<uint32_t>("last_connection");
+    const boost::optional<std::time_t> lastConnection =
+        property_tree.get_optional<std::time_t>("last_connection");
     if (lastConnection) {
       parsedUser.setLastConnection(*lastConnection);
     }
