@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
       counter += 1;
     }
   }
-  BOOST_CHECK_EQUAL(1, counter);
+  BOOST_CHECK_EQUAL(2, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {
