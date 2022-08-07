@@ -79,6 +79,8 @@ public:
     } else if ("patch" == orderType) {
       // partial update of users
       response = updateObject<T>(properties, data, false);
+    } else {
+      response.put("status-code", 405);
     }
     return response;
   }
@@ -143,6 +145,7 @@ public:
         objectId.put("id", id);
         response.add_child(T::getObjectType(), objectId);
       }
+      response.put("status-code", 200);
       t.commit();
     } else {
       response.add_child("errors", errors);
@@ -220,6 +223,7 @@ public:
       DataAccess::getDatabaseAccess()->erase<T>(objectToDelete);
     }
     t.commit();
+    response.put("status-code", 200);
     return response;
   }
 };
