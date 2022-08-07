@@ -130,9 +130,9 @@ public:
 private:
   friend class odb::access;
 
-#pragma db options() options("CHECK(name != '')")
+#pragma db unique options() options("CHECK(name != '')")
   std::string m_name;
-#pragma db options() options("CHECK(country_code != '')")
+#pragma db unique options() options("CHECK(country_code != '')")
   std::string m_country_code;
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<word>> m_words;

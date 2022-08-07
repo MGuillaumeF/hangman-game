@@ -87,7 +87,7 @@ public:
 private:
   friend class odb::access;
 
-#pragma db options() options("CHECK(name != '')")
+#pragma db unique options() options("CHECK(name != '')")
   std::string m_name;
 };
 #pragma db object(group)

@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
 
   const boost::property_tree::ptree response =
       hangman::tcp::Client::sendRequest(
-          "127.0.0.1", 50000, "./resources/database-order/create-word.xml");
+          "127.0.0.1", 50000, "./resources/database-order/create-words.xml");
   ioContext.stop();
 
   for (size_t i = 0; i < threads.size(); ++i) {
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
       counter += 1;
     }
   }
-  BOOST_CHECK_EQUAL(1, counter);
+  BOOST_CHECK_EQUAL(2, counter);
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {
