@@ -55,7 +55,7 @@ public:
    *
    * @return the error list of validation
    */
-  std::list<boost::property_tree::ptree> getErrors() {
+  std::list<boost::property_tree::ptree> getErrors() const {
     std::list<boost::property_tree::ptree> errors;
     if (getName().size() < 3) {
       boost::property_tree::ptree error;

@@ -210,6 +210,56 @@ Team : + string getName()
 Team : + void setName(string name)
 ```
 
+## Documentation Interface TCP Data-Management
+
+### Description compositions des demandes TCP
+
+### Description compositions des réponses TCP
+
+```xml
+<!-- bad create example -->
+<status-code>400</status-code>
+<errors>
+  <error>
+    <field>data.name</field>
+    <message>SIZE</message>
+  </error>
+</errors>
+
+<!-- conflict update example -->
+<status-code>409</status-code>
+<errors>
+  <error>
+    <field>data.id</field>
+    <message>1</message>
+  </error>
+</errors>
+
+<!-- success create example -->
+<status-code>200</status-code>
+<data>
+  <users>
+    <user>...</user>
+  </users>
+</data>
+```
+
+#### Liste des statuts des résultats des demandes.
+
+Les statuts implémentés sont inspirés du protocole HTTP, les statuts implémentés sont les suivants :
+
+| Code Statut | Text Status        | Description  | Verbeux |
+| :---------- | :----------------- | ------------ | ------- |
+| 200         | OK                 | La demande a bien été traité.                                                                           | true    |
+| 400         | BAD_REQUEST        | La demande n'a pas une composition valide.                                                              | true    |
+| 401         | NOT_AUTHORIZED     | L'utilisateur n'est pas identifié, l'opération ne peut être effectuée.                                  | false   |
+| 403         | PERMISSION_DENIED  | Les droits de l'utilisateur connecté ne sont pas suffisants pour réaliser la demande.                   | false   |
+| 404         | NOT_FOUND          | Le type d'objet demandé n'a pas été trouvé                                                                      | false   |
+| 405         | METHOD_NOT_ALLOWED | Le type de demande n'est pas authorisé sur cet object                                                   | false   |
+| 409         | CONFLICT           | Une demande de modification d'objet à été rejetée car le numéro de version de l'objet est obsolète      | true    |
+| 500         | INTERNAL_ERROR     | Une erreur dans le traitement de la demande à eu lieu et ne peut pas être traité précisément            | false   |
+| 502         | PROXY_ERROR        | La base de données n'est pas joignable                                                                  | false   |
+
 ## Stratégie des scripts.
 
 Les scripts ont pour objectif d’automatiser les tâches récurrentes ou complexes.

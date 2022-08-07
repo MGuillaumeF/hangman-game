@@ -118,7 +118,7 @@ public:
    *
    * @return the error list of validation
    */
-  std::list<boost::property_tree::ptree> getErrors() {
+  std::list<boost::property_tree::ptree> getErrors() const {
     return std::list<boost::property_tree::ptree>();
   }
 

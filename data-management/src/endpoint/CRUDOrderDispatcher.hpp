@@ -2,6 +2,7 @@
 #define __CRUD_ORDER_DISPATCHER_HPP__
 
 #include "../model/root_model_object.hxx"
+#include "./StatusCode.hpp"
 // generated configuration
 #include "./DataAccess.hpp"
 #include "config.hpp"
@@ -79,6 +80,8 @@ public:
     } else if ("patch" == orderType) {
       // partial update of users
       response = updateObject<T>(properties, data, false);
+    } else {
+      response.put("status-code", uint16_t(status_code::METHOD_NOT_ALLOWED));
     }
     return response;
   }
@@ -143,6 +146,7 @@ public:
         objectId.put("id", id);
         response.add_child(T::getObjectType(), objectId);
       }
+      response.put("status-code", uint16_t(status_code::OK));
       t.commit();
     } else {
       response.add_child("errors", errors);
@@ -220,6 +224,7 @@ public:
       DataAccess::getDatabaseAccess()->erase<T>(objectToDelete);
     }
     t.commit();
+    response.put("status-code", uint16_t(status_code::OK));
     return response;
   }
 };
