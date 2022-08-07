@@ -66,7 +66,9 @@ CRUDOrderDispatcher::route(const std::string &objectType,
     response = routeObjectType<group>(properties.get<std::string>("order-type"),
                                       properties, data);
   } else {
-    // TODO add exception : unknown object type
+    // unknown object type
+    response.put("errors.error.field", "properties.object-type");
+    response.put("errors.error.message", "OUT_OF_CHOICES");
   }
   return response;
 }
