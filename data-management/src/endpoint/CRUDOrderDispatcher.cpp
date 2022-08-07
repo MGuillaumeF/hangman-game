@@ -67,8 +67,7 @@ CRUDOrderDispatcher::route(const std::string &objectType,
                                       properties, data);
   } else {
     // unknown object type
-    response.put("errors.error.field", "properties.object-type");
-    response.put("errors.error.message", "OUT_OF_CHOICES");
+    response.put("status-code", 404);
   }
   return response;
 }
