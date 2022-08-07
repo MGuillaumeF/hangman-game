@@ -218,7 +218,7 @@ Team : + void setName(string name)
 
 ```xml
 <!-- bad create example -->
-<status_code>400</status_code>
+<status-code>400</status-code>
 <errors>
   <error>
     <field>data.name</field>
@@ -227,7 +227,7 @@ Team : + void setName(string name)
 </errors>
 
 <!-- conflict update example -->
-<status_code>409</status_code>
+<status-code>409</status-code>
 <errors>
   <error>
     <field>data.id</field>
@@ -236,7 +236,7 @@ Team : + void setName(string name)
 </errors>
 
 <!-- success create example -->
-<status_code>200</status_code>
+<status-code>200</status-code>
 <data>
   <users>
     <user>...</user>
