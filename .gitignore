@@ -3,3 +3,5 @@
 /docs
 /api-docs
 *.log
+/project-cppcheck-build-dir
+project.cppcheck
