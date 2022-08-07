@@ -99,6 +99,7 @@ public:
     boost::property_tree::ptree errors;
     std::list<T> objects;
 
+    const std::string author = properties.get<std::string>("order-author");
     const boost::optional<const boost::property_tree::ptree &> objectItem =
         data.get_child_optional(T::getObjectType());
     if (objectItem) {
@@ -134,7 +135,7 @@ public:
     if (errors.empty()) {
       odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
       for (T objectToPersist : objects) {
-        objectToPersist.setVersion(1);
+        objectToPersist.preCreate(author);
         const uint32_t id =
             DataAccess::getDatabaseAccess()->persist(objectToPersist);
 

@@ -162,6 +162,30 @@ public:
   };
 
   /**
+   * @brief method of pre create in database
+   *
+   * @param author The author of new object
+   */
+  void preCreate(const std::string& author) {
+    setVersion(1);
+    setCreatedBy(author);
+    setCreatedAt(std::time(nullptr));
+    setUpdatedBy(author);
+    setUpdatedAt(std::time(nullptr));
+  }
+
+  /**
+   * @brief method of pre update in database
+   *
+   * @param author The author of update of object
+   */
+  void preUpdate(const std::string& author) {
+    setVersion(getVersion() + 1);
+    setUpdatedBy(author);
+    setUpdatedAt(std::time(nullptr));
+  }
+
+  /**
    * @brief method to get object type
    *
    * @return The object type
