@@ -22,7 +22,7 @@ GroupeOrderDispatcher::route(const std::string &groupeId,
   } else {
     // unknown order group
     // unknown object type
-    response.put("status-code", status_code::NOT_FOUND);
+    response.put("status-code", uint16_t(status_code::NOT_FOUND));
   }
   return response;
 }
