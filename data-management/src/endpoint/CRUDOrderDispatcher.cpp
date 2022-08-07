@@ -67,7 +67,7 @@ CRUDOrderDispatcher::route(const std::string &objectType,
                                       properties, data);
   } else {
     // unknown object type
-    response.put("status-code", status_code::NOT_FOUND);
+    response.put("status-code", uint16_t(status_code::NOT_FOUND));
   }
   return response;
 }
