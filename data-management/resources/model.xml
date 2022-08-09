@@ -9,7 +9,7 @@
     </class>
     <class name="user" extend="root_model_object">
       <attributes>
-        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min-length="3" pattern="/^[a-zA-Z0-9]{3,32}/$"
+        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min-length="3" pattern="/^[a-zA-Z0-9]{3,32}/$">
         </attribute>
       </attributes>
     </class>
