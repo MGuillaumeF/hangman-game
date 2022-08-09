@@ -3,13 +3,61 @@
   <classes>
     <class name="root_model_object">
       <attributes>
-        <attribute name="version" visibility="protected" type="uint32" mandatory="true" min="1">
+        <attribute
+          name="version"
+          visibility="protected"
+          type="uint32"
+          mandatory="true" 
+          min="1">
+        </attribute>
+        <attribute
+          name="id"
+          visibility="protected"
+          type="uint32"
+          mandatory="true" 
+          min="1">
+        </attribute>
+        <attribute
+          name="created_by"
+          visibility="protected"
+          type="string"
+          mandatory="true" 
+          min-length="3">
+        </attribute>
+        <attribute
+          name="created_at"
+          visibility="protected"
+          type="date"
+          mandatory="true" 
+          min-length="3">
+        </attribute>
+        <attribute
+          name="updated_by"
+          visibility="protected"
+          type="string"
+          mandatory="true" 
+          min-length="3">
+        </attribute>
+        <attribute
+          name="updated_at"
+          visibility="protected"
+          type="date"
+          mandatory="true" 
+          min-length="3">
         </attribute>
       </attributes>
     </class>
     <class name="user" extend="root_model_object">
       <attributes>
-        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min-length="3" pattern="/^[a-zA-Z0-9]{3,32}/$">
+        <attribute
+          name="login"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true" 
+          unique-insensitive="true" 
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,32}/$">
         </attribute>
       </attributes>
     </class>
