@@ -1,11 +1,17 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <model>
   <classes>
+    <class name="root_model_object">
+      <attributes>
+        <attribute name="version" visibility="protected" type="uint32" mandatory="true" min="1">
+        </attribute>
+      </attributes>
+    </class>
     <class name="user" extend="root_model_object">
-      <fields>
-        <field name="login" type="string" mandatory="true" unique="true" unique-insensitive="true" min-length="3" pattern="/^[a-zA-Z0-9]{3,32}/$">
-        </field>
-      </fields>
+      <attributes>
+        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min-length="3" pattern="/^[a-zA-Z0-9]{3,32}/$"
+        </attribute>
+      </attributes>
     </class>
   </classes>
 </model>
