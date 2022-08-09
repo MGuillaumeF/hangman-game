@@ -28,8 +28,7 @@
           name="created_at"
           visibility="protected"
           type="date"
-          mandatory="true" 
-          min-length="3">
+          mandatory="true">
         </attribute>
         <attribute
           name="updated_by"
@@ -42,8 +41,7 @@
           name="updated_at"
           visibility="protected"
           type="date"
-          mandatory="true" 
-          min-length="3">
+          mandatory="true">
         </attribute>
       </attributes>
     </class>
