@@ -57,6 +57,14 @@
           min-length="3" 
           pattern="/^[a-zA-Z0-9]{3,32}/$">
         </attribute>
+        <attribute
+          name="password"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="8" 
+          pattern="/^.*(?:(?:[a-z].*[A-Z].*\d)|(?:[A-Z].*\d.*[a-z])|(?:\d.*[a-z].*[A-Z])).*/$">
+        </attribute>
       </attributes>
     </class>
   </classes>
