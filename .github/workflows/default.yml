@@ -128,6 +128,18 @@ jobs:
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         boost_version: ${{env.BOOST_VERSION}}
         
+    - name: installer odb compiler dependencies
+      working-directory: ${{github.workspace}}/data-management/tools
+      run: npm install
+
+    - name: Audit dependencies installer odb win
+      working-directory: ${{github.workspace}}/data-management/tools
+      run: npm audit --json > ./dist/reports/audit-dependency-install-odb-report.json || echo FAILED
+
+    - name: Convert Audit dependencies installer odb win report
+      working-directory: ${{github.workspace}}/data-management/tools
+      run: ./node_modules/.bin/audiso --input-file=./reports/audit-dependency-install-odb-report.json --output-file ./reports/audit-install-odb-report.json
+
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
       run: |
