@@ -41,7 +41,7 @@ function generateCppSetter(attrData) {
   void set${attrData.name}(const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`
 }
 
-function generateCppGetter(attribute) {
+function generateCppGetter(attrData) {
   return `/**
    * @brief Get the ${attrData.name} of object
    *
