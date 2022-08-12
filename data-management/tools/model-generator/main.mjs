@@ -180,7 +180,11 @@ ${assessors.join("\n\n")}
    *
    * @return The plurial object type
    */
-  static std::string getPlurialObjectType() { return "${className.slice(-1).toLowerCase() === "y" ? `${className.slice(0, -1)}${ies}` : className}"; }
+  static std::string getPlurialObjectType() { return "${
+    className.slice(-1).toLowerCase() === "y"
+      ? `${className.slice(0, -1)}${ies}`
+      : className
+  }"; }
 
 };
 #endid // end ${guard}`;
