@@ -115,11 +115,11 @@ jobs:
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
-      run: npm audit --json > ./reports/audit-dependency-model-generator-report.json || echo FAILED
+      run: npm audit --json > ./audit-dependency-model-generator-report.json || echo FAILED
 
     - name: Convert Audit dependencies model generator report
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
-      run: ./node_modules/.bin/audiso --input-file=./reports/audit-dependency-model-generator-report.json --output-file ./reports/audit-model-generator-report.json
+      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-model-generator-report.json --output-file ../../reports/audit-model-generator-report.json
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.3.0
@@ -134,11 +134,11 @@ jobs:
 
     - name: Audit dependencies installer odb win
       working-directory: ${{github.workspace}}/data-management/tools
-      run: npm audit --json > ./reports/audit-dependency-install-odb-report.json || echo FAILED
+      run: npm audit --json > ./audit-dependency-install-odb-report.json || echo FAILED
 
     - name: Convert Audit dependencies installer odb win report
       working-directory: ${{github.workspace}}/data-management/tools
-      run: ./node_modules/.bin/audiso --input-file=./reports/audit-dependency-install-odb-report.json --output-file ./reports/audit-install-odb-report.json
+      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../../reports/audit-install-odb-report.json
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
