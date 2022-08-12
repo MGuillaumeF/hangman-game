@@ -141,7 +141,7 @@ jobs:
 
     - name: Convert Audit dependencies installer odb win report
       working-directory: ${{github.workspace}}/data-management/tools
-      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../../reports/audit-install-odb-report.json
+      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../reports/audit-install-odb-report.json
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
