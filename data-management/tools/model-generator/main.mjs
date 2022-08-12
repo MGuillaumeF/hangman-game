@@ -81,7 +81,7 @@ function generateCppClass(modelClass) {
 
   const assessors = [];
 
-  const includesCpp = new Set(["std::string"]);
+  const includesCpp = new Set(["string"]);
   const attributes = modelClass.attributes[0].attribute;
   const privateAttributes = attributes
     .filter((attributeObject) => {
