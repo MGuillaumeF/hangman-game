@@ -80,16 +80,10 @@ ${Array.from(includesCpp).map(inc => `#include <${inc}>`).join("\n")}
 #pragma db object
 class ${className} ${extendClass ? `final : public ${extendClass}` : ''} {
 private:
-${privateAttributes.map(attributeObject => {
-  const attrData = attributeObject.$;
-  return `${attrData.type} m_${attrData.name};`
-}).join("\n")}
+${privateAttributes}
 
 protected:
-${protectedAttributes.map(attributeObject => {
-  const attrData = attributeObject.$;
-  return `${attrData.type} m_${attrData.name};`
-}).join("\n")}
+${protectedAttributes}
 
 public:
   /**
@@ -98,10 +92,7 @@ public:
    */
   ${className}() = default;
 
-${publicAttributes.map(attributeObject => {
-  const attrData = attributeObject.$;
-  return `${attrData.type} m_${attrData.name};`
-}).join("\n")}
+${publicAttributes}
 
 
 };
