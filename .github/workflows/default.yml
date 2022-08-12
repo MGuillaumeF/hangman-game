@@ -107,6 +107,12 @@ jobs:
       run: |
         mkdir ${{github.workspace}}/server/reports
 
+    - name: Generate Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: |
+        npm install
+        node main.mjs
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
@@ -126,12 +132,6 @@ jobs:
         # ./vcpkg install boost
         ./vcpkg install libodb-sqlite
         #./vcpkg install libodb-mysql
-
-    - name: Generate Model classes
-      working-directory: ${{github.workspace}}/data-management/tools/model-generator
-      run: |
-        npm install
-        node main.mjs
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
