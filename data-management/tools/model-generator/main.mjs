@@ -77,6 +77,8 @@ function generateCppClass(modelClass) {
     return attributeObject.$.visibility == "protected";
   }).map(attributeObject => {
     const attrData = attributeObject.$;
+    assessors.push(generateCppSetter(attrData));
+    assessors.push(generateCppGetter(attrData));
     if (cppMapIncludes[attrData.type]) {
       includesCpp.add(cppMapIncludes[attrData.type]);
     }
@@ -86,6 +88,8 @@ function generateCppClass(modelClass) {
     return attributeObject.$.visibility == "public";
   }).map(attributeObject => {
     const attrData = attributeObject.$;
+    assessors.push(generateCppSetter(attrData));
+    assessors.push(generateCppGetter(attrData));
     if (cppMapIncludes[attrData.type]) {
       includesCpp.add(cppMapIncludes[attrData.type]);
     }
