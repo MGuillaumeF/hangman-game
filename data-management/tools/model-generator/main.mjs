@@ -71,6 +71,6 @@ function generateTsClass(modelClass) {
 const xml = readFileSync(path.resolve(__dirname, "../../resources/model.xml"));
 parseString(xml, function (err, result) {
     console.info("xml parsing result", JSON.stringify(result, null, 1));
-    generateClasses(result.model.classes);
+    // generateClasses(result.model.classes);
 });
 
