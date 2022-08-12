@@ -46,7 +46,8 @@ function generateClasses(modelClasses) {
 }
 
 function generateCppSetter(attrData) {
-  return `/**
+  return `
+  /**
    * @brief Set the ${attrData.name} of object
    *
    * @param ${attrData.name} The ${attrData.name} of object
@@ -57,7 +58,8 @@ function generateCppSetter(attrData) {
 }
 
 function generateCppGetter(attrData) {
-  return `/**
+  return `
+  /**
    * @brief Get the ${attrData.name} of object
    *
    * @return const ${
@@ -79,7 +81,7 @@ function generateCppClass(modelClass) {
 
   const assessors = [];
 
-  const includesCpp = new Set();
+  const includesCpp = new Set(["std::string"]);
   const attributes = modelClass.attributes[0].attribute;
   const privateAttributes = attributes
     .filter((attributeObject) => {
@@ -165,6 +167,20 @@ public:
 ${publicAttributes}
 
 ${assessors.join("\n\n")}
+
+  /**
+   * @brief method to get object type
+   *
+   * @return The object type
+   */
+  static std::string getObjectType() { return "${className}"; }
+
+  /**
+   * @brief method to get plurial object type
+   *
+   * @return The plurial object type
+   */
+  static std::string getPlurialObjectType() { return "${className.slice(-1).toLowerCase() === "y" ? `${className.slice(0, -1)}${ies}` : className}"; }
 
 };
 #endid // end ${guard}`;
