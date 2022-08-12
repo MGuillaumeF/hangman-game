@@ -45,7 +45,7 @@ private:
 ${privateAttributes.map(attributeObject => {
   const attrData = attributeObject.attribute.$;
   return `${attrData.type} ${attrData.name}`
-}).join("\n\n)}
+}).join("\n\n")}
 
 public:
   /**
