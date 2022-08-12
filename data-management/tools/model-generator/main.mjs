@@ -39,7 +39,7 @@ function generateCppClass(modelClass) {
  *
  */
 #pragma db object
-class ${className} ${extendClass ? : `final : public ${extendClass}` : ''`} {
+class ${className} ${extendClass ? `final : public ${extendClass}` : ''} {
 private:
 
 ${privateAttributes.map(attributeObject => {
