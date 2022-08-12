@@ -107,6 +107,12 @@ jobs:
       run: |
         mkdir ${{github.workspace}}/server/reports
 
+    - name: Generate Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: |
+        npm install
+        node main.mjs
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.3.0
       id: install-boost
