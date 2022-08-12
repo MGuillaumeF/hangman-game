@@ -107,6 +107,9 @@ jobs:
       run: |
         mkdir ${{github.workspace}}/server/reports
 
+    - name: Create reports directory
+      run: mkdir ${{github.workspace}}/data-management/reports
+
     - name: Generate Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
@@ -181,10 +184,6 @@ jobs:
     #     (git commit -m "[AUTO] update model generated" && git push) || echo 'No modification to save'
     #   env:
     #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/data-management/reports
 
     - name: Start MySQL server
       run: sudo service mysql start 
