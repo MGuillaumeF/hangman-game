@@ -223,7 +223,7 @@ private:
   std::string m_saltUser;
   std::string m_saltSession;
   std::string m_token;
-  uint32_t m_lastConnection;
+  std::time_t m_lastConnection;
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<user>> m_friends;
 #pragma db value_not_null unordered
