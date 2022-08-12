@@ -32,11 +32,33 @@ function generateClasses(modelClasses) {
   }
 }
 
+function generateCppSetter(attrData) {
+  return `/**
+   * @brief Set the ${attrData.name} of object
+   *
+   * @param ${attrData.name} The ${attrData.name} of object
+   */
+  void set${attrData.name}(const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`
+}
+
+function generateCppGetter(attribute) {
+  return `/**
+   * @brief Get the ${attrData.name} of object
+   *
+   * @return const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type }& the ${attrData.name} of object
+   */
+  const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &get${attrData.name}() const { return m_${attrData.name}; };`
+
+}
+
+
 function generateCppClass(modelClass) {
   const className = modelClass.$.name
   const extendClass = modelClass.$.extend
   const filename = `${className}.hxx`;
   const guard = `__${className.toUpperCase()}_HXX__`;
+
+  const assessors = [];
 
   const includesCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
@@ -44,6 +66,8 @@ function generateCppClass(modelClass) {
     return attributeObject.$.visibility == "private";
   }).map(attributeObject => {
     const attrData = attributeObject.$;
+    assessors.push(generateCppSetter(attrData));
+    assessors.push(generateCppGetter(attrData));
     if (cppMapIncludes[attrData.type]) {
       includesCpp.add(cppMapIncludes[attrData.type]);
     }
@@ -68,13 +92,19 @@ function generateCppClass(modelClass) {
     return `${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } m_${attrData.name};`
   }).join("\n");
 
-  const cppClassTemplate = `#ifndef ${guard}
+  const cppClassTemplate = `
+/**
+ * @filename ${filename}
+ * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
+ */
+
+#ifndef ${guard}
 #define ${guard} 
 
 ${Array.from(includesCpp).map(inc => `#include <${inc}>`).join("\n")}
 
 /**
- * @brief class of ${className} in model
+ * @brief class of ${className} object in model
  *
  */
 #pragma db object
@@ -94,6 +124,7 @@ public:
 
 ${publicAttributes}
 
+${assessors.join("\n\n")}
 
 };
 #endid // end ${guard}`;
@@ -102,7 +133,7 @@ ${publicAttributes}
 
 }
 function generateTsClass(modelClass) {
-
+  // TODO add template implementation of typescript classes
 }
 
 
