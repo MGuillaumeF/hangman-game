@@ -14,19 +14,20 @@ function generateClasses(modelClasses) {
   }
 }
 function generateCppClass(modelClass) {
-  const className = modelClass.class.$.name
-  const extendClass = modelClass.class.$.extend
+  const className = modelClass.$.name
+  const extendClass = modelClass.$.extend
   const filename = `${className}.hxx`;
   const guard = `__${className.toUpperCase()}_HXX__`;
 
-  const privateAttributes = modelClass.class.attributes.filter(attributeObject => {
-    return attributeObject.attribute.$.visibility == "private";
+  const attributes = modelClass.attributes[0].attribute;
+  const privateAttributes = attributes.filter(attributeObject => {
+    return attributeObject.$.visibility == "private";
   });
-  const protectedAttributes = modelClass.class.attributes.filter(attributeObject => {
-    return attributeObject.attribute.$.visibility == "protected";
+  const protectedAttributes = attributes.filter(attributeObject => {
+    return attributeObject.$.visibility == "protected";
   });
-  const publicAttributes = modelClass.class.attributes.filter(attributeObject => {
-    return attributeObject.attribute.$.visibility == "public";
+  const publicAttributes = attributes.filter(attributeObject => {
+    return attributeObject.$.visibility == "public";
   });
 
   const cppClassTemplate = `#ifndef ${guard}
@@ -43,7 +44,7 @@ class ${className} ${extendClass ? `final : public ${extendClass}` : ''} {
 private:
 
 ${privateAttributes.map(attributeObject => {
-  const attrData = attributeObject.attribute.$;
+  const attrData = attributeObject.$;
   return `${attrData.type} ${attrData.name}`
 }).join("\n\n")}
 
@@ -71,6 +72,6 @@ function generateTsClass(modelClass) {
 const xml = readFileSync(path.resolve(__dirname, "../../resources/model.xml"));
 parseString(xml, function (err, result) {
     console.info("xml parsing result", JSON.stringify(result, null, 1));
-    // generateClasses(result.model.classes);
+    // generateClasses(result.model.classes[0].class);
 });
 
