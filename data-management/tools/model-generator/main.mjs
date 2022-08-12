@@ -25,6 +25,20 @@ const cppMapIncludes = {
   "string" : "string"
 }
 
+function toCapitalize(str) {
+  return `${str.charAtCode(0).toUpperCase()}${str.slice(1)}`;
+}
+
+function snakeCaseToCamelCase(str) {
+  const words = str.split("_");
+  return `${words[0]}${words.slice(1).map(toCapitalize).join('')}`;
+}
+
+function snakeCaseToUpperCamelCase(str) {
+  const words = str.split("_");
+  return words.map(toCapitalize).join('');
+}
+
 function generateClasses(modelClasses) {
   for (const modelClass of modelClasses) {
     generateCppClass(modelClass);
@@ -38,7 +52,7 @@ function generateCppSetter(attrData) {
    *
    * @param ${attrData.name} The ${attrData.name} of object
    */
-  void set${attrData.name}(const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`
+  void set${snakeCaseToUpperCamelCase(attrData.name)}(const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`
 }
 
 function generateCppGetter(attrData) {
@@ -47,7 +61,7 @@ function generateCppGetter(attrData) {
    *
    * @return const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type }& the ${attrData.name} of object
    */
-  const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &get${attrData.name}() const { return m_${attrData.name}; };`
+  const ${cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type } &get${snakeCaseToUpperCamelCase(attrData.name)}() const { return m_${attrData.name}; };`
 
 }
 
