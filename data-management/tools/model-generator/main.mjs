@@ -182,8 +182,8 @@ ${assessors.join("\n\n")}
    */
   static std::string getPlurialObjectType() { return "${
     className.slice(-1).toLowerCase() === "y"
-      ? `${className.slice(0, -1)}${ies}`
-      : className
+      ? `${className.slice(0, -1)}ies`
+      : `${className}s`
   }"; }
 
 };
