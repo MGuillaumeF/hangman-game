@@ -42,11 +42,16 @@ function generateCppClass(modelClass) {
 #pragma db object
 class ${className} ${extendClass ? `final : public ${extendClass}` : ''} {
 private:
-
 ${privateAttributes.map(attributeObject => {
   const attrData = attributeObject.$;
-  return `${attrData.type} ${attrData.name}`
-}).join("\n\n")}
+  return `${attrData.type} m_${attrData.name};`
+}).join("\n")}
+
+protected:
+${protectedAttributes.map(attributeObject => {
+  const attrData = attributeObject.$;
+  return `${attrData.type} m_${attrData.name};`
+}).join("\n")}
 
 public:
   /**
@@ -55,6 +60,10 @@ public:
    */
   ${className}() = default;
 
+${publicAttributes.map(attributeObject => {
+  const attrData = attributeObject.$;
+  return `${attrData.type} m_${attrData.name};`
+}).join("\n")}
 
 
 };
