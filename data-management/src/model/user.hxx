@@ -98,16 +98,16 @@ public:
 
    * @brief Get the Last connection object
    *
-   * @return const uint32_t&
+   * @return const std::time_t&
    */
-  const uint32_t &getLastConnection() const { return m_lastConnection; };
+  const std::time_t &getLastConnection() const { return m_lastConnection; };
 
   /**
    * @brief Set the last connection object
    *
    * @param lastConnection
    */
-  void setLastConnection(const uint32_t &lastConnection) {
+  void setLastConnection(const std::time_t &lastConnection) {
     m_lastConnection = lastConnection;
   };
 
