@@ -98,16 +98,16 @@ public:
 
    * @brief Get the Last connection object
    *
-   * @return const uint32_t&
+   * @return const std::time_t&
    */
-  const uint32_t &getLastConnection() const { return m_lastConnection; };
+  const std::time_t &getLastConnection() const { return m_lastConnection; };
 
   /**
    * @brief Set the last connection object
    *
    * @param lastConnection
    */
-  void setLastConnection(const uint32_t &lastConnection) {
+  void setLastConnection(const std::time_t &lastConnection) {
     m_lastConnection = lastConnection;
   };
 
@@ -223,7 +223,7 @@ private:
   std::string m_saltUser;
   std::string m_saltSession;
   std::string m_token;
-  uint32_t m_lastConnection;
+  std::time_t m_lastConnection;
 #pragma db value_not_null unordered
   std::vector<std::shared_ptr<user>> m_friends;
 #pragma db value_not_null unordered
