@@ -65,6 +65,27 @@
           min-length="8" 
           pattern="/^.*(?:(?:[a-z].*[A-Z].*\d)|(?:[A-Z].*\d.*[a-z])|(?:\d.*[a-z].*[A-Z])).*/$">
         </attribute>
+        <attribute
+          name="salt_user"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="32">
+        </attribute>
+        <attribute
+          name="salt_session"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="32">
+        </attribute>
+        <attribute
+          name="token"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="32">
+        </attribute>
       </attributes>
     </class>
   </classes>
