@@ -70,7 +70,21 @@
           visibility="private"
           type="string"
           mandatory="true"
-          min-length="32" 
+          min-length="32">
+        </attribute>
+        <attribute
+          name="salt_session"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="32">
+        </attribute>
+        <attribute
+          name="token"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min-length="32">
         </attribute>
       </attributes>
     </class>
