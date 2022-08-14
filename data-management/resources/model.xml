@@ -86,6 +86,24 @@
           mandatory="true"
           min-length="32">
         </attribute>
+        <attribute
+          name="last_connection"
+          visibility="private"
+          type="date"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="friends"
+          visibility="private"
+          type="user[]"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="groups"
+          visibility="private"
+          type="group[]"
+          mandatory="false">
+        </attribute>
       </attributes>
     </class>
   </classes>
