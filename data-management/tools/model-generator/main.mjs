@@ -19,6 +19,8 @@ const cppMapTypes = {
   uint64: "uint64_t",
 };
 
+const allClassNames = new Set();
+
 const cppMapIncludes = {
   date: "ctime",
   string: "string",
@@ -198,5 +200,8 @@ function generateTsClass(modelClass) {
 const xml = readFileSync(path.resolve(__dirname, "../../resources/model.xml"));
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
+  for (const modelClass of modelClasses) {
+    allClassNames.add(modelClass.$.name);
+  }
   generateClasses(result.model.classes[0].class);
 });
