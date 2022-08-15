@@ -200,7 +200,7 @@ function generateTsClass(modelClass) {
 const xml = readFileSync(path.resolve(__dirname, "../../resources/model.xml"));
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
-  for (const modelClass of modelClasses) {
+  for (const modelClass of result.model.classes[0].class) {
     allClassNames.add(modelClass.$.name);
   }
   generateClasses(result.model.classes[0].class);
