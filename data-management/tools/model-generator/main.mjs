@@ -149,7 +149,7 @@ if (extendClass) {
 #define ${guard} 
 
 ${Array.from(includesModelObjectsCpp)
-  .map((inc) => `#include "./${inc}.hxx`)
+  .map((inc) => `#include "./${inc}.hxx"`)
   .join("\n")}
 
 ${Array.from(includesCpp)
