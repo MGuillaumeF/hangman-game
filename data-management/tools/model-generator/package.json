@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "xml2js": "^0.4.22"
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@mguillaumef/audiso": "^0.0.4"
