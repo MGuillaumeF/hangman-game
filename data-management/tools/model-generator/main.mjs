@@ -42,8 +42,8 @@ function snakeCaseToUpperCamelCase(str) {
 
 function getCppAttributeType(attrData, includesLib, includesObjects) {
   let attributeType = attrData.type;
-  const isArray = /^.*\[\]$/.test(attrData.type)
-  if (isArray(attributeType)) {
+  const isArray = /^.*\[\]$/.test(attributeType)
+  if (isArray) {
     attributeType = attributeType.slice(0, -2);
     includesLib.add("vector");
   }
