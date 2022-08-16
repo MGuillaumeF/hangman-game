@@ -76,7 +76,11 @@ function generateCppSetter(attrData) {
    *
    * @param ${attrData.name} The ${attrData.name} of object
    */
-  void set${snakeCaseToUpperCamelCase(attrData.name)}(const ${getCppAttributeType(attrData)} &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`;
+  void set${snakeCaseToUpperCamelCase(
+    attrData.name
+  )}(const ${getCppAttributeType(attrData)} &${attrData.name}) { m_${
+    attrData.name
+  } = ${attrData.name}; };`;
 }
 
 function generateCppGetter(attrData) {
@@ -84,11 +88,13 @@ function generateCppGetter(attrData) {
   /**
    * @brief Get the ${attrData.name} of object
    *
-   * @return const ${getCppAttributeType(attrData)}& the ${attrData.name} of object
-   */
-  const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(attrData.name)}() const { return m_${
+   * @return const ${getCppAttributeType(attrData)}& the ${
     attrData.name
-  }; };`;
+  } of object
+   */
+  const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(
+    attrData.name
+  )}() const { return m_${attrData.name}; };`;
 }
 
 function generateCppClass(modelClass) {
