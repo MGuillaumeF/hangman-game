@@ -42,7 +42,7 @@ function snakeCaseToUpperCamelCase(str) {
 
 function getCppAttributeType(attrData, includesLib, includesObjects) {
   let attributeType = attrData.type;
-  const isArray = /^.*\[\]$/.test(attributeType)
+  const isArray = /^.*\[\]$/.test(attributeType);
   if (isArray) {
     attributeType = attributeType.slice(0, -2);
     includesLib.add("vector");
@@ -103,7 +103,7 @@ function generateCppClass(modelClass) {
   const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
 
-if (extendClass) {
+  if (extendClass) {
     includesModelObjectsCpp.add(extendClass);
   }
 
@@ -115,7 +115,11 @@ if (extendClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
   const protectedAttributes = attributes
@@ -126,8 +130,11 @@ if (extendClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
-    
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
   const publicAttributes = attributes
@@ -138,12 +145,13 @@ if (extendClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
-    
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
-
- 
 
   const cppClassTemplate = `
 /**
