@@ -45,16 +45,18 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
   const isArray = /^.*\[\]$/.test(attributeType);
   if (isArray) {
     attributeType = attributeType.slice(0, -2);
-    includesLib.add("vector");
+    if (includesLib) {
+      includesLib.add("vector");
+    }
   }
 
-  if (cppMapIncludes[attributeType]) {
+  if (includesLib && cppMapIncludes[attributeType]) {
     includesLib.add(cppMapIncludes[attributeType]);
   }
 
   if (cppMapTypes[attributeType]) {
     attributeType = cppMapTypes[attributeType];
-  } else if (allClassNames.has(attributeType)) {
+  } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
@@ -74,9 +76,7 @@ function generateCppSetter(attrData) {
    *
    * @param ${attrData.name} The ${attrData.name} of object
    */
-  void set${snakeCaseToUpperCamelCase(attrData.name)}(const ${
-    cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-  } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`;
+  void set${snakeCaseToUpperCamelCase(attrData.name)}(const ${getCppAttributeType(attrData)} &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`;
 }
 
 function generateCppGetter(attrData) {
@@ -84,13 +84,9 @@ function generateCppGetter(attrData) {
   /**
    * @brief Get the ${attrData.name} of object
    *
-   * @return const ${
-     cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-   }& the ${attrData.name} of object
+   * @return const ${getCppAttributeType(attrData)}& the ${attrData.name} of object
    */
-  const ${
-    cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-  } &get${snakeCaseToUpperCamelCase(attrData.name)}() const { return m_${
+  const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(attrData.name)}() const { return m_${
     attrData.name
   }; };`;
 }
