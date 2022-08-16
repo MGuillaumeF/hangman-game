@@ -104,15 +104,14 @@ function generateCppClass(modelClass) {
   const guard = `__${className.toUpperCase()}_HXX__`;
 
   const assessors = [];
-  
+
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
 
-  if (className === "root_model_object")
-    {
-      includesCpp.add("odb/core.hxx");
-    }
+  if (className === "root_model_object") {
+    includesCpp.add("odb/core.hxx");
+  }
 
   if (extendClass) {
     includesModelObjectsCpp.add(extendClass);
