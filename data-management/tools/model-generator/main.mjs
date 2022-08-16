@@ -169,6 +169,7 @@ function generateCppClass(modelClass) {
 #define ${guard} 
 
 ${Array.from(includesModelObjectsCpp)
+  .filter(inc => inc !== className)
   .map((inc) => `#include "./${inc}.hxx"`)
   .join("\n")}
 
