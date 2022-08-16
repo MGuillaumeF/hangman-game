@@ -119,5 +119,52 @@
         </attribute>
       </attributes>
     </class>
+    <class name="dictionary" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="country_code"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="words"
+          visibility="private"
+          type="word[]">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="word" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="definitions"
+          visibility="private"
+          type="string[]"
+          mandatory="true"
+          min-length="3" >
+        </attribute>
+      </attributes>
+    </class>
   </classes>
 </model>
