@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
@@ -482,7 +482,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
@@ -596,7 +596,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
@@ -668,7 +668,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:
@@ -763,7 +763,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
@@ -846,7 +846,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:
@@ -892,7 +892,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:
@@ -959,7 +959,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Checkout Branch
       run: echo "change git branch to develop"
