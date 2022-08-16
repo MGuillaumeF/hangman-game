@@ -19,6 +19,8 @@ const cppMapTypes = {
   uint64: "uint64_t",
 };
 
+const allClassNames = new Set();
+
 const cppMapIncludes = {
   date: "ctime",
   string: "string",
@@ -38,6 +40,28 @@ function snakeCaseToUpperCamelCase(str) {
   return words.map(toCapitalize).join("");
 }
 
+function getCppAttributeType(attrData, includesLib, includesObjects) {
+  let attributeType = attrData.type;
+  const isArray = /^.*\[\]$/.test(attributeType);
+  if (isArray) {
+    attributeType = attributeType.slice(0, -2);
+    if (includesLib) {
+      includesLib.add("vector");
+    }
+  }
+
+  if (includesLib && cppMapIncludes[attributeType]) {
+    includesLib.add(cppMapIncludes[attributeType]);
+  }
+
+  if (cppMapTypes[attributeType]) {
+    attributeType = cppMapTypes[attributeType];
+  } else if (includesObjects && allClassNames.has(attributeType)) {
+    includesObjects.add(attributeType);
+  }
+  return isArray ? `std::vector<${attributeType}>` : attributeType;
+}
+
 function generateClasses(modelClasses) {
   for (const modelClass of modelClasses) {
     generateCppClass(modelClass);
@@ -52,9 +76,11 @@ function generateCppSetter(attrData) {
    *
    * @param ${attrData.name} The ${attrData.name} of object
    */
-  void set${snakeCaseToUpperCamelCase(attrData.name)}(const ${
-    cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-  } &${attrData.name}) { m_${attrData.name} = ${attrData.name}; };`;
+  void set${snakeCaseToUpperCamelCase(
+    attrData.name
+  )}(const ${getCppAttributeType(attrData)} &${attrData.name}) { m_${
+    attrData.name
+  } = ${attrData.name}; };`;
 }
 
 function generateCppGetter(attrData) {
@@ -62,15 +88,13 @@ function generateCppGetter(attrData) {
   /**
    * @brief Get the ${attrData.name} of object
    *
-   * @return const ${
-     cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-   }& the ${attrData.name} of object
-   */
-  const ${
-    cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-  } &get${snakeCaseToUpperCamelCase(attrData.name)}() const { return m_${
+   * @return const ${getCppAttributeType(attrData)}& the ${
     attrData.name
-  }; };`;
+  } of object
+   */
+  const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(
+    attrData.name
+  )}() const { return m_${attrData.name}; };`;
 }
 
 function generateCppClass(modelClass) {
@@ -82,7 +106,13 @@ function generateCppClass(modelClass) {
   const assessors = [];
 
   const includesCpp = new Set(["string"]);
+  const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
+
+  if (extendClass) {
+    includesModelObjectsCpp.add(extendClass);
+  }
+
   const privateAttributes = attributes
     .filter((attributeObject) => {
       return attributeObject.$.visibility == "private";
@@ -91,12 +121,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
   const protectedAttributes = attributes
@@ -107,12 +136,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
   const publicAttributes = attributes
@@ -123,12 +151,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name};`;
     })
     .join("\n");
 
@@ -140,6 +167,11 @@ function generateCppClass(modelClass) {
 
 #ifndef ${guard}
 #define ${guard} 
+
+${Array.from(includesModelObjectsCpp)
+  .filter((inc) => inc !== className)
+  .map((inc) => `#include "./${inc}.hxx"`)
+  .join("\n")}
 
 ${Array.from(includesCpp)
   .map((inc) => `#include <${inc}>`)
@@ -198,5 +230,8 @@ function generateTsClass(modelClass) {
 const xml = readFileSync(path.resolve(__dirname, "../../resources/model.xml"));
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
+  for (const modelClass of result.model.classes[0].class) {
+    allClassNames.add(modelClass.$.name);
+  }
   generateClasses(result.model.classes[0].class);
 });
