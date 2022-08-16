@@ -50,7 +50,7 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
   if (cppMapTypes[attributeType]) {
     attributeType = cppMapTypes[attributeType];
     includesLib.add(attributeType);
-  } else if (allClassNames.contains(attributeType)) {
+  } else if (allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
