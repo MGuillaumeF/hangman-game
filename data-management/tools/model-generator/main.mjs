@@ -40,6 +40,22 @@ function snakeCaseToUpperCamelCase(str) {
   return words.map(toCapitalize).join("");
 }
 
+function getCppAttributeType(attrData, includesLib, includesObjects) {
+  let attributeType = attrData.type;
+  const isArray = /^.*\[\]$/.test(attrData.type)
+  if (isArray(attributeType)) {
+    attributeType = attributeType.slice(0, -2);
+    includesLib.add("vector");
+  }
+  if (cppMapTypes[attributeType]) {
+    attributeType = cppMapTypes[attributeType];
+    includesLib.add(attributeType);
+  } else if (allClassNames.contains(attributeType)) {
+    includesObjects.add(attributeType);
+  }
+  return isArray ? `std::vector<${attributeType}>` : attributeType;
+}
+
 function generateClasses(modelClasses) {
   for (const modelClass of modelClasses) {
     generateCppClass(modelClass);
@@ -86,6 +102,11 @@ function generateCppClass(modelClass) {
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
+
+if (extendClass) {
+    includesModelObjectsCpp.add(extendClass);
+  }
+
   const privateAttributes = attributes
     .filter((attributeObject) => {
       return attributeObject.$.visibility == "private";
@@ -94,12 +115,7 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
     })
     .join("\n");
   const protectedAttributes = attributes
@@ -110,12 +126,8 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
+    
     })
     .join("\n");
   const publicAttributes = attributes
@@ -126,18 +138,12 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      if (cppMapIncludes[attrData.type]) {
-        includesCpp.add(cppMapIncludes[attrData.type]);
-      }
-      return `${
-        cppMapTypes[attrData.type] ? cppMapTypes[attrData.type] : attrData.type
-      } m_${attrData.name};`;
+      return `${getCppAttributeType(attrData, includesCpp, includesModelObjectsCpp)} m_${attrData.name};`;
+    
     })
     .join("\n");
 
-  if (extendClass) {
-    includesModelObjectsCpp.add(extendClass);
-  }
+ 
 
   const cppClassTemplate = `
 /**
