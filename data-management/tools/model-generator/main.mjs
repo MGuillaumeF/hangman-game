@@ -84,6 +84,7 @@ function generateCppClass(modelClass) {
   const assessors = [];
 
   const includesCpp = new Set(["string"]);
+  const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
   const privateAttributes = attributes
     .filter((attributeObject) => {
@@ -134,6 +135,10 @@ function generateCppClass(modelClass) {
     })
     .join("\n");
 
+if (extendClass) {
+  includesModelObjectsCpp.add(extendClass)
+}
+
   const cppClassTemplate = `
 /**
  * @filename ${filename}
@@ -142,6 +147,10 @@ function generateCppClass(modelClass) {
 
 #ifndef ${guard}
 #define ${guard} 
+
+${Array.from(includesModelObjectsCpp)
+  .map((inc) => `#include "./${inc}.hxx`)
+  .join("\n")}
 
 ${Array.from(includesCpp)
   .map((inc) => `#include <${inc}>`)
