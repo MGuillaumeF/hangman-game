@@ -47,9 +47,13 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     attributeType = attributeType.slice(0, -2);
     includesLib.add("vector");
   }
+
+  if (cppMapIncludes[attributeType]) {
+    includesLib.add(cppMapIncludes[attributeType]);
+  }
+
   if (cppMapTypes[attributeType]) {
     attributeType = cppMapTypes[attributeType];
-    includesLib.add(attributeType);
   } else if (allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
