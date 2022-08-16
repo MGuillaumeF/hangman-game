@@ -101,13 +101,17 @@ function generateCppClass(modelClass) {
   const className = modelClass.$.name;
   const extendClass = modelClass.$.extend;
   const filename = `${className}.hxx`;
-  const guard = `__${className.toUpperCase()}_HXX__`;
+  const guard = `__GENERATED_MODEL_OBJECT_${className.toUpperCase()}_HXX__`;
 
   const assessors = [];
 
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
+
+  if (className === "root_model_object") {
+    includesCpp.add("odb/core.hxx");
+  }
 
   if (extendClass) {
     includesModelObjectsCpp.add(extendClass);
@@ -183,10 +187,10 @@ ${Array.from(includesCpp)
  */
 #pragma db object
 class ${className} ${extendClass ? `final : public ${extendClass}` : ""} {
-private:
+${privateAttributes.length > 0 ? "private:" : ""}
 ${privateAttributes}
 
-protected:
+${protectedAttributes.length > 0 ? "protected:" : ""}
 ${protectedAttributes}
 
 public:
@@ -219,6 +223,15 @@ ${assessors.join("\n\n")}
   }"; }
 
 };
+
+#pragma db object(${className})
+
+#pragma db view object(${className})
+struct ${className}_stat {
+#pragma db column("count(" + ${className}::m_id + ")")
+  std::size_t count;
+};
+
 #endid // end ${guard}`;
 
   console.info("generated :", cppClassTemplate);
