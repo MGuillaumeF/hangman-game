@@ -106,5 +106,18 @@
         </attribute>
       </attributes>
     </class>
+    <class name="group" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-z]{3,32}/$">
+        </attribute>
+      </attributes>
+    </class>
   </classes>
 </model>
