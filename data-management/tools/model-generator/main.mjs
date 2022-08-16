@@ -187,10 +187,10 @@ ${Array.from(includesCpp)
  */
 #pragma db object
 class ${className} ${extendClass ? `final : public ${extendClass}` : ""} {
-${privateAttributes.length > 0 ? "private:" :""}
+${privateAttributes.length > 0 ? "private:" : ""}
 ${privateAttributes}
 
-${protectedAttributes.length > 0 ? "protected:" :""}
+${protectedAttributes.length > 0 ? "protected:" : ""}
 ${protectedAttributes}
 
 public:
