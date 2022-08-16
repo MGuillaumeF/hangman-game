@@ -135,9 +135,9 @@ function generateCppClass(modelClass) {
     })
     .join("\n");
 
-if (extendClass) {
-  includesModelObjectsCpp.add(extendClass)
-}
+  if (extendClass) {
+    includesModelObjectsCpp.add(extendClass);
+  }
 
   const cppClassTemplate = `
 /**
