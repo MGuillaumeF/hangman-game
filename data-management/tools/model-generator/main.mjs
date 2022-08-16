@@ -101,7 +101,7 @@ function generateCppClass(modelClass) {
   const className = modelClass.$.name;
   const extendClass = modelClass.$.extend;
   const filename = `${className}.hxx`;
-  const guard = `__${className.toUpperCase()}_HXX__`;
+  const guard = `__GENERATED_MODEL_OBJECT_${className.toUpperCase()}_HXX__`;
 
   const assessors = [];
 
@@ -187,10 +187,10 @@ ${Array.from(includesCpp)
  */
 #pragma db object
 class ${className} ${extendClass ? `final : public ${extendClass}` : ""} {
-private:
+${privateAttributes.length > 0 ? "private:" :""}
 ${privateAttributes}
 
-protected:
+${protectedAttributes.length > 0 ? "protected:" :""}
 ${protectedAttributes}
 
 public:
