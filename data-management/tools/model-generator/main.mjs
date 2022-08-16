@@ -104,10 +104,15 @@ function generateCppClass(modelClass) {
   const guard = `__${className.toUpperCase()}_HXX__`;
 
   const assessors = [];
-
+  
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set();
   const attributes = modelClass.attributes[0].attribute;
+
+  if (className === "root_model_object")
+    {
+      includesCpp.add("odb/core.hxx");
+    }
 
   if (extendClass) {
     includesModelObjectsCpp.add(extendClass);
@@ -219,6 +224,15 @@ ${assessors.join("\n\n")}
   }"; }
 
 };
+
+#pragma db object(${className})
+
+#pragma db view object(${className})
+struct ${className}_stat {
+#pragma db column("count(" + ${className}::m_id + ")")
+  std::size_t count;
+};
+
 #endid // end ${guard}`;
 
   console.info("generated :", cppClassTemplate);
