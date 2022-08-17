@@ -2,7 +2,7 @@ import { parseString } from "xml2js";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
+import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
