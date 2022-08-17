@@ -10,7 +10,7 @@ function generateDatabaseImport(databaseType, classNames) {
 }
 
 function generateObjectTypesDispatcher(classNames) {
-   const conditionList = Array.from(classNames).map((className, index) => {
+   const conditionList = Array.from(classNames).filter(className => className !== 'root_model_object').map((className, index) => {
    return `${index===0 ? '' : 'else'} if ("${className}" == objectType) {
     // dispatch crud ${className} orders
     response = routeObjectType<${className}>(properties.get<std::string>("order-type"),
@@ -26,11 +26,11 @@ return `
 #include "./CRUDOrderDispatcher.hpp"
 
 #if defined(DATABASE_MYSQL)
-generateDatabaseImport("mysql", classNames);
+${generateDatabaseImport("mysql", classNames)}
 #elif defined(DATABASE_SQLITE)
-generateDatabaseImport("sqlite", classNames);
+${generateDatabaseImport("sqlite", classNames)}
 #elif defined(DATABASE_PGSQL)
-generateDatabaseImport("pgsql", classNames);
+${generateDatabaseImport("pgsql", classNames)}
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
