@@ -2,6 +2,7 @@ import { parseString } from "xml2js";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -247,4 +248,5 @@ parseString(xml, function (err, result) {
     allClassNames.add(modelClass.$.name);
   }
   generateClasses(result.model.classes[0].class);
+  console.info("generated :", generateCRUDOrderDispatcher(allClassNames));
 });
