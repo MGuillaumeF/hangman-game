@@ -2,27 +2,28 @@ function generateDatabaseImport(databaseType, classNames) {
   const importObjectList = [];
   for (const className of classNames) {
     importObjectList.push(
-      `#include "../model/${databaseType}/${className}-odb.hxx"`, 
+      `#include "../model/${databaseType}/${className}-odb.hxx"`,
       `#include "../model/${databaseType}/${className}.hxx"`
     );
   }
-  return importObjectList.join('\n');
+  return importObjectList.join("\n");
 }
 
 function generateObjectTypesDispatcher(classNames) {
-   const conditionList = Array.from(classNames).filter(className => className !== 'root_model_object').map((className, index) => {
-   return `${index===0 ? '' : 'else'} if ("${className}" == objectType) {
+  const conditionList = Array.from(classNames)
+    .filter((className) => className !== "root_model_object")
+    .map((className, index) => {
+      return `${index === 0 ? "" : "else"} if ("${className}" == objectType) {
     // dispatch crud ${className} orders
     response = routeObjectType<${className}>(properties.get<std::string>("order-type"),
                                      properties, data);
-  }`});
-  return conditionList.join(' ');
+  }`;
+    });
+  return conditionList.join(" ");
 }
 
 export function generateCRUDOrderDispatcher(classNames) {
-
-
-return `
+  return `
 #include "./CRUDOrderDispatcher.hpp"
 
 #if defined(DATABASE_MYSQL)
@@ -60,5 +61,4 @@ CRUDOrderDispatcher::route(const std::string &objectType,
   return response;
 }
 `;
-
 }
