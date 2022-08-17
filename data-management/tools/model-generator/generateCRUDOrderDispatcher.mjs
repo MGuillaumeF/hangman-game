@@ -10,7 +10,7 @@ function generateDatabaseImport(databaseType, classNames) {
 }
 
 function generateObjectTypesDispatcher(classNames) {
-   const conditionList = classNames.map((className, index) => {
+   const conditionList = Array.from(classNames).map((className, index) => {
    return `${index===0 ? '' : 'else'} if ("${className}" == objectType) {
     // dispatch crud ${className} orders
     response = routeObjectType<${className}>(properties.get<std::string>("order-type"),
