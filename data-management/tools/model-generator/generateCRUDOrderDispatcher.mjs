@@ -15,7 +15,7 @@ function generateObjectTypesDispatcher(classNames) {
     // dispatch crud ${className} orders
     response = routeObjectType<${className}>(properties.get<std::string>("order-type"),
                                      properties, data);
-  }`);
+  }`});
   return conditionList.join(' ');
 }
 
