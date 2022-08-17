@@ -53,7 +53,7 @@ CRUDOrderDispatcher::route(const std::string &objectType,
 
   std::cout << "OBJECT TYPE : " << properties.get<std::string>("object-type")
             << std::endl;
-  ${generateObjectTypesDispatcher(coassNames)} else {
+  ${generateObjectTypesDispatcher(classNames)} else {
     // unknown object type
     response.put("status-code", uint16_t(status_code::NOT_FOUND));
   }
