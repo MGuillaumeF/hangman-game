@@ -10,7 +10,7 @@ export function load(templateName, parameters) {
   let templateContent = '';
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
-    const matches = templateContent.match(/^.*\{\{\s*(\S+)\s*\}\}.*$/gm);
+    const matches = templateContent.match(/\{\{\s*(\S+)\s*\}\}/gm);
     let usedVars = []
     if (matches) {
     usedVars = matches.slice(1)
@@ -22,8 +22,8 @@ export function load(templateName, parameters) {
     const providedVars = Object.keys(parameters);
     for (const usedVar of usedVars) {
       if (providedVars.includes(usedVar)) {
-        const re = new RegExp(`/^(.*)\\{\\{\\s*${usedVar}\\s*\\}\\}(.*)$/`, "gm");
-        templateContent = templateContent.replace(re, `$1${parameters[usedVar]}$2`);
+        const re = new RegExp(`/\\{\\{\\s*${usedVar}\\s*\\}\\}/`, "gm");
+        templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
         console.error("The parameter ", usedVar, " is not provided to the template");
         process.exit(1)
