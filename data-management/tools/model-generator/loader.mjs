@@ -10,7 +10,7 @@ export function load(templateName, parameters) {
   let templateContent = '';
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
-    const matches = /^.*\{\{\s*(\S+)\s*\}\}.*$/g.match(templateContent);
+    const matches = templateContent.match(/^.*\{\{\s*(\S+)\s*\}\}.*$/g);
     let usedVars = []
     if (matches) {
     usedVars = matches.slice(1)
