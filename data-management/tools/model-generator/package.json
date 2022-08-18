@@ -1,4 +1,5 @@
 {
+  "main" : "src/main.mjs",
   "dependencies": {
     "xml2js": "^0.4.23"
   },
