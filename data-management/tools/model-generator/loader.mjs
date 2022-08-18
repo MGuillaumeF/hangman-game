@@ -28,7 +28,7 @@ export function load(templateName, parameters) {
     const providedVars = Object.keys(parameters);
     for (const usedVar of usedVars) {
       if (providedVars.includes(usedVar)) {
-        const re = new RegExp(`/\\{\\{\\s*${usedVar}\\s*\\}\\}/`, "gm");
+        const re = new RegExp(`\\{\\{\\s*${usedVar}\\s*\\}\\}`, "gm");
         templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
         console.error(
