@@ -12,13 +12,10 @@ function generateDatabaseImport(databaseType, classNames) {
 }
 
 function generatrDatabaseImportBloc(databaseTypes, classNames) {
-  const blocString = [];
-  databaseTypes.map((databaseType, index) {
-    blocString.push(`
+  const blocString = databaseTypes.map((databaseType, index) => `
 #${index === 0 ? '' : 'el'}if defined(DATABASE_${databaseType.toUpperCase()})
 ${generateDatabaseImport(databaseType, classNames)}
-`
-  }
+`);
   blocString.push(`
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
