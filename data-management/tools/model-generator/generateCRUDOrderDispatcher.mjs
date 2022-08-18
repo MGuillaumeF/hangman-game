@@ -12,15 +12,17 @@ function generateDatabaseImport(databaseType, classNames) {
 }
 
 function generatrDatabaseImportBloc(databaseTypes, classNames) {
-  const blocString = databaseTypes.map((databaseType, index) => `
-#${index === 0 ? '' : 'el'}if defined(DATABASE_${databaseType.toUpperCase()})
+  const blocString = databaseTypes.map(
+    (databaseType, index) => `
+#${index === 0 ? "" : "el"}if defined(DATABASE_${databaseType.toUpperCase()})
 ${generateDatabaseImport(databaseType, classNames)}
-`);
+`
+  );
   blocString.push(`
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif`);
-  return blocString.join('');
+  return blocString.join("");
 }
 
 function generateObjectTypesDispatcher(classNames) {
@@ -38,8 +40,11 @@ function generateObjectTypesDispatcher(classNames) {
 
 export function generateCRUDOrderDispatcher(classNames) {
   return load("CRUDOrderDispatcher", {
-    generatedDatabaseImport: generatrDatabaseImportBloc(['mysql', 'sqlite', 'pgsql'], classNames),
-    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames)
+    generatedDatabaseImport: generatrDatabaseImportBloc(
+      ["mysql", "sqlite", "pgsql"],
+      classNames
+    ),
+    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames),
   });
 
   return `
