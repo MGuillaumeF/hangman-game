@@ -241,7 +241,9 @@ function generateTsClass(modelClass) {
   // TODO add template implementation of typescript classes
 }
 
-const xml = readFileSync(path.resolve(__dirname, "../../../resources/model.xml"));
+const xml = readFileSync(
+  path.resolve(__dirname, "../../../resources/model.xml")
+);
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
   for (const modelClass of result.model.classes[0].class) {
