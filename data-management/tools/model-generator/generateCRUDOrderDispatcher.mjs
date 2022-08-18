@@ -1,4 +1,4 @@
-import { load } from "./load.mjs";
+import { load } from "./loader.mjs";
 
 function generateDatabaseImport(databaseType, classNames) {
   const importObjectList = [];
