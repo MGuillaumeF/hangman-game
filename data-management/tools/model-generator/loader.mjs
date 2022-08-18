@@ -17,7 +17,9 @@ export function load(templateName, parameters) {
     const matches = templateContent.matchAll(/\{\{\s*(\S+)\s*\}\}/gm);
     let usedVars = [];
     if (matches) {
-      usedVars = [].concat(...Array.from(matches).map(match => match.slice(1)))
+      usedVars = [].concat(
+        ...Array.from(matches).map((match) => match.slice(1))
+      );
       console.info("variables to replace are :", ...usedVars);
     } else {
       console.debug("no variables found");
