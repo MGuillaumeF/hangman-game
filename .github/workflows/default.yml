@@ -114,7 +114,7 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
         npm install
-        node main.mjs
+        npm start
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
@@ -132,11 +132,11 @@ jobs:
         boost_version: ${{env.BOOST_VERSION}}
         
     - name: installer odb compiler dependencies
-      working-directory: ${{github.workspace}}/data-management/tools
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
       run: npm install
 
     - name: Audit dependencies installer odb win
-      working-directory: ${{github.workspace}}/data-management/tools
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
       run: npm audit --json > ./audit-dependency-install-odb-report.json || echo FAILED
 
     - name: Convert Audit dependencies installer odb win report
@@ -615,10 +615,10 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/data-management/tools/
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
       run: |
         npm install
-        node install-odb.mjs
+        npm start
         echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: generate model
@@ -684,10 +684,10 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/data-management/tools/
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
       run: |
         npm install
-        node install-odb.mjs
+        npm start
         echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: generate model
