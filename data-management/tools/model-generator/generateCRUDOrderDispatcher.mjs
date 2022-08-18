@@ -25,8 +25,10 @@ function generateObjectTypesDispatcher(classNames) {
 }
 
 export function generateCRUDOrderDispatcher(classNames) {
-return load("CRUDOrderDispatcher", { generatedDatabaseImport : "titi", generatedObjectTypesDispatcher : "Toto"});
-
+  return load("CRUDOrderDispatcher", {
+    generatedDatabaseImport: "titi",
+    generatedObjectTypesDispatcher: "Toto",
+  });
 
   return `
 #include "./CRUDOrderDispatcher.hpp"
