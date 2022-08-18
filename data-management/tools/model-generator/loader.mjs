@@ -10,11 +10,11 @@ export function load(templateName, parameters) {
   let templateContent = '';
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
-    const matches = templateContent.match(/\{\{\s*(\S+)\s*\}\}/gm);
+    const matches = templateContent.matchAll(/\{\{\s*(\S+)\s*\}\}/gm);
     let usedVars = []
     if (matches) {
-    usedVars = matches.slice(1)
-    console.info("variables to replace are :", ...matches.slice(1));
+    usedVars = Array.from(matches)
+    console.info("variables to replace are :", ...usedVars);
 } else {
    console.debug("no variables found");
 }
@@ -26,7 +26,7 @@ export function load(templateName, parameters) {
         templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
         console.error("The parameter ", usedVar, " is not provided to the template");
-        process.exit(1)
+        //process.exit(1)
       }
     }
 
@@ -38,7 +38,7 @@ export function load(templateName, parameters) {
     
   } else {
     console.error("template not found :", templatePath);
-    process.exit(1);
+    //process.exit(1);
   }
   return templateContent;
 }
