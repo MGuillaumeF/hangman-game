@@ -166,7 +166,6 @@
         </attribute>
       </attributes>
     </class>
-
     <class name="party" extend="root_model_object">
       <attributes>
         <attribute
@@ -204,6 +203,81 @@
           name="word"
           visibility="private"
           type="word"
+          mandatory="true">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="chat" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="false"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="messages"
+          visibility="private"
+          type="message[]"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1" >
+        </attribute>
+      </attributes>
+    </class>
+    <class name="message" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="content"
+          visibility="private"
+          type="string"
+          mandatory="false"
+          unique="false"  
+          min-length="1">
+        </attribute>
+        <attribute
+          name="sender"
+          visibility="private"
+          type="user"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="team" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1" >
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
           mandatory="true">
         </attribute>
       </attributes>
