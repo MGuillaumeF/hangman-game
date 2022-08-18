@@ -140,7 +140,7 @@ jobs:
       run: npm audit --json > ./audit-dependency-install-odb-report.json || echo FAILED
 
     - name: Convert Audit dependencies installer odb win report
-      working-directory: ${{github.workspace}}/data-management/tools
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
       run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../reports/audit-install-odb-report.json
 
     - name: Install lib odb
