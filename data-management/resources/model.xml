@@ -96,13 +96,25 @@
           name="friends"
           visibility="private"
           type="user[]"
-          mandatory="false">
+          mandatory="false"
+          bidirectional="false"
+          cardinality="one_to_many">
         </attribute>
         <attribute
           name="groups"
           visibility="private"
           type="group[]"
-          mandatory="false">
+          mandatory="false"
+          bidirectional="true"
+          cardinality="many_to_many">
+        </attribute>
+        <attribute
+          name="teams"
+          visibility="private"
+          type="team[]"
+          mandatory="false"
+          bidirectional="true"
+          cardinality="many_to_many">
         </attribute>
       </attributes>
     </class>
@@ -116,6 +128,16 @@
           unique="true"  
           min-length="3" 
           pattern="/^[a-z]{3,32}/$">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1"
+          bidirectional="true"
+          cardinality="many_to_many"
+          linked_column="groups">
         </attribute>
       </attributes>
     </class>
@@ -273,7 +295,10 @@
           visibility="private"
           type="user[]"
           mandatory="true"
-          min-length="1" >
+          min-length="1"
+          bidirectional="true"
+          cardinality="many_to_many"
+          linked_column="teams">
         </attribute>
         <attribute
           name="chat"
