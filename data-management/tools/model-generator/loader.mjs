@@ -1,4 +1,4 @@
-import { readFileSync, existSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 export function load(templateName, parameters) {
   const templatePath = path.resolve(__dirname, "templates", `${templateName}.tlat`);
   let templateContent = '';
-  if (existSync(templatePath)) {
+  if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
     const matches = /^.*\{\{\s*(\S+)\s*\}\}.*$/g.match(templateContent);
     let usedVars = []
