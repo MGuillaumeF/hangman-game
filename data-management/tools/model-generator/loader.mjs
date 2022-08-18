@@ -31,7 +31,7 @@ export function load(templateName, parameters) {
     }
 
     for (const providedVar of providedVars) {
-      if(!usedVars.includes(providedVar) {
+      if(!usedVars.includes(providedVar)) {
         console.warn("The parameter ", providedVar, " is not used on the template");
       }
     }
