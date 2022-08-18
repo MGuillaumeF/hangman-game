@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 export function load(templateName, parameters) {
   const templatePath = path.resolve(
     __dirname,
+    "../",
     "templates",
     `${templateName}.tlat`
   );
