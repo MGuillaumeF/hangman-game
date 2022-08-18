@@ -166,5 +166,47 @@
         </attribute>
       </attributes>
     </class>
+
+    <class name="party" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="start_date"
+          visibility="private"
+          type="date"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="end_date"
+          visibility="private"
+          type="date"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="win"
+          visibility="private"
+          type="bool"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1" >
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="word"
+          visibility="private"
+          type="word"
+          mandatory="true">
+        </attribute>
+      </attributes>
+    </class>
   </classes>
 </model>
