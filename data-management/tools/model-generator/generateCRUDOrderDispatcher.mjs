@@ -1,3 +1,5 @@
+import { load } from "./load.mjs";
+
 function generateDatabaseImport(databaseType, classNames) {
   const importObjectList = [];
   for (const className of classNames) {
@@ -23,6 +25,9 @@ function generateObjectTypesDispatcher(classNames) {
 }
 
 export function generateCRUDOrderDispatcher(classNames) {
+return load("CRUDOrderDispatcher", { generatedDatabaseImport : "titi", generatedObjectTypesDispatcher : "Toto"});
+
+
   return `
 #include "./CRUDOrderDispatcher.hpp"
 
