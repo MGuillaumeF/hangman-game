@@ -41,7 +41,7 @@ function generateObjectTypesDispatcher(classNames) {
 export function generateCRUDOrderDispatcher(classNames) {
   return load("CRUDOrderDispatcher", {
     generatedDatabaseImport: generatrDatabaseImportBloc(
-      ["mysql", "sqlite", "pgsql"],
+      ["mysql", "sqlite", "pgsql", "oracle", "mssql"],
       classNames
     ),
     generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames),
