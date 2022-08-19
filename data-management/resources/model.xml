@@ -160,7 +160,8 @@
         <attribute
           name="words"
           visibility="private"
-          type="word[]">
+          type="word[]"
+          cardinality="one_to_many">
         </attribute>
       </attributes>
     </class>
@@ -181,6 +182,12 @@
           type="string[]"
           mandatory="true"
           min-length="3" >
+        </attribute>
+        <attribute
+          name="dictionary"
+          visibility="private"
+          type="dictionary"
+          cardinality="one_to_many">
         </attribute>
       </attributes>
     </class>
@@ -209,19 +216,22 @@
           visibility="private"
           type="user[]"
           mandatory="true"
-          min-length="1" >
+          min-length="1"
+          cardinality="many_to_many">
         </attribute>
         <attribute
           name="chat"
           visibility="private"
           type="chat"
-          mandatory="true">
+          mandatory="true"
+          cardinality="to_one">
         </attribute>
         <attribute
           name="word"
           visibility="private"
           type="word"
-          mandatory="true">
+          mandatory="true"
+          cardinality="to_one">
         </attribute>
       </attributes>
     </class>
@@ -240,14 +250,16 @@
           name="messages"
           visibility="private"
           type="message[]"
-          mandatory="false">
+          mandatory="false"
+          cardinality="one_to_many">
         </attribute>
         <attribute
           name="members"
           visibility="private"
           type="user[]"
           mandatory="true"
-          min-length="1" >
+          min-length="1"
+          cardinality="many_to_many">
         </attribute>
       </attributes>
     </class>
@@ -265,6 +277,13 @@
           name="sender"
           visibility="private"
           type="user"
+          mandatory="true"
+          cardinality="to_one">
+        </attribute>
+        <attribute
+          name="send_date"
+          visibility="private"
+          type="date"
           mandatory="true">
         </attribute>
         <attribute
@@ -299,7 +318,8 @@
           name="chat"
           visibility="private"
           type="chat"
-          mandatory="true">
+          mandatory="true"
+          cardinality="to_one">
         </attribute>
       </attributes>
     </class>
