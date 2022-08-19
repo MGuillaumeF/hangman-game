@@ -60,12 +60,12 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
   } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
-    if (attrData.cardinality && allClassNames.has(attributeType)) {
-      if (includesLib) {
-        includesLib.add("memory");
-      }
-      attributeType = `std::shared_ptr<${attributeType}>`;
+  if (attrData.cardinality && allClassNames.has(attributeType)) {
+    if (includesLib) {
+      includesLib.add("memory");
     }
+    attributeType = `std::shared_ptr<${attributeType}>`;
+  }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
 
@@ -80,8 +80,7 @@ function generateCppPragma(attrData) {
   const pragmas = [];
   if (
     attrData.cardinality === "to_many" ||
-    (attrData.cardinality === "many_to_many" &&
-      !attrData.linked_column)
+    (attrData.cardinality === "many_to_many" && !attrData.linked_column)
   ) {
     pragmas.push("value_not_null", "unordered");
   } else if (
