@@ -96,7 +96,7 @@ function generateCppAttribute(attrData,
         attrData,
         includesCpp,
         includesModelObjectsCpp
-      )} m_${attrData.name}`;
+      )} m_${attrData.name};`;
 }
 
 function generateCppSetter(attrData) {
