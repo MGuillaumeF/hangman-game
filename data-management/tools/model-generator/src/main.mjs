@@ -79,15 +79,12 @@ function generateClasses(modelClasses) {
 function generateCppPragma(attrData) {
   const pragmas = [];
   if (
-    (attrData.bidirectional === "false" &&
-      attrData.cardinality === "one_to_many") ||
-    (attrData.bidirectional === "true" &&
-      attrData.cardinality === "many_to_many" &&
+    attrData.cardinality === "to_many" ||
+    (attrData.cardinality === "many_to_many" &&
       !attrData.linked_column)
   ) {
     pragmas.push("value_not_null", "unordered");
-  } else if (
-    attrData.bidirectional === "true" &&
+  } else if {
     attrData.cardinality === "many_to_many" &&
     attrData.linked_column
   ) {
