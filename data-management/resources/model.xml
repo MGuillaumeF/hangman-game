@@ -97,7 +97,7 @@
           visibility="private"
           type="user[]"
           mandatory="false"
-          cardinality="one_to_many">
+          cardinality="to_many">
         </attribute>
         <attribute
           name="groups"
@@ -168,7 +168,8 @@
           name="words"
           visibility="private"
           type="word[]"
-          cardinality="one_to_many">
+          cardinality="one_to_many"
+          linked_column="words">
         </attribute>
       </attributes>
     </class>
@@ -259,7 +260,8 @@
           visibility="private"
           type="message[]"
           mandatory="false"
-          cardinality="one_to_many">
+          cardinality="one_to_many"
+          linked_column="chat">
         </attribute>
         <attribute
           name="members"
@@ -299,7 +301,8 @@
           name="chat"
           visibility="private"
           type="chat"
-          mandatory="true">
+          mandatory="true"
+          cardinality="one_to_many">
         </attribute>
       </attributes>
     </class>
