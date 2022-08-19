@@ -97,7 +97,6 @@
           visibility="private"
           type="user[]"
           mandatory="false"
-          bidirectional="false"
           cardinality="one_to_many">
         </attribute>
         <attribute
