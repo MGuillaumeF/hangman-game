@@ -104,8 +104,7 @@
           name="groups"
           visibility="private"
           type="group[]"
-          mandatory="false"
-          bidirectional="true"
+          mandatory="true"
           cardinality="many_to_many">
         </attribute>
         <attribute
@@ -113,7 +112,6 @@
           visibility="private"
           type="team[]"
           mandatory="false"
-          bidirectional="true"
           cardinality="many_to_many">
         </attribute>
       </attributes>
@@ -133,9 +131,8 @@
           name="members"
           visibility="private"
           type="user[]"
-          mandatory="true"
+          mandatory="false"
           min-length="1"
-          bidirectional="true"
           cardinality="many_to_many"
           linked_column="groups">
         </attribute>
@@ -295,8 +292,7 @@
           visibility="private"
           type="user[]"
           mandatory="true"
-          min-length="1"
-          bidirectional="true"
+          min-length="2"
           cardinality="many_to_many"
           linked_column="teams">
         </attribute>
