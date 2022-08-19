@@ -59,11 +59,11 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     attributeType = cppMapTypes[attributeType];
   } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
-    if (attrData.cardinality) {
+  }
+    if (attrData.cardinality && allClassNames.has(attributeType)) {
       includesLib.add("memory");
       attributeType = `std::shared_ptr<${attributeType}>`;
     }
-  }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
 
@@ -89,7 +89,7 @@ function generateCppPragma(attrData) {
     attrData.cardinality === "many_to_many" &&
     attrData.linked_column
   ) {
-    pragmas.push("value_not_null", `inverse(${attrData.linked_column})`);
+    pragmas.push("value_not_null", `inverse(m_${attrData.linked_column})`);
   }
   return pragmas.length > 0
     ? ["#pragma", "db", ...pragmas, "\n"].join(" ")
