@@ -84,7 +84,7 @@ function generateCppPragma(attrData) {
       !attrData.linked_column)
   ) {
     pragmas.push("value_not_null", "unordered");
-  } else if {
+  } else if (
     attrData.cardinality === "many_to_many" &&
     attrData.linked_column
   ) {
