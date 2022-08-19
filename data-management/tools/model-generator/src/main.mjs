@@ -84,7 +84,7 @@ function generateCppPragma(attrData) {
  } else if (attrData.bidirectional==="true" &&
            attrData.cardinality==="many_to_many" &&
            attrData.linked_column) {
-   pragmas.push('value_not_null', `inverse(attrData.linked_column)`);
+   pragmas.push('value_not_null', `inverse(${attrData.linked_column})`);
  }
  return pragmas.length > 0 ? ['#pragma', 'db', ...pragmas, '\n'].join(' ') : '';
 }
