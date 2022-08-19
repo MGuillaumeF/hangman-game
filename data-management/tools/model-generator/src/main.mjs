@@ -59,6 +59,10 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     attributeType = cppMapTypes[attributeType];
   } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
+    if (attrData.cardinality) {
+      includesLib.add("memory");
+      attributeType = `std::shared_ptr<${attributeType}>`
+    }
   }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
@@ -68,6 +72,31 @@ function generateClasses(modelClasses) {
     generateCppClass(modelClass);
     generateTsClass(modelClass);
   }
+}
+
+function generateCppPragma(attrData) {
+ const pragmas = [];
+ if ((attrData.bidirectional==="false" &&
+           attrData.cardinality==="one_to_many") || (attrData.bidirectional==="true" &&
+           attrData.cardinality==="many_to_many" &&
+           !attrData.linked_column)) {
+   pragmas.push('value_not_null', 'unordered');
+ } else if (attrData.bidirectional==="true" &&
+           attrData.cardinality==="many_to_many" &&
+           attrData.linked_column) {
+   pragmas.push('value_not_null', `inverse(attrData.linked_column)`);
+ }
+ return pragmas.length > 0 ? ['#pragma', 'db', ...pragmas, '\n'].join(' ') : '';
+}
+
+function generateCppAttribute(attrData,
+        includesCpp,
+        includesModelObjectsCpp) {
+  return `${generateCppPragma(attrData)}${getCppAttributeType(
+        attrData,
+        includesCpp,
+        includesModelObjectsCpp
+      )} m_${attrData.name}`;
 }
 
 function generateCppSetter(attrData) {
@@ -126,11 +155,9 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
-        attrData,
+      return generateCppAttribute(attrData,
         includesCpp,
-        includesModelObjectsCpp
-      )} m_${attrData.name};`;
+        includesModelObjectsCpp);
     })
     .join("\n");
   const protectedAttributes = attributes
@@ -141,11 +168,9 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
-        attrData,
+      return generateCppAttribute(attrData,
         includesCpp,
-        includesModelObjectsCpp
-      )} m_${attrData.name};`;
+        includesModelObjectsCpp);
     })
     .join("\n");
   const publicAttributes = attributes
@@ -156,11 +181,9 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
-        attrData,
+      return generateCppAttribute(attrData,
         includesCpp,
-        includesModelObjectsCpp
-      )} m_${attrData.name};`;
+        includesModelObjectsCpp);
     })
     .join("\n");
 
