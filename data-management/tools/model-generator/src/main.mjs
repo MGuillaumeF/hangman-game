@@ -61,7 +61,9 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     includesObjects.add(attributeType);
   }
     if (attrData.cardinality && allClassNames.has(attributeType)) {
-      includesLib.add("memory");
+      if (includesLib) {
+        includesLib.add("memory");
+      }
       attributeType = `std::shared_ptr<${attributeType}>`;
     }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
