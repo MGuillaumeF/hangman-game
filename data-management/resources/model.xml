@@ -268,7 +268,7 @@
           mandatory="true"
           min-length="1"
           cardinality="many_to_many"
-          linked_column="chats"
+          linked_column="chats">
         </attribute>
       </attributes>
     </class>
