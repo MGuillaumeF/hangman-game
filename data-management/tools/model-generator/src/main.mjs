@@ -64,7 +64,9 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     if (includesLib) {
       includesLib.add("memory");
     }
-    attributeType = `std::${attrData.linked_column ? 'weak' : 'shared'}_ptr<${attributeType}>`;
+    attributeType = `std::${
+      attrData.linked_column ? "weak" : "shared"
+    }_ptr<${attributeType}>`;
   }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
@@ -84,12 +86,17 @@ function generateCppPragma(attrData) {
   ) {
     pragmas.push("value_not_null", "unordered");
   } else if (
-    (attrData.cardinality === "many_to_many" ||attrData.cardinality === "one_to_many" ) &&
+    (attrData.cardinality === "many_to_many" ||
+      attrData.cardinality === "one_to_many") &&
     attrData.linked_column
   ) {
     pragmas.push("value_not_null", `inverse(m_${attrData.linked_column})`);
-  } else if (attrData.cardinality === "to_one" || (attrData.cardinality === "one_to_many" && !attrData.linked_column) || (attrData.cardinality === "one_to_one" && !attrData.linked_column)) {
-    pragmas.push("not_null")
+  } else if (
+    attrData.cardinality === "to_one" ||
+    (attrData.cardinality === "one_to_many" && !attrData.linked_column) ||
+    (attrData.cardinality === "one_to_one" && !attrData.linked_column)
+  ) {
+    pragmas.push("not_null");
   } else if (attrData.cardinality === "one_to_one" && attrData.linked_column) {
     pragmas.push(`inverse(m_${attrData.linked_column})`);
   }
