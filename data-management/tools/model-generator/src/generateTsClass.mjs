@@ -20,6 +20,7 @@ function generateTsSetter(attrData) {
   } = ${attrData.name}; };`;
   }
   function generateTsGetter(attrData) {
+    return `
   /**
    * @brief Get the ${attrData.name} of object
    *
