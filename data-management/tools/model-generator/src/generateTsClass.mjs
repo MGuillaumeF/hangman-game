@@ -1,6 +1,6 @@
 import { load } from "loader";
 
-export function generateTsClasses(modelClasses) {
+export function generateTsClass(modelClasses) {
   console.log(load("TsClasses", {
   dependencies : "",
   className: "",
