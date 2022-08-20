@@ -1,6 +1,6 @@
 {{dependencies}}
 
-class {{extendedClasses}} {
+class {{className}} {{extendedClasses}} {
   private:
   {{privateAttributes}}
   {{privateStaticAttributes}}
