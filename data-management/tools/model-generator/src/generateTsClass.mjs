@@ -62,7 +62,7 @@ export function generateTsClass(modelClasses) {
   console.log(filename, load("TsClasses", {
   className,
   dependencies : "",
-  extendedClasses : extendClass ? `extends ${snakeCaseToUpperCamelCase(extendClass)}`,
+  extendedClasses : extendClass ? `extends ${snakeCaseToUpperCamelCase(extendClass)}` : '',
   privateAttributes,
   privateStaticAttributes:"",
   privateMethods:"",
