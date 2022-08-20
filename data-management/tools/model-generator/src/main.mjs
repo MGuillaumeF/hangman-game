@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
-import { generateTsClasses } from "./generateTsClasses.mjs";
+import { generateTsClass } from "./generateTsClass.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
