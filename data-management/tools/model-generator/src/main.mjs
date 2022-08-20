@@ -60,6 +60,14 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
   } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
+  if (attrData.cardinality && allClassNames.has(attributeType)) {
+    if (includesLib) {
+      includesLib.add("memory");
+    }
+    attributeType = `std::${
+      attrData.linked_column ? "weak" : "shared"
+    }_ptr<${attributeType}>`;
+  }
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
 
@@ -68,6 +76,41 @@ function generateClasses(modelClasses) {
     generateCppClass(modelClass);
     generateTsClass(modelClass);
   }
+}
+
+function generateCppPragma(attrData) {
+  const pragmas = [];
+  if (
+    attrData.cardinality === "to_many" ||
+    (attrData.cardinality === "many_to_many" && !attrData.linked_column)
+  ) {
+    pragmas.push("value_not_null", "unordered");
+  } else if (
+    (attrData.cardinality === "many_to_many" ||
+      attrData.cardinality === "one_to_many") &&
+    attrData.linked_column
+  ) {
+    pragmas.push("value_not_null", `inverse(m_${attrData.linked_column})`);
+  } else if (
+    attrData.cardinality === "to_one" ||
+    (attrData.cardinality === "one_to_many" && !attrData.linked_column) ||
+    (attrData.cardinality === "one_to_one" && !attrData.linked_column)
+  ) {
+    pragmas.push("not_null");
+  } else if (attrData.cardinality === "one_to_one" && attrData.linked_column) {
+    pragmas.push(`inverse(m_${attrData.linked_column})`);
+  }
+  return pragmas.length > 0
+    ? ["#pragma", "db", ...pragmas, "\n"].join(" ")
+    : "";
+}
+
+function generateCppAttribute(attrData, includesCpp, includesModelObjectsCpp) {
+  return `${generateCppPragma(attrData)}${getCppAttributeType(
+    attrData,
+    includesCpp,
+    includesModelObjectsCpp
+  )} m_${attrData.name};`;
 }
 
 function generateCppSetter(attrData) {
@@ -126,11 +169,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
+      return generateCppAttribute(
         attrData,
         includesCpp,
         includesModelObjectsCpp
-      )} m_${attrData.name};`;
+      );
     })
     .join("\n");
   const protectedAttributes = attributes
@@ -141,11 +184,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
+      return generateCppAttribute(
         attrData,
         includesCpp,
         includesModelObjectsCpp
-      )} m_${attrData.name};`;
+      );
     })
     .join("\n");
   const publicAttributes = attributes
@@ -156,11 +199,11 @@ function generateCppClass(modelClass) {
       const attrData = attributeObject.$;
       assessors.push(generateCppSetter(attrData));
       assessors.push(generateCppGetter(attrData));
-      return `${getCppAttributeType(
+      return generateCppAttribute(
         attrData,
         includesCpp,
         includesModelObjectsCpp
-      )} m_${attrData.name};`;
+      );
     })
     .join("\n");
 

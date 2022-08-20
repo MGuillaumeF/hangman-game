@@ -96,13 +96,29 @@
           name="friends"
           visibility="private"
           type="user[]"
-          mandatory="false">
+          mandatory="false"
+          cardinality="to_many">
         </attribute>
         <attribute
           name="groups"
           visibility="private"
           type="group[]"
-          mandatory="false">
+          mandatory="true"
+          cardinality="many_to_many">
+        </attribute>
+        <attribute
+          name="teams"
+          visibility="private"
+          type="team[]"
+          mandatory="false"
+          cardinality="many_to_many">
+        </attribute>
+        <attribute
+          name="chats"
+          visibility="private"
+          type="chat[]"
+          mandatory="false"
+          cardinality="many_to_many">
         </attribute>
       </attributes>
     </class>
@@ -116,6 +132,15 @@
           unique="true"  
           min-length="3" 
           pattern="/^[a-z]{3,32}/$">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="false"
+          min-length="1"
+          cardinality="many_to_many"
+          linked_column="groups">
         </attribute>
       </attributes>
     </class>
@@ -142,7 +167,9 @@
         <attribute
           name="words"
           visibility="private"
-          type="word[]">
+          type="word[]"
+          cardinality="one_to_many"
+          linked_column="words">
         </attribute>
       </attributes>
     </class>
@@ -163,6 +190,148 @@
           type="string[]"
           mandatory="true"
           min-length="3" >
+        </attribute>
+        <attribute
+          name="dictionary"
+          visibility="private"
+          type="dictionary"
+          cardinality="one_to_many">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="party" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="start_date"
+          visibility="private"
+          type="date"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="end_date"
+          visibility="private"
+          type="date"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="win"
+          visibility="private"
+          type="bool"
+          mandatory="false">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1"
+          cardinality="many_to_many"
+          linked_column="parties">
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="to_one">
+        </attribute>
+        <attribute
+          name="word"
+          visibility="private"
+          type="word"
+          mandatory="true"
+          cardinality="to_one">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="chat" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="false"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="messages"
+          visibility="private"
+          type="message[]"
+          mandatory="false"
+          cardinality="one_to_many"
+          linked_column="chat">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="1"
+          cardinality="many_to_many"
+          linked_column="chats">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="message" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="content"
+          visibility="private"
+          type="string"
+          mandatory="false"
+          unique="false"  
+          min-length="1">
+        </attribute>
+        <attribute
+          name="sender"
+          visibility="private"
+          type="user"
+          mandatory="true"
+          cardinality="to_one">
+        </attribute>
+        <attribute
+          name="send_date"
+          visibility="private"
+          type="date"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="one_to_many">
+        </attribute>
+      </attributes>
+    </class>
+    <class name="team" extend="root_model_object">
+      <attributes>
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"  
+          min-length="3" 
+          pattern="/^[a-zA-Z0-9]{3,}/$">
+        </attribute>
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min-length="2"
+          cardinality="many_to_many"
+          linked_column="teams">
+        </attribute>
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="to_one">
         </attribute>
       </attributes>
     </class>
