@@ -32,8 +32,9 @@ export function load(templateName, parameters) {
         const re = new RegExp(`\\{\\{\\s*${usedVar}\\s*\\}\\}`, "gm");
         templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
-        throw Exception(`The parameter "${usedVar
-      }" is not provided to the template`);
+        throw Exception(
+          `The parameter "${usedVar}" is not provided to the template`
+        );
       }
     }
 
