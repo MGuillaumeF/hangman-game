@@ -3,6 +3,7 @@ import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
+import { generateTsClasses } from "./generateTsClasses.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -279,9 +280,6 @@ struct ${className}_stat {
 #endid // end ${guard}`;
 
   console.info("generated :", cppClassTemplate);
-}
-function generateTsClass(modelClass) {
-  // TODO add template implementation of typescript classes
 }
 
 const xml = readFileSync(
