@@ -15,7 +15,7 @@ export function load(templateName, parameters) {
   let templateContent = "";
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
-    const matches = templateContent.matchAll(/\{\{\s*(\S+)\s*\}\}/gm);
+    const matches = templateContent.matchAll(/\{\{\s*(\S{1,255})\s*\}\}/gm);
     let usedVars = [];
     if (matches) {
       usedVars = [].concat(
