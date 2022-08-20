@@ -3,7 +3,7 @@ import { snakeCaseToUpperCamelCase } from "./utils.mjs";
 
 
 function getTsAttributeType(attrData) {
-  return : "string";
+  return "string";
 }
 
 function generateTsSetter(attrData)) {
