@@ -1,0 +1,19 @@
+{{dependencies}}
+
+class {{extendedClasses}} {
+  private:
+  {{privateAttributes}}
+  {{privateStaticAttributes}}
+  {{privateMethods}}
+  {{privateStaticMethods}}
+  protected:
+  {{protectedAttributes}}
+  {{protectedStaticAttributes}}
+  {{protectedMethods}}
+  {{protectedStaticMethods}}
+  public: 
+  {{publicAttributes}}
+  {{publicStaticAttributes}}
+  {{publicMethods}}
+  {{publicStaticMethods}}
+};

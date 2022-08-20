@@ -15,7 +15,7 @@ export function load(templateName, parameters) {
   let templateContent = "";
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
-    const matches = templateContent.matchAll(/\{\{\s*(\S+)\s*\}\}/gm);
+    const matches = templateContent.matchAll(/\{\{\s*(\S{1,255})\s*\}\}/gm);
     let usedVars = [];
     if (matches) {
       usedVars = [].concat(
@@ -32,12 +32,9 @@ export function load(templateName, parameters) {
         const re = new RegExp(`\\{\\{\\s*${usedVar}\\s*\\}\\}`, "gm");
         templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
-        console.error(
-          "The parameter ",
-          usedVar,
-          " is not provided to the template"
+        throw Exception(
+          `The parameter "${usedVar}" is not provided to the template`
         );
-        //process.exit(1)
       }
     }
 
@@ -51,8 +48,7 @@ export function load(templateName, parameters) {
       }
     }
   } else {
-    console.error("template not found :", templatePath);
-    //process.exit(1);
+    throw Exception(`template not found at path "${templatePath}"`);
   }
   return templateContent;
 }

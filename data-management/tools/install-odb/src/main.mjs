@@ -22,7 +22,7 @@ const req = get(url, (res) => {
   const outputfFile = "odb-2.4.0-i686-windows.zip";
   const writeStream = createWriteStream(outputfFile);
 
-  let percent = 0;
+  let percent = "0";
   res.on("data", () => {
     const newPercent = ((statSync(outputfFile).size / fullSize) * 100).toFixed(
       0
