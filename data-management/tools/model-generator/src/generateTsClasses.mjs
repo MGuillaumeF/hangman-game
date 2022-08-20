@@ -17,5 +17,5 @@ export function generateTsClasses(modelClasses) {
   publicStaticAttributes : "",
   publicMethods : "",
   publicStaticMethods : ""
-});
+}));
 }
