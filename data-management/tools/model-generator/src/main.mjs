@@ -4,6 +4,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
 import { generateTsClass } from "./generateTsClass.mjs";
+import {toCapitalize,
+ snakeCaseToCamelCase,
+ snakeCaseToUpperCamelCase } from "./utils.mjs";
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,20 +32,6 @@ const cppMapIncludes = {
   date: "ctime",
   string: "string",
 };
-
-function toCapitalize(str) {
-  return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
-}
-
-function snakeCaseToCamelCase(str) {
-  const words = str.split("_");
-  return `${words[0]}${words.slice(1).map(toCapitalize).join("")}`;
-}
-
-function snakeCaseToUpperCamelCase(str) {
-  const words = str.split("_");
-  return words.map(toCapitalize).join("");
-}
 
 function getCppAttributeType(attrData, includesLib, includesObjects) {
   let attributeType = attrData.type;
