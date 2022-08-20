@@ -6,7 +6,7 @@ function getTsAttributeType(attrData) {
   return "string";
 }
 
-function generateTsSetter(attrData)) {
+function generateTsSetter(attrData) {
   return `
 /**
  * @brief Set the ${attrData.name} of object
