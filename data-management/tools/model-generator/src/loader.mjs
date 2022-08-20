@@ -32,12 +32,8 @@ export function load(templateName, parameters) {
         const re = new RegExp(`\\{\\{\\s*${usedVar}\\s*\\}\\}`, "gm");
         templateContent = templateContent.replace(re, parameters[usedVar]);
       } else {
-        console.error(
-          "The parameter ",
-          usedVar,
-          " is not provided to the template"
-        );
-        //process.exit(1)
+        throw Exception(`The parameter "${usedVar
+      }" is not provided to the template`);
       }
     }
 
@@ -51,8 +47,7 @@ export function load(templateName, parameters) {
       }
     }
   } else {
-    console.error("template not found :", templatePath);
-    //process.exit(1);
+    throw Exception(`template not found at path "${templatePath}"`);
   }
   return templateContent;
 }
