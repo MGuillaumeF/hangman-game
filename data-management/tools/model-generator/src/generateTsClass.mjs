@@ -1,4 +1,4 @@
-import { load } from "loader.mjs";
+import { load } from "./loader.mjs";
 
 export function generateTsClass(modelClasses) {
   console.log(load("TsClasses", {
