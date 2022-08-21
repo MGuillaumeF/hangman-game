@@ -66,6 +66,6 @@ export function generateCRUDOrderDispatcher(classNames) {
       ["mysql", "sqlite", "pgsql", "oracle", "mssql"],
       classNames
     ),
-    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames)
+    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames),
   });
 }

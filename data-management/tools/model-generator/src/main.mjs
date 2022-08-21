@@ -19,14 +19,14 @@ const cppMapTypes = {
   uint8: "uint8_t",
   uint16: "uint16_t",
   uint32: "uint32_t",
-  uint64: "uint64_t"
+  uint64: "uint64_t",
 };
 
 const allClassNames = new Set();
 
 const cppMapIncludes = {
   date: "ctime",
-  string: "string"
+  string: "string",
 };
 
 /**

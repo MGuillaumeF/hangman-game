@@ -105,7 +105,7 @@ export function generateTsClass(modelClass) {
       publicAttributes: "",
       publicStaticAttributes: "",
       publicMethods: publicMethods ? publicMethods : "",
-      publicStaticMethods: ""
+      publicStaticMethods: "",
     })
   );
 }
