@@ -3,6 +3,7 @@
   "name": "model-generator",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "main": "index.ts",
   "scripts": {
     "build": "webpack --node-env production --config ./webpack.config.mjs --progress --color --profile --json=stats.json",
