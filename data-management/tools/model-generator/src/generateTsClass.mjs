@@ -10,13 +10,11 @@ function generateTsSetter(attrData) {
 /**
  * @brief Set the ${attrData.name} of object
  *
- * @param ${snakeCaseToCamelCase(attrData.name)} The ${attrData.name} of object
+ * @param value The new ${attrData.name} value of object
  */
-  set ${snakeCaseToCamelCase(attrData.name)}(${snakeCaseToCamelCase(
+  set ${snakeCaseToCamelCase(attrData.name)}(value : ${getTsAttributeType(attrData)}) : void { this._${snakeCaseToCamelCase(
     attrData.name
-  )} : ${getTsAttributeType(attrData)}) :void { this._${snakeCaseToCamelCase(
-    attrData.name
-  )} = ${snakeCaseToCamelCase(attrData.name)}; };`;
+  )} = value; };`;
 }
 function generateTsGetter(attrData) {
   return `
@@ -29,11 +27,11 @@ function generateTsGetter(attrData) {
    */
    get ${snakeCaseToCamelCase(attrData.name)} () : ${getTsAttributeType(
     attrData
-  )}{ return this._${snakeCaseToCamelCase(attrData.name)}; };`;
+  )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
 }
 function generateTsAttribute(attrData) {
   return `
-m_${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
+_${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
 }
 
 export function generateTsClass(modelClass) {
