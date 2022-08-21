@@ -34,7 +34,7 @@ function generateTsSetter(attrData) {
   }
   function generateTsAttribute(
     attrData
-  ) { return `m_${snakeCaseToCamelCasem_attrData.name}: ${getTsAttributeType(attrData)};`;}
+  ) { return `${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;}
 
 
 export function generateTsClass(modelClass) {
