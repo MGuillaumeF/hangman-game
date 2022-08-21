@@ -1,5 +1,5 @@
 import { load } from "./loader.mjs";
-import { snakeCaseToUpperCamelCase } from "./utils.mjs";
+import { snakeCaseToUpperCamelCase ,snakeCaseToCamelCase } from "./utils.mjs";
 
 
 function getTsAttributeType(attrData) {
