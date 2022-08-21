@@ -4,11 +4,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
 import { generateTsClass } from "./generateTsClass.mjs";
-import {toCapitalize,
- snakeCaseToCamelCase,
- snakeCaseToUpperCamelCase } from "./utils.mjs";
-
-
+import {
+  toCapitalize,
+  snakeCaseToCamelCase,
+  snakeCaseToUpperCamelCase,
+} from "./utils.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
