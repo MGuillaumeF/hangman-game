@@ -27,11 +27,9 @@ function generateTsGetter(attrData) {
     attrData.name
   )} of object
    */
-   get${snakeCaseToUpperCamelCase(
-    attrData.name
-  )} () : ${getTsAttributeType(attrData)}{ return m_${snakeCaseToCamelCase(
-    attrData.name
-  )}; };`;
+   get${snakeCaseToUpperCamelCase(attrData.name)} () : ${getTsAttributeType(
+    attrData
+  )}{ return m_${snakeCaseToCamelCase(attrData.name)}; };`;
 }
 function generateTsAttribute(attrData) {
   return `
