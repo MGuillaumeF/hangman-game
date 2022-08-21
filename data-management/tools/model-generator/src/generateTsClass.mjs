@@ -12,9 +12,9 @@ function generateTsSetter(attrData) {
  *
  * @param ${snakeCaseToCamelCase(attrData.name)} The ${attrData.name} of object
  */
-  set${snakeCaseToUpperCamelCase(attrData.name)}(${snakeCaseToCamelCase(
+  set ${snakeCaseToCamelCase(attrData.name)}(${snakeCaseToCamelCase(
     attrData.name
-  )} : ${getTsAttributeType(attrData)}) :void { m_${snakeCaseToCamelCase(
+  )} : ${getTsAttributeType(attrData)}) :void { this._${snakeCaseToCamelCase(
     attrData.name
   )} = ${snakeCaseToCamelCase(attrData.name)}; };`;
 }
@@ -27,9 +27,9 @@ function generateTsGetter(attrData) {
     attrData.name
   )} of object
    */
-   get${snakeCaseToUpperCamelCase(attrData.name)} () : ${getTsAttributeType(
+   get ${snakeCaseToCamelCase(attrData.name)} () : ${getTsAttributeType(
     attrData
-  )}{ return m_${snakeCaseToCamelCase(attrData.name)}; };`;
+  )}{ return this._${snakeCaseToCamelCase(attrData.name)}; };`;
 }
 function generateTsAttribute(attrData) {
   return `
@@ -55,6 +55,18 @@ export function generateTsClass(modelClass) {
     })
     .join("\n");
 
+  const protectedAttributes = attributes
+    .filter((attributeObject) => {
+      return attributeObject.$.visibility == "protected";
+    })
+    .map((attributeObject) => {
+      const attrData = attributeObject.$;
+      publicMethods.push(generateTsSetter(attrData));
+      publicMethods.push(generateTsGetter(attrData));
+      return generateTsAttribute(attrData);
+    })
+    .join("\n");
+
   console.log(
     filename,
     load("TsClasses", {
@@ -64,10 +76,10 @@ export function generateTsClass(modelClass) {
         ? `extends ${snakeCaseToUpperCamelCase(extendClass)}`
         : "",
       privateAttributes,
+      protectedAttributes,
       privateStaticAttributes: "",
       privateMethods: "",
       privateStaticMethods: "",
-      protectedAttributes: "",
       protectedStaticAttributes: "",
       protectedMethods: "",
       protectedStaticMethods: "",
