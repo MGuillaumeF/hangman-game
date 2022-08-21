@@ -1,4 +1,5 @@
 {
+  "author": "MGuillaumeF",
   "name": "hangman-game",
   "version": "0.1.0",
   "private": true,
@@ -16,7 +17,6 @@
     "test": "npm-run-all -p start cy:run",
     "webpack-stats": "webpack --node-env production --profile --json=stats.json"
   },
-  "author": "MGuillaumeF",
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
     "development": [

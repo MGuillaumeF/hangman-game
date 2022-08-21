@@ -1,16 +1,22 @@
-import { load } from "./loader.mjs";
-import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils.mjs";
+import { load } from "./loader";
+import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
+import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 
-function getTsAttributeType(attrData) {
-  return "string";
+/**
+ *
+ * @param attrData
+ * @returns
+ */
+function getTsAttributeType(attrData: { name: string; type: string }) {
+  return attrData.type;
 }
 
 /**
  *
- * @param {*} attrData
+ * @param attrData
  * @returns
  */
-function generateTsSetter(attrData) {
+function generateTsSetter(attrData: { name: string; type: string }) {
   return `
 /**
  * @brief Set the ${attrData.name} of object
@@ -24,10 +30,10 @@ function generateTsSetter(attrData) {
 
 /**
  *
- * @param {*} attrData
+ * @param attrData
  * @returns
  */
-function generateTsGetter(attrData) {
+function generateTsGetter(attrData: { name: string; type: string }) {
   return `
   /**
    * @brief Get the ${attrData.name} of object
@@ -43,10 +49,10 @@ function generateTsGetter(attrData) {
 
 /**
  *
- * @param {*} attrData
+ * @param attrData
  * @returns
  */
-function generateTsAttribute(attrData) {
+function generateTsAttribute(attrData: { name: string; type: string }) {
   return `
 _${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
 }
@@ -55,16 +61,18 @@ _${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
  *
  * @param {*} modelClass
  */
-export function generateTsClass(modelClass) {
+export function generateTsClass(modelClass: ModelClassDefinition) {
   const className = snakeCaseToUpperCamelCase(modelClass.$.name);
   const extendClass = modelClass.$.extend;
   const filename = `${className}.ts`;
 
-  const attributes = modelClass.attributes[0].attribute;
-  const publicMethods = [];
+  const attributes: {
+    $: ModelAttributesProperties;
+  }[] = modelClass.attributes[0]?.attribute || [];
+  const publicMethods: string[] = [];
   const privateAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility == "private";
+      return attributeObject.$.visibility === "private";
     })
     .map((attributeObject) => {
       const attrData = attributeObject.$;
@@ -76,7 +84,7 @@ export function generateTsClass(modelClass) {
 
   const protectedAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility == "protected";
+      return attributeObject.$.visibility === "protected";
     })
     .map((attributeObject) => {
       const attrData = attributeObject.$;
@@ -104,8 +112,8 @@ export function generateTsClass(modelClass) {
       protectedStaticMethods: "",
       publicAttributes: "",
       publicStaticAttributes: "",
-      publicMethods: publicMethods ? publicMethods : "",
-      publicStaticMethods: "",
+      publicMethods: publicMethods ? publicMethods.join("") : "",
+      publicStaticMethods: ""
     })
   );
 }

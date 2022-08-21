@@ -2,14 +2,15 @@ import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { parseString } from "xml2js";
-import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
-import { generateTsClass } from "./generateTsClass.mjs";
-import { snakeCaseToUpperCamelCase } from "./utils.mjs";
+import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
+import { generateTsClass } from "./generateTsClass";
+import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
+import { snakeCaseToUpperCamelCase } from "./utils";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const cppMapTypes = {
+const cppMapTypes: { [key: string]: string } = {
   date: "std::time_t",
   string: "std::string",
   int8: "int8_t",
@@ -19,14 +20,14 @@ const cppMapTypes = {
   uint8: "uint8_t",
   uint16: "uint16_t",
   uint32: "uint32_t",
-  uint64: "uint64_t",
+  uint64: "uint64_t"
 };
 
-const allClassNames = new Set();
+const allClassNames = new Set<string>();
 
-const cppMapIncludes = {
+const cppMapIncludes: { [key: string]: string } = {
   date: "ctime",
-  string: "string",
+  string: "string"
 };
 
 /**
@@ -36,7 +37,11 @@ const cppMapIncludes = {
  * @param {*} includesObjects
  * @returns
  */
-function getCppAttributeType(attrData, includesLib, includesObjects) {
+function getCppAttributeType(
+  attrData: ModelAttributesProperties,
+  includesLib?: Set<string>,
+  includesObjects?: Set<string>
+) {
   let attributeType = attrData.type;
   const isArray = /^.*\[\]$/.test(attributeType);
   if (isArray) {
@@ -46,12 +51,14 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
     }
   }
 
-  if (includesLib && cppMapIncludes[attributeType]) {
-    includesLib.add(cppMapIncludes[attributeType]);
+  const attributeTypeIncludeMapped = cppMapIncludes[attributeType];
+  if (includesLib && attributeTypeIncludeMapped) {
+    includesLib.add(attributeTypeIncludeMapped);
   }
 
-  if (cppMapTypes[attributeType]) {
-    attributeType = cppMapTypes[attributeType];
+  const attributeTypeMapped = cppMapTypes[attributeType];
+  if (attributeTypeMapped) {
+    attributeType = attributeTypeMapped;
   } else if (includesObjects && allClassNames.has(attributeType)) {
     includesObjects.add(attributeType);
   }
@@ -70,7 +77,7 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
  *
  * @param {*} modelClasses
  */
-function generateClasses(modelClasses) {
+function generateClasses(modelClasses: ModelClassDefinition[]) {
   for (const modelClass of modelClasses) {
     generateCppClass(modelClass);
     generateTsClass(modelClass);
@@ -82,7 +89,7 @@ function generateClasses(modelClasses) {
  * @param {*} attrData
  * @returns
  */
-function generateCppPragma(attrData) {
+function generateCppPragma(attrData: ModelAttributesProperties) {
   const pragmas = [];
   if (
     attrData.cardinality === "to_many" ||
@@ -111,12 +118,16 @@ function generateCppPragma(attrData) {
 
 /**
  *
- * @param {*} attrData
- * @param {*} includesCpp
- * @param {*} includesModelObjectsCpp
+ * @param attrData
+ * @param includesCpp
+ * @param includesModelObjectsCpp
  * @returns
  */
-function generateCppAttribute(attrData, includesCpp, includesModelObjectsCpp) {
+function generateCppAttribute(
+  attrData: ModelAttributesProperties,
+  includesCpp?: Set<string>,
+  includesModelObjectsCpp?: Set<string>
+) {
   return `${generateCppPragma(attrData)}${getCppAttributeType(
     attrData,
     includesCpp,
@@ -129,7 +140,7 @@ function generateCppAttribute(attrData, includesCpp, includesModelObjectsCpp) {
  * @param {*} attrData
  * @returns
  */
-function generateCppSetter(attrData) {
+function generateCppSetter(attrData: ModelAttributesProperties) {
   return `
   /**
    * @brief Set the ${attrData.name} of object
@@ -148,7 +159,7 @@ function generateCppSetter(attrData) {
  * @param {*} attrData
  * @returns
  */
-function generateCppGetter(attrData) {
+function generateCppGetter(attrData: ModelAttributesProperties) {
   return `
   /**
    * @brief Get the ${attrData.name} of object
@@ -166,17 +177,19 @@ function generateCppGetter(attrData) {
  *
  * @param {*} modelClass
  */
-function generateCppClass(modelClass) {
+function generateCppClass(modelClass: ModelClassDefinition) {
   const className = modelClass.$.name;
   const extendClass = modelClass.$.extend;
   const filename = `${className}.hxx`;
   const guard = `__GENERATED_MODEL_OBJECT_${className.toUpperCase()}_HXX__`;
 
-  const assessors = [];
+  const assessors: string[] = [];
 
   const includesCpp = new Set(["string"]);
-  const includesModelObjectsCpp = new Set();
-  const attributes = modelClass.attributes[0].attribute;
+  const includesModelObjectsCpp = new Set<string>();
+  const attributes: {
+    $: ModelAttributesProperties;
+  }[] = modelClass.attributes[0]?.attribute || [];
 
   if (className === "root_model_object") {
     includesCpp.add("odb/core.hxx");
@@ -306,10 +319,17 @@ struct ${className}_stat {
   console.info("generated :", cppClassTemplate);
 }
 
-const xml = readFileSync(resolve(__dirname, "../../../resources/model.xml"));
+// "../../../resources/model.xml"
+const xml = readFileSync(
+  resolve(
+    __dirname,
+    process.argv[1] ? process.argv[1] : "../../../resources/model.xml"
+  )
+);
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
-  for (const modelClass of result.model.classes[0].class) {
+  for (const modelClass of result.model.classes[0]
+    .class as ModelClassDefinition[]) {
     allClassNames.add(modelClass.$.name);
   }
   generateClasses(result.model.classes[0].class);

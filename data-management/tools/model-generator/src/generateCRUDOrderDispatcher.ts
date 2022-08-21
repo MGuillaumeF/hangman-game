@@ -1,14 +1,14 @@
-import { load } from "./loader.mjs";
+import { load } from "./loader";
 
 /**
  *
- * @param {*} databaseType
- * @param {*} classNames
+ * @param databaseType
+ * @param classNames
  * @returns
  */
-function generateDatabaseImport(databaseType, classNames) {
+function generateDatabaseImport(databaseType: string, classNames: Set<string>) {
   const importObjectList = [];
-  for (const className of classNames) {
+  for (const className of Array.from(classNames)) {
     importObjectList.push(
       `#include "../model/${databaseType}/${className}-odb.hxx"`,
       `#include "../model/${databaseType}/${className}.hxx"`
@@ -19,11 +19,14 @@ function generateDatabaseImport(databaseType, classNames) {
 
 /**
  *
- * @param {*} databaseTypes
- * @param {*} classNames
+ * @param databaseTypes
+ * @param classNames
  * @returns
  */
-function generatrDatabaseImportBloc(databaseTypes, classNames) {
+function generatrDatabaseImportBloc(
+  databaseTypes: string[],
+  classNames: Set<string>
+) {
   const blocString = databaseTypes.map(
     (databaseType, index) => `
 #${index === 0 ? "" : "el"}if defined(DATABASE_${databaseType.toUpperCase()})
@@ -39,10 +42,10 @@ ${generateDatabaseImport(databaseType, classNames)}
 
 /**
  *
- * @param {*} classNames
+ * @param classNames
  * @returns
  */
-function generateObjectTypesDispatcher(classNames) {
+function generateObjectTypesDispatcher(classNames: Set<string>) {
   const conditionList = Array.from(classNames)
     .filter((className) => className !== "root_model_object")
     .map((className, index) => {
@@ -57,15 +60,15 @@ function generateObjectTypesDispatcher(classNames) {
 
 /**
  *
- * @param {*} classNames
+ * @param classNames
  * @returns
  */
-export function generateCRUDOrderDispatcher(classNames) {
+export function generateCRUDOrderDispatcher(classNames: Set<string>) {
   return load("CRUDOrderDispatcher", {
     generatedDatabaseImport: generatrDatabaseImportBloc(
       ["mysql", "sqlite", "pgsql", "oracle", "mssql"],
       classNames
     ),
-    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames),
+    generatedObjectTypesDispatcher: generateObjectTypesDispatcher(classNames)
   });
 }

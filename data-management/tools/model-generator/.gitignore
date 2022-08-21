@@ -1,3 +1,4 @@
 node_modules
 *.log
+dist
 audit-dependency-model-generator-report.json
