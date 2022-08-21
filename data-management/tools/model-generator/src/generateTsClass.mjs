@@ -10,12 +10,12 @@ function generateTsSetter(attrData) {
 /**
  * @brief Set the ${attrData.name} of object
  *
- * @param ${attrData.name} The ${attrData.name} of object
+ * @param ${snakeCaseToCamelCase(attrData.name)} The ${attrData.name} of object
  */
   set${snakeCaseToUpperCamelCase(attrData.name)}(${
-    attrData.name
-  } : ${getTsAttributeType(attrData)}) :void { m_${attrData.name} = ${
-    attrData.name
+    snakeCaseToCamelCase(attrData.name)
+  } : ${getTsAttributeType(attrData)}) :void { m_${snakeCaseToCamelCase(attrData.name)} = ${
+    snakeCaseToCamelCase(attrData.name)
   }; };`;
 }
 function generateTsGetter(attrData) {
@@ -23,14 +23,15 @@ function generateTsGetter(attrData) {
   /**
    * @brief Get the ${attrData.name} of object
    *
-   * @return ${getTsAttributeType(attrData)}the ${attrData.name} of object
+   * @return ${getTsAttributeType(attrData)} the ${snakeCaseToCamelCase(attrData.name)} of object
    */
   function get${snakeCaseToUpperCamelCase(
     attrData.name
-  )} : ${getTsAttributeType(attrData)}() { return m_${attrData.name}; };`;
+  )} : ${getTsAttributeType(attrData)}() { return m_${snakeCaseToCamelCase(attrData.name)}; };`;
 }
 function generateTsAttribute(attrData) {
-  return `${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(
+  return `
+m_${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(
     attrData
   )};`;
 }
