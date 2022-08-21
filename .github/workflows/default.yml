@@ -125,7 +125,7 @@ jobs:
       run: ./node_modules/.bin/audiso --input-file=./audit-dependency-model-generator-report.json --output-file ../../reports/audit-model-generator-report.json
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
@@ -497,7 +497,7 @@ jobs:
       # add autoconf-archive for libodb-mysql
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
@@ -607,7 +607,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -676,7 +676,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -774,7 +774,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -854,7 +854,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}}
@@ -903,7 +903,7 @@ jobs:
       run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
     - name: Install Boost
-      uses: MarkusJx/install-boost@v2.3.0
+      uses: MarkusJx/install-boost@v2.3.1
       id: install-boost
       with:
         boost_version: ${{env.BOOST_VERSION}} # Currently only works with boost v1.79.0
