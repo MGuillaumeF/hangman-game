@@ -8,7 +8,7 @@
   "scripts": {
     "build": "webpack --node-env production --config ./webpack.config.mjs --progress --color --profile --json=stats.json",
     "prettier": "prettier --write . --ignore-path ./.gitignore",
-    "start": "node src/main.mjs",
+    "start": "node build/main.bundle.js",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore",
     "test": "npm-run-all -p start cy:run",
