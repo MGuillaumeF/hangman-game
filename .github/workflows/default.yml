@@ -116,6 +116,7 @@ jobs:
         npm install
         npm run build
         cd build
+        ls
         node main.bundle.js ../../../../resources/model.xml
 
     - name: Audit dependencies model generator
