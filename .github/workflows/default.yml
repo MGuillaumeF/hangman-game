@@ -115,7 +115,8 @@ jobs:
       run: |
         npm install
         npm run build
-        npm start ../../../../resources/model.xml
+        cd build
+        node main.bundle.js ../../../../resources/model.xml
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
