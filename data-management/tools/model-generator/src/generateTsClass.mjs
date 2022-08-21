@@ -37,7 +37,7 @@ function generateTsSetter(attrData) {
   ) { return `m_${snakeCaseToCamelCasem_attrData.name}: ${getTsAttributeType(attrData)};`;}
 
 
-export function generateTsClass(modelClasses) {
+export function generateTsClass(modelClass) {
   const className = snakeCaseToUpperCamelCase(modelClass.$.name);
   const extendClass = modelClass.$.extend;
   const filename = `${className}.ts`;
