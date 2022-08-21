@@ -12,9 +12,9 @@ function generateTsSetter(attrData) {
  *
  * @param value The new ${attrData.name} value of object
  */
-  set ${snakeCaseToCamelCase(attrData.name)}(value : ${getTsAttributeType(attrData)}) : void { this._${snakeCaseToCamelCase(
-    attrData.name
-  )} = value; };`;
+  set ${snakeCaseToCamelCase(attrData.name)}(value : ${getTsAttributeType(
+    attrData
+  )}) : void { this._${snakeCaseToCamelCase(attrData.name)} = value; };`;
 }
 function generateTsGetter(attrData) {
   return `
