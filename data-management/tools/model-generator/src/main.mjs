@@ -1,12 +1,13 @@
-import { parseString } from "xml2js";
 import { readFileSync } from "fs";
-import path from "path";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher.mjs";
 import { generateTsClass } from "./generateTsClass.mjs";
+import { snakeCaseToUpperCamelCase } from "./utils.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 const cppMapTypes = {
   date: "std::time_t",
@@ -28,20 +29,13 @@ const cppMapIncludes = {
   string: "string",
 };
 
-function toCapitalize(str) {
-  return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
-}
-
-function snakeCaseToCamelCase(str) {
-  const words = str.split("_");
-  return `${words[0]}${words.slice(1).map(toCapitalize).join("")}`;
-}
-
-function snakeCaseToUpperCamelCase(str) {
-  const words = str.split("_");
-  return words.map(toCapitalize).join("");
-}
-
+/**
+ *
+ * @param {*} attrData
+ * @param {*} includesLib
+ * @param {*} includesObjects
+ * @returns
+ */
 function getCppAttributeType(attrData, includesLib, includesObjects) {
   let attributeType = attrData.type;
   const isArray = /^.*\[\]$/.test(attributeType);
@@ -72,6 +66,10 @@ function getCppAttributeType(attrData, includesLib, includesObjects) {
   return isArray ? `std::vector<${attributeType}>` : attributeType;
 }
 
+/**
+ *
+ * @param {*} modelClasses
+ */
 function generateClasses(modelClasses) {
   for (const modelClass of modelClasses) {
     generateCppClass(modelClass);
@@ -79,6 +77,11 @@ function generateClasses(modelClasses) {
   }
 }
 
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateCppPragma(attrData) {
   const pragmas = [];
   if (
@@ -106,6 +109,13 @@ function generateCppPragma(attrData) {
     : "";
 }
 
+/**
+ *
+ * @param {*} attrData
+ * @param {*} includesCpp
+ * @param {*} includesModelObjectsCpp
+ * @returns
+ */
 function generateCppAttribute(attrData, includesCpp, includesModelObjectsCpp) {
   return `${generateCppPragma(attrData)}${getCppAttributeType(
     attrData,
@@ -114,6 +124,11 @@ function generateCppAttribute(attrData, includesCpp, includesModelObjectsCpp) {
   )} m_${attrData.name};`;
 }
 
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateCppSetter(attrData) {
   return `
   /**
@@ -128,6 +143,11 @@ function generateCppSetter(attrData) {
   } = ${attrData.name}; };`;
 }
 
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateCppGetter(attrData) {
   return `
   /**
@@ -142,6 +162,10 @@ function generateCppGetter(attrData) {
   )}() const { return m_${attrData.name}; };`;
 }
 
+/**
+ *
+ * @param {*} modelClass
+ */
 function generateCppClass(modelClass) {
   const className = modelClass.$.name;
   const extendClass = modelClass.$.extend;
@@ -282,9 +306,7 @@ struct ${className}_stat {
   console.info("generated :", cppClassTemplate);
 }
 
-const xml = readFileSync(
-  path.resolve(__dirname, "../../../resources/model.xml")
-);
+const xml = readFileSync(resolve(__dirname, "../../../resources/model.xml"));
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
   for (const modelClass of result.model.classes[0].class) {

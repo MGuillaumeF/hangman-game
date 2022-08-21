@@ -1,6 +1,10 @@
+/**
+ * @filename ${filename}
+ * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
+ */
 {{dependencies}}
 
-class {{extendedClasses}} {
+export class {{className}} {{extendedClasses}} {
   private:
   {{privateAttributes}}
   {{privateStaticAttributes}}

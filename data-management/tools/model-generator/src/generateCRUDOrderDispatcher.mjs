@@ -1,5 +1,11 @@
 import { load } from "./loader.mjs";
 
+/**
+ *
+ * @param {*} databaseType
+ * @param {*} classNames
+ * @returns
+ */
 function generateDatabaseImport(databaseType, classNames) {
   const importObjectList = [];
   for (const className of classNames) {
@@ -11,6 +17,12 @@ function generateDatabaseImport(databaseType, classNames) {
   return importObjectList.join("\n");
 }
 
+/**
+ *
+ * @param {*} databaseTypes
+ * @param {*} classNames
+ * @returns
+ */
 function generatrDatabaseImportBloc(databaseTypes, classNames) {
   const blocString = databaseTypes.map(
     (databaseType, index) => `
@@ -25,6 +37,11 @@ ${generateDatabaseImport(databaseType, classNames)}
   return blocString.join("");
 }
 
+/**
+ *
+ * @param {*} classNames
+ * @returns
+ */
 function generateObjectTypesDispatcher(classNames) {
   const conditionList = Array.from(classNames)
     .filter((className) => className !== "root_model_object")
@@ -38,6 +55,11 @@ function generateObjectTypesDispatcher(classNames) {
   return conditionList.join(" ");
 }
 
+/**
+ *
+ * @param {*} classNames
+ * @returns
+ */
 export function generateCRUDOrderDispatcher(classNames) {
   return load("CRUDOrderDispatcher", {
     generatedDatabaseImport: generatrDatabaseImportBloc(
