@@ -1,10 +1,15 @@
 import { load } from "./loader.mjs";
-import { snakeCaseToUpperCamelCase, snakeCaseToCamelCase } from "./utils.mjs";
+import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils.mjs";
 
 function getTsAttributeType(attrData) {
   return "string";
 }
 
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateTsSetter(attrData) {
   return `
 /**
@@ -16,6 +21,12 @@ function generateTsSetter(attrData) {
     attrData
   )}) : void { this._${snakeCaseToCamelCase(attrData.name)} = value; };`;
 }
+
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateTsGetter(attrData) {
   return `
   /**
@@ -29,11 +40,21 @@ function generateTsGetter(attrData) {
     attrData
   )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
 }
+
+/**
+ *
+ * @param {*} attrData
+ * @returns
+ */
 function generateTsAttribute(attrData) {
   return `
 _${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
 }
 
+/**
+ *
+ * @param {*} modelClass
+ */
 export function generateTsClass(modelClass) {
   const className = snakeCaseToUpperCamelCase(modelClass.$.name);
   const extendClass = modelClass.$.extend;
@@ -84,7 +105,7 @@ export function generateTsClass(modelClass) {
       publicAttributes: "",
       publicStaticAttributes: "",
       publicMethods: publicMethods ? publicMethods : "",
-      publicStaticMethods: "",
+      publicStaticMethods: ""
     })
   );
 }

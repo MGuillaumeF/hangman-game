@@ -1,12 +1,18 @@
-import { readFileSync, existsSync } from "fs";
-import path from "path";
+import { existsSync, readFileSync } from "fs";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
+/**
+ *
+ * @param {*} templateName
+ * @param {*} parameters
+ * @returns
+ */
 export function load(templateName, parameters) {
-  const templatePath = path.resolve(
+  const templatePath = resolve(
     __dirname,
     "../",
     "templates",
