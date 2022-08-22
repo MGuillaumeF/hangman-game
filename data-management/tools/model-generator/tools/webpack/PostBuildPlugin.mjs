@@ -4,7 +4,7 @@ const logger = Logger.getInstance();
 logger.setLevel("WARN");
 logger.setLocation("webpack-post-build.log");
 
-export class PostBuildPlugin {
+export default class PostBuildPlugin {
   apply(compiler) {
     compiler.hooks.done.tap(
       "PostBuildPlugin",

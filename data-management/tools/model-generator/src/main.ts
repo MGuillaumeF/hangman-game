@@ -1,14 +1,10 @@
-import { readFileSync } from "fs";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { resolve } from "path";
 import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
 import { generateTsClass } from "./generateTsClass";
 import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToUpperCamelCase } from "./utils";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const cppMapTypes: { [key: string]: string } = {
   date: "std::time_t",
@@ -32,9 +28,9 @@ const cppMapIncludes: { [key: string]: string } = {
 
 /**
  *
- * @param {*} attrData
- * @param {*} includesLib
- * @param {*} includesObjects
+ * @param attrData
+ * @param includesLib
+ * @param includesObjects
  * @returns
  */
 function getCppAttributeType(
@@ -79,14 +75,27 @@ function getCppAttributeType(
  */
 function generateClasses(modelClasses: ModelClassDefinition[]) {
   for (const modelClass of modelClasses) {
-    generateCppClass(modelClass);
-    generateTsClass(modelClass);
+    const modelCppDirPath = resolve("dist", "cpp", "model");
+    const modelTsDirPath = resolve("dist", "ts", "model");
+    mkdirSync(modelCppDirPath, { recursive: true });
+    mkdirSync(modelTsDirPath, { recursive: true });
+    writeFileSync(
+      resolve("dist", "cpp", "model", `${modelClass.$.name}.hxx`),
+      generateCppClass(modelClass)
+    );
+    writeFileSync(
+      resolve(
+        modelTsDirPath,
+        `${snakeCaseToUpperCamelCase(modelClass.$.name)}.ts`
+      ),
+      generateTsClass(modelClass)
+    );
   }
 }
 
 /**
  *
- * @param {*} attrData
+ * @param attrData
  * @returns
  */
 function generateCppPragma(attrData: ModelAttributesProperties) {
@@ -156,7 +165,7 @@ function generateCppSetter(attrData: ModelAttributesProperties) {
 
 /**
  *
- * @param {*} attrData
+ * @param attrData
  * @returns
  */
 function generateCppGetter(attrData: ModelAttributesProperties) {
@@ -175,7 +184,7 @@ function generateCppGetter(attrData: ModelAttributesProperties) {
 
 /**
  *
- * @param {*} modelClass
+ * @param modelClass
  */
 function generateCppClass(modelClass: ModelClassDefinition) {
   const className = modelClass.$.name;
@@ -317,15 +326,15 @@ struct ${className}_stat {
 #endid // end ${guard}`;
 
   console.info("generated :", cppClassTemplate);
+  return cppClassTemplate;
 }
 
 // "../../../resources/model.xml"
-const xml = readFileSync(
-  resolve(
-    __dirname,
-    process.argv[1] ? process.argv[1] : "../../../resources/model.xml"
-  )
+const xmlPath = resolve(
+  process.argv[2] ? process.argv[2] : "../../../resources/model.xml"
 );
+console.log("reading file : ", xmlPath);
+const xml = readFileSync(xmlPath);
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
   for (const modelClass of result.model.classes[0]
@@ -333,5 +342,14 @@ parseString(xml, function (err, result) {
     allClassNames.add(modelClass.$.name);
   }
   generateClasses(result.model.classes[0].class);
-  console.info("generated :", generateCRUDOrderDispatcher(allClassNames));
+  const endpointDirPath = resolve("dist", "cpp", "endpoint");
+  const endpointPath = resolve(
+    endpointDirPath,
+    "generateCRUDOrderDispatcher.cpp"
+  );
+  mkdirSync(endpointDirPath, { recursive: true });
+  const generatedCRUDOrderDispatcher =
+    generateCRUDOrderDispatcher(allClassNames);
+  writeFileSync(endpointPath, generatedCRUDOrderDispatcher);
+  console.info("generated :", generatedCRUDOrderDispatcher);
 });

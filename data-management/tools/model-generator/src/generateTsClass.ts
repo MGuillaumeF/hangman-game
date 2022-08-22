@@ -2,13 +2,49 @@ import { load } from "./loader";
 import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 
+export class TypeScriptClassGenerator {
+  private static classNames: Set<string>;
+  private currentName: string;
+  private dependencies: Set<string> = new Set<string>();
+  constructor(currentClassName: string) {
+    this.currentName = currentClassName;
+  }
+  public generateAttributeType(
+    attibuteProperties: ModelAttributesProperties
+  ): string {
+    if (TypeScriptClassGenerator.classNames.has(attibuteProperties.type)) {
+      this.dependencies.add(snakeCaseToUpperCamelCase(attibuteProperties.type));
+      return snakeCaseToUpperCamelCase(attibuteProperties.type);
+    } else if (Object.keys(tsMapTypes).includes(attibuteProperties.type)) {
+      return String(tsMapTypes[attibuteProperties.type]);
+    } else {
+      return attibuteProperties.type;
+    }
+  }
+}
+
+const tsMapTypes: { [key: string]: string } = {
+  date: "Date",
+  string: "string",
+  int8: "number",
+  int16: "number",
+  int32: "number",
+  int64: "number",
+  uint8: "number",
+  uint16: "number",
+  uint32: "number",
+  uint64: "number"
+};
+
 /**
  *
  * @param attrData
  * @returns
  */
 function getTsAttributeType(attrData: { name: string; type: string }) {
-  return attrData.type;
+  return Object.keys(tsMapTypes).includes(attrData.type)
+    ? tsMapTypes[attrData.type]
+    : attrData.type;
 }
 
 /**
@@ -23,9 +59,11 @@ function generateTsSetter(attrData: { name: string; type: string }) {
  *
  * @param value The new ${attrData.name} value of object
  */
-  set ${snakeCaseToCamelCase(attrData.name)}(value : ${getTsAttributeType(
-    attrData
-  )}) : void { this._${snakeCaseToCamelCase(attrData.name)} = value; };`;
+  public set ${snakeCaseToCamelCase(
+    attrData.name
+  )}(value : ${getTsAttributeType(attrData)}) { this._${snakeCaseToCamelCase(
+    attrData.name
+  )} = value; };`;
 }
 
 /**
@@ -42,7 +80,7 @@ function generateTsGetter(attrData: { name: string; type: string }) {
     attrData.name
   )} of object
    */
-   get ${snakeCaseToCamelCase(attrData.name)} () : ${getTsAttributeType(
+   public get ${snakeCaseToCamelCase(attrData.name)} () : ${getTsAttributeType(
     attrData
   )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
 }
@@ -52,16 +90,19 @@ function generateTsGetter(attrData: { name: string; type: string }) {
  * @param attrData
  * @returns
  */
-function generateTsAttribute(attrData: { name: string; type: string }) {
+function generateTsAttribute(attrData: ModelAttributesProperties) {
   return `
-_${snakeCaseToCamelCase(attrData.name)}: ${getTsAttributeType(attrData)};`;
+${attrData.visibility} _${snakeCaseToCamelCase(
+    attrData.name
+  )}: ${getTsAttributeType(attrData)};`;
 }
 
 /**
  *
- * @param {*} modelClass
+ * @param modelClass
+ * @returns
  */
-export function generateTsClass(modelClass: ModelClassDefinition) {
+export function generateTsClass(modelClass: ModelClassDefinition): string {
   const className = snakeCaseToUpperCamelCase(modelClass.$.name);
   const extendClass = modelClass.$.extend;
   const filename = `${className}.ts`;
@@ -93,27 +134,26 @@ export function generateTsClass(modelClass: ModelClassDefinition) {
       return generateTsAttribute(attrData);
     })
     .join("\n");
-
-  console.log(
+  const generatedTsTemplate = load("TsClasses", {
+    className,
+    dependencies: "",
+    extendedClasses: extendClass
+      ? `extends ${snakeCaseToUpperCamelCase(extendClass)}`
+      : "",
     filename,
-    load("TsClasses", {
-      className,
-      dependencies: "",
-      extendedClasses: extendClass
-        ? `extends ${snakeCaseToUpperCamelCase(extendClass)}`
-        : "",
-      privateAttributes,
-      protectedAttributes,
-      privateStaticAttributes: "",
-      privateMethods: "",
-      privateStaticMethods: "",
-      protectedStaticAttributes: "",
-      protectedMethods: "",
-      protectedStaticMethods: "",
-      publicAttributes: "",
-      publicStaticAttributes: "",
-      publicMethods: publicMethods ? publicMethods.join("") : "",
-      publicStaticMethods: ""
-    })
-  );
+    privateAttributes,
+    protectedAttributes,
+    privateStaticAttributes: "",
+    privateMethods: "",
+    privateStaticMethods: "",
+    protectedStaticAttributes: "",
+    protectedMethods: "",
+    protectedStaticMethods: "",
+    publicAttributes: "",
+    publicStaticAttributes: "",
+    publicMethods: publicMethods ? publicMethods.join("") : "",
+    publicStaticMethods: ""
+  });
+  console.log(filename, generatedTsTemplate);
+  return generatedTsTemplate;
 }

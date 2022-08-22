@@ -27,7 +27,7 @@ import ESLintPlugin from "eslint-webpack-plugin";
  * custom plugin
  */
 import Logger from "../../../client/tools/webpack/Logger.js";
-import { PostBuildPlugin } from "./tools/webpack/PostBuildPlugin.mjs";
+import PostBuildPlugin from "./tools/webpack/PostBuildPlugin.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -95,7 +95,7 @@ export default (env, args) => {
   const config = {
     mode: MODE,
     entry: "./src/main.ts",
-
+    target: "node",
     cache: false,
     output: {
       path: resolve(__dirname, "build"),
@@ -167,27 +167,7 @@ export default (env, args) => {
    */
   if (MODE === PROD) {
     trace("INFO", "CONFIGURATION", "Load extra production configuration...");
-    trace("INFO", "CONFIGURATION_DEBUG", "Add source map in production mode");
-    trace("INFO", "CONFIGURATION_PERFO", "Add optimizations");
-    // config.optimization = {
-    //   // [...]
-    //   emitOnErrors: true,
-    //   mergeDuplicateChunks: true,
-    //   minimize: true,
-    //   usedExports: true,
-    //   removeAvailableModules: true
-    // };
-    config.plugins.push(
-      //   new CompressionPlugin({
-      //     compressionOptions: {
-      //       numiterations: 15
-      //     },
-      //     algorithm(input, compressionOptions, callback) {
-      //       return gzip(input, compressionOptions, callback);
-      //     }
-      //   }),
-      new WebpackVisualizerPlugin()
-    );
+    config.plugins.push(new WebpackVisualizerPlugin());
   }
   return config;
 };
