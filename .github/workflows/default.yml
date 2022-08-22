@@ -114,7 +114,8 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
         npm install
-        npm start
+        npm run build
+        npm start ../../resources/model.xml
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator

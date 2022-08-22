@@ -5,13 +5,10 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-/**
- *
- * @param {*} templateName
- * @param {*} parameters
- * @returns
- */
-export function load(templateName, parameters) {
+export function load(
+  templateName: string,
+  parameters: { [x: string]: string }
+): string {
   const templatePath = resolve(
     __dirname,
     "../",
@@ -22,9 +19,9 @@ export function load(templateName, parameters) {
   if (existsSync(templatePath)) {
     templateContent = readFileSync(templatePath).toString();
     const matches = templateContent.matchAll(/\{\{\s*(\S{1,255})\s*\}\}/gm);
-    let usedVars = [];
+    let usedVars: string[] = [];
     if (matches) {
-      usedVars = [].concat(
+      usedVars = usedVars.concat(
         ...Array.from(matches).map((match) => match.slice(1))
       );
       console.info("variables to replace are :", ...usedVars);
@@ -36,9 +33,12 @@ export function load(templateName, parameters) {
     for (const usedVar of usedVars) {
       if (providedVars.includes(usedVar)) {
         const re = new RegExp(`\\{\\{\\s*${usedVar}\\s*\\}\\}`, "gm");
-        templateContent = templateContent.replace(re, parameters[usedVar]);
+        templateContent = templateContent.replace(
+          re,
+          String(parameters[usedVar])
+        );
       } else {
-        throw Exception(
+        throw Error(
           `The parameter "${usedVar}" is not provided to the template`
         );
       }
@@ -54,7 +54,7 @@ export function load(templateName, parameters) {
       }
     }
   } else {
-    throw Exception(`template not found at path "${templatePath}"`);
+    throw Error(`template not found at path "${templatePath}"`);
   }
   return templateContent;
 }
