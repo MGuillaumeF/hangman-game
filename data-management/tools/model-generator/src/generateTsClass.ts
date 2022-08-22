@@ -16,7 +16,7 @@ export class TypeScriptClassGenerator {
   }
 
   public generateDependencies() {
-    return this._dependencies.map(dependence => {
+    return Array.from(this._dependencies.map(dependence => {
       return `import {${dependence}} from "${dependence}";`
     }).join('\n')
   }
