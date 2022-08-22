@@ -9,6 +9,8 @@ export class TypeScriptClassGenerator {
   constructor(currentClassName: string) {
     this.currentName = currentClassName;
   }
+
+  public static set classNames(value :Set<string>) {this.classNames = value;}
   public generateAttributeType(
     attibuteProperties: ModelAttributesProperties
   ): string {
