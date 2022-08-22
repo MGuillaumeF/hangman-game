@@ -3,14 +3,14 @@ import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 
 export class TypeScriptClassGenerator {
-  private static classNames: Set<string>;
+  private static _classNames: Set<string>;
   private currentName: string;
   private dependencies: Set<string> = new Set<string>();
   constructor(currentClassName: string) {
     this.currentName = currentClassName;
   }
 
-  public static set classNames(value :Set<string>) {this.classNames = value;}
+  public static set classNames(value :Set<string>) {TypeScriptClassGenerator._classNames = value;}
   public generateAttributeType(
     attibuteProperties: ModelAttributesProperties
   ): string {
