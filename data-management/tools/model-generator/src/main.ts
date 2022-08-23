@@ -341,7 +341,7 @@ parseString(xml, function (err, result) {
     .class as ModelClassDefinition[]) {
     allClassNames.add(modelClass.$.name);
   }
-  TypeScriptClassGenerator.classNames = allClassNames
+  TypeScriptClassGenerator.classNames = allClassNames;
   generateClasses(result.model.classes[0].class);
   const endpointDirPath = resolve("dist", "cpp", "endpoint");
   const endpointPath = resolve(

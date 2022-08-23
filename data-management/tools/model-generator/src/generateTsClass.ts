@@ -6,7 +6,7 @@ export class TypeScriptClassGenerator {
   private static _classNames: Set<string> = new Set<string>();
   private _currentName: string;
   private _dependencies: Set<string> = new Set<string>();
- 
+
   constructor(currentClassName: string) {
     this._currentName = currentClassName;
   }
@@ -16,16 +16,20 @@ export class TypeScriptClassGenerator {
   }
 
   public generateDependencies() {
-    return Array.from(this._dependencies).map(dependence => {
-      return `import {${dependence}} from "./${dependence}";`
-    }).join('\n')
+    return Array.from(this._dependencies)
+      .map((dependence) => {
+        return `import {${dependence}} from "./${dependence}";`;
+      })
+      .join("\n");
   }
 
   public generateAttributeType(
     attibuteProperties: ModelAttributesProperties
   ): string {
-    const isArray = /^.+\[\]$/.test(attibuteProperties.type)
-    let typeObjectName = isArray ? attibuteProperties.type.slice(0,-2) : attibuteProperties.type;
+    const isArray = /^.+\[\]$/.test(attibuteProperties.type);
+    let typeObjectName = isArray
+      ? attibuteProperties.type.slice(0, -2)
+      : attibuteProperties.type;
     if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
       typeObjectName = snakeCaseToUpperCamelCase(typeObjectName);
       if (typeObjectName !== this._currentName) {
@@ -36,14 +40,14 @@ export class TypeScriptClassGenerator {
     }
     return isArray ? `${typeObjectName}[]` : typeObjectName;
   }
- 
-/**
- *
- * @param attrData
- * @returns
- */
-public generateTsSetter(attrData: ModelAttributesProperties) {
-  return `
+
+  /**
+   *
+   * @param attrData
+   * @returns
+   */
+  public generateTsSetter(attrData: ModelAttributesProperties) {
+    return `
 /**
  * @brief Set the ${attrData.name} of object
  *
@@ -51,43 +55,43 @@ public generateTsSetter(attrData: ModelAttributesProperties) {
  */
   public set ${snakeCaseToCamelCase(
     attrData.name
-  )}(value : ${this.generateAttributeType(attrData)}) { this._${snakeCaseToCamelCase(
-    attrData.name
-  )} = value; };`;
-}
+  )}(value : ${this.generateAttributeType(
+      attrData
+    )}) { this._${snakeCaseToCamelCase(attrData.name)} = value; };`;
+  }
 
-/**
- *
- * @param attrData
- * @returns
- */
-public generateTsGetter(attrData: ModelAttributesProperties) {
-  return `
+  /**
+   *
+   * @param attrData
+   * @returns
+   */
+  public generateTsGetter(attrData: ModelAttributesProperties) {
+    return `
   /**
    * @brief Get the ${attrData.name} of object
    *
    * @return ${this.generateAttributeType(attrData)} the ${snakeCaseToCamelCase(
-    attrData.name
-  )} of object
+      attrData.name
+    )} of object
    */
-   public get ${snakeCaseToCamelCase(attrData.name)} () : ${this.generateAttributeType(
-    attrData
-  )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
-}
+   public get ${snakeCaseToCamelCase(
+     attrData.name
+   )} () : ${this.generateAttributeType(
+      attrData
+    )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
+  }
 
-/**
- *
- * @param attrData
- * @returns
- */
-public generateTsAttribute(attrData: ModelAttributesProperties) {
-  return `
+  /**
+   *
+   * @param attrData
+   * @returns
+   */
+  public generateTsAttribute(attrData: ModelAttributesProperties) {
+    return `
 ${attrData.visibility} _${snakeCaseToCamelCase(
-    attrData.name
-  )}: ${this.generateAttributeType(attrData)};`;
-}
-
-
+      attrData.name
+    )}: ${this.generateAttributeType(attrData)};`;
+  }
 }
 
 const tsMapTypes: { [key: string]: string } = {
