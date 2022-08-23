@@ -24,7 +24,7 @@ export class TypeScriptClassGenerator {
   public generateAttributeType(
     attibuteProperties: ModelAttributesProperties
   ): string {
-    const isArray = /^.+[]$/.test(attibuteProperties.type)
+    const isArray = /^.+\[\]$/.test(attibuteProperties.type)
     let typeObjectName = isArray ? attibuteProperties.type.slice(0,-2) : attibuteProperties.type;
     if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
       typeObjectName = snakeCaseToUpperCamelCase(attibuteProperties.type);
