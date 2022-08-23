@@ -27,7 +27,7 @@ export class TypeScriptClassGenerator {
     const isArray = /^.+\[\]$/.test(attibuteProperties.type)
     let typeObjectName = isArray ? attibuteProperties.type.slice(0,-2) : attibuteProperties.type;
     if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
-      typeObjectName = snakeCaseToUpperCamelCase(attibuteProperties.type);
+      typeObjectName = snakeCaseToUpperCamelCase(typeObjectName);
       if (typeObjectName !== this._currentName) {
         this._dependencies.add(typeObjectName);
       }
