@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
-import { generateTsClass } from "./generateTsClass";
+import { generateTsClass, TypeScriptClassGenerator } from "./generateTsClass";
 import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToUpperCamelCase } from "./utils";
 
@@ -341,6 +341,7 @@ parseString(xml, function (err, result) {
     .class as ModelClassDefinition[]) {
     allClassNames.add(modelClass.$.name);
   }
+  TypeScriptClassGenerator.classNames = allClassNames;
   generateClasses(result.model.classes[0].class);
   const endpointDirPath = resolve("dist", "cpp", "endpoint");
   const endpointPath = resolve(
