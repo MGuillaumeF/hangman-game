@@ -1,6 +1,28 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <model>
   <classes>
+    <class name="model_error">
+      <attributes>
+        <attribute
+          name="code"
+          visibility="private"
+          type="e_attribute_error"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="attribute_name"
+          visibility="private"
+          type="string"
+          mandatory="true">
+        </attribute>
+        <attribute
+          name="message"
+          visibility="private"
+          type="string"
+          mandatory="true">
+        </attribute>
+      </attributes>
+    </class>
     <class name="root_model_object">
       <attributes>
         <attribute
