@@ -16,7 +16,7 @@ export class TypeScriptClassGenerator {
   }
 
   public generateDependencies() {
-    return Array.from(this._dependencies.map(dependence => {
+    return Array.from(this._dependencies).map(dependence => {
       return `import {${dependence}} from "${dependence}";`
     }).join('\n')
   }
@@ -28,7 +28,7 @@ export class TypeScriptClassGenerator {
     let typeObjectName = isArray ? attibuteProperties.type.slice(0,-2) : attibuteProperties.type;
     if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
       typeObjectName = snakeCaseToUpperCamelCase(attibuteProperties.type);
-      if (typeObjectName !== this_currentName) {
+      if (typeObjectName !== this._currentName) {
         this._dependencies.add(typeObjectName);
       }
     } else if (Object.keys(tsMapTypes).includes(typeObjectName)) {
