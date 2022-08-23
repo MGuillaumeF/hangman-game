@@ -51,7 +51,7 @@ public generateTsSetter(attrData: ModelAttributesProperties) {
  */
   public set ${snakeCaseToCamelCase(
     attrData.name
-  )}(value : ${generateAttributeType(attrData)}) { this._${snakeCaseToCamelCase(
+  )}(value : ${this.generateAttributeType(attrData)}) { this._${snakeCaseToCamelCase(
     attrData.name
   )} = value; };`;
 }
@@ -66,11 +66,11 @@ public generateTsGetter(attrData: ModelAttributesProperties) {
   /**
    * @brief Get the ${attrData.name} of object
    *
-   * @return ${generateAttributeType(attrData)} the ${snakeCaseToCamelCase(
+   * @return ${this.generateAttributeType(attrData)} the ${snakeCaseToCamelCase(
     attrData.name
   )} of object
    */
-   public get ${snakeCaseToCamelCase(attrData.name)} () : ${generateAttributeType(
+   public get ${snakeCaseToCamelCase(attrData.name)} () : ${this.generateAttributeType(
     attrData
   )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
 }
@@ -84,7 +84,7 @@ public generateTsAttribute(attrData: ModelAttributesProperties) {
   return `
 ${attrData.visibility} _${snakeCaseToCamelCase(
     attrData.name
-  )}: ${generateAttributeType(attrData)};`;
+  )}: ${this.generateAttributeType(attrData)};`;
 }
 
 
