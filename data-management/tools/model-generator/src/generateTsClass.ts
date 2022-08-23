@@ -32,7 +32,7 @@ export class TypeScriptClassGenerator {
         this._dependencies.add(typeObjectName);
       }
     } else if (Object.keys(tsMapTypes).includes(typeObjectName)) {
-      typeObjectName = String(tsMapTypes[attibuteProperties.type]);
+      typeObjectName = String(tsMapTypes[typeObjectName]);
     }
     return isArray ? `${typeObjectName}[]` : typeObjectName;
   }
