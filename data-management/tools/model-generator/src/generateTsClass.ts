@@ -5,10 +5,14 @@ import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 export class TypeScriptClassGenerator {
   private static _classNames: Set<string> = new Set<string>();
   private _currentName: string;
+  private _motherClass: string | undefined;
   private _dependencies: Set<string> = new Set<string>();
 
-  constructor(currentClassName: string) {
-    this._currentName = currentClassName;
+  constructor(modelClass: ModelClassDefinition) {
+    this._currentName = modelClass.$.name;
+    if (modelClass.$.extend) {
+      this._motherClass = modelClass.$.extend;
+    }
   }
 
   public static set classNames(value: Set<string>) {
@@ -16,11 +20,120 @@ export class TypeScriptClassGenerator {
   }
 
   public generateDependencies() {
-    return Array.from(this._dependencies)
+    const dependencies = Array.from(this._dependencies);
+    if (this._motherClass) {
+      dependencies.unshift(snakeCaseToUpperCamelCase(this._motherClass));
+    }
+    return dependencies
+      .filter((name) => name !== snakeCaseToUpperCamelCase(this._currentName))
       .map((dependence) => {
         return `import {${dependence}} from "./${dependence}";`;
       })
       .join("\n");
+  }
+
+  private static generateStringConstraint(
+    attibuteProperties: ModelAttributesProperties
+  ): {
+    mandatory: boolean;
+    max_length?: number;
+    min_length?: number;
+    pattern?: string;
+    type: "string";
+  } {
+    return {
+      mandatory: attibuteProperties.mandatory,
+      max_length: attibuteProperties.max_length,
+      min_length: attibuteProperties.min_length,
+      pattern: attibuteProperties.pattern,
+      type: "string"
+    };
+  }
+  private static generateNumberConstraint(
+    attibuteProperties: ModelAttributesProperties
+  ): {
+    mandatory: boolean;
+    max?: number;
+    min?: number;
+    type: "number";
+  } {
+    return {
+      mandatory: attibuteProperties.mandatory,
+      max: attibuteProperties.max,
+      min: attibuteProperties.min,
+      type: "number"
+    };
+  }
+
+  public generateAttributesConstraintes(
+    attibutePropertiesList: ModelAttributesProperties[]
+  ): string {
+    const constraintes: { [key: string]: any } = {};
+    attibutePropertiesList.forEach(
+      (attibuteProperties: ModelAttributesProperties) => {
+        switch (attibuteProperties.type) {
+          case "string":
+            constraintes[attibuteProperties.name] =
+              TypeScriptClassGenerator.generateStringConstraint(
+                attibuteProperties
+              );
+            break;
+          case "number":
+            constraintes[attibuteProperties.name] =
+              TypeScriptClassGenerator.generateNumberConstraint(
+                attibuteProperties
+              );
+            break;
+          default:
+            console.info("The type haven't constrainte");
+        }
+      }
+    );
+    return `private static readonly _constraintes = ${JSON.stringify(
+      constraintes,
+      null,
+      4
+    )}`;
+  }
+
+  public generateGetErrorsMethod(
+    attibutePropertiesList: ModelAttributesProperties[]
+  ) {
+    const checks: string[] = [];
+    attibutePropertiesList.forEach(
+      (attibuteProperties: ModelAttributesProperties) => {
+        switch (attibuteProperties.type) {
+          case "string":
+            this._dependencies.add("Validator");
+            checks.push(
+              `errors.push(Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+                this._currentName
+              )}._constraintes.${
+                attibuteProperties.name
+              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+            );
+            break;
+          case "number":
+            this._dependencies.add("Validator");
+            checks.push(
+              `errors.push(Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+                this._currentName
+              )}._constraintes.${
+                attibuteProperties.name
+              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+            );
+            break;
+          default:
+            console.info("The type haven't constrainte");
+        }
+      }
+    );
+    return `
+    public getErrors() : ModelError[] {
+      const errors : ModelError[] = []
+      ${checks.join("\n")}
+      return errors;
+    }`;
   }
 
   public generateAttributeType(
@@ -57,7 +170,7 @@ export class TypeScriptClassGenerator {
     attrData.name
   )}(value : ${this.generateAttributeType(
       attrData
-    )}) { this._${snakeCaseToCamelCase(attrData.name)} = value; };`;
+    )}) { this._${snakeCaseToCamelCase(attrData.name)} = value; }`;
   }
 
   /**
@@ -78,7 +191,7 @@ export class TypeScriptClassGenerator {
      attrData.name
    )} () : ${this.generateAttributeType(
       attrData
-    )} { return this._${snakeCaseToCamelCase(attrData.name)}; };`;
+    )} { return this._${snakeCaseToCamelCase(attrData.name)}; }`;
   }
 
   /**
@@ -114,7 +227,7 @@ const tsMapTypes: { [key: string]: string } = {
  */
 export function generateTsClass(modelClass: ModelClassDefinition): string {
   const className = snakeCaseToUpperCamelCase(modelClass.$.name);
-  const generator = new TypeScriptClassGenerator(className);
+  const generator = new TypeScriptClassGenerator(modelClass);
   const extendClass = modelClass.$.extend;
   const filename = `${className}.ts`;
 
@@ -145,8 +258,15 @@ export function generateTsClass(modelClass: ModelClassDefinition): string {
       return generator.generateTsAttribute(attrData);
     })
     .join("\n");
+
+  publicMethods.push(
+    generator.generateGetErrorsMethod(attributes.map((attr) => attr.$))
+  );
   const generatedTsTemplate = load("TsClasses", {
     className,
+    constraintes: generator.generateAttributesConstraintes(
+      attributes.map((attr) => attr.$)
+    ),
     dependencies: generator.generateDependencies(),
     extendedClasses: extendClass
       ? `extends ${snakeCaseToUpperCamelCase(extendClass)}`

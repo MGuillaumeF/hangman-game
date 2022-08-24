@@ -19,7 +19,13 @@ export type BidirectionalCardinality =
 export type ModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
   linked_column?: string;
+  mandatory: boolean;
+  max: number;
+  max_length: number;
+  min: number;
+  min_length: number;
   name: string;
+  pattern: string;
   type: string;
   visibility: "private" | "protected" | "public";
 };
