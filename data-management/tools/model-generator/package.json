@@ -6,7 +6,9 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack --node-env production --config ./webpack.config.mjs --progress --color",
-    "prettier": "prettier --write . --ignore-path ./.gitignore",
+    "postbuild": "npm run start ../../resources/model.xml",
+    "poststart": "prettier --write dist",
+    "prettier": "prettier --write . --ignore-path node_modules",
     "start": "node build/main.bundle.js",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore",
