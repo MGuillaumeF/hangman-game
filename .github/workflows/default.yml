@@ -119,7 +119,10 @@ jobs:
 
     - name: Copy Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
-      run: cp ./dist/ts/model/* ../../../client/src/model
+      run: |
+        echo disable temporary
+        # cp ./dist/ts/model/* ../../../client/src/model
+        # rm -rf ../../../client/src/model/*
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
