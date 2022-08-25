@@ -117,6 +117,10 @@ jobs:
         npm run build
         npm start ../../resources/model.xml
 
+    - name: Copy Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: cp ./dist/ts/model/* ../../../client/src/model
+
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: npm audit --json > ./audit-dependency-model-generator-report.json || echo FAILED
