@@ -272,7 +272,9 @@ export class TypeScriptClassGenerator {
     } else if (Object.keys(tsMapTypes).includes(typeObjectName)) {
       typeObjectName = String(tsMapTypes[typeObjectName]);
     }
-    return isArray ? `${typeObjectName}[] | undefined` : `${typeObjectName} | undefined`;
+    return isArray
+      ? `${typeObjectName}[] | undefined`
+      : `${typeObjectName} | undefined`;
   }
 
   /**
