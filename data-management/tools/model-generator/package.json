@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --node-env production --config ./webpack.config.mjs --progress --color",
     "postbuild": "npm run start ../../resources/model.xml",
-    "poststart": "prettier --write dist && (cp ./dist/ts/model/* ../../../client/src/model || xcopy /s .\\dist\\ts\\model\\* ..\\..\\..\\client\\src\\model\\)",
+    "poststart": "prettier --write dist",
     "prettier": "prettier --write . --ignore-path node_modules",
     "start": "node build/main.bundle.js",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
