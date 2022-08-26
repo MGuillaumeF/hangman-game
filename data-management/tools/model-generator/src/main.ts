@@ -349,7 +349,7 @@ ModelAttributesProperties = {
 };
 */
 
-function isModelAttributesProperties(data:unknown) data is ModelAttributesProperties {
+function isModelAttributesProperties(data:unknown) : data is ModelAttributesProperties {
   return typeof data === "object" && ["max", "max_length", "min", "min_length"].every((key : string) => {
     let isValid = ["string", "number", "undefined"].includes(typeof data[key]);
     if (typeof data[key] === "string" && !isNaN(data[key])) {
