@@ -359,7 +359,7 @@ function isModelAttributesProperties(data:any) : data is ModelAttributesProperti
   });
 }
 
-function isModelClassDefinition(data: unknown) : data is ModelClassDefinition {
+function isModelClassDefinition(data: any) : data is ModelClassDefinition {
  let result = true
  if (  typeof data === "object" && data !== null)
   {
@@ -372,7 +372,7 @@ function isModelClassDefinition(data: unknown) : data is ModelClassDefinition {
   return result;
 }
 
-function isModelClassDefinitionList(datas: unknown) : datas is ModelClassDefinition[] {
+function isModelClassDefinitionList(datas: any) : datas is ModelClassDefinition[] {
   return Array.isArray(datas) && datas.every(isModelClassDefinition);
 }
 
