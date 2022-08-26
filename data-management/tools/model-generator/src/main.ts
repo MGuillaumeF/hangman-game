@@ -337,21 +337,17 @@ console.log("reading file : ", xmlPath);
 const xml = readFileSync(xmlPath);
 
 
-
+/**
 ModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
   linked_column?: string;
   mandatory: boolean;
-  max: number;
-  max_length: number;
-  min: number;
-  min_length: number;
   name: string;
   pattern: string;
   type: string;
   visibility: "private" | "protected" | "public";
 };
-
+*/
 
 function isModelAttributesProperties(data:unknown) data is ModelAttributesProperties {
   return typeof data === "object" && ["max", "max_length", "min", "min_length"].every((key : string) => {
