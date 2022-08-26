@@ -1,4 +1,4 @@
-import { ModelError } from 
+import { ModelError } from "ModelError";
 
 export class Validator {
 
