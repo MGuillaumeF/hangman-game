@@ -336,8 +336,47 @@ const xmlPath = resolve(
 console.log("reading file : ", xmlPath);
 const xml = readFileSync(xmlPath);
 
+
+
+ModelAttributesProperties = {
+  cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
+  linked_column?: string;
+  mandatory: boolean;
+  max: number;
+  max_length: number;
+  min: number;
+  min_length: number;
+  name: string;
+  pattern: string;
+  type: string;
+  visibility: "private" | "protected" | "public";
+};
+
+
+function isModelAttributesProperties(data:unknown) data is ModelAttributesProperties {
+  return typeof data === "object" && ["max", "max_length", "min", "min_length"].every((key : string) => {
+    let isValid = ["string", "number", "undefined"].includes(typeof data[key]);
+    if (typeof data[key] === "string" && !isNaN(data[key])) {
+      data[key] = Number(data[key]);
+    } else {
+      isValid = false;
+    }
+    return isValid;
+  });
+}
+
 function isModelClassDefinition(data: unknown) : data is ModelClassDefinition {
-  return true;
+ let result = true
+ if (  typeof data === "object")
+  {
+    result &&= typeof data["$"] === "object" && typeof data["$"]["name"] === "string";
+
+    result &&= Array.isArray(data["attributes"]) && data["attributes"].length === 1 && Array.isArray(&& data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => attributDefContainer?.$).every(isModelAttributesProperties);
+
+  } else {result = false;}
+
+  return result;
+}
 
 function isModelClassDefinitionList(datas: unknown) : datas is ModelClassDefinition[] {
   return Array.isArray(datas) && datas.every(isModelClassDefinition);
