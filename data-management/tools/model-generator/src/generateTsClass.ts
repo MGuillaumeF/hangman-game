@@ -60,10 +60,19 @@ export class TypeScriptClassGenerator {
     pattern?: string;
     type: "string";
   } {
+   let max_length : undefined | number;
+   let min_length : undefined | number;
+
+   if (attibuteProperties.max_length !== undefined)
+  { max_length = Number(attibuteProperties.max_length);}
+
+   if (attibuteProperties.min_length !== undefined)
+  { min_length = Number(attibuteProperties.min_length);}
+
     return {
-      mandatory: attibuteProperties.mandatory,
-      max_length: attibuteProperties.max_length,
-      min_length: attibuteProperties.min_length,
+      mandatory: attibuteProperties.mandatory === "true" ? true : false,
+      max_length,
+      min_length,
       pattern: attibuteProperties.pattern,
       type: "string"
     };
@@ -76,10 +85,19 @@ export class TypeScriptClassGenerator {
     min?: number;
     type: "number";
   } {
+    let max : undefined | number;
+   let min : undefined | number;
+
+   if (attibuteProperties.max !== undefined)
+  { max = Number(attibuteProperties.max);}
+
+   if (attibuteProperties.min !== undefined)
+  { min = Number(attibuteProperties.min);}
+
     return {
-      mandatory: attibuteProperties.mandatory,
-      max: attibuteProperties.max,
-      min: attibuteProperties.min,
+      mandatory: attibuteProperties.mandatory === "true" ? true : false,
+      max,
+      min,
       type: "number"
     };
   }
