@@ -365,9 +365,9 @@ function isModelClassDefinition(data: unknown) : data is ModelClassDefinition {
  let result = true
  if (  typeof data === "object")
   {
-    result &&= typeof data["$"] === "object" && typeof data["$"]["name"] === "string";
+    result = result && typeof data["$"] === "object" && typeof data["$"]["name"] === "string";
 
-    result &&= Array.isArray(data["attributes"]) && data["attributes"].length === 1 && Array.isArray(&& data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => attributDefContainer?.$).every(isModelAttributesProperties);
+    result = result && Array.isArray(data["attributes"]) && data["attributes"].length === 1 && Array.isArray(&& data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => attributDefContainer?.$).every(isModelAttributesProperties);
 
   } else {result = false;}
 
