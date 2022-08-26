@@ -351,10 +351,8 @@ ModelAttributesProperties = {
 
 function isModelAttributesProperties(data:any) : data is ModelAttributesProperties {
   return typeof data === "object" && data !== null && [data["max"], data["max_length"], data["min"], data["min_length"]].every((dataItem) => {
-    let isValid = ["string", "number", "undefined"].includes(typeof dataItem);
-    if (typeof dataItem === "string" && !isNaN(dataItem)) {
-      dataItem = Number(dataItem);
-    } else {
+    let isValid = ["string", "undefined"].includes(typeof dataItem);
+    if (typeof dataItem === "string" && isNaN(dataItem)) {
       isValid = false;
     }
     return isValid;
