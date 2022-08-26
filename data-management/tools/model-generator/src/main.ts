@@ -335,10 +335,18 @@ const xmlPath = resolve(
 );
 console.log("reading file : ", xmlPath);
 const xml = readFileSync(xmlPath);
+
+function isModelClassDefinition(data: unknown) : data is ModelClassDefinition {
+  return true;
+
+function isModelClassDefinitionList(datas: unknown) : datas is ModelClassDefinition[] {
+  return Array.isArray(datas) && datas.every(isModelClassDefinition);
+}
+
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
   for (const modelClass of result.model.classes[0]
-    .class as ModelClassDefinition[]) {
+    .class.filter(isModelClassDefinitionList)) {
     allClassNames.add(modelClass.$.name);
   }
   TypeScriptClassGenerator.classNames = allClassNames;
