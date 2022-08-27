@@ -354,10 +354,14 @@ function isModelAttributesProperties(
   return (
     typeof data === "object" &&
     data !== null &&
-    [data["max"], data["max_length"], data["min"], data["min_length"]].every(
-      (dataItem) => {
-        let isValid = ["string", "undefined"].includes(typeof dataItem);
-        if (typeof dataItem === "string" && Number.isNaN(Number(dataItem))) {
+    ["max", "max_length", "min", "min_length"].every(
+      (key) => {
+        let isValid = ["string", "undefined"].includes(typeof data[key]);
+        if (typeof data[key] === "string" && !Number.isNaN(Number(data[key]))) {
+          const changedType = Number(data[key]);
+          delete data[key]
+          data[key] = changedType
+        } else {
           isValid = false;
         }
         return isValid;
