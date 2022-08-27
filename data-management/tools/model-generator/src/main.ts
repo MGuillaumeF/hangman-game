@@ -352,7 +352,7 @@ ModelAttributesProperties = {
 function isModelAttributesProperties(data:any) : data is ModelAttributesProperties {
   return typeof data === "object" && data !== null && [data["max"], data["max_length"], data["min"], data["min_length"]].every((dataItem) => {
     let isValid = ["string", "undefined"].includes(typeof dataItem);
-    if (typeof dataItem === "string" && isNaN(dataItem)) {
+    if (typeof dataItem === "string" && Number.isNaN(Number(dataItem))) {
       isValid = false;
     }
     return isValid;
@@ -365,7 +365,7 @@ function isModelClassDefinition(data: any) : data is ModelClassDefinition {
   {
     result = result && typeof data["$"] === "object" && data["$"] !== null && typeof data["$"]["name"] === "string";
 
-    result = result && Array.isArray(data["attributes"]) && data["attributes"].length === 1 && Array.isArray(data["attributes"][0]) && Array.isArray(data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => typeof attributDefContainer === "object" && attributDefContainer !== null ? attributDefContainer["$"] : undefined).every(isModelAttributesProperties);
+    result = result && Array.isArray(data["attributes"]) && data["attributes"].length === 1 && typeof data["attributes"][0] === "object"  && data["attributes"][0] !== null && Array.isArray(data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => typeof attributDefContainer === "object" && attributDefContainer !== null ? attributDefContainer["$"] : undefined).every(isModelAttributesProperties);
 
   } else {result = false;}
 
