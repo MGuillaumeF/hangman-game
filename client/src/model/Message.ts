@@ -3,8 +3,6 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
-import { User } from "./User";
-import { Chat } from "./Chat";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -28,11 +26,11 @@ export class Message extends RootModelObject {
 
   private _content: string | undefined;
 
-  private _sender: User | undefined;
+  private _sender: user | undefined;
 
   private _sendDate: Date | undefined;
 
-  private _chat: Chat | undefined;
+  private _chat: chat | undefined;
 
   /**
    * @brief Set the content of object
@@ -55,15 +53,15 @@ export class Message extends RootModelObject {
    *
    * @param value The new sender value of object
    */
-  public set sender(value: User | undefined) {
+  public set sender(value: user | undefined) {
     this._sender = value;
   }
   /**
    * @brief Get the sender of object
    *
-   * @return User | undefined the sender of object
+   * @return user | undefined the sender of object
    */
-  public get sender(): User | undefined {
+  public get sender(): user | undefined {
     return this._sender;
   }
   /**
@@ -87,15 +85,15 @@ export class Message extends RootModelObject {
    *
    * @param value The new chat value of object
    */
-  public set chat(value: Chat | undefined) {
+  public set chat(value: chat | undefined) {
     this._chat = value;
   }
   /**
    * @brief Get the chat of object
    *
-   * @return Chat | undefined the chat of object
+   * @return chat | undefined the chat of object
    */
-  public get chat(): Chat | undefined {
+  public get chat(): chat | undefined {
     return this._chat;
   }
   public getErrors(): ModelError[] {

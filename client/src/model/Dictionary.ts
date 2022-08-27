@@ -3,7 +3,6 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
-import { Word } from "./Word";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -32,7 +31,7 @@ export class Dictionary extends RootModelObject {
 
   private _countryCode: string | undefined;
 
-  private _words: Word[] | undefined;
+  private _words: word[] | undefined;
 
   /**
    * @brief Set the name of object
@@ -71,15 +70,15 @@ export class Dictionary extends RootModelObject {
    *
    * @param value The new words value of object
    */
-  public set words(value: Word[] | undefined) {
+  public set words(value: word[] | undefined) {
     this._words = value;
   }
   /**
    * @brief Get the words of object
    *
-   * @return Word[] | undefined the words of object
+   * @return word[] | undefined the words of object
    */
-  public get words(): Word[] | undefined {
+  public get words(): word[] | undefined {
     return this._words;
   }
   public getErrors(): ModelError[] {

@@ -336,7 +336,6 @@ const xmlPath = resolve(
 console.log("reading file : ", xmlPath);
 const xml = readFileSync(xmlPath);
 
-
 /**
 ModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
@@ -349,37 +348,66 @@ ModelAttributesProperties = {
 };
 */
 
-function isModelAttributesProperties(data:any) : data is ModelAttributesProperties {
-  return typeof data === "object" && data !== null && [data["max"], data["max_length"], data["min"], data["min_length"]].every((dataItem) => {
-    let isValid = ["string", "undefined"].includes(typeof dataItem);
-    if (typeof dataItem === "string" && Number.isNaN(Number(dataItem))) {
-      isValid = false;
-    }
-    return isValid;
-  });
+function isModelAttributesProperties(
+  data: any
+): data is ModelAttributesProperties {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    [data["max"], data["max_length"], data["min"], data["min_length"]].every(
+      (dataItem) => {
+        let isValid = ["string", "undefined"].includes(typeof dataItem);
+        if (typeof dataItem === "string" && Number.isNaN(Number(dataItem))) {
+          isValid = false;
+        }
+        return isValid;
+      }
+    )
+  );
 }
 
-function isModelClassDefinition(data: any) : data is ModelClassDefinition {
- let result = true
- if (  typeof data === "object" && data !== null)
-  {
-    result = result && typeof data["$"] === "object" && data["$"] !== null && typeof data["$"]["name"] === "string";
+function isModelClassDefinition(data: any): data is ModelClassDefinition {
+  let result = true;
+  if (typeof data === "object" && data !== null) {
+    result =
+      result &&
+      typeof data["$"] === "object" &&
+      data["$"] !== null &&
+      typeof data["$"]["name"] === "string";
 
-    result = result && Array.isArray(data["attributes"]) && data["attributes"].length === 1 && typeof data["attributes"][0] === "object"  && data["attributes"][0] !== null && Array.isArray(data["attributes"][0]["attribute"]) && data["attributes"][0]["attribute"].map(attributDefContainer => typeof attributDefContainer === "object" && attributDefContainer !== null ? attributDefContainer["$"] : undefined).every(isModelAttributesProperties);
-
-  } else {result = false;}
+    result =
+      result &&
+      Array.isArray(data["attributes"]) &&
+      data["attributes"].length === 1 &&
+      typeof data["attributes"][0] === "object" &&
+      data["attributes"][0] !== null &&
+      Array.isArray(data["attributes"][0]["attribute"]) &&
+      data["attributes"][0]["attribute"]
+        .map((attributDefContainer) =>
+          typeof attributDefContainer === "object" &&
+          attributDefContainer !== null
+            ? attributDefContainer["$"]
+            : undefined
+        )
+        .every(isModelAttributesProperties);
+  } else {
+    result = false;
+  }
 
   return result;
 }
 
-function isModelClassDefinitionList(datas: any) : datas is ModelClassDefinition[] {
+function isModelClassDefinitionList(
+  datas: any
+): datas is ModelClassDefinition[] {
   return Array.isArray(datas) && datas.every(isModelClassDefinition);
 }
 
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
-  for (const modelClass of result.model.classes[0]
-    .class.filter(isModelClassDefinitionList)) {
+  for (const modelClass of result.model.classes[0].class.filter(
+    isModelClassDefinitionList
+  )) {
     allClassNames.add(modelClass.$.name);
   }
   TypeScriptClassGenerator.classNames = allClassNames;

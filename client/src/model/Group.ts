@@ -3,7 +3,6 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
-import { User } from "./User";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -24,7 +23,7 @@ export class Group extends RootModelObject {
 
   private _name: string | undefined;
 
-  private _members: User[] | undefined;
+  private _members: user[] | undefined;
 
   /**
    * @brief Set the name of object
@@ -47,15 +46,15 @@ export class Group extends RootModelObject {
    *
    * @param value The new members value of object
    */
-  public set members(value: User[] | undefined) {
+  public set members(value: user[] | undefined) {
     this._members = value;
   }
   /**
    * @brief Get the members of object
    *
-   * @return User[] | undefined the members of object
+   * @return user[] | undefined the members of object
    */
-  public get members(): User[] | undefined {
+  public get members(): user[] | undefined {
     return this._members;
   }
   public getErrors(): ModelError[] {
