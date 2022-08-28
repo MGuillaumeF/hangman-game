@@ -91,8 +91,11 @@ export class Team extends RootModelObject {
     const { name, members, chat } = this;
     return {
       name,
-      members: this.members.map((item) => item.toJSON()),
-      chat: this.chat.toJSON()
+      members:
+        members !== undefined
+          ? members.map((item) => item.toJSON())
+          : undefined,
+      chat: chat !== undefined ? chat.toJSON() : undefined
     };
   }
 

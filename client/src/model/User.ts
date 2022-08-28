@@ -281,10 +281,16 @@ export class User extends RootModelObject {
       saltSession,
       token,
       lastConnection,
-      friends: this.friends.map((item) => item.toJSON()),
-      groups: this.groups.map((item) => item.toJSON()),
-      teams: this.teams.map((item) => item.toJSON()),
-      chats: this.chats.map((item) => item.toJSON())
+      friends:
+        friends !== undefined
+          ? friends.map((item) => item.toJSON())
+          : undefined,
+      groups:
+        groups !== undefined ? groups.map((item) => item.toJSON()) : undefined,
+      teams:
+        teams !== undefined ? teams.map((item) => item.toJSON()) : undefined,
+      chats:
+        chats !== undefined ? chats.map((item) => item.toJSON()) : undefined
     };
   }
 

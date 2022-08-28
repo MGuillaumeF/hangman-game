@@ -91,8 +91,12 @@ export class Chat extends RootModelObject {
     const { name, messages, members } = this;
     return {
       name,
-      messages: this.messages.map((item) => item.toJSON()),
-      members: this.members.map((item) => item.toJSON())
+      messages:
+        messages !== undefined
+          ? messages.map((item) => item.toJSON())
+          : undefined,
+      members:
+        members !== undefined ? members.map((item) => item.toJSON()) : undefined
     };
   }
 

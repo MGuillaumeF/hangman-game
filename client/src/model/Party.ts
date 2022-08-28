@@ -148,9 +148,12 @@ export class Party extends RootModelObject {
       startDate,
       endDate,
       win,
-      members: this.members.map((item) => item.toJSON()),
-      chat: this.chat.toJSON(),
-      word: this.word.toJSON()
+      members:
+        members !== undefined
+          ? members.map((item) => item.toJSON())
+          : undefined,
+      chat: chat !== undefined ? chat.toJSON() : undefined,
+      word: word !== undefined ? word.toJSON() : undefined
     };
   }
 

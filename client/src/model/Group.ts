@@ -70,7 +70,11 @@ export class Group extends RootModelObject {
    */
   public toJSON(): any {
     const { name, members } = this;
-    return { name, members: this.members.map((item) => item.toJSON()) };
+    return {
+      name,
+      members:
+        members !== undefined ? members.map((item) => item.toJSON()) : undefined
+    };
   }
 
   public static parse(data: any): Group {
