@@ -99,9 +99,9 @@ export class Dictionary extends RootModelObject {
     return errors;
   }
   /**
-   * @brief method to convert object to JSON string
+   * @brief method to convert object to JSON object
    */
-  public toJSON() {
+  public toJSON(): any {
     const { name, countryCode, words } = this;
     return {
       name,

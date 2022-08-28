@@ -140,9 +140,9 @@ export class Party extends RootModelObject {
     return errors;
   }
   /**
-   * @brief method to convert object to JSON string
+   * @brief method to convert object to JSON object
    */
-  public toJSON() {
+  public toJSON(): any {
     const { startDate, endDate, win, members, chat, word } = this;
     return {
       startDate,

@@ -66,9 +66,9 @@ export class Group extends RootModelObject {
     return errors;
   }
   /**
-   * @brief method to convert object to JSON string
+   * @brief method to convert object to JSON object
    */
-  public toJSON() {
+  public toJSON(): any {
     const { name, members } = this;
     return { name, members: this.members.map((item) => item.toJSON()) };
   }
