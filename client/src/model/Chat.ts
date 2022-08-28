@@ -3,6 +3,8 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
+import { Message } from "./Message";
+import { User } from "./User";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -23,9 +25,9 @@ export class Chat extends RootModelObject {
 
   private _name: string | undefined;
 
-  private _messages: message[] | undefined;
+  private _messages: Message[] | undefined;
 
-  private _members: user[] | undefined;
+  private _members: User[] | undefined;
 
   /**
    * @brief Set the name of object
@@ -48,15 +50,15 @@ export class Chat extends RootModelObject {
    *
    * @param value The new messages value of object
    */
-  public set messages(value: message[] | undefined) {
+  public set messages(value: Message[] | undefined) {
     this._messages = value;
   }
   /**
    * @brief Get the messages of object
    *
-   * @return message[] | undefined the messages of object
+   * @return Message[] | undefined the messages of object
    */
-  public get messages(): message[] | undefined {
+  public get messages(): Message[] | undefined {
     return this._messages;
   }
   /**
@@ -64,21 +66,21 @@ export class Chat extends RootModelObject {
    *
    * @param value The new members value of object
    */
-  public set members(value: user[] | undefined) {
+  public set members(value: User[] | undefined) {
     this._members = value;
   }
   /**
    * @brief Get the members of object
    *
-   * @return user[] | undefined the members of object
+   * @return User[] | undefined the members of object
    */
-  public get members(): user[] | undefined {
+  public get members(): User[] | undefined {
     return this._members;
   }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      Validator.checkStringProperty(Chat.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(Chat.getConstraintes().name, this.name)
     );
     return errors;
   }

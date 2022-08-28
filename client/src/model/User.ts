@@ -3,6 +3,9 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
+import { Group } from "./Group";
+import { Team } from "./Team";
+import { Chat } from "./Chat";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -59,13 +62,13 @@ export class User extends RootModelObject {
 
   private _lastConnection: Date | undefined;
 
-  private _friends: user[] | undefined;
+  private _friends: User[] | undefined;
 
-  private _groups: group[] | undefined;
+  private _groups: Group[] | undefined;
 
-  private _teams: team[] | undefined;
+  private _teams: Team[] | undefined;
 
-  private _chats: chat[] | undefined;
+  private _chats: Chat[] | undefined;
 
   /**
    * @brief Set the login of object
@@ -168,15 +171,15 @@ export class User extends RootModelObject {
    *
    * @param value The new friends value of object
    */
-  public set friends(value: user[] | undefined) {
+  public set friends(value: User[] | undefined) {
     this._friends = value;
   }
   /**
    * @brief Get the friends of object
    *
-   * @return user[] | undefined the friends of object
+   * @return User[] | undefined the friends of object
    */
-  public get friends(): user[] | undefined {
+  public get friends(): User[] | undefined {
     return this._friends;
   }
   /**
@@ -184,15 +187,15 @@ export class User extends RootModelObject {
    *
    * @param value The new groups value of object
    */
-  public set groups(value: group[] | undefined) {
+  public set groups(value: Group[] | undefined) {
     this._groups = value;
   }
   /**
    * @brief Get the groups of object
    *
-   * @return group[] | undefined the groups of object
+   * @return Group[] | undefined the groups of object
    */
-  public get groups(): group[] | undefined {
+  public get groups(): Group[] | undefined {
     return this._groups;
   }
   /**
@@ -200,15 +203,15 @@ export class User extends RootModelObject {
    *
    * @param value The new teams value of object
    */
-  public set teams(value: team[] | undefined) {
+  public set teams(value: Team[] | undefined) {
     this._teams = value;
   }
   /**
    * @brief Get the teams of object
    *
-   * @return team[] | undefined the teams of object
+   * @return Team[] | undefined the teams of object
    */
-  public get teams(): team[] | undefined {
+  public get teams(): Team[] | undefined {
     return this._teams;
   }
   /**
@@ -216,42 +219,42 @@ export class User extends RootModelObject {
    *
    * @param value The new chats value of object
    */
-  public set chats(value: chat[] | undefined) {
+  public set chats(value: Chat[] | undefined) {
     this._chats = value;
   }
   /**
    * @brief Get the chats of object
    *
-   * @return chat[] | undefined the chats of object
+   * @return Chat[] | undefined the chats of object
    */
-  public get chats(): chat[] | undefined {
+  public get chats(): Chat[] | undefined {
     return this._chats;
   }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      Validator.checkStringProperty(User.getConstraintes().login, this.login)
+      ...Validator.checkStringProperty(User.getConstraintes().login, this.login)
     );
     errors.push(
-      Validator.checkStringProperty(
+      ...Validator.checkStringProperty(
         User.getConstraintes().password,
         this.password
       )
     );
     errors.push(
-      Validator.checkStringProperty(
+      ...Validator.checkStringProperty(
         User.getConstraintes().salt_user,
         this.saltUser
       )
     );
     errors.push(
-      Validator.checkStringProperty(
+      ...Validator.checkStringProperty(
         User.getConstraintes().salt_session,
         this.saltSession
       )
     );
     errors.push(
-      Validator.checkStringProperty(User.getConstraintes().token, this.token)
+      ...Validator.checkStringProperty(User.getConstraintes().token, this.token)
     );
     return errors;
   }

@@ -150,25 +150,25 @@ export class RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      Validator.checkNumberProperty(
+      ...Validator.checkNumberProperty(
         RootModelObject.getConstraintes().version,
         this.version
       )
     );
     errors.push(
-      Validator.checkNumberProperty(
+      ...Validator.checkNumberProperty(
         RootModelObject.getConstraintes().id,
         this.id
       )
     );
     errors.push(
-      Validator.checkStringProperty(
+      ...Validator.checkStringProperty(
         RootModelObject.getConstraintes().created_by,
         this.createdBy
       )
     );
     errors.push(
-      Validator.checkStringProperty(
+      ...Validator.checkStringProperty(
         RootModelObject.getConstraintes().updated_by,
         this.updatedBy
       )

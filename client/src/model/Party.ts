@@ -3,6 +3,9 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
+import { User } from "./User";
+import { Chat } from "./Chat";
+import { Word } from "./Word";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -29,11 +32,11 @@ export class Party extends RootModelObject {
 
   private _win: boolean | undefined;
 
-  private _members: user[] | undefined;
+  private _members: User[] | undefined;
 
-  private _chat: chat | undefined;
+  private _chat: Chat | undefined;
 
-  private _word: word | undefined;
+  private _word: Word | undefined;
 
   /**
    * @brief Set the start_date of object
@@ -88,15 +91,15 @@ export class Party extends RootModelObject {
    *
    * @param value The new members value of object
    */
-  public set members(value: user[] | undefined) {
+  public set members(value: User[] | undefined) {
     this._members = value;
   }
   /**
    * @brief Get the members of object
    *
-   * @return user[] | undefined the members of object
+   * @return User[] | undefined the members of object
    */
-  public get members(): user[] | undefined {
+  public get members(): User[] | undefined {
     return this._members;
   }
   /**
@@ -104,15 +107,15 @@ export class Party extends RootModelObject {
    *
    * @param value The new chat value of object
    */
-  public set chat(value: chat | undefined) {
+  public set chat(value: Chat | undefined) {
     this._chat = value;
   }
   /**
    * @brief Get the chat of object
    *
-   * @return chat | undefined the chat of object
+   * @return Chat | undefined the chat of object
    */
-  public get chat(): chat | undefined {
+  public get chat(): Chat | undefined {
     return this._chat;
   }
   /**
@@ -120,15 +123,15 @@ export class Party extends RootModelObject {
    *
    * @param value The new word value of object
    */
-  public set word(value: word | undefined) {
+  public set word(value: Word | undefined) {
     this._word = value;
   }
   /**
    * @brief Get the word of object
    *
-   * @return word | undefined the word of object
+   * @return Word | undefined the word of object
    */
-  public get word(): word | undefined {
+  public get word(): Word | undefined {
     return this._word;
   }
   public getErrors(): ModelError[] {

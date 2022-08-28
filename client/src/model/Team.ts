@@ -3,6 +3,8 @@
  * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 import { RootModelObject } from "./RootModelObject";
+import { User } from "./User";
+import { Chat } from "./Chat";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -23,9 +25,9 @@ export class Team extends RootModelObject {
 
   private _name: string | undefined;
 
-  private _members: user[] | undefined;
+  private _members: User[] | undefined;
 
-  private _chat: chat | undefined;
+  private _chat: Chat | undefined;
 
   /**
    * @brief Set the name of object
@@ -48,15 +50,15 @@ export class Team extends RootModelObject {
    *
    * @param value The new members value of object
    */
-  public set members(value: user[] | undefined) {
+  public set members(value: User[] | undefined) {
     this._members = value;
   }
   /**
    * @brief Get the members of object
    *
-   * @return user[] | undefined the members of object
+   * @return User[] | undefined the members of object
    */
-  public get members(): user[] | undefined {
+  public get members(): User[] | undefined {
     return this._members;
   }
   /**
@@ -64,21 +66,21 @@ export class Team extends RootModelObject {
    *
    * @param value The new chat value of object
    */
-  public set chat(value: chat | undefined) {
+  public set chat(value: Chat | undefined) {
     this._chat = value;
   }
   /**
    * @brief Get the chat of object
    *
-   * @return chat | undefined the chat of object
+   * @return Chat | undefined the chat of object
    */
-  public get chat(): chat | undefined {
+  public get chat(): Chat | undefined {
     return this._chat;
   }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      Validator.checkStringProperty(Team.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(Team.getConstraintes().name, this.name)
     );
     return errors;
   }
