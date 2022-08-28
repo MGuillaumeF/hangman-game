@@ -8,7 +8,7 @@ export class Validator {
       min_length?: number;
       pattern?: RegExp;
     },
-    attributeName?: string,
+    attributeName: string,
     value?: string
   ): ModelError[] {
     const errors: ModelError[] = [];
@@ -45,7 +45,7 @@ export class Validator {
       max?: number;
       min?: number;
     },
-    attributeName?: string,
+    attributeName: string,
     value?: number
   ): ModelError[] {
     const errors: ModelError[] = [];
