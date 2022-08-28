@@ -84,12 +84,15 @@ export class Chat extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { name, messages, members } = this;
     return {
       name,
-      messages: this.messages.toJSON(),
-      members: this.members.toJSON()
+      messages: this.messages.map((item) => item.toJSON()),
+      members: this.members.map((item) => item.toJSON())
     };
   }
 

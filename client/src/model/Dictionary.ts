@@ -98,9 +98,16 @@ export class Dictionary extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { name, countryCode, words } = this;
-    return { name, countryCode, words: this.words.toJSON() };
+    return {
+      name,
+      countryCode,
+      words: this.words.map((item) => item.toJSON())
+    };
   }
 
   public static parse(data: any): Dictionary {

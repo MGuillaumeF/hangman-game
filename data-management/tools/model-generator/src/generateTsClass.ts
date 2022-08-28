@@ -218,9 +218,15 @@ export class TypeScriptClassGenerator {
           : attibuteProperties.type;
 
         return TypeScriptClassGenerator._classNames.has(rawType)
-          ? `${snakeCaseToCamelCase(
-              attibuteProperties.name
-            )} : ${isArrayType ?  `this.${snakeCaseToCamelCase(attibuteProperties.name)}.map(item => item.toJSON())` : `this.${snakeCaseToCamelCase(attibuteProperties.name)}.toJSON()`}`
+          ? `${snakeCaseToCamelCase(attibuteProperties.name)} : ${
+              isArrayType
+                ? `this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}.map(item => item.toJSON())`
+                : `this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}.toJSON()`
+            }`
           : snakeCaseToCamelCase(attibuteProperties.name);
       })
       .join(", ");

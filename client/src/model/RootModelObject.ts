@@ -175,6 +175,9 @@ export class RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { version, id, createdBy, createdAt, updatedBy, updatedAt } = this;
     return { version, id, createdBy, createdAt, updatedBy, updatedAt };

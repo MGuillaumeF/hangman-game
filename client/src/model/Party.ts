@@ -139,13 +139,16 @@ export class Party extends RootModelObject {
 
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { startDate, endDate, win, members, chat, word } = this;
     return {
       startDate,
       endDate,
       win,
-      members: this.members.toJSON(),
+      members: this.members.map((item) => item.toJSON()),
       chat: this.chat.toJSON(),
       word: this.word.toJSON()
     };

@@ -108,6 +108,9 @@ export class Message extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { content, sender, sendDate, chat } = this;
     return {

@@ -84,9 +84,16 @@ export class Team extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { name, members, chat } = this;
-    return { name, members: this.members.toJSON(), chat: this.chat.toJSON() };
+    return {
+      name,
+      members: this.members.map((item) => item.toJSON()),
+      chat: this.chat.toJSON()
+    };
   }
 
   public static parse(data: any): Team {

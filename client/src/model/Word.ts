@@ -83,6 +83,9 @@ export class Word extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const { name, definitions, dictionary } = this;
     return { name, definitions, dictionary: this.dictionary.toJSON() };

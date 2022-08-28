@@ -258,6 +258,9 @@ export class User extends RootModelObject {
     );
     return errors;
   }
+  /**
+   * @brief method to convert object to JSON string
+   */
   public toJSON() {
     const {
       login,
@@ -278,10 +281,10 @@ export class User extends RootModelObject {
       saltSession,
       token,
       lastConnection,
-      friends: this.friends.toJSON(),
-      groups: this.groups.toJSON(),
-      teams: this.teams.toJSON(),
-      chats: this.chats.toJSON()
+      friends: this.friends.map((item) => item.toJSON()),
+      groups: this.groups.map((item) => item.toJSON()),
+      teams: this.teams.map((item) => item.toJSON()),
+      chats: this.chats.map((item) => item.toJSON())
     };
   }
 
