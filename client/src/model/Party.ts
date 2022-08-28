@@ -141,7 +141,14 @@ export class Party extends RootModelObject {
   }
   public toJSON() {
     const { startDate, endDate, win, members, chat, word } = this;
-    return JSON.stringify({ startDate, endDate, win, members, chat, word });
+    return {
+      startDate,
+      endDate,
+      win,
+      members: this.members.toJSON(),
+      chat: this.chat.toJSON(),
+      word: this.word.toJSON()
+    };
   }
 
   public static parse(data: any): Party {

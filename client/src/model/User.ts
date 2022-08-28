@@ -271,18 +271,18 @@ export class User extends RootModelObject {
       teams,
       chats
     } = this;
-    return JSON.stringify({
+    return {
       login,
       password,
       saltUser,
       saltSession,
       token,
       lastConnection,
-      friends,
-      groups,
-      teams,
-      chats
-    });
+      friends: this.friends.toJSON(),
+      groups: this.groups.toJSON(),
+      teams: this.teams.toJSON(),
+      chats: this.chats.toJSON()
+    };
   }
 
   public static parse(data: any): User {

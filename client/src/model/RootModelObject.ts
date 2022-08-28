@@ -177,14 +177,7 @@ export class RootModelObject {
   }
   public toJSON() {
     const { version, id, createdBy, createdAt, updatedBy, updatedAt } = this;
-    return JSON.stringify({
-      version,
-      id,
-      createdBy,
-      createdAt,
-      updatedBy,
-      updatedAt
-    });
+    return { version, id, createdBy, createdAt, updatedBy, updatedAt };
   }
 
   public static parse(data: any): RootModelObject {

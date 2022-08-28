@@ -110,7 +110,12 @@ export class Message extends RootModelObject {
   }
   public toJSON() {
     const { content, sender, sendDate, chat } = this;
-    return JSON.stringify({ content, sender, sendDate, chat });
+    return {
+      content,
+      sender: this.sender.toJSON(),
+      sendDate,
+      chat: this.chat.toJSON()
+    };
   }
 
   public static parse(data: any): Message {

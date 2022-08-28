@@ -67,7 +67,7 @@ export class Group extends RootModelObject {
   }
   public toJSON() {
     const { name, members } = this;
-    return JSON.stringify({ name, members });
+    return { name, members: this.members.toJSON() };
   }
 
   public static parse(data: any): Group {

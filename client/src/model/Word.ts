@@ -85,7 +85,7 @@ export class Word extends RootModelObject {
   }
   public toJSON() {
     const { name, definitions, dictionary } = this;
-    return JSON.stringify({ name, definitions, dictionary });
+    return { name, definitions, dictionary: this.dictionary.toJSON() };
   }
 
   public static parse(data: any): Word {

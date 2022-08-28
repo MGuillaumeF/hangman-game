@@ -100,7 +100,7 @@ export class Dictionary extends RootModelObject {
   }
   public toJSON() {
     const { name, countryCode, words } = this;
-    return JSON.stringify({ name, countryCode, words });
+    return { name, countryCode, words: this.words.toJSON() };
   }
 
   public static parse(data: any): Dictionary {

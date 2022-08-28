@@ -86,7 +86,11 @@ export class Chat extends RootModelObject {
   }
   public toJSON() {
     const { name, messages, members } = this;
-    return JSON.stringify({ name, messages, members });
+    return {
+      name,
+      messages: this.messages.toJSON(),
+      members: this.members.toJSON()
+    };
   }
 
   public static parse(data: any): Chat {
