@@ -222,7 +222,7 @@ export class TypeScriptClassGenerator {
     return `
     public toJSON() {
         const {${attrNamesList}} = this;
-        return JSON.stringify({${attrNamesList}})
+        return `{${attrSerializeList}}`
     }
     `;
   }
