@@ -133,22 +133,22 @@ export class Message extends RootModelObject {
         }
       }
       if (data["sender"] !== undefined) {
-        if (typeof data["sender"] === "user") {
-          obj.sender = data["sender"];
+        if (typeof data["sender"] === "object") {
+          obj.sender = User.parse(data["sender"]);
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["send_date"] !== undefined) {
-        if (typeof data["send_date"] === "date") {
+        if (typeof data["send_date"] === "Date") {
           obj.sendDate = data["send_date"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "chat") {
-          obj.chat = data["chat"];
+        if (typeof data["chat"] === "object") {
+          obj.chat = Chat.parse(data["chat"]);
         } else {
           throw Error("INVALID TYPE");
         }

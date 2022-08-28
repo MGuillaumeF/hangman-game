@@ -115,15 +115,15 @@ export class Chat extends RootModelObject {
         }
       }
       if (data["messages"] !== undefined) {
-        if (typeof data["messages"] === "message[]") {
-          obj.messages = data["messages"];
+        if (Array.isArray(data["messages"])) {
+          obj.messages = data["messages"].map((item) => Message.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["members"] !== undefined) {
-        if (typeof data["members"] === "user[]") {
-          obj.members = data["members"];
+        if (Array.isArray(data["members"])) {
+          obj.members = data["members"].map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

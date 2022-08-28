@@ -117,8 +117,8 @@ export class Word extends RootModelObject {
         }
       }
       if (data["dictionary"] !== undefined) {
-        if (typeof data["dictionary"] === "dictionary") {
-          obj.dictionary = data["dictionary"];
+        if (typeof data["dictionary"] === "object") {
+          obj.dictionary = Dictionary.parse(data["dictionary"]);
         } else {
           throw Error("INVALID TYPE");
         }

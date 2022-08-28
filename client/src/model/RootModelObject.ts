@@ -191,14 +191,14 @@ export class RootModelObject {
     const obj = new RootModelObject();
     if (typeof data === "object") {
       if (data["version"] !== undefined) {
-        if (typeof data["version"] === "uint32") {
+        if (typeof data["version"] === "number") {
           obj.version = data["version"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["id"] !== undefined) {
-        if (typeof data["id"] === "uint32") {
+        if (typeof data["id"] === "number") {
           obj.id = data["id"];
         } else {
           throw Error("INVALID TYPE");
@@ -212,7 +212,7 @@ export class RootModelObject {
         }
       }
       if (data["created_at"] !== undefined) {
-        if (typeof data["created_at"] === "date") {
+        if (typeof data["created_at"] === "Date") {
           obj.createdAt = data["created_at"];
         } else {
           throw Error("INVALID TYPE");
@@ -226,7 +226,7 @@ export class RootModelObject {
         }
       }
       if (data["updated_at"] !== undefined) {
-        if (typeof data["updated_at"] === "date") {
+        if (typeof data["updated_at"] === "Date") {
           obj.updatedAt = data["updated_at"];
         } else {
           throw Error("INVALID TYPE");

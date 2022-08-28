@@ -92,8 +92,8 @@ export class Group extends RootModelObject {
         }
       }
       if (data["members"] !== undefined) {
-        if (typeof data["members"] === "user[]") {
-          obj.members = data["members"];
+        if (Array.isArray(data["members"])) {
+          obj.members = data["members"].map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

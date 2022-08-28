@@ -161,43 +161,43 @@ export class Party extends RootModelObject {
     const obj = new Party();
     if (typeof data === "object") {
       if (data["start_date"] !== undefined) {
-        if (typeof data["start_date"] === "date") {
+        if (typeof data["start_date"] === "Date") {
           obj.startDate = data["start_date"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["end_date"] !== undefined) {
-        if (typeof data["end_date"] === "date") {
+        if (typeof data["end_date"] === "Date") {
           obj.endDate = data["end_date"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["win"] !== undefined) {
-        if (typeof data["win"] === "bool") {
+        if (typeof data["win"] === "boolean") {
           obj.win = data["win"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["members"] !== undefined) {
-        if (typeof data["members"] === "user[]") {
-          obj.members = data["members"];
+        if (Array.isArray(data["members"])) {
+          obj.members = data["members"].map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "chat") {
-          obj.chat = data["chat"];
+        if (typeof data["chat"] === "object") {
+          obj.chat = Chat.parse(data["chat"]);
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["word"] !== undefined) {
-        if (typeof data["word"] === "word") {
-          obj.word = data["word"];
+        if (typeof data["word"] === "object") {
+          obj.word = Word.parse(data["word"]);
         } else {
           throw Error("INVALID TYPE");
         }

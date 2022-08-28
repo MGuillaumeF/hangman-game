@@ -114,15 +114,15 @@ export class Team extends RootModelObject {
         }
       }
       if (data["members"] !== undefined) {
-        if (typeof data["members"] === "user[]") {
-          obj.members = data["members"];
+        if (Array.isArray(data["members"])) {
+          obj.members = data["members"].map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "chat") {
-          obj.chat = data["chat"];
+        if (typeof data["chat"] === "object") {
+          obj.chat = Chat.parse(data["chat"]);
         } else {
           throw Error("INVALID TYPE");
         }

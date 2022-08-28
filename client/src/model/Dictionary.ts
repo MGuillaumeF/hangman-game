@@ -131,8 +131,8 @@ export class Dictionary extends RootModelObject {
         }
       }
       if (data["words"] !== undefined) {
-        if (typeof data["words"] === "word[]") {
-          obj.words = data["words"];
+        if (Array.isArray(data["words"])) {
+          obj.words = data["words"].map((item) => Word.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

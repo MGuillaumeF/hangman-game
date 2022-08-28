@@ -344,36 +344,36 @@ export class User extends RootModelObject {
         }
       }
       if (data["last_connection"] !== undefined) {
-        if (typeof data["last_connection"] === "date") {
+        if (typeof data["last_connection"] === "Date") {
           obj.lastConnection = data["last_connection"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["friends"] !== undefined) {
-        if (typeof data["friends"] === "user[]") {
-          obj.friends = data["friends"];
+        if (Array.isArray(data["friends"])) {
+          obj.friends = data["friends"].map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["groups"] !== undefined) {
-        if (typeof data["groups"] === "group[]") {
-          obj.groups = data["groups"];
+        if (Array.isArray(data["groups"])) {
+          obj.groups = data["groups"].map((item) => Group.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["teams"] !== undefined) {
-        if (typeof data["teams"] === "team[]") {
-          obj.teams = data["teams"];
+        if (Array.isArray(data["teams"])) {
+          obj.teams = data["teams"].map((item) => Team.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
       if (data["chats"] !== undefined) {
-        if (typeof data["chats"] === "chat[]") {
-          obj.chats = data["chats"];
+        if (Array.isArray(data["chats"])) {
+          obj.chats = data["chats"].map((item) => Chat.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
