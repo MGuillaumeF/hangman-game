@@ -16,7 +16,7 @@ export class Team extends RootModelObject {
         name: {
           mandatory: "true",
           min_length: "3",
-          pattern: "/^[a-zA-Z0-9]{3,}/$",
+          pattern: "^[a-zA-Z0-9]{3,}$",
           type: "string"
         }
       }

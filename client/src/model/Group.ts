@@ -15,7 +15,7 @@ export class Group extends RootModelObject {
         name: {
           mandatory: "true",
           min_length: "3",
-          pattern: "/^[a-z]{3,32}/$",
+          pattern: "^[a-z]{3,32}$",
           type: "string"
         }
       }

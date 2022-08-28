@@ -17,14 +17,14 @@ export class User extends RootModelObject {
         login: {
           mandatory: "true",
           min_length: "3",
-          pattern: "/^[a-zA-Z0-9]{3,32}/$",
+          pattern: "^[a-zA-Z0-9]{3,32}$",
           type: "string"
         },
         password: {
           mandatory: "true",
           min_length: "8",
           pattern:
-            "/^.*(?:(?:[a-z].*[A-Z].*\\d)|(?:[A-Z].*\\d.*[a-z])|(?:\\d.*[a-z].*[A-Z])).*/$",
+            "^.*(?:(?:[a-z].*[A-Z].*\\\\d)|(?:[A-Z].*\\\\d.*[a-z])|(?:\\\\d.*[a-z].*[A-Z])).*$",
           type: "string"
         },
         salt_user: {
