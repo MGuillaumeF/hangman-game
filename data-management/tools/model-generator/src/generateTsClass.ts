@@ -171,7 +171,9 @@ export class TypeScriptClassGenerator {
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
-              }, "${snakeCaseToCamelCase(attibuteProperties.name)}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              }, "${snakeCaseToCamelCase(
+                attibuteProperties.name
+              )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
             );
             break;
           case "number":
@@ -180,7 +182,9 @@ export class TypeScriptClassGenerator {
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
-              }, "${snakeCaseToCamelCase(attibuteProperties.name)}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              }, "${snakeCaseToCamelCase(
+                attibuteProperties.name
+              )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
             );
             break;
           default:

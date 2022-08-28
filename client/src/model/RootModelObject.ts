@@ -152,24 +152,28 @@ export class RootModelObject {
     errors.push(
       ...Validator.checkNumberProperty(
         RootModelObject.getConstraintes().version,
+        "version",
         this.version
       )
     );
     errors.push(
       ...Validator.checkNumberProperty(
         RootModelObject.getConstraintes().id,
+        "id",
         this.id
       )
     );
     errors.push(
       ...Validator.checkStringProperty(
         RootModelObject.getConstraintes().created_by,
+        "createdBy",
         this.createdBy
       )
     );
     errors.push(
       ...Validator.checkStringProperty(
         RootModelObject.getConstraintes().updated_by,
+        "updatedBy",
         this.updatedBy
       )
     );

@@ -87,12 +87,14 @@ export class Dictionary extends RootModelObject {
     errors.push(
       ...Validator.checkStringProperty(
         Dictionary.getConstraintes().name,
+        "name",
         this.name
       )
     );
     errors.push(
       ...Validator.checkStringProperty(
         Dictionary.getConstraintes().country_code,
+        "countryCode",
         this.countryCode
       )
     );

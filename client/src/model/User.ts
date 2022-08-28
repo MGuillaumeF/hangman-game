@@ -233,28 +233,39 @@ export class User extends RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      ...Validator.checkStringProperty(User.getConstraintes().login, this.login)
+      ...Validator.checkStringProperty(
+        User.getConstraintes().login,
+        "login",
+        this.login
+      )
     );
     errors.push(
       ...Validator.checkStringProperty(
         User.getConstraintes().password,
+        "password",
         this.password
       )
     );
     errors.push(
       ...Validator.checkStringProperty(
         User.getConstraintes().salt_user,
+        "saltUser",
         this.saltUser
       )
     );
     errors.push(
       ...Validator.checkStringProperty(
         User.getConstraintes().salt_session,
+        "saltSession",
         this.saltSession
       )
     );
     errors.push(
-      ...Validator.checkStringProperty(User.getConstraintes().token, this.token)
+      ...Validator.checkStringProperty(
+        User.getConstraintes().token,
+        "token",
+        this.token
+      )
     );
     return errors;
   }

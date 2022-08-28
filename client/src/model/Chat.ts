@@ -80,7 +80,11 @@ export class Chat extends RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      ...Validator.checkStringProperty(Chat.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(
+        Chat.getConstraintes().name,
+        "name",
+        this.name
+      )
     );
     return errors;
   }

@@ -103,6 +103,7 @@ export class Message extends RootModelObject {
     errors.push(
       ...Validator.checkStringProperty(
         Message.getConstraintes().content,
+        "content",
         this.content
       )
     );

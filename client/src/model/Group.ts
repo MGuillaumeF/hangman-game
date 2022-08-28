@@ -61,7 +61,11 @@ export class Group extends RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      ...Validator.checkStringProperty(Group.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(
+        Group.getConstraintes().name,
+        "name",
+        this.name
+      )
     );
     return errors;
   }

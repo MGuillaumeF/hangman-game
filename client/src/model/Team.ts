@@ -80,7 +80,11 @@ export class Team extends RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      ...Validator.checkStringProperty(Team.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(
+        Team.getConstraintes().name,
+        "name",
+        this.name
+      )
     );
     return errors;
   }

@@ -79,7 +79,11 @@ export class Word extends RootModelObject {
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
-      ...Validator.checkStringProperty(Word.getConstraintes().name, this.name)
+      ...Validator.checkStringProperty(
+        Word.getConstraintes().name,
+        "name",
+        this.name
+      )
     );
     return errors;
   }
