@@ -207,9 +207,18 @@ export class TypeScriptClassGenerator {
   ): string {
     const attrNamesList = attibutePropertiesList
       .map((attibuteProperties) =>
-        snakeCaseToCamelCase(attibuteProperties.name)
+        snakeCaseToCamelCase(attibuteProperties.name)      )
+      .join(", ");
+    const attrSerializeList = attibutePropertiesList
+      .map((attibuteProperties) => {
+          const isArrayType = /.+\[\]/$.test(attibuteProperties.type);
+          const rawType = isArrayType ? attibuteProperties.type.slice(0,-2) : attibuteProperties.type
+          
+          TypeScriptClassGenerator._classNames.has(rawType) ? `${snakeCaseToCamelCase(attibuteProperties.name)} : this.${snakeCaseToCamelCase(attibuteProperties.name)}.toJSON()` : snakeCaseToCamelCase(attibuteProperties.name)
+        }
       )
       .join(", ");
+
     return `
     public toJSON() {
         const {${attrNamesList}} = this;
