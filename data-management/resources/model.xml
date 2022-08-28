@@ -19,9 +19,9 @@
     </class>
     <class name="user" extend="root_model_object">
       <attributes>
-        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min_length="3" pattern="/^[a-zA-Z0-9]{3,32}/$">
+        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min_length="3" pattern="^[a-zA-Z0-9]{3,32}$">
         </attribute>
-        <attribute name="password" visibility="private" type="string" mandatory="true" min_length="8" pattern="/^.*(?:(?:[a-z].*[A-Z].*\d)|(?:[A-Z].*\d.*[a-z])|(?:\d.*[a-z].*[A-Z])).*/$">
+        <attribute name="password" visibility="private" type="string" mandatory="true" min_length="8" pattern="^.*(?:(?:[a-z].*[A-Z].*\\d)|(?:[A-Z].*\\d.*[a-z])|(?:\\d.*[a-z].*[A-Z])).*$">
         </attribute>
         <attribute name="salt_user" visibility="private" type="string" mandatory="true" min_length="32">
         </attribute>
@@ -43,7 +43,7 @@
     </class>
     <class name="group" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="/^[a-z]{3,32}/$">
+        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-z]{3,32}$">
         </attribute>
         <attribute name="members" visibility="private" type="user[]" mandatory="false" min_length="1" cardinality="many_to_many" linked_column="groups">
         </attribute>
@@ -51,9 +51,9 @@
     </class>
     <class name="dictionary" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
-        <attribute name="country_code" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute name="country_code" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
         <attribute name="words" visibility="private" type="word[]" cardinality="one_to_many" linked_column="words">
         </attribute>
@@ -61,7 +61,7 @@
     </class>
     <class name="word" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
         <attribute name="definitions" visibility="private" type="string[]" mandatory="true" min_length="3">
         </attribute>
@@ -87,7 +87,7 @@
     </class>
     <class name="chat" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="false" min_length="3" pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute name="name" visibility="private" type="string" mandatory="true" unique="false" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
         <attribute name="messages" visibility="private" type="message[]" mandatory="false" cardinality="one_to_many" linked_column="chat">
         </attribute>
@@ -109,7 +109,7 @@
     </class>
     <class name="team" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="/^[a-zA-Z0-9]{3,}/$">
+        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
         <attribute name="members" visibility="private" type="user[]" mandatory="true" min_length="2" cardinality="many_to_many" linked_column="teams">
         </attribute>
