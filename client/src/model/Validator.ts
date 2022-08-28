@@ -1,5 +1,4 @@
-import { ModelError } from "ModelError";
-import { EAttributeError } from "./ModelError";
+import { ModelError, EAttributeError } from "./ModelError";
 
 export class Validator {
   public static checkStringProperty(
