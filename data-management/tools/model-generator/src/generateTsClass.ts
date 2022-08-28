@@ -233,9 +233,9 @@ export class TypeScriptClassGenerator {
 
     return `
     /**
-     * @brief method to convert object to JSON string
+     * @brief method to convert object to JSON object
      */
-    public toJSON() {
+    public toJSON() : any {
         const {${attrNamesList}} = this;
         return {${attrSerializeList}}
     }
