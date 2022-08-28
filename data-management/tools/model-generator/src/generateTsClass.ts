@@ -291,7 +291,9 @@ export class TypeScriptClassGenerator {
       attibuteProperties: ModelAttributesProperties
     ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
                 if (typeof data['${attibuteProperties.name}'] === "${
-      attibuteProperties.type
+      Object.keys(tsMapTypes).includes(attibuteProperties.type)
+        ? tsMapTypes[attibuteProperties.type]
+        : attibuteProperties.type
     }") {
                   obj.${snakeCaseToCamelCase(
                     attibuteProperties.name
