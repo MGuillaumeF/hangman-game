@@ -259,23 +259,64 @@ export class TypeScriptClassGenerator {
     className: string,
     attibutePropertiesList: ModelAttributesProperties[]
   ): string {
+    const buildForObjectArray = (
+      attibuteProperties: ModelAttributesProperties,
+      rawType: string
+    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
+        if (Array.isArray(data['${attibuteProperties.name}'])) {
+          obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
+      attibuteProperties.name
+    }'].map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
+        } else {
+          throw Error("INVALID TYPE")
+        }
+      }`;
+
+    const buildForObject = (
+      attibuteProperties: ModelAttributesProperties,
+      rawType: string
+    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
+        if (typeof data['${attibuteProperties.name}'] === "object") {
+          obj.${snakeCaseToCamelCase(
+            attibuteProperties.name
+          )} = ${snakeCaseToUpperCamelCase(rawType)}.parse(data['${
+      attibuteProperties.name
+    }'])
+        } else {
+          throw Error("INVALID TYPE")
+        }
+      }`;
+
+    const buildForPrimitiveType = (
+      attibuteProperties: ModelAttributesProperties
+    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
+                if (typeof data['${attibuteProperties.name}'] === "${
+      attibuteProperties.type
+    }") {
+                  obj.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} = data['${attibuteProperties.name}'];
+                } else {
+                  throw Error("INVALID TYPE")
+                }
+              }`;
+
     return `
     public static parse(data : any) : ${snakeCaseToUpperCamelCase(className)} {
         const obj = new ${snakeCaseToUpperCamelCase(className)}();
         if (typeof data === "object") {
           ${attibutePropertiesList
             .map((attibuteProperties) => {
-              return `if (data['${attibuteProperties.name}'] !== undefined) {
-              if (typeof data['${attibuteProperties.name}'] === "${
-                attibuteProperties.type
-              }") {
-                obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
-                attibuteProperties.name
-              }'];
-              } else {
-                throw Error("INVALID TYPE")
-              }
-            }`;
+              const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+              const rawType = isArrayType
+                ? attibuteProperties.type.slice(0, -2)
+                : attibuteProperties.type;
+
+              return TypeScriptClassGenerator._classNames.has(rawType)
+                ? isArrayType
+                  ? buildForObjectArray(attibuteProperties, rawType)
+                  : buildForObject(attibuteProperties, rawType)
+                : buildForPrimitiveType(attibuteProperties);
             })
             .join("\n")}
         }
