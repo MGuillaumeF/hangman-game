@@ -171,17 +171,16 @@ export class TypeScriptClassGenerator {
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
-              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              }, "${snakeCaseToCamelCase(attibuteProperties.name)}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
             );
             break;
           case "number":
-            this._dependencies.add("Validator");
             checks.push(
               `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
-              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              }, "${snakeCaseToCamelCase(attibuteProperties.name)}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
             );
             break;
           default:
