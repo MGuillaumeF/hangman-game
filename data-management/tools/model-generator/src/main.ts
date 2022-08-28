@@ -407,9 +407,8 @@ function isModelClassDefinitionList(
 
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
-  for (const modelClass of result.model.classes[0].class.filter(
-    isModelClassDefinitionList
-  )) {
+  // .filter(isModelClassDefinitionList)
+  for (const modelClass of result.model.classes[0].class) {
     allClassNames.add(modelClass.$.name);
   }
   TypeScriptClassGenerator.classNames = allClassNames;

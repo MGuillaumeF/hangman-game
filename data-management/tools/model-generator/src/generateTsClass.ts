@@ -167,7 +167,7 @@ export class TypeScriptClassGenerator {
         switch (typeObjectName) {
           case "string":
             checks.push(
-              `errors.push(Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+              `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
@@ -177,7 +177,7 @@ export class TypeScriptClassGenerator {
           case "number":
             this._dependencies.add("Validator");
             checks.push(
-              `errors.push(Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+              `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
                 this._currentName
               )}.getConstraintes().${
                 attibuteProperties.name
