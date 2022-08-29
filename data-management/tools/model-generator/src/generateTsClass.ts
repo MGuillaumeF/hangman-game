@@ -160,10 +160,17 @@ export class TypeScriptClassGenerator {
     this._dependencies.add("ModelError");
     attibutePropertiesList.forEach(
       (attibuteProperties: ModelAttributesProperties) => {
+        const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+        const typeObjectName = isArrayType
+                ? attibuteProperties.type.slice(0, -2)
+                : attibuteProperties.type;
+
         let typeObjectName = attibuteProperties.type;
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
-        }
+        
+        
+        
         switch (typeObjectName) {
           case "string":
             checks.push(
@@ -190,6 +197,16 @@ export class TypeScriptClassGenerator {
           default:
             console.info("The type haven't constrainte");
         }
+} else if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
+  if (isArrayType) {
+  } else {
+    checks.push(
+              `if (this.${snakeCaseToCamelCase(attibuteProperties.name)} !== undefined) {
+               errors.push(...this.${snakeCaseToCamelCase(attibuteProperties.name)}.getErrors());
+              }`
+            );
+  }
+}
       }
     );
     return `
