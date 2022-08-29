@@ -86,6 +86,9 @@ export class Team extends RootModelObject {
         this.name
       )
     );
+    if (this.chat !== undefined) {
+      errors.push(...this.chat.getErrors());
+    }
     return errors;
   }
   /**

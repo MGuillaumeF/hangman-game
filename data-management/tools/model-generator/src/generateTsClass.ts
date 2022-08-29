@@ -162,50 +162,52 @@ export class TypeScriptClassGenerator {
       (attibuteProperties: ModelAttributesProperties) => {
         const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
         let typeObjectName = isArrayType
-                ? attibuteProperties.type.slice(0, -2)
-                : attibuteProperties.type;
+          ? attibuteProperties.type.slice(0, -2)
+          : attibuteProperties.type;
 
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
-        
-        
-        
-        switch (typeObjectName) {
-          case "string":
+
+          switch (typeObjectName) {
+            case "string":
+              checks.push(
+                `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+                  this._currentName
+                )}.getConstraintes().${
+                  attibuteProperties.name
+                }, "${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              );
+              break;
+            case "number":
+              checks.push(
+                `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+                  this._currentName
+                )}.getConstraintes().${
+                  attibuteProperties.name
+                }, "${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              );
+              break;
+            default:
+              console.info("The type haven't constrainte");
+          }
+        } else if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
+          if (isArrayType) {
+          } else {
             checks.push(
-              `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
-                this._currentName
-              )}.getConstraintes().${
+              `if (this.${snakeCaseToCamelCase(
                 attibuteProperties.name
-              }, "${snakeCaseToCamelCase(
-                attibuteProperties.name
-              )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
-            );
-            break;
-          case "number":
-            checks.push(
-              `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
-                this._currentName
-              )}.getConstraintes().${
-                attibuteProperties.name
-              }, "${snakeCaseToCamelCase(
-                attibuteProperties.name
-              )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
-            );
-            break;
-          default:
-            console.info("The type haven't constrainte");
-        }
-} else if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
-  if (isArrayType) {
-  } else {
-    checks.push(
-              `if (this.${snakeCaseToCamelCase(attibuteProperties.name)} !== undefined) {
-               errors.push(...this.${snakeCaseToCamelCase(attibuteProperties.name)}.getErrors());
+              )} !== undefined) {
+               errors.push(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.getErrors());
               }`
             );
-  }
-}
+          }
+        }
       }
     );
     return `

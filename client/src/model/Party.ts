@@ -136,7 +136,12 @@ export class Party extends RootModelObject {
   }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
-
+    if (this.chat !== undefined) {
+      errors.push(...this.chat.getErrors());
+    }
+    if (this.word !== undefined) {
+      errors.push(...this.word.getErrors());
+    }
     return errors;
   }
   /**

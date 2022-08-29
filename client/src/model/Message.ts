@@ -107,6 +107,12 @@ export class Message extends RootModelObject {
         this.content
       )
     );
+    if (this.sender !== undefined) {
+      errors.push(...this.sender.getErrors());
+    }
+    if (this.chat !== undefined) {
+      errors.push(...this.chat.getErrors());
+    }
     return errors;
   }
   /**

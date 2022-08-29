@@ -85,6 +85,16 @@ export class Word extends RootModelObject {
         this.name
       )
     );
+    errors.push(
+      ...Validator.checkStringProperty(
+        Word.getConstraintes().definitions,
+        "definitions",
+        this.definitions
+      )
+    );
+    if (this.dictionary !== undefined) {
+      errors.push(...this.dictionary.getErrors());
+    }
     return errors;
   }
   /**
