@@ -161,11 +161,10 @@ export class TypeScriptClassGenerator {
     attibutePropertiesList.forEach(
       (attibuteProperties: ModelAttributesProperties) => {
         const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
-        const typeObjectName = isArrayType
+        let typeObjectName = isArrayType
                 ? attibuteProperties.type.slice(0, -2)
                 : attibuteProperties.type;
 
-        let typeObjectName = attibuteProperties.type;
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
         
