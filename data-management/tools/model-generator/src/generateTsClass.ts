@@ -200,7 +200,7 @@ export class TypeScriptClassGenerator {
               `if (this.${snakeCaseToCamelCase(
                 attibuteProperties.name
               )} !== undefined) {
-               errors.push(...[].concat(...this.${snakeCaseToCamelCase(
+               errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
                )}.map(item => item.getErrors())));
               }`
