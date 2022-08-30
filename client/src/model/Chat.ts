@@ -86,6 +86,12 @@ export class Chat extends RootModelObject {
         this.name
       )
     );
+    if (this.messages !== undefined) {
+      errors.push(...this.messages.map((item) => item.getErrors()));
+    }
+    if (this.members !== undefined) {
+      errors.push(...this.members.map((item) => item.getErrors()));
+    }
     return errors;
   }
   /**

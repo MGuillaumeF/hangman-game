@@ -267,6 +267,18 @@ export class User extends RootModelObject {
         this.token
       )
     );
+    if (this.friends !== undefined) {
+      errors.push(...this.friends.map((item) => item.getErrors()));
+    }
+    if (this.groups !== undefined) {
+      errors.push(...this.groups.map((item) => item.getErrors()));
+    }
+    if (this.teams !== undefined) {
+      errors.push(...this.teams.map((item) => item.getErrors()));
+    }
+    if (this.chats !== undefined) {
+      errors.push(...this.chats.map((item) => item.getErrors()));
+    }
     return errors;
   }
   /**

@@ -67,6 +67,9 @@ export class Group extends RootModelObject {
         this.name
       )
     );
+    if (this.members !== undefined) {
+      errors.push(...this.members.map((item) => item.getErrors()));
+    }
     return errors;
   }
   /**

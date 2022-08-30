@@ -136,6 +136,9 @@ export class Party extends RootModelObject {
   }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
+    if (this.members !== undefined) {
+      errors.push(...this.members.map((item) => item.getErrors()));
+    }
     if (this.chat !== undefined) {
       errors.push(...this.chat.getErrors());
     }
