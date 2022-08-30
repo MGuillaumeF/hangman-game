@@ -99,7 +99,7 @@ export class Dictionary extends RootModelObject {
       )
     );
     if (this.words !== undefined) {
-      errors.push(...this.words.map((item) => item.getErrors()));
+      errors.push(...[].concat(...this.words.map((item) => item.getErrors())));
     }
     return errors;
   }
