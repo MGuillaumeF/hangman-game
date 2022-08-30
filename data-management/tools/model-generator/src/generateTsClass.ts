@@ -196,6 +196,15 @@ export class TypeScriptClassGenerator {
           }
         } else if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
           if (isArrayType) {
+            checks.push(
+              `if (this.${snakeCaseToCamelCase(
+                attibuteProperties.name
+              )} !== undefined) {
+               errors.push(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.map(item => item.getErrors()));
+              }`
+            );
           } else {
             checks.push(
               `if (this.${snakeCaseToCamelCase(
