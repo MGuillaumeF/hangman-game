@@ -269,17 +269,31 @@ export class User extends RootModelObject {
     );
     if (this.friends !== undefined) {
       errors.push(
-        ...[].concat(...this.friends.map((item) => item.getErrors()))
+        ...([] as ModelError[]).concat(
+          ...this.friends.map((item) => item.getErrors())
+        )
       );
     }
     if (this.groups !== undefined) {
-      errors.push(...[].concat(...this.groups.map((item) => item.getErrors())));
+      errors.push(
+        ...([] as ModelError[]).concat(
+          ...this.groups.map((item) => item.getErrors())
+        )
+      );
     }
     if (this.teams !== undefined) {
-      errors.push(...[].concat(...this.teams.map((item) => item.getErrors())));
+      errors.push(
+        ...([] as ModelError[]).concat(
+          ...this.teams.map((item) => item.getErrors())
+        )
+      );
     }
     if (this.chats !== undefined) {
-      errors.push(...[].concat(...this.chats.map((item) => item.getErrors())));
+      errors.push(
+        ...([] as ModelError[]).concat(
+          ...this.chats.map((item) => item.getErrors())
+        )
+      );
     }
     return errors;
   }

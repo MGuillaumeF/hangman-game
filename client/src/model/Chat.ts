@@ -88,12 +88,16 @@ export class Chat extends RootModelObject {
     );
     if (this.messages !== undefined) {
       errors.push(
-        ...[].concat(...this.messages.map((item) => item.getErrors()))
+        ...([] as ModelError[]).concat(
+          ...this.messages.map((item) => item.getErrors())
+        )
       );
     }
     if (this.members !== undefined) {
       errors.push(
-        ...[].concat(...this.members.map((item) => item.getErrors()))
+        ...([] as ModelError[]).concat(
+          ...this.members.map((item) => item.getErrors())
+        )
       );
     }
     return errors;

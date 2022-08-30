@@ -88,7 +88,9 @@ export class Team extends RootModelObject {
     );
     if (this.members !== undefined) {
       errors.push(
-        ...[].concat(...this.members.map((item) => item.getErrors()))
+        ...([] as ModelError[]).concat(
+          ...this.members.map((item) => item.getErrors())
+        )
       );
     }
     if (this.chat !== undefined) {
