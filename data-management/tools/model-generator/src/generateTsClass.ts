@@ -200,9 +200,9 @@ export class TypeScriptClassGenerator {
               `if (this.${snakeCaseToCamelCase(
                 attibuteProperties.name
               )} !== undefined) {
-               errors.push(...this.${snakeCaseToCamelCase(
+               errors.push(...[].concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
-               )}.map(item => item.getErrors()));
+               )}.map(item => item.getErrors())));
               }`
             );
           } else {
