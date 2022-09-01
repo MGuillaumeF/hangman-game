@@ -146,7 +146,7 @@ export class Message extends RootModelObject {
         }
       }
       if (data["send_date"] !== undefined) {
-        if (typeof data["send_date"] === "Date") {
+        if (data["send_date"] instanceof "Date") {
           obj.sendDate = data["send_date"];
         } else {
           throw Error("INVALID TYPE");

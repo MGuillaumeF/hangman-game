@@ -372,7 +372,7 @@ export class User extends RootModelObject {
         }
       }
       if (data["last_connection"] !== undefined) {
-        if (typeof data["last_connection"] === "Date") {
+        if (data["last_connection"] instanceof "Date") {
           obj.lastConnection = data["last_connection"];
         } else {
           throw Error("INVALID TYPE");

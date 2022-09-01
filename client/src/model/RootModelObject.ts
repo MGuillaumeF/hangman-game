@@ -212,7 +212,7 @@ export class RootModelObject {
         }
       }
       if (data["created_at"] !== undefined) {
-        if (typeof data["created_at"] === "Date") {
+        if (data["created_at"] instanceof "Date") {
           obj.createdAt = data["created_at"];
         } else {
           throw Error("INVALID TYPE");
@@ -226,7 +226,7 @@ export class RootModelObject {
         }
       }
       if (data["updated_at"] !== undefined) {
-        if (typeof data["updated_at"] === "Date") {
+        if (data["updated_at"] instanceof "Date") {
           obj.updatedAt = data["updated_at"];
         } else {
           throw Error("INVALID TYPE");
