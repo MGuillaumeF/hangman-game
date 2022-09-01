@@ -316,19 +316,20 @@ export class TypeScriptClassGenerator {
 
     const buildForPrimitiveType = (
       attibuteProperties: ModelAttributesProperties
-    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
-                if (typeof data['${attibuteProperties.name}'] === "${
-      Object.keys(tsMapTypes).includes(attibuteProperties.type)
+    ) => {
+     const foundedType =    Object.keys(tsMapTypes).includes(attibuteProperties.type)
         ? tsMapTypes[attibuteProperties.type]
         : attibuteProperties.type
-    }") {
+     const typeAssert = foundedType !== "Date" ? `typeof data['${attibuteProperties.name}'] === "${foundedType}"` : `data['${attibuteProperties.name}'] instanceof "${foundedType}"`
+     return `if (data['${attibuteProperties.name}'] !== undefined) { 
+                if (${typeAssert}) {
                   obj.${snakeCaseToCamelCase(
                     attibuteProperties.name
                   )} = data['${attibuteProperties.name}'];
                 } else {
                   throw Error("INVALID TYPE")
                 }
-              }`;
+              }`; }
 
     return `
     public static parse(data : any) : ${snakeCaseToUpperCamelCase(className)} {
