@@ -170,62 +170,62 @@ export class TypeScriptClassGenerator {
 
           switch (typeObjectName) {
             case "string":
-                if (isArrayType) {
-            checks.push(
-              `if (this.${snakeCaseToCamelCase(
-                attibuteProperties.name
-              )} !== undefined) {
+              if (isArrayType) {
+                checks.push(
+                  `if (this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined) {
                errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
                )}.map(item => Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
-                  this._currentName
-                )}.getConstraintes().${
-                  attibuteProperties.name
-                }, "${snakeCaseToCamelCase(
-                  attibuteProperties.name
-                )}", item))));
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", item))));
               }`
-            );
-          } else {
-              checks.push(
-                `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
-                  this._currentName
-                )}.getConstraintes().${
-                  attibuteProperties.name
-                }, "${snakeCaseToCamelCase(
-                  attibuteProperties.name
-                )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
-              );
-}
+                );
+              } else {
+                checks.push(
+                  `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+                );
+              }
               break;
             case "number":
               if (isArrayType) {
-            checks.push(
-              `if (this.${snakeCaseToCamelCase(
-                attibuteProperties.name
-              )} !== undefined) {
+                checks.push(
+                  `if (this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined) {
                errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
                )}.map(item => Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
-                  this._currentName
-                )}.getConstraintes().${
-                  attibuteProperties.name
-                }, "${snakeCaseToCamelCase(
-                  attibuteProperties.name
-                )}", item))));
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", item))));
               }`
-            );
-          } else {
-              checks.push(
-                `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
-                  this._currentName
-                )}.getConstraintes().${
-                  attibuteProperties.name
-                }, "${snakeCaseToCamelCase(
-                  attibuteProperties.name
-                )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
-              );
-}
+                );
+              } else {
+                checks.push(
+                  `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+                );
+              }
               break;
             default:
               console.info("The type haven't constrainte");

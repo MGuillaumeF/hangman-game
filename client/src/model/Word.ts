@@ -85,13 +85,19 @@ export class Word extends RootModelObject {
         this.name
       )
     );
-    errors.push(
-      ...Validator.checkStringProperty(
-        Word.getConstraintes().definitions,
-        "definitions",
-        this.definitions
-      )
-    );
+    if (this.definitions !== undefined) {
+      errors.push(
+        ...([] as ModelError[]).concat(
+          ...this.definitions.map((item) =>
+            Validator.checkStringProperty(
+              Word.getConstraintes().definitions,
+              "definitions",
+              item
+            )
+          )
+        )
+      );
+    }
     if (this.dictionary !== undefined) {
       errors.push(...this.dictionary.getErrors());
     }
