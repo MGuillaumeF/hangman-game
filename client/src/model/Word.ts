@@ -123,26 +123,26 @@ export class Word extends RootModelObject {
   public static parse(data: unknown): Word {
     const obj = new Word();
     if (typeof data === "object" && data !== null) {
-      if ("name" in data && data["name"] !== undefined) {
-        if ("name" in data && typeof data["name"] === "string") {
-          obj.name = data["name"];
+      if ("name" in data && data.name !== undefined) {
+        if ("name" in data && typeof data.name === "string") {
+          obj.name = data.name;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("definitions" in data && data["definitions"] !== undefined) {
+      if ("definitions" in data && data.definitions !== undefined) {
         if (
-          Array.isArray(data["definitions"]) &&
-          data["definitions"].every((item: unknown) => typeof item === "string")
+          Array.isArray(data.definitions) &&
+          data.definitions.every((item: unknown) => typeof item === "string")
         ) {
-          obj.definitions = data["definitions"];
+          obj.definitions = data.definitions;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["dictionary"] !== undefined) {
-        if (typeof data["dictionary"] === "object") {
-          obj.dictionary = Dictionary.parse(data["dictionary"]);
+      if (data.dictionary !== undefined) {
+        if (typeof data.dictionary === "object") {
+          obj.dictionary = Dictionary.parse(data.dictionary);
         } else {
           throw Error("INVALID TYPE");
         }

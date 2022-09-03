@@ -190,44 +190,44 @@ export class RootModelObject {
   public static parse(data: unknown): RootModelObject {
     const obj = new RootModelObject();
     if (typeof data === "object" && data !== null) {
-      if ("version" in data && data["version"] !== undefined) {
-        if ("version" in data && typeof data["version"] === "number") {
-          obj.version = data["version"];
+      if ("version" in data && data.version !== undefined) {
+        if ("version" in data && typeof data.version === "number") {
+          obj.version = data.version;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("id" in data && data["id"] !== undefined) {
-        if ("id" in data && typeof data["id"] === "number") {
-          obj.id = data["id"];
+      if ("id" in data && data.id !== undefined) {
+        if ("id" in data && typeof data.id === "number") {
+          obj.id = data.id;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("created_by" in data && data["created_by"] !== undefined) {
-        if ("created_by" in data && typeof data["created_by"] === "string") {
-          obj.createdBy = data["created_by"];
+      if ("created_by" in data && data.created_by !== undefined) {
+        if ("created_by" in data && typeof data.created_by === "string") {
+          obj.createdBy = data.created_by;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("created_at" in data && data["created_at"] !== undefined) {
-        if (data["created_at"] instanceof Date) {
-          obj.createdAt = data["created_at"];
+      if ("created_at" in data && data.created_at !== undefined) {
+        if (data.created_at instanceof Date) {
+          obj.createdAt = data.created_at;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("updated_by" in data && data["updated_by"] !== undefined) {
-        if ("updated_by" in data && typeof data["updated_by"] === "string") {
-          obj.updatedBy = data["updated_by"];
+      if ("updated_by" in data && data.updated_by !== undefined) {
+        if ("updated_by" in data && typeof data.updated_by === "string") {
+          obj.updatedBy = data.updated_by;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("updated_at" in data && data["updated_at"] !== undefined) {
-        if (data["updated_at"] instanceof Date) {
-          obj.updatedAt = data["updated_at"];
+      if ("updated_at" in data && data.updated_at !== undefined) {
+        if (data.updated_at instanceof Date) {
+          obj.updatedAt = data.updated_at;
         } else {
           throw Error("INVALID TYPE");
         }

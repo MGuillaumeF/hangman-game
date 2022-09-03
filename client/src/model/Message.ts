@@ -131,30 +131,30 @@ export class Message extends RootModelObject {
   public static parse(data: unknown): Message {
     const obj = new Message();
     if (typeof data === "object" && data !== null) {
-      if ("content" in data && data["content"] !== undefined) {
-        if ("content" in data && typeof data["content"] === "string") {
-          obj.content = data["content"];
+      if ("content" in data && data.content !== undefined) {
+        if ("content" in data && typeof data.content === "string") {
+          obj.content = data.content;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["sender"] !== undefined) {
-        if (typeof data["sender"] === "object") {
-          obj.sender = User.parse(data["sender"]);
+      if (data.sender !== undefined) {
+        if (typeof data.sender === "object") {
+          obj.sender = User.parse(data.sender);
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("send_date" in data && data["send_date"] !== undefined) {
-        if (data["send_date"] instanceof Date) {
-          obj.sendDate = data["send_date"];
+      if ("send_date" in data && data.send_date !== undefined) {
+        if (data.send_date instanceof Date) {
+          obj.sendDate = data.send_date;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "object") {
-          obj.chat = Chat.parse(data["chat"]);
+      if (data.chat !== undefined) {
+        if (typeof data.chat === "object") {
+          obj.chat = Chat.parse(data.chat);
         } else {
           throw Error("INVALID TYPE");
         }

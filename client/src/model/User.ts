@@ -336,75 +336,72 @@ export class User extends RootModelObject {
   public static parse(data: unknown): User {
     const obj = new User();
     if (typeof data === "object" && data !== null) {
-      if ("login" in data && data["login"] !== undefined) {
-        if ("login" in data && typeof data["login"] === "string") {
-          obj.login = data["login"];
+      if ("login" in data && data.login !== undefined) {
+        if ("login" in data && typeof data.login === "string") {
+          obj.login = data.login;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("password" in data && data["password"] !== undefined) {
-        if ("password" in data && typeof data["password"] === "string") {
-          obj.password = data["password"];
+      if ("password" in data && data.password !== undefined) {
+        if ("password" in data && typeof data.password === "string") {
+          obj.password = data.password;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("salt_user" in data && data["salt_user"] !== undefined) {
-        if ("salt_user" in data && typeof data["salt_user"] === "string") {
-          obj.saltUser = data["salt_user"];
+      if ("salt_user" in data && data.salt_user !== undefined) {
+        if ("salt_user" in data && typeof data.salt_user === "string") {
+          obj.saltUser = data.salt_user;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("salt_session" in data && data["salt_session"] !== undefined) {
-        if (
-          "salt_session" in data &&
-          typeof data["salt_session"] === "string"
-        ) {
-          obj.saltSession = data["salt_session"];
+      if ("salt_session" in data && data.salt_session !== undefined) {
+        if ("salt_session" in data && typeof data.salt_session === "string") {
+          obj.saltSession = data.salt_session;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("token" in data && data["token"] !== undefined) {
-        if ("token" in data && typeof data["token"] === "string") {
-          obj.token = data["token"];
+      if ("token" in data && data.token !== undefined) {
+        if ("token" in data && typeof data.token === "string") {
+          obj.token = data.token;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("last_connection" in data && data["last_connection"] !== undefined) {
-        if (data["last_connection"] instanceof Date) {
-          obj.lastConnection = data["last_connection"];
+      if ("last_connection" in data && data.last_connection !== undefined) {
+        if (data.last_connection instanceof Date) {
+          obj.lastConnection = data.last_connection;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["friends"] !== undefined) {
-        if (Array.isArray(data["friends"])) {
-          obj.friends = data["friends"].map((item) => User.parse(item));
+      if (data.friends !== undefined) {
+        if (Array.isArray(data.friends)) {
+          obj.friends = data.friends.map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["groups"] !== undefined) {
-        if (Array.isArray(data["groups"])) {
-          obj.groups = data["groups"].map((item) => Group.parse(item));
+      if (data.groups !== undefined) {
+        if (Array.isArray(data.groups)) {
+          obj.groups = data.groups.map((item) => Group.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["teams"] !== undefined) {
-        if (Array.isArray(data["teams"])) {
-          obj.teams = data["teams"].map((item) => Team.parse(item));
+      if (data.teams !== undefined) {
+        if (Array.isArray(data.teams)) {
+          obj.teams = data.teams.map((item) => Team.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["chats"] !== undefined) {
-        if (Array.isArray(data["chats"])) {
-          obj.chats = data["chats"].map((item) => Chat.parse(item));
+      if (data.chats !== undefined) {
+        if (Array.isArray(data.chats)) {
+          obj.chats = data.chats.map((item) => Chat.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

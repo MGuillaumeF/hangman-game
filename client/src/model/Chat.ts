@@ -121,23 +121,23 @@ export class Chat extends RootModelObject {
   public static parse(data: unknown): Chat {
     const obj = new Chat();
     if (typeof data === "object" && data !== null) {
-      if ("name" in data && data["name"] !== undefined) {
-        if ("name" in data && typeof data["name"] === "string") {
-          obj.name = data["name"];
+      if ("name" in data && data.name !== undefined) {
+        if ("name" in data && typeof data.name === "string") {
+          obj.name = data.name;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["messages"] !== undefined) {
-        if (Array.isArray(data["messages"])) {
-          obj.messages = data["messages"].map((item) => Message.parse(item));
+      if (data.messages !== undefined) {
+        if (Array.isArray(data.messages)) {
+          obj.messages = data.messages.map((item) => Message.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["members"] !== undefined) {
-        if (Array.isArray(data["members"])) {
-          obj.members = data["members"].map((item) => User.parse(item));
+      if (data.members !== undefined) {
+        if (Array.isArray(data.members)) {
+          obj.members = data.members.map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

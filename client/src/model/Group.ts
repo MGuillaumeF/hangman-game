@@ -91,16 +91,16 @@ export class Group extends RootModelObject {
   public static parse(data: unknown): Group {
     const obj = new Group();
     if (typeof data === "object" && data !== null) {
-      if ("name" in data && data["name"] !== undefined) {
-        if ("name" in data && typeof data["name"] === "string") {
-          obj.name = data["name"];
+      if ("name" in data && data.name !== undefined) {
+        if ("name" in data && typeof data.name === "string") {
+          obj.name = data.name;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["members"] !== undefined) {
-        if (Array.isArray(data["members"])) {
-          obj.members = data["members"].map((item) => User.parse(item));
+      if (data.members !== undefined) {
+        if (Array.isArray(data.members)) {
+          obj.members = data.members.map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

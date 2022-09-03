@@ -172,44 +172,44 @@ export class Party extends RootModelObject {
   public static parse(data: unknown): Party {
     const obj = new Party();
     if (typeof data === "object" && data !== null) {
-      if ("start_date" in data && data["start_date"] !== undefined) {
-        if (data["start_date"] instanceof Date) {
-          obj.startDate = data["start_date"];
+      if ("start_date" in data && data.start_date !== undefined) {
+        if (data.start_date instanceof Date) {
+          obj.startDate = data.start_date;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("end_date" in data && data["end_date"] !== undefined) {
-        if (data["end_date"] instanceof Date) {
-          obj.endDate = data["end_date"];
+      if ("end_date" in data && data.end_date !== undefined) {
+        if (data.end_date instanceof Date) {
+          obj.endDate = data.end_date;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("win" in data && data["win"] !== undefined) {
-        if ("win" in data && typeof data["win"] === "boolean") {
-          obj.win = data["win"];
+      if ("win" in data && data.win !== undefined) {
+        if ("win" in data && typeof data.win === "boolean") {
+          obj.win = data.win;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["members"] !== undefined) {
-        if (Array.isArray(data["members"])) {
-          obj.members = data["members"].map((item) => User.parse(item));
+      if (data.members !== undefined) {
+        if (Array.isArray(data.members)) {
+          obj.members = data.members.map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "object") {
-          obj.chat = Chat.parse(data["chat"]);
+      if (data.chat !== undefined) {
+        if (typeof data.chat === "object") {
+          obj.chat = Chat.parse(data.chat);
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["word"] !== undefined) {
-        if (typeof data["word"] === "object") {
-          obj.word = Word.parse(data["word"]);
+      if (data.word !== undefined) {
+        if (typeof data.word === "object") {
+          obj.word = Word.parse(data.word);
         } else {
           throw Error("INVALID TYPE");
         }

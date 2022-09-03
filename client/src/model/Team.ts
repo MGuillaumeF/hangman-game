@@ -116,23 +116,23 @@ export class Team extends RootModelObject {
   public static parse(data: unknown): Team {
     const obj = new Team();
     if (typeof data === "object" && data !== null) {
-      if ("name" in data && data["name"] !== undefined) {
-        if ("name" in data && typeof data["name"] === "string") {
-          obj.name = data["name"];
+      if ("name" in data && data.name !== undefined) {
+        if ("name" in data && typeof data.name === "string") {
+          obj.name = data.name;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["members"] !== undefined) {
-        if (Array.isArray(data["members"])) {
-          obj.members = data["members"].map((item) => User.parse(item));
+      if (data.members !== undefined) {
+        if (Array.isArray(data.members)) {
+          obj.members = data.members.map((item) => User.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["chat"] !== undefined) {
-        if (typeof data["chat"] === "object") {
-          obj.chat = Chat.parse(data["chat"]);
+      if (data.chat !== undefined) {
+        if (typeof data.chat === "object") {
+          obj.chat = Chat.parse(data.chat);
         } else {
           throw Error("INVALID TYPE");
         }

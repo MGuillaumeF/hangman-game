@@ -123,26 +123,23 @@ export class Dictionary extends RootModelObject {
   public static parse(data: unknown): Dictionary {
     const obj = new Dictionary();
     if (typeof data === "object" && data !== null) {
-      if ("name" in data && data["name"] !== undefined) {
-        if ("name" in data && typeof data["name"] === "string") {
-          obj.name = data["name"];
+      if ("name" in data && data.name !== undefined) {
+        if ("name" in data && typeof data.name === "string") {
+          obj.name = data.name;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if ("country_code" in data && data["country_code"] !== undefined) {
-        if (
-          "country_code" in data &&
-          typeof data["country_code"] === "string"
-        ) {
-          obj.countryCode = data["country_code"];
+      if ("country_code" in data && data.country_code !== undefined) {
+        if ("country_code" in data && typeof data.country_code === "string") {
+          obj.countryCode = data.country_code;
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["words"] !== undefined) {
-        if (Array.isArray(data["words"])) {
-          obj.words = data["words"].map((item) => Word.parse(item));
+      if (data.words !== undefined) {
+        if (Array.isArray(data.words)) {
+          obj.words = data.words.map((item) => Word.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

@@ -368,9 +368,9 @@ export class TypeScriptClassGenerator {
         : foundedType;
       let typeAssert = "";
       if (isArrayType) {
-        typeAssert = `Array.isArray(data.${
+        typeAssert = `Array.isArray(data.${attibuteProperties.name}) && data.${
           attibuteProperties.name
-        }) && data.${attibuteProperties.name}.every((item : unknown) => ${
+        }.every((item : unknown) => ${
           foundedType !== "Date"
             ? `typeof item === "${foundedType}"`
             : `item instanceof ${foundedType}`
@@ -386,9 +386,9 @@ export class TypeScriptClassGenerator {
         attibuteProperties.name
       } !== undefined) { 
                 if (${typeAssert}) {
-                  obj.${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )} = data.${attibuteProperties.name};
+                  obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data.${
+        attibuteProperties.name
+      };
                 } else {
                   throw Error("INVALID TYPE")
                 }
