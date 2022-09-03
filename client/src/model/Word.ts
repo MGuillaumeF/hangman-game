@@ -17,6 +17,11 @@ export class Word extends RootModelObject {
           min_length: 3,
           pattern: "^[a-zA-Z0-9]{3,}$",
           type: "string"
+        },
+        definitions: {
+          mandatory: true,
+          min_length: 3,
+          type: "string"
         }
       }
     };
@@ -126,7 +131,10 @@ export class Word extends RootModelObject {
         }
       }
       if (data["definitions"] !== undefined) {
-        if (typeof data["definitions"] === "string[]") {
+        if (
+          Array.isArray(data["definitions"]) &&
+          data["definitions"].every((item: unknown) => typeof item === "string")
+        ) {
           obj.definitions = data["definitions"];
         } else {
           throw Error("INVALID TYPE");
