@@ -394,7 +394,9 @@ export class TypeScriptClassGenerator {
     };
 
     return `
-    public static parse(data : unknown) : ${snakeCaseToUpperCamelCase(className)} {
+    public static parse(data : unknown) : ${snakeCaseToUpperCamelCase(
+      className
+    )} {
         const obj = new ${snakeCaseToUpperCamelCase(className)}();
         if (typeof data === "object") {
           ${attibutePropertiesList

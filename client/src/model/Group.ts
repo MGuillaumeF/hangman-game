@@ -88,7 +88,7 @@ export class Group extends RootModelObject {
     };
   }
 
-  public static parse(data: any): Group {
+  public static parse(data: unknown): Group {
     const obj = new Group();
     if (typeof data === "object") {
       if (data["name"] !== undefined) {

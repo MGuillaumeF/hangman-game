@@ -120,7 +120,7 @@ export class Word extends RootModelObject {
     };
   }
 
-  public static parse(data: any): Word {
+  public static parse(data: unknown): Word {
     const obj = new Word();
     if (typeof data === "object") {
       if (data["name"] !== undefined) {

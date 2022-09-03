@@ -187,7 +187,7 @@ export class RootModelObject {
     return { version, id, createdBy, createdAt, updatedBy, updatedAt };
   }
 
-  public static parse(data: any): RootModelObject {
+  public static parse(data: unknown): RootModelObject {
     const obj = new RootModelObject();
     if (typeof data === "object") {
       if (data["version"] !== undefined) {

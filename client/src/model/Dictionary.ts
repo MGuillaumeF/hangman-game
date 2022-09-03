@@ -120,7 +120,7 @@ export class Dictionary extends RootModelObject {
     };
   }
 
-  public static parse(data: any): Dictionary {
+  public static parse(data: unknown): Dictionary {
     const obj = new Dictionary();
     if (typeof data === "object") {
       if (data["name"] !== undefined) {

@@ -333,7 +333,7 @@ export class User extends RootModelObject {
     };
   }
 
-  public static parse(data: any): User {
+  public static parse(data: unknown): User {
     const obj = new User();
     if (typeof data === "object") {
       if (data["login"] !== undefined) {
