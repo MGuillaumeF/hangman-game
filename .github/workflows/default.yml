@@ -116,6 +116,7 @@ jobs:
         npm install
         npm run build
         npm start ../../resources/model.xml
+        npm run lint:eslint:json
 
     - name: Copy Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
