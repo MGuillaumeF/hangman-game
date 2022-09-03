@@ -108,6 +108,12 @@ export class TypeScriptClassGenerator {
     attibutePropertiesList.forEach(
       (attibuteProperties: ModelAttributesProperties) => {
         let typeObjectName = attibuteProperties.type;
+        const isArrayType = /^.+\[\]$/.test(typeObjectName);
+
+        typeObjectName = isArrayType
+          ? typeObjectName.slice(0, -2)
+          : typeObjectName;
+
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
         }
@@ -353,15 +359,29 @@ export class TypeScriptClassGenerator {
     const buildForPrimitiveType = (
       attibuteProperties: ModelAttributesProperties
     ) => {
-      const foundedType = Object.keys(tsMapTypes).includes(
-        attibuteProperties.type
-      )
-        ? tsMapTypes[attibuteProperties.type]
+      const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+      let foundedType = isArrayType
+        ? attibuteProperties.type.slice(0, -2)
         : attibuteProperties.type;
-      const typeAssert =
-        foundedType !== "Date"
-          ? `typeof data['${attibuteProperties.name}'] === "${foundedType}"`
-          : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
+      foundedType = Object.keys(tsMapTypes).includes(foundedType)
+        ? String(tsMapTypes[foundedType])
+        : foundedType;
+      let typeAssert = "";
+      if (isArrayType) {
+        typeAssert = `Array.isArray(data['${
+          attibuteProperties.name
+        }']) && data['${attibuteProperties.name}'].every((item : unknown) => ${
+          foundedType !== "Date"
+            ? `typeof item === "${foundedType}"`
+            : `item instanceof ${foundedType}`
+        })`;
+      } else {
+        typeAssert =
+          foundedType !== "Date"
+            ? `typeof data['${attibuteProperties.name}'] === "${foundedType}"`
+            : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
+      }
+
       return `if (data['${attibuteProperties.name}'] !== undefined) { 
                 if (${typeAssert}) {
                   obj.${snakeCaseToCamelCase(
