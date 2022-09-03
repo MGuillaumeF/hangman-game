@@ -398,7 +398,7 @@ export class TypeScriptClassGenerator {
       className
     )} {
         const obj = new ${snakeCaseToUpperCamelCase(className)}();
-        if (typeof data === "object") {
+        if (typeof data === "object" && data !== null) {
           ${attibutePropertiesList
             .map((attibuteProperties) => {
               const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
