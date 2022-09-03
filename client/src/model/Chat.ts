@@ -120,7 +120,7 @@ export class Chat extends RootModelObject {
 
   public static parse(data: unknown): Chat {
     const obj = new Chat();
-    if (typeof data === "object") {
+    if (typeof data === "object" && data !== null) {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {
           obj.name = data["name"];

@@ -130,7 +130,7 @@ export class Message extends RootModelObject {
 
   public static parse(data: unknown): Message {
     const obj = new Message();
-    if (typeof data === "object") {
+    if (typeof data === "object" && data !== null) {
       if (data["content"] !== undefined) {
         if (typeof data["content"] === "string") {
           obj.content = data["content"];

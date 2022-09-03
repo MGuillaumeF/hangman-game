@@ -171,7 +171,7 @@ export class Party extends RootModelObject {
 
   public static parse(data: unknown): Party {
     const obj = new Party();
-    if (typeof data === "object") {
+    if (typeof data === "object" && data !== null) {
       if (data["start_date"] !== undefined) {
         if (data["start_date"] instanceof Date) {
           obj.startDate = data["start_date"];

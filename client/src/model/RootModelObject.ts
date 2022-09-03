@@ -189,7 +189,7 @@ export class RootModelObject {
 
   public static parse(data: unknown): RootModelObject {
     const obj = new RootModelObject();
-    if (typeof data === "object") {
+    if (typeof data === "object" && data !== null) {
       if (data["version"] !== undefined) {
         if (typeof data["version"] === "number") {
           obj.version = data["version"];
