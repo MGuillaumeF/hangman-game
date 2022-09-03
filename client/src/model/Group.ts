@@ -13,8 +13,8 @@ export class Group extends RootModelObject {
       ...RootModelObject.getConstraintes(),
       ...{
         name: {
-          mandatory: "true",
-          min_length: "3",
+          mandatory: true,
+          min_length: 3,
           pattern: "^[a-z]{3,32}$",
           type: "string"
         }

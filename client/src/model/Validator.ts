@@ -1,4 +1,4 @@
-import { ModelError, EAttributeError } from "./ModelError";
+import { EAttributeError, ModelError } from "./ModelError";
 
 export class Validator {
   public static checkStringProperty(
@@ -32,7 +32,7 @@ export class Validator {
     if (
       value !== undefined &&
       constraint.pattern !== undefined &&
-      !constraint.pattern.test(value)
+      !new RegExp(constraint.pattern).test(value)
     ) {
       errors.push({ attributeName, code: EAttributeError.PATTERN });
     }

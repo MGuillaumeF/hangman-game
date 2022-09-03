@@ -9,31 +9,31 @@ export class RootModelObject {
   protected static getConstraintes() {
     return {
       version: {
-        mandatory: "true",
-        min: "1",
+        mandatory: true,
+        min: 1,
         type: "number"
       },
       id: {
-        mandatory: "true",
-        min: "1",
+        mandatory: true,
+        min: 1,
         type: "number"
       },
       created_by: {
-        mandatory: "true",
-        min_length: "3",
+        mandatory: true,
+        min_length: 3,
         type: "string"
       },
       created_at: {
-        mandatory: "true",
+        mandatory: true,
         type: "Date"
       },
       updated_by: {
-        mandatory: "true",
-        min_length: "3",
+        mandatory: true,
+        min_length: 3,
         type: "string"
       },
       updated_at: {
-        mandatory: "true",
+        mandatory: true,
         type: "Date"
       }
     };

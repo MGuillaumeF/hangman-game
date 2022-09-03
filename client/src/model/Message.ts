@@ -14,12 +14,12 @@ export class Message extends RootModelObject {
       ...RootModelObject.getConstraintes(),
       ...{
         content: {
-          mandatory: "false",
-          min_length: "1",
+          mandatory: false,
+          min_length: 1,
           type: "string"
         },
         send_date: {
-          mandatory: "true",
+          mandatory: true,
           type: "Date"
         }
       }

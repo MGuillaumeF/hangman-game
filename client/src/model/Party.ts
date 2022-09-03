@@ -15,11 +15,11 @@ export class Party extends RootModelObject {
       ...RootModelObject.getConstraintes(),
       ...{
         start_date: {
-          mandatory: "true",
+          mandatory: true,
           type: "Date"
         },
         end_date: {
-          mandatory: "false",
+          mandatory: false,
           type: "Date"
         }
       }

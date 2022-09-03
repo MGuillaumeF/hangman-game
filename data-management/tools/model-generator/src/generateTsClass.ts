@@ -16,9 +16,9 @@ export class TypeScriptClassGenerator {
    * @param modelClass
    */
   constructor(modelClass: ModelClassDefinition) {
-    this._currentName = modelClass.$.name;
-    if (modelClass.$.extend) {
-      this._motherClass = modelClass.$.extend;
+    this._currentName = modelClass.name;
+    if (modelClass.extend) {
+      this._motherClass = modelClass.extend;
     }
   }
 
@@ -54,7 +54,7 @@ export class TypeScriptClassGenerator {
   private static generateStringConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max_length?: number;
     min_length?: number;
     pattern?: string;
@@ -71,7 +71,7 @@ export class TypeScriptClassGenerator {
   private static generateNumberConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max?: number;
     min?: number;
     type: "number";
@@ -86,7 +86,7 @@ export class TypeScriptClassGenerator {
   private static generateDateConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max?: number;
     min?: number;
     type: "Date";
@@ -495,51 +495,44 @@ const tsMapTypes: { [key: string]: string } = {
  * @returns
  */
 export function generateTsClass(modelClass: ModelClassDefinition): string {
-  const className = snakeCaseToUpperCamelCase(modelClass.$.name);
+  const className = snakeCaseToUpperCamelCase(modelClass.name);
   const generator = new TypeScriptClassGenerator(modelClass);
-  const extendClass = modelClass.$.extend;
+  const extendClass = modelClass.extend;
   const filename = `${className}.ts`;
 
-  const attributes: {
-    $: ModelAttributesProperties;
-  }[] = modelClass.attributes[0]?.attribute || [];
+  const attributes = modelClass.attributes;
   const publicMethods: string[] = [];
   const privateAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility === "private";
+      return attributeObject.visibility === "private";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      publicMethods.push(generator.generateTsSetter(attrData));
-      publicMethods.push(generator.generateTsGetter(attrData));
-      return generator.generateTsAttribute(attrData);
+      publicMethods.push(generator.generateTsSetter(attributeObject));
+      publicMethods.push(generator.generateTsGetter(attributeObject));
+      return generator.generateTsAttribute(attributeObject);
     })
     .join("\n");
 
   const protectedAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility === "protected";
+      return attributeObject.visibility === "protected";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      publicMethods.push(generator.generateTsSetter(attrData));
-      publicMethods.push(generator.generateTsGetter(attrData));
-      return generator.generateTsAttribute(attrData);
+      publicMethods.push(generator.generateTsSetter(attributeObject));
+      publicMethods.push(generator.generateTsGetter(attributeObject));
+      return generator.generateTsAttribute(attributeObject);
     })
     .join("\n");
 
   publicMethods.push(
-    generator.generateGetErrorsMethod(attributes.map((attr) => attr.$)),
-    generator.generateSerializer(attributes.map((attr) => attr.$)),
-    generator.generateParser(
-      className,
-      attributes.map((attr) => attr.$)
-    )
+    generator.generateGetErrorsMethod(attributes),
+    generator.generateSerializer(attributes),
+    generator.generateParser(className, attributes)
   );
   const generatedTsTemplate = load("TsClasses", {
     className,
     constraintes: generator.generateAttributesConstraintes(
-      attributes.map((attr) => attr.$),
+      attributes,
       extendClass
     ),
     dependencies: generator.generateDependencies(),

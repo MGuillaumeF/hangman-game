@@ -15,35 +15,35 @@ export class User extends RootModelObject {
       ...RootModelObject.getConstraintes(),
       ...{
         login: {
-          mandatory: "true",
-          min_length: "3",
+          mandatory: true,
+          min_length: 3,
           pattern: "^[a-zA-Z0-9]{3,32}$",
           type: "string"
         },
         password: {
-          mandatory: "true",
-          min_length: "8",
+          mandatory: true,
+          min_length: 8,
           pattern:
             "^.*(?:(?:[a-z].*[A-Z].*\\\\d)|(?:[A-Z].*\\\\d.*[a-z])|(?:\\\\d.*[a-z].*[A-Z])).*$",
           type: "string"
         },
         salt_user: {
-          mandatory: "true",
-          min_length: "32",
+          mandatory: true,
+          min_length: 32,
           type: "string"
         },
         salt_session: {
-          mandatory: "true",
-          min_length: "32",
+          mandatory: true,
+          min_length: 32,
           type: "string"
         },
         token: {
-          mandatory: "true",
-          min_length: "32",
+          mandatory: true,
+          min_length: 32,
           type: "string"
         },
         last_connection: {
-          mandatory: "false",
+          mandatory: false,
           type: "Date"
         }
       }

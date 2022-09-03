@@ -13,14 +13,14 @@ export class Dictionary extends RootModelObject {
       ...RootModelObject.getConstraintes(),
       ...{
         name: {
-          mandatory: "true",
-          min_length: "3",
+          mandatory: true,
+          min_length: 3,
           pattern: "^[a-zA-Z0-9]{3,}$",
           type: "string"
         },
         country_code: {
-          mandatory: "true",
-          min_length: "3",
+          mandatory: true,
+          min_length: 3,
           pattern: "^[a-zA-Z0-9]{3,}$",
           type: "string"
         }
