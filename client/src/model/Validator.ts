@@ -6,7 +6,7 @@ export class Validator {
       mandatory: boolean;
       max_length?: number;
       min_length?: number;
-      pattern?: RegExp;
+      pattern?: string;
     },
     attributeName: string,
     value?: string
