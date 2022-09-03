@@ -331,11 +331,11 @@ export class TypeScriptClassGenerator {
     const buildForObjectArray = (
       attibuteProperties: ModelAttributesProperties,
       rawType: string
-    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
-        if (Array.isArray(data['${attibuteProperties.name}'])) {
-          obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
+    ) => `if (data.${attibuteProperties.name} !== undefined) { 
+        if (Array.isArray(data.${attibuteProperties.name})) {
+          obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data.${
       attibuteProperties.name
-    }'].map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
+    }.map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
         } else {
           throw Error("INVALID TYPE")
         }
@@ -344,13 +344,13 @@ export class TypeScriptClassGenerator {
     const buildForObject = (
       attibuteProperties: ModelAttributesProperties,
       rawType: string
-    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
-        if (typeof data['${attibuteProperties.name}'] === "object") {
+    ) => `if (data.${attibuteProperties.name} !== undefined) { 
+        if (typeof data.${attibuteProperties.name} === "object") {
           obj.${snakeCaseToCamelCase(
             attibuteProperties.name
-          )} = ${snakeCaseToUpperCamelCase(rawType)}.parse(data['${
+          )} = ${snakeCaseToUpperCamelCase(rawType)}.parse(data.${
       attibuteProperties.name
-    }'])
+    })
         } else {
           throw Error("INVALID TYPE")
         }
@@ -368,9 +368,9 @@ export class TypeScriptClassGenerator {
         : foundedType;
       let typeAssert = "";
       if (isArrayType) {
-        typeAssert = `Array.isArray(data['${
+        typeAssert = `Array.isArray(data.${
           attibuteProperties.name
-        }']) && data['${attibuteProperties.name}'].every((item : unknown) => ${
+        }) && data.${attibuteProperties.name}.every((item : unknown) => ${
           foundedType !== "Date"
             ? `typeof item === "${foundedType}"`
             : `item instanceof ${foundedType}`
@@ -378,17 +378,17 @@ export class TypeScriptClassGenerator {
       } else {
         typeAssert =
           foundedType !== "Date"
-            ? `'${attibuteProperties.name}' in data && typeof data['${attibuteProperties.name}'] === "${foundedType}"`
-            : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
+            ? `'${attibuteProperties.name}' in data && typeof data.${attibuteProperties.name} === "${foundedType}"`
+            : `data.${attibuteProperties.name} instanceof ${foundedType}`;
       }
 
-      return `if ('${attibuteProperties.name}' in data &&  data['${
+      return `if ('${attibuteProperties.name}' in data &&  data.${
         attibuteProperties.name
-      }'] !== undefined) { 
+      } !== undefined) { 
                 if (${typeAssert}) {
                   obj.${snakeCaseToCamelCase(
                     attibuteProperties.name
-                  )} = data['${attibuteProperties.name}'];
+                  )} = data.${attibuteProperties.name};
                 } else {
                   throw Error("INVALID TYPE")
                 }
