@@ -3,7 +3,12 @@ import { resolve } from "path";
 import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
 import { generateTsClass, TypeScriptClassGenerator } from "./generateTsClass";
-import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
+import {
+  ModelAttributesProperties,
+  ModelClassDefinition,
+  XMLModelAttributesProperties,
+  XMLModelClassDefinition
+} from "./modelTypes";
 import { snakeCaseToUpperCamelCase } from "./utils";
 
 const cppMapTypes: { [key: string]: string } = {
@@ -80,13 +85,13 @@ function generateClasses(modelClasses: ModelClassDefinition[]) {
     mkdirSync(modelCppDirPath, { recursive: true });
     mkdirSync(modelTsDirPath, { recursive: true });
     writeFileSync(
-      resolve("dist", "cpp", "model", `${modelClass.$.name}.hxx`),
+      resolve("dist", "cpp", "model", `${modelClass.name}.hxx`),
       generateCppClass(modelClass)
     );
     writeFileSync(
       resolve(
         modelTsDirPath,
-        `${snakeCaseToUpperCamelCase(modelClass.$.name)}.ts`
+        `${snakeCaseToUpperCamelCase(modelClass.name)}.ts`
       ),
       generateTsClass(modelClass)
     );
@@ -187,8 +192,8 @@ function generateCppGetter(attrData: ModelAttributesProperties) {
  * @param modelClass
  */
 function generateCppClass(modelClass: ModelClassDefinition) {
-  const className = modelClass.$.name;
-  const extendClass = modelClass.$.extend;
+  const className = modelClass.name;
+  const extendClass = modelClass.extend;
   const filename = `${className}.hxx`;
   const guard = `__GENERATED_MODEL_OBJECT_${className.toUpperCase()}_HXX__`;
 
@@ -196,9 +201,7 @@ function generateCppClass(modelClass: ModelClassDefinition) {
 
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set<string>();
-  const attributes: {
-    $: ModelAttributesProperties;
-  }[] = modelClass.attributes[0]?.attribute || [];
+  const { attributes } = modelClass;
 
   if (className === "root_model_object") {
     includesCpp.add("odb/core.hxx");
@@ -210,14 +213,13 @@ function generateCppClass(modelClass: ModelClassDefinition) {
 
   const privateAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility == "private";
+      return attributeObject.visibility == "private";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      assessors.push(generateCppSetter(attrData));
-      assessors.push(generateCppGetter(attrData));
+      assessors.push(generateCppSetter(attributeObject));
+      assessors.push(generateCppGetter(attributeObject));
       return generateCppAttribute(
-        attrData,
+        attributeObject,
         includesCpp,
         includesModelObjectsCpp
       );
@@ -225,14 +227,13 @@ function generateCppClass(modelClass: ModelClassDefinition) {
     .join("\n");
   const protectedAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility == "protected";
+      return attributeObject.visibility == "protected";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      assessors.push(generateCppSetter(attrData));
-      assessors.push(generateCppGetter(attrData));
+      assessors.push(generateCppSetter(attributeObject));
+      assessors.push(generateCppGetter(attributeObject));
       return generateCppAttribute(
-        attrData,
+        attributeObject,
         includesCpp,
         includesModelObjectsCpp
       );
@@ -240,14 +241,13 @@ function generateCppClass(modelClass: ModelClassDefinition) {
     .join("\n");
   const publicAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility == "public";
+      return attributeObject.visibility == "public";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      assessors.push(generateCppSetter(attrData));
-      assessors.push(generateCppGetter(attrData));
+      assessors.push(generateCppSetter(attributeObject));
+      assessors.push(generateCppGetter(attributeObject));
       return generateCppAttribute(
-        attrData,
+        attributeObject,
         includesCpp,
         includesModelObjectsCpp
       );
@@ -335,22 +335,138 @@ const xmlPath = resolve(
 );
 console.log("reading file : ", xmlPath);
 const xml = readFileSync(xmlPath);
+
+/**
+ModelAttributesProperties = {
+  cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
+  linked_column?: string;
+  mandatory: boolean;
+  name: string;
+  pattern: string;
+  type: string;
+  visibility: "private" | "protected" | "public";
+};
+*/
+
+function isXMLModelAttributesProperties(
+  data: any
+): data is XMLModelAttributesProperties {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    ["max", "max_length", "min", "min_length"].every((key) => {
+      let isValid = ["string", "undefined"].includes(typeof data[key]);
+      if (typeof data[key] === "string" && Number.isNaN(Number(data[key]))) {
+        isValid = false;
+      }
+      console.log("key", key, isValid);
+      return isValid;
+    })
+  );
+}
+
+function isXMLModelClassDefinition(data: any): data is XMLModelClassDefinition {
+  let result = true;
+  if (typeof data === "object" && data !== null) {
+    result =
+      result &&
+      typeof data["$"] === "object" &&
+      data["$"] !== null &&
+      typeof data["$"]["name"] === "string";
+
+    result =
+      result &&
+      Array.isArray(data["attributes"]) &&
+      data["attributes"].length === 1 &&
+      typeof data["attributes"][0] === "object" &&
+      data["attributes"][0] !== null &&
+      Array.isArray(data["attributes"][0]["attribute"]) &&
+      data["attributes"][0]["attribute"]
+        .map((attributDefContainer) =>
+          typeof attributDefContainer === "object" &&
+          attributDefContainer !== null
+            ? attributDefContainer["$"]
+            : undefined
+        )
+        .every(isXMLModelAttributesProperties);
+  } else {
+    result = false;
+  }
+  console.log(result);
+  return result;
+}
+
+function isXMLModelClassDefinitionList(
+  datas: any
+): datas is XMLModelClassDefinition[] {
+  return Array.isArray(datas) && datas.every(isXMLModelClassDefinition);
+}
+
+function xmlToInternalModelClassDefinitionList(
+  datas: XMLModelClassDefinition[]
+): ModelClassDefinition[] {
+  const result: ModelClassDefinition[] = [];
+  datas.forEach((data) => {
+    if (
+      Array.isArray(data?.attributes) &&
+      data.attributes[0] &&
+      Array.isArray(data.attributes[0].attribute)
+    ) {
+      const modelAttributesList: ModelAttributesProperties[] =
+        data.attributes[0].attribute
+          .map((attr) => attr.$)
+          .map((attr): ModelAttributesProperties => {
+            return {
+              ...attr,
+              mandatory: attr.mandatory === "true",
+              max: attr.max !== undefined ? Number(attr.max) : undefined,
+              max_length:
+                attr.max_length !== undefined
+                  ? Number(attr.max_length)
+                  : undefined,
+              min: attr.min !== undefined ? Number(attr.min) : undefined,
+              min_length:
+                attr.min_length !== undefined
+                  ? Number(attr.min_length)
+                  : undefined
+            };
+          });
+      result.push({ ...data.$, attributes: modelAttributesList });
+    }
+  });
+  console.log(result);
+  return result;
+}
+
 parseString(xml, function (err, result) {
   console.info("xml parsing result", JSON.stringify(result, null, 1));
-  for (const modelClass of result.model.classes[0]
-    .class as ModelClassDefinition[]) {
-    allClassNames.add(modelClass.$.name);
+  if (
+    Array.isArray(result?.model?.classes) &&
+    result.model.classes[0] &&
+    isXMLModelClassDefinitionList(result.model.classes[0]?.class)
+  ) {
+    console.log("ee");
+    const modelClasses = xmlToInternalModelClassDefinitionList(
+      result?.model?.classes[0]?.class
+    );
+    console.log("ee");
+
+    for (const modelClass of modelClasses) {
+      allClassNames.add(modelClass.name);
+    }
+    TypeScriptClassGenerator.classNames = allClassNames;
+    generateClasses(modelClasses);
+    const endpointDirPath = resolve("dist", "cpp", "endpoint");
+    const endpointPath = resolve(
+      endpointDirPath,
+      "generateCRUDOrderDispatcher.cpp"
+    );
+    mkdirSync(endpointDirPath, { recursive: true });
+    const generatedCRUDOrderDispatcher =
+      generateCRUDOrderDispatcher(allClassNames);
+    writeFileSync(endpointPath, generatedCRUDOrderDispatcher);
+    console.info("generated :", generatedCRUDOrderDispatcher);
+  } else {
+    console.log("ee2");
   }
-  TypeScriptClassGenerator.classNames = allClassNames;
-  generateClasses(result.model.classes[0].class);
-  const endpointDirPath = resolve("dist", "cpp", "endpoint");
-  const endpointPath = resolve(
-    endpointDirPath,
-    "generateCRUDOrderDispatcher.cpp"
-  );
-  mkdirSync(endpointDirPath, { recursive: true });
-  const generatedCRUDOrderDispatcher =
-    generateCRUDOrderDispatcher(allClassNames);
-  writeFileSync(endpointPath, generatedCRUDOrderDispatcher);
-  console.info("generated :", generatedCRUDOrderDispatcher);
 });

@@ -116,12 +116,13 @@ jobs:
         npm install
         npm run build
         npm start ../../resources/model.xml
+        npm run lint:eslint:json || echo FAILED
 
     - name: Copy Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
         echo disable temporary
-        # cp ./dist/ts/model/* ../../../client/src/model
+        cp ./dist/ts/model/* ../../../client/src/model
         # rm -rf ../../../client/src/model/*
 
     - name: Audit dependencies model generator

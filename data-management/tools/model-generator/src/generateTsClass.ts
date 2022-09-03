@@ -16,9 +16,9 @@ export class TypeScriptClassGenerator {
    * @param modelClass
    */
   constructor(modelClass: ModelClassDefinition) {
-    this._currentName = modelClass.$.name;
-    if (modelClass.$.extend) {
-      this._motherClass = modelClass.$.extend;
+    this._currentName = modelClass.name;
+    if (modelClass.extend) {
+      this._motherClass = modelClass.extend;
     }
   }
 
@@ -54,7 +54,7 @@ export class TypeScriptClassGenerator {
   private static generateStringConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max_length?: number;
     min_length?: number;
     pattern?: string;
@@ -71,7 +71,7 @@ export class TypeScriptClassGenerator {
   private static generateNumberConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max?: number;
     min?: number;
     type: "number";
@@ -86,7 +86,7 @@ export class TypeScriptClassGenerator {
   private static generateDateConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
-    mandatory: boolean;
+    mandatory?: boolean;
     max?: number;
     min?: number;
     type: "Date";
@@ -108,6 +108,12 @@ export class TypeScriptClassGenerator {
     attibutePropertiesList.forEach(
       (attibuteProperties: ModelAttributesProperties) => {
         let typeObjectName = attibuteProperties.type;
+        const isArrayType = /^.+\[\]$/.test(typeObjectName);
+
+        typeObjectName = isArrayType
+          ? typeObjectName.slice(0, -2)
+          : typeObjectName;
+
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
         }
@@ -160,32 +166,98 @@ export class TypeScriptClassGenerator {
     this._dependencies.add("ModelError");
     attibutePropertiesList.forEach(
       (attibuteProperties: ModelAttributesProperties) => {
-        let typeObjectName = attibuteProperties.type;
+        const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+        let typeObjectName = isArrayType
+          ? attibuteProperties.type.slice(0, -2)
+          : attibuteProperties.type;
+
         if (typeList.includes(typeObjectName)) {
           typeObjectName = String(tsMapTypes[typeObjectName]);
-        }
-        switch (typeObjectName) {
-          case "string":
+
+          switch (typeObjectName) {
+            case "string":
+              if (isArrayType) {
+                checks.push(
+                  `if (this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined) {
+               errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.map(item => Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", item))));
+              }`
+                );
+              } else {
+                checks.push(
+                  `errors.push(...Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+                );
+              }
+              break;
+            case "number":
+              if (isArrayType) {
+                checks.push(
+                  `if (this.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined) {
+               errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.map(item => Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", item))));
+              }`
+                );
+              } else {
+                checks.push(
+                  `errors.push(...Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
+                    this._currentName
+                  )}.getConstraintes().${
+                    attibuteProperties.name
+                  }, "${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}", this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+                );
+              }
+              break;
+            default:
+              console.info("The type haven't constrainte");
+          }
+        } else if (TypeScriptClassGenerator._classNames.has(typeObjectName)) {
+          if (isArrayType) {
             checks.push(
-              `errors.push(Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
-                this._currentName
-              )}.getConstraintes().${
+              `if (this.${snakeCaseToCamelCase(
                 attibuteProperties.name
-              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              )} !== undefined) {
+               errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.map(item => item.getErrors())));
+              }`
             );
-            break;
-          case "number":
-            this._dependencies.add("Validator");
+          } else {
             checks.push(
-              `errors.push(Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
-                this._currentName
-              )}.getConstraintes().${
+              `if (this.${snakeCaseToCamelCase(
                 attibuteProperties.name
-              }, this.${snakeCaseToCamelCase(attibuteProperties.name)}));`
+              )} !== undefined) {
+               errors.push(...this.${snakeCaseToCamelCase(
+                 attibuteProperties.name
+               )}.getErrors());
+              }`
             );
-            break;
-          default:
-            console.info("The type haven't constrainte");
+          }
         }
       }
     );
@@ -210,10 +282,39 @@ export class TypeScriptClassGenerator {
         snakeCaseToCamelCase(attibuteProperties.name)
       )
       .join(", ");
+    const attrSerializeList = attibutePropertiesList
+      .map((attibuteProperties) => {
+        const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+        const rawType = isArrayType
+          ? attibuteProperties.type.slice(0, -2)
+          : attibuteProperties.type;
+
+        return TypeScriptClassGenerator._classNames.has(rawType)
+          ? `${snakeCaseToCamelCase(attibuteProperties.name)} : ${
+              isArrayType
+                ? `${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined ?
+                  ${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}.map(item => item.toJSON()) : undefined`
+                : `${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} !== undefined ? ${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )}.toJSON() : undefined`
+            }`
+          : snakeCaseToCamelCase(attibuteProperties.name);
+      })
+      .join(", ");
+
     return `
-    public toJSON() {
+    /**
+     * @brief method to convert object to JSON object
+     */
+    public toJSON() : any {
         const {${attrNamesList}} = this;
-        return JSON.stringify({${attrNamesList}})
+        return {${attrSerializeList}}
     }
     `;
   }
@@ -227,23 +328,87 @@ export class TypeScriptClassGenerator {
     className: string,
     attibutePropertiesList: ModelAttributesProperties[]
   ): string {
+    const buildForObjectArray = (
+      attibuteProperties: ModelAttributesProperties,
+      rawType: string
+    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
+        if (Array.isArray(data['${attibuteProperties.name}'])) {
+          obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
+      attibuteProperties.name
+    }'].map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
+        } else {
+          throw Error("INVALID TYPE")
+        }
+      }`;
+
+    const buildForObject = (
+      attibuteProperties: ModelAttributesProperties,
+      rawType: string
+    ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
+        if (typeof data['${attibuteProperties.name}'] === "object") {
+          obj.${snakeCaseToCamelCase(
+            attibuteProperties.name
+          )} = ${snakeCaseToUpperCamelCase(rawType)}.parse(data['${
+      attibuteProperties.name
+    }'])
+        } else {
+          throw Error("INVALID TYPE")
+        }
+      }`;
+
+    const buildForPrimitiveType = (
+      attibuteProperties: ModelAttributesProperties
+    ) => {
+      const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+      let foundedType = isArrayType
+        ? attibuteProperties.type.slice(0, -2)
+        : attibuteProperties.type;
+      foundedType = Object.keys(tsMapTypes).includes(foundedType)
+        ? String(tsMapTypes[foundedType])
+        : foundedType;
+      let typeAssert = "";
+      if (isArrayType) {
+        typeAssert = `Array.isArray(data['${
+          attibuteProperties.name
+        }']) && data['${attibuteProperties.name}'].every((item : unknown) => ${
+          foundedType !== "Date"
+            ? `typeof item === "${foundedType}"`
+            : `item instanceof ${foundedType}`
+        })`;
+      } else {
+        typeAssert =
+          foundedType !== "Date"
+            ? `typeof data['${attibuteProperties.name}'] === "${foundedType}"`
+            : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
+      }
+
+      return `if (data['${attibuteProperties.name}'] !== undefined) { 
+                if (${typeAssert}) {
+                  obj.${snakeCaseToCamelCase(
+                    attibuteProperties.name
+                  )} = data['${attibuteProperties.name}'];
+                } else {
+                  throw Error("INVALID TYPE")
+                }
+              }`;
+    };
+
     return `
     public static parse(data : any) : ${snakeCaseToUpperCamelCase(className)} {
         const obj = new ${snakeCaseToUpperCamelCase(className)}();
         if (typeof data === "object") {
           ${attibutePropertiesList
             .map((attibuteProperties) => {
-              return `if (data['${attibuteProperties.name}'] !== undefined) {
-              if (typeof data['${attibuteProperties.name}'] === "${
-                attibuteProperties.type
-              }") {
-                obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
-                attibuteProperties.name
-              }'];
-              } else {
-                throw Error("INVALID TYPE")
-              }
-            }`;
+              const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+              const rawType = isArrayType
+                ? attibuteProperties.type.slice(0, -2)
+                : attibuteProperties.type;
+
+              return TypeScriptClassGenerator._classNames.has(rawType)
+                ? isArrayType
+                  ? buildForObjectArray(attibuteProperties, rawType)
+                  : buildForObject(attibuteProperties, rawType)
+                : buildForPrimitiveType(attibuteProperties);
             })
             .join("\n")}
         }
@@ -272,7 +437,9 @@ export class TypeScriptClassGenerator {
     } else if (Object.keys(tsMapTypes).includes(typeObjectName)) {
       typeObjectName = String(tsMapTypes[typeObjectName]);
     }
-    return isArray ? `${typeObjectName}[]` : typeObjectName;
+    return isArray
+      ? `${typeObjectName}[] | undefined`
+      : `${typeObjectName} | undefined`;
   }
 
   /**
@@ -348,51 +515,44 @@ const tsMapTypes: { [key: string]: string } = {
  * @returns
  */
 export function generateTsClass(modelClass: ModelClassDefinition): string {
-  const className = snakeCaseToUpperCamelCase(modelClass.$.name);
+  const className = snakeCaseToUpperCamelCase(modelClass.name);
   const generator = new TypeScriptClassGenerator(modelClass);
-  const extendClass = modelClass.$.extend;
+  const extendClass = modelClass.extend;
   const filename = `${className}.ts`;
 
-  const attributes: {
-    $: ModelAttributesProperties;
-  }[] = modelClass.attributes[0]?.attribute || [];
+  const attributes = modelClass.attributes;
   const publicMethods: string[] = [];
   const privateAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility === "private";
+      return attributeObject.visibility === "private";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      publicMethods.push(generator.generateTsSetter(attrData));
-      publicMethods.push(generator.generateTsGetter(attrData));
-      return generator.generateTsAttribute(attrData);
+      publicMethods.push(generator.generateTsSetter(attributeObject));
+      publicMethods.push(generator.generateTsGetter(attributeObject));
+      return generator.generateTsAttribute(attributeObject);
     })
     .join("\n");
 
   const protectedAttributes = attributes
     .filter((attributeObject) => {
-      return attributeObject.$.visibility === "protected";
+      return attributeObject.visibility === "protected";
     })
     .map((attributeObject) => {
-      const attrData = attributeObject.$;
-      publicMethods.push(generator.generateTsSetter(attrData));
-      publicMethods.push(generator.generateTsGetter(attrData));
-      return generator.generateTsAttribute(attrData);
+      publicMethods.push(generator.generateTsSetter(attributeObject));
+      publicMethods.push(generator.generateTsGetter(attributeObject));
+      return generator.generateTsAttribute(attributeObject);
     })
     .join("\n");
 
   publicMethods.push(
-    generator.generateGetErrorsMethod(attributes.map((attr) => attr.$)),
-    generator.generateSerializer(attributes.map((attr) => attr.$)),
-    generator.generateParser(
-      className,
-      attributes.map((attr) => attr.$)
-    )
+    generator.generateGetErrorsMethod(attributes),
+    generator.generateSerializer(attributes),
+    generator.generateParser(className, attributes)
   );
   const generatedTsTemplate = load("TsClasses", {
     className,
     constraintes: generator.generateAttributesConstraintes(
-      attributes.map((attr) => attr.$),
+      attributes,
       extendClass
     ),
     dependencies: generator.generateDependencies(),
