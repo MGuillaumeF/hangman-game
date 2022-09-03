@@ -378,11 +378,11 @@ export class TypeScriptClassGenerator {
       } else {
         typeAssert =
           foundedType !== "Date"
-            ? `typeof data['${attibuteProperties.name}'] === "${foundedType}"`
+            ? `'${attibuteProperties.name}' in data && typeof data['${attibuteProperties.name}'] === "${foundedType}"`
             : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
       }
 
-      return `if (data['${attibuteProperties.name}'] !== undefined) { 
+      return `if ('${attibuteProperties.name}' in data &&  data['${attibuteProperties.name}'] !== undefined) { 
                 if (${typeAssert}) {
                   obj.${snakeCaseToCamelCase(
                     attibuteProperties.name
