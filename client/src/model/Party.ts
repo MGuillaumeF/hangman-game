@@ -172,22 +172,22 @@ export class Party extends RootModelObject {
   public static parse(data: unknown): Party {
     const obj = new Party();
     if (typeof data === "object" && data !== null) {
-      if (data["start_date"] !== undefined) {
+      if ("start_date" in data && data["start_date"] !== undefined) {
         if (data["start_date"] instanceof Date) {
           obj.startDate = data["start_date"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["end_date"] !== undefined) {
+      if ("end_date" in data && data["end_date"] !== undefined) {
         if (data["end_date"] instanceof Date) {
           obj.endDate = data["end_date"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["win"] !== undefined) {
-        if (typeof data["win"] === "boolean") {
+      if ("win" in data && data["win"] !== undefined) {
+        if ("win" in data && typeof data["win"] === "boolean") {
           obj.win = data["win"];
         } else {
           throw Error("INVALID TYPE");

@@ -123,14 +123,14 @@ export class Word extends RootModelObject {
   public static parse(data: unknown): Word {
     const obj = new Word();
     if (typeof data === "object" && data !== null) {
-      if (data["name"] !== undefined) {
-        if (typeof data["name"] === "string") {
+      if ("name" in data && data["name"] !== undefined) {
+        if ("name" in data && typeof data["name"] === "string") {
           obj.name = data["name"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["definitions"] !== undefined) {
+      if ("definitions" in data && data["definitions"] !== undefined) {
         if (
           Array.isArray(data["definitions"]) &&
           data["definitions"].every((item: unknown) => typeof item === "string")

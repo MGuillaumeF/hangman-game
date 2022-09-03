@@ -382,7 +382,9 @@ export class TypeScriptClassGenerator {
             : `data['${attibuteProperties.name}'] instanceof ${foundedType}`;
       }
 
-      return `if ('${attibuteProperties.name}' in data &&  data['${attibuteProperties.name}'] !== undefined) { 
+      return `if ('${attibuteProperties.name}' in data &&  data['${
+        attibuteProperties.name
+      }'] !== undefined) { 
                 if (${typeAssert}) {
                   obj.${snakeCaseToCamelCase(
                     attibuteProperties.name

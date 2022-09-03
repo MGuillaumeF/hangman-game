@@ -336,42 +336,45 @@ export class User extends RootModelObject {
   public static parse(data: unknown): User {
     const obj = new User();
     if (typeof data === "object" && data !== null) {
-      if (data["login"] !== undefined) {
-        if (typeof data["login"] === "string") {
+      if ("login" in data && data["login"] !== undefined) {
+        if ("login" in data && typeof data["login"] === "string") {
           obj.login = data["login"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["password"] !== undefined) {
-        if (typeof data["password"] === "string") {
+      if ("password" in data && data["password"] !== undefined) {
+        if ("password" in data && typeof data["password"] === "string") {
           obj.password = data["password"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["salt_user"] !== undefined) {
-        if (typeof data["salt_user"] === "string") {
+      if ("salt_user" in data && data["salt_user"] !== undefined) {
+        if ("salt_user" in data && typeof data["salt_user"] === "string") {
           obj.saltUser = data["salt_user"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["salt_session"] !== undefined) {
-        if (typeof data["salt_session"] === "string") {
+      if ("salt_session" in data && data["salt_session"] !== undefined) {
+        if (
+          "salt_session" in data &&
+          typeof data["salt_session"] === "string"
+        ) {
           obj.saltSession = data["salt_session"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["token"] !== undefined) {
-        if (typeof data["token"] === "string") {
+      if ("token" in data && data["token"] !== undefined) {
+        if ("token" in data && typeof data["token"] === "string") {
           obj.token = data["token"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["last_connection"] !== undefined) {
+      if ("last_connection" in data && data["last_connection"] !== undefined) {
         if (data["last_connection"] instanceof Date) {
           obj.lastConnection = data["last_connection"];
         } else {

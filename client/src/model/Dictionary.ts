@@ -123,15 +123,18 @@ export class Dictionary extends RootModelObject {
   public static parse(data: unknown): Dictionary {
     const obj = new Dictionary();
     if (typeof data === "object" && data !== null) {
-      if (data["name"] !== undefined) {
-        if (typeof data["name"] === "string") {
+      if ("name" in data && data["name"] !== undefined) {
+        if ("name" in data && typeof data["name"] === "string") {
           obj.name = data["name"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["country_code"] !== undefined) {
-        if (typeof data["country_code"] === "string") {
+      if ("country_code" in data && data["country_code"] !== undefined) {
+        if (
+          "country_code" in data &&
+          typeof data["country_code"] === "string"
+        ) {
           obj.countryCode = data["country_code"];
         } else {
           throw Error("INVALID TYPE");

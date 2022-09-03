@@ -190,42 +190,42 @@ export class RootModelObject {
   public static parse(data: unknown): RootModelObject {
     const obj = new RootModelObject();
     if (typeof data === "object" && data !== null) {
-      if (data["version"] !== undefined) {
-        if (typeof data["version"] === "number") {
+      if ("version" in data && data["version"] !== undefined) {
+        if ("version" in data && typeof data["version"] === "number") {
           obj.version = data["version"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["id"] !== undefined) {
-        if (typeof data["id"] === "number") {
+      if ("id" in data && data["id"] !== undefined) {
+        if ("id" in data && typeof data["id"] === "number") {
           obj.id = data["id"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["created_by"] !== undefined) {
-        if (typeof data["created_by"] === "string") {
+      if ("created_by" in data && data["created_by"] !== undefined) {
+        if ("created_by" in data && typeof data["created_by"] === "string") {
           obj.createdBy = data["created_by"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["created_at"] !== undefined) {
+      if ("created_at" in data && data["created_at"] !== undefined) {
         if (data["created_at"] instanceof Date) {
           obj.createdAt = data["created_at"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["updated_by"] !== undefined) {
-        if (typeof data["updated_by"] === "string") {
+      if ("updated_by" in data && data["updated_by"] !== undefined) {
+        if ("updated_by" in data && typeof data["updated_by"] === "string") {
           obj.updatedBy = data["updated_by"];
         } else {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["updated_at"] !== undefined) {
+      if ("updated_at" in data && data["updated_at"] !== undefined) {
         if (data["updated_at"] instanceof Date) {
           obj.updatedAt = data["updated_at"];
         } else {

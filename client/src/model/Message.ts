@@ -131,8 +131,8 @@ export class Message extends RootModelObject {
   public static parse(data: unknown): Message {
     const obj = new Message();
     if (typeof data === "object" && data !== null) {
-      if (data["content"] !== undefined) {
-        if (typeof data["content"] === "string") {
+      if ("content" in data && data["content"] !== undefined) {
+        if ("content" in data && typeof data["content"] === "string") {
           obj.content = data["content"];
         } else {
           throw Error("INVALID TYPE");
@@ -145,7 +145,7 @@ export class Message extends RootModelObject {
           throw Error("INVALID TYPE");
         }
       }
-      if (data["send_date"] !== undefined) {
+      if ("send_date" in data && data["send_date"] !== undefined) {
         if (data["send_date"] instanceof Date) {
           obj.sendDate = data["send_date"];
         } else {
