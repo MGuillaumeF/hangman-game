@@ -59,7 +59,7 @@
     "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.1.0",
-    "cypress": "^9.7.0",
+    "cypress": "^10.7.0",
     "cypress-movie": "^3.0.20",
     "cypress-multi-reporters": "^1.6.1",
     "cypress-sonarqube-reporter": "^1.10.0",
