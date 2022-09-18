@@ -1,0 +1,21 @@
+/**
+ * @filename {{filename}}
+ * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
+ */
+{{dependencies}}
+
+export class {{className}} {{extendedClasses}} {
+  {{constraintes}}
+  {{privateAttributes}}
+  {{privateStaticAttributes}}
+  {{privateMethods}}
+  {{privateStaticMethods}}
+  {{protectedAttributes}}
+  {{protectedStaticAttributes}}
+  {{protectedMethods}}
+  {{protectedStaticMethods}}
+  {{publicAttributes}}
+  {{publicStaticAttributes}}
+  {{publicMethods}}
+  {{publicStaticMethods}}
+};

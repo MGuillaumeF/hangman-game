@@ -1,56 +1,123 @@
+#include "./common/Logger/Logger.hpp"
 
-//
-#include "main.hpp"
+#include "./api/HttpTokenEndpoint.hpp"
+#include "./common/HTTP/Configuration/ConfigurationServer.hpp"
+#include "./common/HTTP/LocationEndpoint.hpp"
+#include "./common/HTTP/Server.hpp"
+#include "./common/HTTP/Session.hpp"
 
-int main()
-{
-    std::vector<std::string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
+#include <algorithm>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <regex>
+#include <string>
+#include <vector>
 
-    for (const std::string& word : msg)
-    {
-        std::cout << word << " ";
-    }
-    std::cout << std::endl;
+#include <boost/lambda/lambda.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
-    boost::property_tree::ptree pt;
-    try {
-        
-        boost::property_tree::read_json("../resources/data.json", pt);
+/**
+ * To write a log message
+ * @param filename The name of log file
+ * @param message The message to print
+ */
+void appenderFile(const std::string &filename, const std::string &message) {
+  const std::unique_ptr<std::ofstream> &file = Logger::getLoggerFile(filename);
+  file->write(message.c_str(), message.size());
+  file->write("\n", 1);
+}
 
-        const long double latitude = pt.get<long double>("point.latitude", 0);
+/**
+ * To write a log message
+ * @param message The message to print
+ */
+void appenderAuditFile(const std::string &message) {
+  // global streams for files loggers
+  appenderFile("AUDIT", message);
+}
 
-        const long double longitude = pt.get<long double>("point.longitude");
+/**
+ * To write a log message
+ * @param message The message to print
+ */
+void appenderAccessFile(const std::string &message) {
+  // light http access logs
+  appenderFile("ACCESS", message);
+}
 
-        std::cout << "Le point est : " << std::endl << "Latitude : " << latitude << std::endl << "Longitude : " << longitude << std::endl;
-    } catch (const boost::wrapexcept<boost::property_tree::json_parser::json_parser_error>& ex) {
-        // ERROR TYPE : ESTRUCTOBJ, object has bad JSON structure
-        // ERROR TYPE : EREADOBJ, IO
-        // ERROR TYPE : EUNKOBJ unknow error on object
-        std::smatch m;
-        const std::string errorStr(ex.what());
-        // filename, number line error, error message
-        std::regex re("(.+)\\((\\d+)\\): (.*)");
-        std::regex_search (errorStr, m, re);
-        if (!m.size()) {
-            re = std::regex ("(.+): (.*)");
-            std::regex_search (errorStr, m, re);
-        }
-        if (m.size() == 4) {
-        // example : "data.json(5): garbage after data"
-            std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide, ligne " << m[2] << " : " << m[3] << std::endl;
-        } else if (m.size() == 3) {
-            // example : data.json: cannot open file
-            std::cerr << "Le fichier " << m[1] << " n'est pas un JSON valide : " << m[2] << std::endl;
-        } else {
-            std::cerr << "Erreur de parsing du fichier " << ex.what() << std::endl;
-        }
-    } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_path>& ex) {
-        // ERROR TYPE : ENOKEY, mandatory key not found
-        // FIELD : [NAME, ERROR]
-        std::cerr << "data.json ne contient pas un attribut obligatoire : " << ex.what() << std::endl;
-    } catch (const boost::wrapexcept<boost::property_tree::ptree_bad_data>& ex) {
-        // ERROR TYPE : EVALUETYPE, key found with bad value type
-        // FIELD : [NAME, ERROR]
-        std::cerr << "data.json contient une données de type invalide : " << ex.what() << std::endl;
-    }
+void loadLoggerConfiguration() {
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
+
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_ACCESS",
+                      Logger::defaultOutAppender);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_ACCESS", appenderAccessFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_ACCESS", appenderAccessFile);
+
+  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ", appenderAuditFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ", appenderAuditFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ", appenderAuditFile);
+
+  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
+                      appenderAuditFile);
+
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_DATA_READ",
+                      Logger::defaultOutAppender);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_DATA_READ",
+                      Logger::defaultOutAppender);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_DATA_READ",
+                      Logger::defaultErrAppender);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_DATA_READ",
+                      Logger::defaultErrAppender);
+
+  logger->addAppender(ELogLevel::LDEBUG, "HTTP_CONFIGURATION",
+                      Logger::defaultOutAppender);
+  logger->addAppender(ELogLevel::LINFO, "HTTP_CONFIGURATION",
+                      Logger::defaultOutAppender);
+  logger->addAppender(ELogLevel::LWARN, "HTTP_CONFIGURATION",
+                      Logger::defaultErrAppender);
+  logger->addAppender(ELogLevel::LERROR, "HTTP_CONFIGURATION",
+                      Logger::defaultErrAppender);
+
+  logger->setLevel(ELogLevel::LDEBUG);
+}
+
+int32_t main(int argc, char *argv[]) {
+  int16_t exitStatus = EXIT_SUCCESS;
+  // load logger configuration file to create them appenders
+  loadLoggerConfiguration();
+
+  // get singleton logger instance
+  const std::unique_ptr<Logger> &logger = Logger::getInstance();
+
+  // get server configuration
+  auto config = ConfigurationServer();
+
+  http::Session::addRequestDispatcher(
+      "/api/session",
+      [](const boost::beast::http::request<boost::beast::http::string_body>
+             &req) {
+        HttpTokenEndpoint tokenEndpoint(req);
+        tokenEndpoint.dispatchRequest();
+        return tokenEndpoint.getResponse();
+      });
+  http::Session::addRequestDispatcher(
+      "/", [](const boost::beast::http::request<boost::beast::http::string_body>
+                  &req) {
+        LocationEndpoint rootDirectoryEndpoint(req, ".");
+        rootDirectoryEndpoint.dispatchRequest();
+        return rootDirectoryEndpoint.getResponse();
+      });
+
+  logger->info("HTTP_CONFIGURATION", "Enpoints configured");
+
+  auto server =
+      http::Server(config.getHostname(), config.getPort(), config.getThreads());
+
+  return exitStatus;
 }

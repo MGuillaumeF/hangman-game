@@ -1,0 +1,145 @@
+.SettingsContainer {
+  background-color: #333;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  & .details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 5em;
+    max-height: 5em;
+    align-items: center;
+    & .menus {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+    }
+    & button {
+      backface-visibility: hidden;
+      height: 5em;
+      width: 5em;
+
+      &::before {
+        content: attr(data-alt);
+        position: fixed;
+        top: -2em;
+        left: 50%;
+        transform: translateX(-50%) scale(1);
+        font-size: 0.9em;
+        padding: 4px 3px;
+        display: none;
+        color: white;
+        background: hsla(36, 95%, 61%, 95%);
+        border-radius: 4px;
+        transition: opacity 0.1s ease-out;
+        z-index: 99;
+        text-align: left;
+        width: max-content;
+      }
+      &.item {
+        background-color: rgb(219, 219, 219);
+        border: 2px solid #333;
+        color: #333;
+        border-radius: 50%;
+        transition: all 200ms;
+        transform: scale(1);
+        position: relative;
+        & > img {
+          height: 3em;
+          max-height: 3em;
+          max-width: 3em;
+        }
+        &:hover {
+          border: 2px solid #daa520;
+          cursor: pointer;
+          background-color: hsl(160, 100%, 90%);
+          &::before {
+            display: inline-block;
+          }
+        }
+        &:focus {
+          border: 2px solid gold;
+          outline: none;
+        }
+        &:active {
+          background-color: hsl(180, 100%, 65%);
+          border: 2px solid black;
+        }
+      }
+
+      &.summary {
+        background-color: transparent;
+        border: none;
+        width: fit-content;
+        transform: scale(0.6);
+        transform-origin: center;
+        position: fixed;
+        left: 1em;
+        & img {
+          filter: invert(1);
+          height: 5em;
+          max-height: 5em;
+        }
+        &:hover {
+          &::before {
+            display: inline-block;
+            position: fixed;
+            transform: scale(1.6) translate(-33%, -33%);
+          }
+          & > img {
+            animation-timing-function: ease-out;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+            animation-duration: 800ms;
+            animation-name: hover-summary;
+            cursor: pointer;
+          }
+        }
+
+        &:focus {
+          filter: opacity(0.9);
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+@keyframes hover-summary {
+  0% {
+    transform: rotate(1turn) scale(0.6);
+  }
+
+  100% {
+    transform: rotate(0turn) scale(1);
+  }
+}
+
+.fadeEnter {
+  opacity: 0%;
+  transform: scale(90%) translateX(-100%);
+  transition: all 200ms ease-out;
+}
+.fadeEnterActive {
+  opacity: 1%;
+  transform: scale(90%) translateX(100%);
+}
+.fadeEnterDone {
+  opacity: 100%;
+  transform: scale(100%) translateX(0%);
+}
+.fadeExit {
+  opacity: 100%;
+  transform: scale(100%) translateX(0%);
+  transition: all 200ms ease-out;
+}
+.fadeExitActive {
+  opacity: 1%;
+  transform: scale(90%) translateX(-100%);
+}
+.fadeExitDone {
+  opacity: 0%;
+  transform: scale(90%) translateX(100%);
+}

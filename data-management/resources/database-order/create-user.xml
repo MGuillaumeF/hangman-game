@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<order>
+    <properties>
+        <order-group>CRUD</order-group>
+        <order-author>administrator</order-author>
+        <order-type>create</order-type>
+        <object-type>user</object-type>
+    </properties>
+    <data>
+        <user>
+            <login>PseudoOne</login>
+            <password>@ExAmplpassWORD123@</password>
+            <salt_user>aEhu538Aehk9pHeb1dDboTEvndl00zYL</salt_user>
+        </user>
+    </data>
+</order>

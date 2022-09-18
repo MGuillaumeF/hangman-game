@@ -1,0 +1,64 @@
+{
+  "PAGES": {
+    "HOME": {},
+    "SETTINGS": {
+      "TITLE": "Paramètres",
+      "MENU": {
+        "CONTROL": "Changer les contrôles",
+        "LANGUAGES": "Changer la langue",
+        "SOUND": "Paramétrage du son",
+        "VIDEO": "Paramétrage vidéo"
+      }
+    },
+    "SCORES": {}
+  },
+  "FORMS": {
+    "SIGN_IN": {
+      "TITLE": "Connexion",
+      "FIELDS": {
+        "IDENTIFIER": {
+          "LABEL": "Identifiant"
+        },
+        "PASSWORD": {
+          "LABEL": "Mot de passe"
+        },
+        "SUBMIT": {
+          "LABEL": "Se connecter"
+        }
+      }
+    },
+    "SIGN_UP": {
+      "TITLE": "Inscription",
+      "FIELDS": {
+        "EMAIL": {
+          "LABEL": "Enter an email address"
+        },
+        "IDENTIFIER": {
+          "LABEL": "Veuillez choisir un identifiant",
+          "PLACEHOLDER": "MGuillaumeF",
+          "HELPER": "L'identifiant sera visible pour les autres utilisateurs, il vous sera également demandé pour vous connecter sur le site"
+        },
+        "PASSWORD": {
+          "LABEL": "Veuillez définir un mot de passe"
+        },
+        "CONFIRM": {
+          "LABEL": "Confirmez votre mot de passe"
+        },
+        "SUBMIT": {
+          "LABEL": "S'inscrire"
+        }
+      }
+    }
+  },
+  "RULES": {
+    "FIELDS": {
+      "MANDATORY": "Le champ {{name}} doit être saisie",
+      "MIN_SIZE": "La valeur doit être supérieur à {{min}}",
+      "MAX_SIZE": "La valeur doit être inférieur à {{max}}",
+      "RANGE": "La valeur doit être comprise entre {{min}} et {{max}}"
+    }
+  },
+  "ERRORS": {
+    "ACCESS_DENIED": "Accès non-autorisé"
+  }
+}
