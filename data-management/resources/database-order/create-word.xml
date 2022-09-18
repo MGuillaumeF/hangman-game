@@ -1,17 +1,18 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <order>
-    <properties>
-        <order-group>CRUD</order-group>
-        <order-author>administrator</order-author>
-        <order-type>create</order-type>
-        <object-type>word</object-type>
-    </properties>
-    <data>
-        <word>
-            <name>bonjour</name>
-            <definitions>
-              <definition>bonjour est un mot</definition>
-            </definitions>
-        </word>
-    </data>
+  <properties>
+    <order-group>CRUD</order-group>
+    <order-author>administrator</order-author>
+    <order-type>create</order-type>
+    <object-type>word</object-type>
+  </properties>
+  <data>
+    <word>
+      <dictionary>1</dictionary>
+      <name>bonjour</name>
+      <definitions>
+        <definition>bonjour est un mot</definition>
+      </definitions>
+    </word>
+  </data>
 </order>

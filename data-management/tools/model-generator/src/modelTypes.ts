@@ -8,6 +8,7 @@ export type XMLModelClassDefinition = {
 };
 
 export type ModelClassDefinition = {
+  abstract?: string;
   attributes: ModelAttributesProperties[];
   extend?: string;
   name: string;
@@ -24,13 +25,16 @@ export type BidirectionalCardinality =
 
 export type XMLModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
+  default_value?: string;
   linked_column?: string;
+  macro?: 'increment-auto';
   mandatory?: string;
   max?: string;
   max_length?: string;
   min?: string;
   min_length?: string;
   name: string;
+  object_id?: string;
   pattern?: string;
   type: string;
   visibility: "private" | "protected" | "public";
@@ -38,13 +42,16 @@ export type XMLModelAttributesProperties = {
 
 export type ModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
+  default_value?: string;
   linked_column?: string;
+  macro?: 'increment-auto';
   mandatory?: boolean;
   max?: number;
   max_length?: number;
   min?: number;
   min_length?: number;
   name: string;
+  object_id: boolean;
   pattern?: string;
   type: string;
   visibility: "private" | "protected" | "public";

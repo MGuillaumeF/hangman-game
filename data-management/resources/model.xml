@@ -1,19 +1,19 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <model>
   <classes>
-    <class name="root_model_object">
+    <class name="root_model_object" abstract="true">
       <attributes>
-        <attribute name="version" visibility="protected" type="uint32" mandatory="true" min="1">
+        <attribute name="version" visibility="protected" type="uint32" mandatory="true" min="1" default_value="0">
         </attribute>
-        <attribute name="id" visibility="protected" type="uint32" mandatory="true" min="1">
+        <attribute name="id" visibility="protected" type="uint32" mandatory="true" min="1" macro="increment-auto" object_id="true" default_value="0">
         </attribute>
-        <attribute name="created_by" visibility="protected" type="string" mandatory="true" min_length="3">
+        <attribute name="created_by" visibility="protected" type="string" mandatory="true" min_length="3" default_value="anonymous">
         </attribute>
-        <attribute name="created_at" visibility="protected" type="date" mandatory="true">
+        <attribute name="created_at" visibility="protected" type="date" mandatory="true" default_value="current">
         </attribute>
-        <attribute name="updated_by" visibility="protected" type="string" mandatory="true" min_length="3">
+        <attribute name="updated_by" visibility="protected" type="string" mandatory="true" min_length="3" default_value="anonymous">
         </attribute>
-        <attribute name="updated_at" visibility="protected" type="date" mandatory="true">
+        <attribute name="updated_at" visibility="protected" type="date" mandatory="true" default_value="current">
         </attribute>
       </attributes>
     </class>
@@ -39,6 +39,8 @@
         </attribute>
         <attribute name="chats" visibility="private" type="chat[]" mandatory="false" cardinality="many_to_many">
         </attribute>
+        <attribute name="parties" visibility="private" type="party[]" mandatory="false" cardinality="many_to_many">
+        </attribute>
       </attributes>
     </class>
     <class name="group" extend="root_model_object">
@@ -55,7 +57,7 @@
         </attribute>
         <attribute name="country_code" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
         </attribute>
-        <attribute name="words" visibility="private" type="word[]" cardinality="one_to_many" linked_column="words">
+        <attribute name="words" visibility="private" type="word[]" cardinality="one_to_many" linked_column="dictionary">
         </attribute>
       </attributes>
     </class>

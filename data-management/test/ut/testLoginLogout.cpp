@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(test_nominal) {
 
       odb::core::transaction t(db->begin());
 
-      std::unique_ptr<user> loggedUser(db->load<user>(id));
+      std::shared_ptr<user> loggedUser(db->load<user>(id));
       loggedUser->setToken("example_token");
       db->update(*loggedUser);
 

@@ -1,26 +1,28 @@
 <?xml version="1.1" encoding="UTF-8"?>
- <order>
-     <properties>
-         <order-group>CRUD</order-group>
-         <order-author>administrator</order-author>
-         <order-type>create</order-type>
-         <object-type>word</object-type>
-     </properties>
-     <data>
-         <words>
-             <word>
-                 <name>chat</name>
-                 <definitions>
-                     <definition>le chat est un animal</definition>
-                     <definition>le chat est un canal de discussion</definition>
-                 </definitions>
-             </word>
-             <word>
-                 <name>chien</name>
-                 <definitions>
-                     <definition>le chien est un animal</definition>
-                 </definitions>
-             </word>
-         </words>
-     </data>
- </order>
+<order>
+  <properties>
+    <order-group>CRUD</order-group>
+    <order-author>administrator</order-author>
+    <order-type>create</order-type>
+    <object-type>word</object-type>
+  </properties>
+  <data>
+    <words>
+      <word>
+        <dictionary>1</dictionary>
+        <name>chat</name>
+        <definitions>
+          <definition>le chat est un animal</definition>
+          <definition>le chat est un canal de discussion</definition>
+        </definitions>
+      </word>
+      <word>
+        <dictionary>1</dictionary>
+        <name>chien</name>
+        <definitions>
+          <definition>le chien est un animal</definition>
+        </definitions>
+      </word>
+    </words>
+  </data>
+</order>

@@ -1,10 +1,12 @@
 #include <exception>
-#include <iostream> // std::cout
+#include <iostream>        // std::cout
+#include <odb/session.hxx> // session for all transactions
 
 // import TCP Server
 #include "./TCP/Server.hpp"
 
 int32_t main(int argc, char *argv[]) {
+  odb::session s;
   // by default process exit status is success
   int32_t exitStatus = EXIT_SUCCESS;
   try {

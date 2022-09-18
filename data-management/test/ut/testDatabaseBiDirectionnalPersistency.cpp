@@ -25,33 +25,33 @@
 #include <boost/property_tree/ptree.hpp>
 
 #if defined(DATABASE_MYSQL)
-#include "../../src/model/mysql/group-odb.hxx"
-#include "../../src/model/mysql/group.hxx"
-#include "../../src/model/mysql/user-odb.hxx"
-#include "../../src/model/mysql/user.hxx"
+#include "../../src/model/mysql/dictionary-odb.hxx"
+#include "../../src/model/mysql/dictionary.hxx"
+#include "../../src/model/mysql/word-odb.hxx"
+#include "../../src/model/mysql/word.hxx"
 #elif defined(DATABASE_SQLITE)
-#include "../../src/model/sqlite/group-odb.hxx"
-#include "../../src/model/sqlite/group.hxx"
-#include "../../src/model/sqlite/user-odb.hxx"
-#include "../../src/model/sqlite/user.hxx"
+#include "../../src/model/sqlite/dictionary-odb.hxx"
+#include "../../src/model/sqlite/dictionary.hxx"
+#include "../../src/model/sqlite/word-odb.hxx"
+#include "../../src/model/sqlite/word.hxx"
 #elif defined(DATABASE_PGSQL)
-#include "../../src/model/pgsql/group-odb.hxx"
-#include "../../src/model/pgsql/group.hxx"
-#include "../../src/model/pgsql/user-odb.hxx"
-#include "../../src/model/pgsql/user.hxx"
+#include "../../src/model/pgsql/dictionary-odb.hxx"
+#include "../../src/model/pgsql/dictionary.hxx"
+#include "../../src/model/pgsql/word-odb.hxx"
+#include "../../src/model/pgsql/word.hxx"
 #else
 #error unknown database; did you forget to define the DATABASE_* macros?
 #endif
 
-BOOST_AUTO_TEST_SUITE(testDatabasePersistency)
+BOOST_AUTO_TEST_SUITE(testDatabaseBiDirectionnalPersistency)
 
-std::size_t printUserCount(std::shared_ptr<odb::core::database> db) {
+std::size_t printDataCount<data_stat>(std::shared_ptr<odb::core::database> db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
   // so use the query_value() shortcut.
   //
-  const user_stat ps(db->query_value<user_stat>());
+  const data_stat ps(db->query_value<data_stat>());
   const std::size_t size = ps.count;
   std::cout << std::endl << "count  : " << size << std::endl;
 
@@ -65,51 +65,35 @@ BOOST_AUTO_TEST_CASE(test_create) {
   odb::session s;
   std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
 
-  BOOST_CHECK_EQUAL(0, printUserCount(db));
+  BOOST_CHECK_EQUAL(0, printDataCount<word>(db));
+  BOOST_CHECK_EQUAL(0, printDataCount<dictionary>(db));
 
-  uint32_t john_id = -1;
-  uint32_t joe_id = -1;
-  uint32_t jane_id = -1;
-  uint32_t user_group_id = -1;
+  uint32_t hello_id = -1;
+  uint32_t world_id = -1;
+  uint32_t english_id = -1;
 
-  std::shared_ptr<group> userGroup = std::make_shared<group>();
-  userGroup->setName("User");
-  std::vector<std::shared_ptr<group>> groups;
-  groups.push_back(userGroup);
+  std::shared_ptr<dictionary> englishDictionary = std::make_shared<dictionary>();
+  englishDictionary->setName("ENGLISH");
+  englishDictionary->setCountryCode("EN");
 
-  // Create a few persistent user objects.
+  // Create a few persistent word objects.
   //
-  user john;
-  john.setLogin("John");
-  john.setPassword("password_1");
-  john.setSaltUser("salt_user_1");
-  john.setSaltSession("salt_session_1");
-  john.setToken("token_1");
-  john.setGroups(groups);
+  std::shared_<word> hello = std::make_shared<word>();
+  hello->setName("hello");
+  std::vector<std::string> helloDefinitions;
+  helloDefinitions.emplace_back(std::string("word of salutation"));
+  hello->setDefinitions(helloDefinitions);
 
-  user jane;
-  jane.setLogin("Jane");
-  jane.setPassword("password_2");
-  jane.setSaltUser("salt_user_2");
-  jane.setSaltSession("salt_session_2");
-  jane.setToken("token_2");
-  jane.setGroups(groups);
+  word world;
+  word.setName("word");
+  std::vector<std::string> worldDefinitions;
+  worldDefinitions.emplace_back(std::string("bullshit"));
+  word->setDefinitions(worldDefinitions);
 
-  user joe;
-  joe.setLogin("Joe");
-  joe.setPassword("password_3");
-  joe.setSaltUser("salt_user_3");
-  joe.setSaltSession("salt_session_3");
-  joe.setToken("token_3");
-  joe.setGroups(groups);
-
-  user frank;
-  frank.setLogin("Frank");
-  frank.setPassword("password_4");
-  frank.setSaltUser("salt_user_4");
-  frank.setSaltSession("salt_session_4");
-  frank.setToken("token_4");
-  frank.setGroups(groups);
+  std::vector<std::weak_ptr<word>> words;
+  words.emplace_back(hello);
+  words.emplace_back(world);
+  englishDictionary->setWords(words);
 
   std::cout << "[INFO] init objects out of transactions" << std::endl;
 
@@ -119,20 +103,14 @@ BOOST_AUTO_TEST_CASE(test_create) {
     std::cout << "[INFO] open transaction" << std::endl;
     odb::core::transaction t(db->begin());
 
-    user_group_id = db->persist(*userGroup);
-    std::cout << "[INFO] persist group" << std::endl;
+    hello_id = db->persist(*hello);
+    std::cout << "[INFO] persist hello word" << std::endl;
 
-    john_id = db->persist(john);
-    std::cout << "[INFO] persist john" << std::endl;
+    world_id = db->persist(*world);
+    std::cout << "[INFO] persist world word" << std::endl;
 
-    jane_id = db->persist(jane);
-    std::cout << "[INFO] persist jane" << std::endl;
-
-    joe_id = db->persist(joe);
-    std::cout << "[INFO] persist joe" << std::endl;
-
-    db->persist(frank);
-    std::cout << "[INFO] persist frank" << std::endl;
+    english_id = db->persist(*englishDictionary);
+    std::cout << "[INFO] persist english dictionary" << std::endl;
 
     t.commit();
 
@@ -144,28 +122,17 @@ BOOST_AUTO_TEST_CASE(test_create) {
   {
     odb::core::transaction t(db->begin());
 
-    odb::result<user> r(db->query<user>(odb::query<user>::id < 10));
+    odb::result<word> r(db->query<word>(odb::query<word>::id < 10));
 
-    for (odb::result<user>::iterator i(r.begin()); i != r.end(); ++i) {
-      std::cout << "Hello, " << i->getLogin() << " " << i->getPassword() << "!"
+    for (odb::result<word>::iterator i(r.begin()); i != r.end(); ++i) {
+      std::cout << "Word : " << i->getName() << " " << "!"
                 << std::endl;
     }
 
     t.commit();
   }
 
-  // Joe is logged, so update his token.
-  //
-  {
-    odb::core::transaction t(db->begin());
-
-    std::shared_ptr<user> joe(db->load<user>(joe_id));
-    joe->setToken("new token");
-    db->update(*joe);
-
-    t.commit();
-  }
-
+  /*
   // Joe and Jane are friends
   //
   {
@@ -178,7 +145,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
     db->update(*joe);
     t.commit();
   }
-
+  
+  
   // Joe and Jane are friends check
   //
   {
@@ -246,7 +214,10 @@ BOOST_AUTO_TEST_CASE(test_create) {
   del.put("user.id", john_id);
   CRUDOrderDispatcher::deleteObject<user>(boost::property_tree::ptree(), del);
 
-  BOOST_CHECK_EQUAL(3, printUserCount(db));
+  */
+
+  BOOST_CHECK_EQUAL(2, printDataCount<word>(db));
+  BOOST_CHECK_EQUAL(1, printDataCount<dictionary>(db));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -17,7 +17,49 @@
 
 BOOST_AUTO_TEST_SUITE(testWordEndpointNominal)
 
+BOOST_AUTO_TEST_CASE(test_create_one_dictionary) {
+  std::cout << "TEST SUITE : testWordEndpointNominal" << std::endl
+            << "TEST CASE : test_create_one_dictionary" << std::endl
+            << "START : " << std::endl;
+
+  boost::asio::io_context ioContext;
+  const hangman::tcp::Server server(ioContext, 50000);
+  std::vector<std::thread> threads;
+  threads.reserve(1);
+
+  threads.emplace_back([&ioContext] { ioContext.run(); });
+
+  // open transaction
+  // count dictionary as A
+  // create dictionary as hello
+  // count dictionary as B
+  // except B == A + 1
+  // close transaction
+
+  const boost::property_tree::ptree response =
+      hangman::tcp::Client::sendRequest(
+          "127.0.0.1", 50000,
+          "./resources/database-order/create-dictionary.xml");
+  ioContext.stop();
+
+  for (size_t i = 0; i < threads.size(); ++i) {
+    threads[i].join();
+  }
+
+  uint8_t counter = 0;
+  for (const auto &node : response) {
+    if (node.first == "dictionary") {
+      counter += 1;
+    }
+  }
+  BOOST_CHECK_EQUAL(1, counter);
+  std::cout << "END : " << std::endl;
+}
+
 BOOST_AUTO_TEST_CASE(test_create_one) {
+  std::cout << "TEST SUITE : testWordEndpointNominal" << std::endl
+            << "TEST CASE : test_create_one" << std::endl
+            << "START : " << std::endl;
 
   boost::asio::io_context ioContext;
   const hangman::tcp::Server server(ioContext, 50000);
@@ -49,10 +91,14 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
     }
   }
   BOOST_CHECK_EQUAL(1, counter);
+  std::cout << "END : " << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(test_create_many) {
 
+  std::cout << "TEST SUITE : testWordEndpointNominal" << std::endl
+            << "TEST CASE : test_create_many" << std::endl
+            << "START : " << std::endl;
   boost::asio::io_context ioContext;
   const hangman::tcp::Server server(ioContext, 50000);
   std::vector<std::thread> threads;
@@ -83,6 +129,8 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
     }
   }
   BOOST_CHECK_EQUAL(2, counter);
+
+  std::cout << "END : " << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {

@@ -24,7 +24,7 @@ UserDBEndpoint::connectUser(const boost::property_tree::ptree &properties,
   std::cout << "user connection " << data.get<std::string>("login") << ":"
             << data.get<std::string>("password") << std::endl;
 
-  const std::unique_ptr<user> foundUser(m_db->query_one<user>(
+  std::shared_ptr<user> foundUser(m_db->query_one<user>(
       odb::query<user>::login == data.get<std::string>("login") &&
       odb::query<user>::password == data.get<std::string>("password")));
   if (nullptr != foundUser.get()) {
@@ -57,7 +57,7 @@ UserDBEndpoint::disconnectUser(const boost::property_tree::ptree &properties,
   boost::property_tree::ptree response;
   odb::core::transaction t(m_db->begin());
   std::cout << "user disconnection " << std::endl;
-  const std::unique_ptr<user> foundUser(m_db->query_one<user>(
+  std::shared_ptr<user> foundUser(m_db->query_one<user>(
       odb::query<user>::login == data.get<std::string>("login") &&
       odb::query<user>::token == data.get<std::string>("token")));
   if (nullptr != foundUser.get()) {
