@@ -58,7 +58,7 @@
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.7.1",
-    "css-minimizer-webpack-plugin": "^4.1.0",
+    "css-minimizer-webpack-plugin": "^4.2.0",
     "cypress": "^9.7.0",
     "cypress-movie": "^3.0.20",
     "cypress-multi-reporters": "^1.6.1",
