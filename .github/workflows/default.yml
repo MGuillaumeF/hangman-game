@@ -55,7 +55,7 @@ jobs:
       run: |
         git stash
         git checkout ${{github.head_ref}}
-        git stash pop
+        git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
         git add server
