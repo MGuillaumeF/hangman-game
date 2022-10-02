@@ -74,12 +74,12 @@ jobs:
     - name: Create icon Server
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
       run: |
-        dbus-run-session inkscape -w 16 -h 16 -e hangman-game-16x16.png hangman-game.svg
-        dbus-run-session inkscape -w 32 -h 32 -e hangman-game-32x32.png hangman-game.svg
-        dbus-run-session inkscape -w 48 -h 48 -e hangman-game-48x48.png hangman-game.svg
-        dbus-run-session inkscape -w 256 -h 256 -e hangman-game-256x256.png hangman-game.svg
-        dbus-run-session inkscape -e hangman-game.bmp hangman-game.svg
-        convert hangman-game-16x16.png hangman-game-32x32.png hangman-game-48x48.png hangman-game-256x256.png hangman-game.ico
+        inkscape -w 16 -h 16 -e hangman-game-16x16.png hangman-game.svg
+        # dbus-run-session inkscape -w 32 -h 32 -e hangman-game-32x32.png hangman-game.svg
+        # dbus-run-session inkscape -w 48 -h 48 -e hangman-game-48x48.png hangman-game.svg
+        # dbus-run-session inkscape -w 256 -h 256 -e hangman-game-256x256.png hangman-game.svg
+        # dbus-run-session inkscape -e hangman-game.bmp hangman-game.svg
+        # convert hangman-game-16x16.png hangman-game-32x32.png hangman-game-48x48.png hangman-game-256x256.png hangman-game.ico
 
     - name: Create icon Data Management
       working-directory: ${{github.workspace}}/data-management/resources/icon/data-management
