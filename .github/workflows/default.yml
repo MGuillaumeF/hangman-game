@@ -65,8 +65,9 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Install dependencies
-      run: sudo apt-get install -y --fix-missing gcovr doxygen graphviz inkscape imagemagick clang-tidy clang-format cppcheck odb
-      # default-libmysqlclient-dev mysql-common odb
+      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy clang-format cppcheck
+      # odb
+      # default-libmysqlclient-dev mysql-common odb 
       # add autoconf-archive for libodb-mysql
 
     - name: Create icon Server
