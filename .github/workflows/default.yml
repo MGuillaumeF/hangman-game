@@ -55,7 +55,7 @@ jobs:
       run: |
         git stash
         git checkout ${{github.head_ref}}
-        git stash pop
+        git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
         git add server
@@ -65,27 +65,30 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Install dependencies
-      run: sudo apt-get install -y gcovr doxygen graphviz inkscape imagemagick clang-tidy clang-format cppcheck default-libmysqlclient-dev mysql-common odb
-      # add autoconf-archive for libodb-mysql
+      run: |
+        sudo add-apt-repository ppa:inkscape.dev/stable
+        sudo apt update  
+        sudo apt-get install -y gcovr doxygen graphviz clang-tidy clang-format cppcheck odb imagemagick inkscape default-libmysqlclient-dev mysql-common
+        # add autoconf-archive for libodb-mysql
 
     - name: Create icon Server
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
       run: |
-        dbus-run-session inkscape -w 16 -h 16 -e hangman-game-16x16.png hangman-game.svg
-        dbus-run-session inkscape -w 32 -h 32 -e hangman-game-32x32.png hangman-game.svg
-        dbus-run-session inkscape -w 48 -h 48 -e hangman-game-48x48.png hangman-game.svg
-        dbus-run-session inkscape -w 256 -h 256 -e hangman-game-256x256.png hangman-game.svg
-        dbus-run-session inkscape -e hangman-game.bmp hangman-game.svg
+        dbus-run-session inkscape -w 16 -h 16 --export-type=png --export-filename=hangman-game-16x16.png hangman-game.svg
+        dbus-run-session inkscape -w 32 -h 32 --export-type=png --export-filename=hangman-game-32x32.png hangman-game.svg
+        dbus-run-session inkscape -w 48 -h 48 --export-type=png --export-filename=hangman-game-48x48.png hangman-game.svg
+        dbus-run-session inkscape -w 256 -h 256 --export-type=png --export-filename=hangman-game-256x256.png hangman-game.svg
+        # inkscape --export-type=bmp --export-filename=hangman-game.bmp hangman-game.svg
         convert hangman-game-16x16.png hangman-game-32x32.png hangman-game-48x48.png hangman-game-256x256.png hangman-game.ico
 
     - name: Create icon Data Management
       working-directory: ${{github.workspace}}/data-management/resources/icon/data-management
       run: |
-        dbus-run-session inkscape -w 16 -h 16 -e data-management-16x16.png data-management.svg
-        dbus-run-session inkscape -w 32 -h 32 -e data-management-32x32.png data-management.svg
-        dbus-run-session inkscape -w 48 -h 48 -e data-management-48x48.png data-management.svg
-        dbus-run-session inkscape -w 256 -h 256 -e data-management-256x256.png data-management.svg
-        dbus-run-session inkscape -e data-management.bmp data-management.svg
+        dbus-run-session inkscape -w 16 -h 16 --export-type=png --export-filename=data-management-16x16.png data-management.svg
+        dbus-run-session inkscape -w 32 -h 32 --export-type=png --export-filename=data-management-32x32.png data-management.svg
+        dbus-run-session inkscape -w 48 -h 48 --export-type=png --export-filename=data-management-48x48.png data-management.svg
+        dbus-run-session inkscape -w 256 -h 256 --export-type=png --export-filename=data-management-256x256.png data-management.svg
+        # dbus-run-session inkscape --export-type=bmp data-management.bmp data-management.svg
         convert data-management-16x16.png data-management-32x32.png data-management-48x48.png data-management-256x256.png data-management.ico
 
     - name: Save icon changes
