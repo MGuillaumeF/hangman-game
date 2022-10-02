@@ -66,11 +66,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-      sudo add-apt-repository ppa:inkscape.dev/stable
-      sudo apt update
-      sudo apt install inkscape
-      sudo apt-get install -y gcovr doxygen graphviz clang-tidy clang-format cppcheck odb imagemagick inkscape default-libmysqlclient-dev mysql-common
-      # add autoconf-archive for libodb-mysql
+        sudo add-apt-repository ppa:inkscape.dev/stable
+        sudo apt update  
+        sudo apt-get install -y gcovr doxygen graphviz clang-tidy clang-format cppcheck odb imagemagick inkscape default-libmysqlclient-dev mysql-common
+        # add autoconf-archive for libodb-mysql
 
     - name: Create icon Server
       working-directory: ${{github.workspace}}/server/resources/icon/hangman-game
