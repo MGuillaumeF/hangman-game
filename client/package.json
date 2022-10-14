@@ -92,7 +92,7 @@
     "postcss-scss": "^4.0.5",
     "prettier": "^2.7.1",
     "react-docgen-typescript": "^2.2.2",
-    "react-styleguidist": "^12.0.1",
+    "react-styleguidist": "^13.0.0",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
