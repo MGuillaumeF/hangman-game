@@ -93,7 +93,7 @@
     "prettier": "^2.7.1",
     "react-docgen-typescript": "^2.2.2",
     "react-styleguidist": "^13.0.0",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.13.10",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
