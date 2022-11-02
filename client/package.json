@@ -119,7 +119,7 @@
     "core-js-pure": "^3.26.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^11.18.6",
+    "react-i18next": "^12.0.0",
     "react-router-dom": "^6.4.3",
     "react-transition-group": "^4.4.5"
   }
