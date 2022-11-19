@@ -140,7 +140,7 @@ jobs:
       uses: MarkusJx/install-boost@v2.4.0
       id: install-boost
       with:
-        platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
+        platform_version: 20.04
         boost_version: ${{env.BOOST_VERSION}}
         
     - name: installer odb compiler dependencies
