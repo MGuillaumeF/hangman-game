@@ -22,7 +22,7 @@ L'application est un "jeux du pendu".
 
 #### Conception
 
-  - Langages: C++, XML
+  - Langages: C++, XML, JSON
   - Librairies: Boost
   - Patterns: REST API
   - Bundler: CMake
@@ -38,6 +38,16 @@ L'application est un "jeux du pendu".
   - valider les données.
   - importer/exporter des données.
 
+#### Conception
+
+  - Langages: C++, XML
+  - Librairies: Boost, ODB
+  - Patterns: Model, ORM
+  - Bundler: CMake
+  - Packager: CPack
+  - Docs: Doxygen, Graphviz, Merise
+  - Gestionnaire de paquet: vcpkg
+
 ### Le broker STOMP
 
 #### Le rôle du composant
@@ -47,12 +57,11 @@ L'application est un "jeux du pendu".
 
 #### Conception
 
-  - Langages: C++, XML
-  - Librairies: Boost, ODB
-  - Patterns: Model, ORM
+  - Langages: C++, XML, JSON
+  - Librairies: Boost, stomp-broker-js, ws
   - Bundler: CMake
   - Packager: CPack
-  - Docs: Doxygen, Graphviz, Merise
+  - Docs: Doxygen, Graphviz
   - Gestionnaire de paquet: vcpkg
 
 ### L'application Web
@@ -67,6 +76,24 @@ L'application est un "jeux du pendu".
   - Langages: HTML, TypeScript, SASS, JSON
   - Librairies: React, Cypress
   - Patterns: ReactHooks
+  - Bundler: WebPack
+  - Packager: CPack
+  - Gestionnaire de paquet: npm
+
+### Le client STOMP
+
+#### Le rôle du composant
+
+  - envoyer des demandes d'observation d'objet
+  - envoyer des arrêts d'observation d'objet
+  - recevoir des notifications de synchronisation de mise à jour d'objet
+  - recevoir des notifications d'alerte aux utilisateurs
+
+#### Conception
+
+  - Langages: TypeScript, JSON
+  - Librairies: @stomp/stompjs, ws
+  - Patterns: Singleton
   - Bundler: WebPack
   - Packager: CPack
   - Gestionnaire de paquet: npm
