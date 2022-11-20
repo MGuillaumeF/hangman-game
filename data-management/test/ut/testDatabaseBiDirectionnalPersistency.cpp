@@ -85,11 +85,11 @@ BOOST_AUTO_TEST_CASE(test_create) {
   helloDefinitions.emplace_back(std::string("word of salutation"));
   hello->setDefinitions(helloDefinitions);
 
-  word world;
-  word.setName("word");
+  std::shared_<word> world = std::make_shared<word>();
+  world->setName("world");
   std::vector<std::string> worldDefinitions;
   worldDefinitions.emplace_back(std::string("bullshit"));
-  word->setDefinitions(worldDefinitions);
+  world->setDefinitions(worldDefinitions);
 
   std::vector<std::weak_ptr<word>> words;
   words.emplace_back(hello);
