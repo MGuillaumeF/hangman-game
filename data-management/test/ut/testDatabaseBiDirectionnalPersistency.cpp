@@ -72,7 +72,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
   uint32_t world_id = -1;
   uint32_t english_id = -1;
 
-  std::shared_ptr<dictionary> englishDictionary = std::make_shared<dictionary>();
+  std::shared_ptr<dictionary> englishDictionary =
+      std::make_shared<dictionary>();
   englishDictionary->setName("ENGLISH");
   englishDictionary->setCountryCode("EN");
 
@@ -125,8 +126,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
     odb::result<word> r(db->query<word>(odb::query<word>::id < 10));
 
     for (odb::result<word>::iterator i(r.begin()); i != r.end(); ++i) {
-      std::cout << "Word : " << i->getName() << " " << "!"
-                << std::endl;
+      std::cout << "Word : " << i->getName() << " "
+                << "!" << std::endl;
     }
 
     t.commit();
@@ -145,8 +146,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
     db->update(*joe);
     t.commit();
   }
-  
-  
+
+
   // Joe and Jane are friends check
   //
   {
