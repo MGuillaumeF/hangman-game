@@ -38,6 +38,13 @@ L'application est un "jeux du pendu".
   - valider les données.
   - importer/exporter des données.
 
+### Le broker STOMP
+
+#### Le rôle du composant
+
+  - envoyer des notifications de synchronisation de mise à jour d'objet
+  - envoyer des notifications d'alerte aux utilisateurs
+
 #### Conception
 
   - Langages: C++, XML
