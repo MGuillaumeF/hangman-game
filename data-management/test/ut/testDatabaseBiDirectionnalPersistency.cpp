@@ -92,12 +92,12 @@ BOOST_AUTO_TEST_CASE(test_create) {
   worldDefinitions.emplace_back(std::string("bullshit"));
   world->setDefinitions(worldDefinitions);
 
-/*
-  std::vector<std::weak_ptr<word>> words;
-  words.emplace_back(hello);
-  words.emplace_back(world);
-  englishDictionary->setWords(words);
-*/
+  /*
+    std::vector<std::weak_ptr<word>> words;
+    words.emplace_back(hello);
+    words.emplace_back(world);
+    englishDictionary->setWords(words);
+  */
   std::cout << "[INFO] init objects out of transactions" << std::endl;
 
   // Make objects persistent and save their ids for later use.
