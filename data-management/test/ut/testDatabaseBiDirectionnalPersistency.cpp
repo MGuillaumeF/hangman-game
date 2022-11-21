@@ -112,9 +112,9 @@ BOOST_AUTO_TEST_CASE(test_create) {
     world_id = db->persist(*world);
     std::cout << "[INFO] persist world word" << std::endl;*/
 
-    /*english_id = db->persist(*englishDictionary);
+    english_id = db->persist(*englishDictionary);
     std::cout << "[INFO] persist english dictionary" << std::endl;
-*/
+
     t.commit();
 
     std::cout << "[INFO] first commit" << std::endl;
