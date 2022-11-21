@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
   {
     odb::core::transaction t(db->begin());
-    std::vector<std::shared_ptr<word>> words;
+    std::vector<std::weak_ptr<word>> words;
     std::shared_ptr<dictionary> english(db->load<dictionary>(english_id));
     words = english->getWords();
     BOOST_CHECK_EQUAL(2, words.size());
