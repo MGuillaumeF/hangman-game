@@ -45,7 +45,8 @@
 
 BOOST_AUTO_TEST_SUITE(testDatabaseBiDirectionnalPersistency)
 
-std::size_t printDataCount<data_stat>(std::shared_ptr<odb::core::database> db) {
+template<typename data_stat>
+std::size_t printDataCount(std::shared_ptr<odb::core::database> db) {
   odb::core::transaction t(db->begin());
 
   // The result of this (aggregate) query always has exactly one element
