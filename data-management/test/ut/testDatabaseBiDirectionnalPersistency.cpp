@@ -219,8 +219,8 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
   */
 
-  //BOOST_CHECK_EQUAL(2, printDataCount<word_stat>(db));
-  //BOOST_CHECK_EQUAL(1, printDataCount<dictionary_stat>(db));
+  // BOOST_CHECK_EQUAL(2, printDataCount<word_stat>(db));
+  // BOOST_CHECK_EQUAL(1, printDataCount<dictionary_stat>(db));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
