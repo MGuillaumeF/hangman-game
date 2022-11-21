@@ -79,13 +79,13 @@ BOOST_AUTO_TEST_CASE(test_create) {
 
   // Create a few persistent word objects.
   //
-  std::shared_<word> hello = std::make_shared<word>();
+  std::shared_ptr<word> hello = std::make_shared<word>();
   hello->setName("hello");
   std::vector<std::string> helloDefinitions;
   helloDefinitions.emplace_back(std::string("word of salutation"));
   hello->setDefinitions(helloDefinitions);
 
-  std::shared_<word> world = std::make_shared<word>();
+  std::shared_ptr<word> world = std::make_shared<word>();
   world->setName("world");
   std::vector<std::string> worldDefinitions;
   worldDefinitions.emplace_back(std::string("bullshit"));
