@@ -45,7 +45,7 @@
 
 BOOST_AUTO_TEST_SUITE(testDatabaseBiDirectionnalPersistency)
 
-template<typename data_stat>
+template <typename data_stat>
 std::size_t printDataCount(std::shared_ptr<odb::core::database> db) {
   odb::core::transaction t(db->begin());
 
