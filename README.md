@@ -92,7 +92,7 @@ L'application est un "jeux du pendu".
 #### Conception
 
   - Langages: TypeScript, JSON
-  - Librairies: @stomp/stompjs, ws
+  - Librairies: stomp/stompjs, ws
   - Patterns: Singleton
   - Bundler: WebPack
   - Packager: CPack
