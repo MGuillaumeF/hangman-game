@@ -122,10 +122,13 @@ BOOST_AUTO_TEST_CASE(test_create) {
     std::cout << "[INFO] first commit" << std::endl;
   }
 
+  BOOST_CHECK_EQUAL(2, printDataCount<word_stat>(db));
+  BOOST_CHECK_EQUAL(1, printDataCount<dictionary_stat>(db));
+
   // Say hello to those have id under 2.
   //
   {
-    /*odb::core::transaction t(db->begin());
+    odb::core::transaction t(db->begin());
 
     odb::result<word> r(db->query<word>(odb::query<word>::id < 10));
 
@@ -134,7 +137,16 @@ BOOST_AUTO_TEST_CASE(test_create) {
                 << "!" << std::endl;
     }
 
-    t.commit();*/
+    t.commit();
+  }
+
+  {
+    odb::core::transaction t(db->begin());
+    std::vector<std::shared_ptr<word>> words;
+    std::shared_ptr< dictionary > english(db->load<dictionary>(english_id));
+    words = english.getWords();
+    BOOST_CHECK_EQUAL(2, words.size());
+    t.commit();
   }
 
   /*
@@ -220,9 +232,6 @@ BOOST_AUTO_TEST_CASE(test_create) {
   CRUDOrderDispatcher::deleteObject<user>(boost::property_tree::ptree(), del);
 
   */
-
-  BOOST_CHECK_EQUAL(2, printDataCount<word_stat>(db));
-  BOOST_CHECK_EQUAL(1, printDataCount<dictionary_stat>(db));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
