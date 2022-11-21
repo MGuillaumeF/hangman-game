@@ -85,12 +85,14 @@ BOOST_AUTO_TEST_CASE(test_create) {
   std::vector<std::string> helloDefinitions;
   helloDefinitions.emplace_back(std::string("word of salutation"));
   hello->setDefinitions(helloDefinitions);
+  hello->setDictionary(englishDictionary);
 
   std::shared_ptr<word> world = std::make_shared<word>();
   world->setName("world");
   std::vector<std::string> worldDefinitions;
   worldDefinitions.emplace_back(std::string("bullshit"));
   world->setDefinitions(worldDefinitions);
+  world->setDictionary(englishDictionary);
 
   /*
     std::vector<std::weak_ptr<word>> words;
@@ -106,14 +108,14 @@ BOOST_AUTO_TEST_CASE(test_create) {
     std::cout << "[INFO] open transaction" << std::endl;
     odb::core::transaction t(db->begin());
 
-    /*hello_id = db->persist(*hello);
+    english_id = db->persist(*englishDictionary);
+    std::cout << "[INFO] persist english dictionary" << std::endl;
+
+    hello_id = db->persist(*hello);
     std::cout << "[INFO] persist hello word" << std::endl;
 
     world_id = db->persist(*world);
-    std::cout << "[INFO] persist world word" << std::endl;*/
-
-    english_id = db->persist(*englishDictionary);
-    std::cout << "[INFO] persist english dictionary" << std::endl;
+    std::cout << "[INFO] persist world word" << std::endl;
 
     t.commit();
 
