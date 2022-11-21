@@ -92,11 +92,12 @@ BOOST_AUTO_TEST_CASE(test_create) {
   worldDefinitions.emplace_back(std::string("bullshit"));
   world->setDefinitions(worldDefinitions);
 
+/*
   std::vector<std::weak_ptr<word>> words;
   words.emplace_back(hello);
   words.emplace_back(world);
   englishDictionary->setWords(words);
-
+*/
   std::cout << "[INFO] init objects out of transactions" << std::endl;
 
   // Make objects persistent and save their ids for later use.
@@ -111,9 +112,9 @@ BOOST_AUTO_TEST_CASE(test_create) {
     world_id = db->persist(*world);
     std::cout << "[INFO] persist world word" << std::endl;
 
-    english_id = db->persist(*englishDictionary);
+    /*english_id = db->persist(*englishDictionary);
     std::cout << "[INFO] persist english dictionary" << std::endl;
-
+*/
     t.commit();
 
     std::cout << "[INFO] first commit" << std::endl;
