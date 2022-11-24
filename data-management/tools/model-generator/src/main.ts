@@ -255,6 +255,21 @@ function generateParser(
   }`;
 }
 
+function generateCppGetErrors(modelClassName: string,
+  attrData: ModelAttributesProperties[]){
+  return `
+  /**
+   * @brief method to get object's errors
+   *
+   * @return The error vector
+   */
+  std::vector<model_error> getErrors() {
+    std::vector<model_error> errors;
+    // TODO add implementation
+    return errors;
+  }`
+}
+
 /**
  *
  * @param modelClass
