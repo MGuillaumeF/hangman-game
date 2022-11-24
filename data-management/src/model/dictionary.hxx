@@ -106,6 +106,17 @@ public:
   }
 
   /**
+   * @brief method to get object's errors
+   *
+   * @return The error vector
+   */
+  std::vector<model_error> getErrors() {
+    std::vector<model_error> errors;
+    // TODO add implementation
+    return errors;
+  }
+
+  /**
    * @brief method to get object type
    *
    * @return The object type
