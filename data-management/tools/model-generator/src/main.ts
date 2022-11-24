@@ -476,6 +476,8 @@ ${assessors.join("\n\n")}
       : generateParser(className, attributes)
   }
 
+  ${generateCppGetErrors(className, attributes)}
+
   /**
    * @brief method to get object type
    *
