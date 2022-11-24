@@ -134,15 +134,6 @@ public:
   const std::time_t &getUpdatedAt() const { return m_updated_at; };
 
   /**
-   * @brief method to check if all fields of object are valid
-   *
-   * @return the error list of validation
-   */
-  std::list<boost::property_tree::ptree> getErrors() const {
-    return std::list<boost::property_tree::ptree>();
-  }
-
-  /**
    * @brief method to convert object to property tree
    *
    * @return The object on property tree format
@@ -207,11 +198,11 @@ public:
   }
 
   /**
-   * @brief method to get object's errors
+   * @brief method to check if all fields of object are valid
    *
-   * @return The error vector
+   * @return the error vector of validation
    */
-  std::vector<model_error> getErrors() {
+  std::vector<model_error> getErrors() const {
     std::vector<model_error> errors;
     // TODO add implementation
     return errors;

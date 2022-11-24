@@ -164,11 +164,11 @@ public:
   }
 
   /**
-   * @brief method to get object's errors
+   * @brief method to check if all fields of object are valid
    *
-   * @return The error vector
+   * @return the error vector of validation
    */
-  std::vector<model_error> getErrors() {
+  std::vector<model_error> getErrors() const {
     std::vector<model_error> errors;
     // TODO add implementation
     return errors;
