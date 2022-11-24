@@ -40,6 +40,17 @@ public:
   std::string getCodeText() const { return model_error_code_text.at(m_code); }
 
   std::string getMessage() const { return m_message; }
+
+  /**
+   * method to convert error to ptree object
+   */
+  boost::property_tree::ptree toPtree() const {
+    boost::property_tree::ptree ptree;
+    ptree.put("attribute", getAttributeName());
+    ptree.put("code", getCodeText());
+    ptree.put("message", getMessage());
+    return ptree;
+  }
 };
 
 #endif
