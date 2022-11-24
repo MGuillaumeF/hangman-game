@@ -356,7 +356,7 @@ ${Array.from(includesModelObjectsCpp)
 
   ${
     className === "root_model_object"
-      ? "#include \"./model_error.hpp\"\n#include <boost/property_tree/ptree.hpp>\n#include <list>"
+      ? "#include \"./model_error.hpp\"\n#include <boost/property_tree/ptree.hpp>\n#include <list>\n#include <vector>"
       : ""
   }
 ${Array.from(includesCpp)
