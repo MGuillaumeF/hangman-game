@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <boost/property_tree/ptree.hpp>
 
 enum class model_error_code {
   MAX_LENGTH,
