@@ -122,7 +122,7 @@ public:
     for (T objectToPersist : objects) {
       auto errorList = objectToPersist.getErrors();
       for (const auto &errorItem : errorList) {
-        errors.add_child("error", errorItem.toPtree(););
+        errors.add_child("error", errorItem.toPtree());
       }
       if (0 != objectToPersist.getId()) {
         std::cerr
