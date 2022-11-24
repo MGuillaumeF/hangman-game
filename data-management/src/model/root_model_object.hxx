@@ -13,6 +13,7 @@
 #include <list>
 #include <odb/core.hxx>
 #include <string>
+#include <vector>
 
 /**
  * @brief class of root_model_object object in model
