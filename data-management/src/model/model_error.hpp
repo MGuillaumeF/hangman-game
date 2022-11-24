@@ -1,9 +1,9 @@
 #ifndef __MODEL_ERROR_HPP__
 #define __MODEL_ERROR_HPP__
 
+#include <boost/property_tree/ptree.hpp>
 #include <map>
 #include <string>
-#include <boost/property_tree/ptree.hpp>
 
 enum class model_error_code {
   MAX_LENGTH,
