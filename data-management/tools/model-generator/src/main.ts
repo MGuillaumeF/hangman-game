@@ -258,12 +258,12 @@ function generateParser(
 function generateCppGetErrors(modelClassName: string,
   attrData: ModelAttributesProperties[]){
   return `
-  /**
-   * @brief method to get object's errors
+   /**
+   * @brief method to check if all fields of object are valid
    *
-   * @return The error vector
+   * @return the error vector of validation
    */
-  std::vector<model_error> getErrors() {
+  std::vector<model_error> getErrors() const {
     std::vector<model_error> errors;
     // TODO add implementation
     return errors;
@@ -401,15 +401,6 @@ ${assessors.join("\n\n")}
   ${
     className === "root_model_object"
       ? `
-  /**
-   * @brief method to check if all fields of object are valid
-   *
-   * @return the error list of validation
-   */
-  std::list<boost::property_tree::ptree> getErrors() const {
-    return std::list<boost::property_tree::ptree>();
-  }
-
   /**
    * @brief method to convert object to property tree
    *
