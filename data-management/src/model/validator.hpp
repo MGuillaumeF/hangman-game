@@ -31,7 +31,7 @@ public:
     std::vector<model_error> errors;
     return errors;
   }
-  
+
   /**
    * method to valid a number property by constraint
    * @param constraint The constraint to have a valid data
