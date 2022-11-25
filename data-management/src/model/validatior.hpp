@@ -17,14 +17,13 @@ struct number_constraint {
 };
 
 class validator {
-  public:
-    static std::vector<model_error> check_number_property(number_constraint constraint, std::string attribute_name,
-    uint64_t value) {
-      std::vector<model_error> errors;
-      return errors;
-    }
-
-  
+public:
+  static std::vector<model_error>
+  check_number_property(number_constraint constraint,
+                        std::string attribute_name, uint64_t value) {
+    std::vector<model_error> errors;
+    return errors;
+  }
 };
 
 #endif
