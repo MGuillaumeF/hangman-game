@@ -396,7 +396,7 @@ export class TypeScriptClassGenerator {
     return `
     public static parse${
       className === "RootModelObject"
-        ? `MetaData<T extends ${snakeCaseToUpperCamelCase(className)}>(T obj, data : any)`
+        ? `MetaData<T extends ${snakeCaseToUpperCamelCase(className)}>(obj : T, data : any)`
         : "(data : any)"
     } : ${
       className === "RootModelObject"
