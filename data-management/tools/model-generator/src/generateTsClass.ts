@@ -394,7 +394,7 @@ export class TypeScriptClassGenerator {
     };
 
     return `
-    public static parse${className === "root_model_object" ? `<T extends ${snakeCaseToUpperCamelCase(className)}>` : ''}(data : any) : ${className === "root_model_object" ? 'T' : snakeCaseToUpperCamelCase(className)} {
+    public static parse${className === "RootModelObject" ? `<T extends ${snakeCaseToUpperCamelCase(className)}>` : ''}(data : any) : ${className === "RootModelObject" ? 'T' : snakeCaseToUpperCamelCase(className)} {
         const obj = new ${snakeCaseToUpperCamelCase(className)}();
         if (typeof data === "object") {
           ${attibutePropertiesList
