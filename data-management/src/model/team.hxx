@@ -1,12 +1,12 @@
 
 /**
- * @brief group.hxx DO NOT MODIFY THIS FILE, this file is a generated model
- * class
+ * @brief team.hxx DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 
-#ifndef __GENERATED_MODEL_OBJECT_GROUP_HXX__
-#define __GENERATED_MODEL_OBJECT_GROUP_HXX__
+#ifndef __GENERATED_MODEL_OBJECT_TEAM_HXX__
+#define __GENERATED_MODEL_OBJECT_TEAM_HXX__
 
+#include "./chat.hxx"
 #include "./root_model_object.hxx"
 
 #include <memory>
@@ -14,26 +14,29 @@
 #include <vector>
 
 class user;
+class chat;
 
 /**
- * @brief class of group object in model
+ * @brief class of team object in model
  *
  */
 #pragma db object session
 #pragma db object pointer(std::shared_ptr)
-class group final : public root_model_object {
+class team final : public root_model_object {
 private:
   friend class odb::access;
   std::string m_name;
-#pragma db value_not_null inverse(m_groups)
+#pragma db value_not_null inverse(m_teams)
   std::vector<std::weak_ptr<user>> m_members;
+#pragma db not_null
+  std::shared_ptr<chat> m_chat;
 
 public:
   /**
-   * @brief Construct a new group object
+   * @brief Construct a new team object
    *
    */
-  group() = default;
+  team() = default;
 
   /**
    * @brief Set the name of object
@@ -68,14 +71,28 @@ public:
   };
 
   /**
+   * @brief Set the chat of object
+   *
+   * @param chat The chat of object
+   */
+  void setChat(const std::shared_ptr<chat> &chat) { m_chat = chat; };
+
+  /**
+   * @brief Get the chat of object
+   *
+   * @return const std::shared_ptr<chat>& the chat of object
+   */
+  const std::shared_ptr<chat> &getChat() const { return m_chat; };
+
+  /**
    * @brief method to extract object from property tree
    *
-   * @return The group found
+   * @return The team found
    */
-  static std::unique_ptr<group>
+  static std::unique_ptr<team>
   parse(const boost::property_tree::ptree &property_tree) {
-    std::unique_ptr<group> parsedObject =
-        root_model_object::parse<group>(property_tree);
+    std::unique_ptr<team> parsedObject =
+        root_model_object::parse<team>(property_tree);
     const boost::optional<std::string> name =
         property_tree.get_optional<std::string>("name");
     if (name) {
@@ -101,25 +118,25 @@ public:
    *
    * @return The object type
    */
-  static std::string getObjectType() { return "group"; }
+  static std::string getObjectType() { return "team"; }
 
   /**
    * @brief method to get plurial object type
    *
    * @return The plurial object type
    */
-  static std::string getPlurialObjectType() { return "groups"; }
+  static std::string getPlurialObjectType() { return "teams"; }
 };
 
-#pragma db object(group)
+#pragma db object(team)
 
-#pragma db view object(group)
-struct group_stat {
-#pragma db column("count(" + group::m_id + ")")
+#pragma db view object(team)
+struct team_stat {
+#pragma db column("count(" + team::m_id + ")")
   std::size_t count;
 };
 
-#endif // end __GENERATED_MODEL_OBJECT_GROUP_HXX__
+#endif // end __GENERATED_MODEL_OBJECT_TEAM_HXX__
 
 #ifdef ODB_COMPILER
 #include "./user.hxx"

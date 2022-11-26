@@ -1,18 +1,34 @@
-#ifndef __MODEL_DICTIONARY_HXX__
-#define __MODEL_DICTIONARY_HXX__
+
+/**
+ * @brief dictionary.hxx DO NOT MODIFY THIS FILE, this file is a generated model
+ * class
+ */
+
+#ifndef __GENERATED_MODEL_OBJECT_DICTIONARY_HXX__
+#define __GENERATED_MODEL_OBJECT_DICTIONARY_HXX__
 
 #include "./root_model_object.hxx"
-#include "./word.hxx"
+
 #include <memory>
 #include <string>
 #include <vector>
 
+class word;
+
 /**
- * @brief class of Dictionary in model
+ * @brief class of dictionary object in model
  *
  */
-#pragma db object
+#pragma db object session
+#pragma db object pointer(std::shared_ptr)
 class dictionary final : public root_model_object {
+private:
+  friend class odb::access;
+  std::string m_name;
+  std::string m_country_code;
+#pragma db value_not_null inverse(m_dictionary)
+  std::vector<std::weak_ptr<word>> m_words;
+
 public:
   /**
    * @brief Construct a new dictionary object
@@ -21,96 +37,83 @@ public:
   dictionary() = default;
 
   /**
-   * @brief Get the name of dictionary object
+   * @brief Set the name of object
    *
-   * @return const std::string&
-   */
-  const std::string &getName() const { return m_name; };
-
-  /**
-   * @brief Set the name of dictionary object
-   *
-   * @param name
+   * @param name The name of object
    */
   void setName(const std::string &name) { m_name = name; };
 
   /**
-   * @brief Get the country_code of dictionary object
+   * @brief Get the name of object
    *
-   * @return const std::string&
+   * @return const std::string& the name of object
    */
-  const std::string &getCountryCode() const { return m_country_code; };
+  const std::string &getName() const { return m_name; };
 
   /**
-   * @brief Set the country_code of dictionary object
+   * @brief Set the country_code of object
    *
-   * @param country_code
+   * @param country_code The country_code of object
    */
   void setCountryCode(const std::string &country_code) {
     m_country_code = country_code;
   };
 
   /**
-   * @brief Get words of dictionary object
+   * @brief Get the country_code of object
    *
-   * @return const std::vector<std::shared_ptr<word>>&
+   * @return const std::string& the country_code of object
    */
-  const std::vector<std::shared_ptr<word>> &getWords() const {
-    return m_words;
-  };
+  const std::string &getCountryCode() const { return m_country_code; };
 
   /**
-   * @brief Set words of group object
+   * @brief Set the words of object
    *
-   * @param words
+   * @param words The words of object
    */
-  void setWords(const std::vector<std::shared_ptr<word>> &words) {
+  void setWords(const std::vector<std::weak_ptr<word>> &words) {
     m_words = words;
   };
 
   /**
-   * @brief method to check if all fields of object are valid
+   * @brief Get the words of object
    *
-   * @return the error list of validation
+   * @return const std::vector<std::weak_ptr<word>>& the words of object
    */
-  std::list<boost::property_tree::ptree> getErrors() const {
-    std::list<boost::property_tree::ptree> errors;
-    if (getName().size() < 3) {
-      boost::property_tree::ptree error;
-      error.put("field", "name");
-      error.put("message", "SIZE");
-      errors.emplace_back(error);
-    }
-    if (getCountryCode().size() < 3) {
-      boost::property_tree::ptree error;
-      error.put("field", "country_code");
-      error.put("message", "SIZE");
-      errors.emplace_back(error);
-    }
-    return errors;
-  }
-
-  /**
-   * @brief method to convert object to property tree
-   *
-   * @return The object on property tree format
-   */
-  boost::property_tree::ptree toPtree() {
-    return boost::property_tree::ptree();
-  }
+  const std::vector<std::weak_ptr<word>> &getWords() const { return m_words; };
 
   /**
    * @brief method to extract object from property tree
    *
-   * @return The object found
+   * @return The dictionary found
    */
-  static dictionary parse(const boost::property_tree::ptree &property_tree) {
-    dictionary parsedDictionary =
+  static std::unique_ptr<dictionary>
+  parse(const boost::property_tree::ptree &property_tree) {
+    std::unique_ptr<dictionary> parsedObject =
         root_model_object::parse<dictionary>(property_tree);
-    parsedDictionary.setName(property_tree.get<std::string>("name"));
-    parsedDictionary.setCountryCode(
-        property_tree.get<std::string>("country_code"));
-    return parsedDictionary;
+    const boost::optional<std::string> name =
+        property_tree.get_optional<std::string>("name");
+    if (name) {
+      parsedObject->setName(*name);
+    }
+    const boost::optional<std::string> country_code =
+        property_tree.get_optional<std::string>("country_code");
+    if (country_code) {
+      parsedObject->setCountryCode(*country_code);
+    }
+
+    return parsedObject;
+  }
+
+  /**
+   * @brief method to check if all fields of object are valid
+   *
+   * @return the error vector of validation
+   */
+  std::vector<model_error> getErrors() const {
+    std::vector<model_error> errors;
+    // TODO add implementation
+    return errors;
   }
 
   /**
@@ -126,16 +129,6 @@ public:
    * @return The plurial object type
    */
   static std::string getPlurialObjectType() { return "dictionaries"; }
-
-private:
-  friend class odb::access;
-
-#pragma db unique options() options("CHECK(name != '')")
-  std::string m_name;
-#pragma db unique options() options("CHECK(country_code != '')")
-  std::string m_country_code;
-#pragma db value_not_null unordered
-  std::vector<std::shared_ptr<word>> m_words;
 };
 
 #pragma db object(dictionary)
@@ -146,4 +139,8 @@ struct dictionary_stat {
   std::size_t count;
 };
 
-#endif // __MODEL_DICTIONARY_HXX__
+#endif // end __GENERATED_MODEL_OBJECT_DICTIONARY_HXX__
+
+#ifdef ODB_COMPILER
+#include "./word.hxx"
+#endif

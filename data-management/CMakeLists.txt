@@ -38,6 +38,7 @@ file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
 # Add all Core Model Sources files in COMMON_MODEL_SRC_DIR variable
 file(GLOB_RECURSE CONNECTOR_MODEL_SRC_DIR CONFIGURE_DEPENDS
      ${MODEL_SRCS}
+     "src/model/*.hpp"
      "src/endpoint/*.hpp"
      "src/endpoint/*.cpp"
      "src/connector/*.hxx"

@@ -24,6 +24,22 @@ permissions: write-all
 
 jobs:
 
+ clear:
+    runs-on: ubuntu-latest
+    name: A job to delete old workflow runs
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Delete workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      with:
+        repository: MGuillaumeF/hangman-game
+        workflow: ".github/workflows/default.yml"
+        older-than-seconds: 86400   
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
  sonarcloud-analyse:
     env:
       BUILD_TYPE: Debug
@@ -58,8 +74,8 @@ jobs:
         git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add server
-        git add data-management
+        git add server || echo "No modification server to add pop"
+        git add data-management || echo "No data-management server to add pop"
         (git commit -m "[AUTO] clang format write" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -126,6 +142,8 @@ jobs:
       run: |
         echo disable temporary
         cp ./dist/ts/model/* ../../../client/src/model
+        cp ./dist/cpp/model/* ../../src/model
+        cp ./dist/cpp/endpoint/* ../../src/endpoint
         # rm -rf ../../../client/src/model/*
 
     - name: Audit dependencies model generator
@@ -135,6 +153,25 @@ jobs:
     - name: Convert Audit dependencies model generator report
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: ./node_modules/.bin/audiso --input-file=./audit-dependency-model-generator-report.json --output-file ../../reports/audit-model-generator-report.json
+
+    - name: clang format
+      run: |
+        find ./ -regex ".*\.\(h\|c\|cc\|hh\|hxx\|cxx\|hpp\|cpp\)" | xargs clang-format -style=file -i
+        
+    - name: Save server changes
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      working-directory: ${{github.workspace}}
+      run: |
+        git stash
+        git checkout ${{github.head_ref}}
+        git stash pop
+        git config user.name "MGuillaumeF"
+        git config user.email "${{secrets.EMAIL}}"
+        git add server
+        git add data-management
+        (git commit -m "[AUTO] clang format write" && git push) || echo 'No modification to save'
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.4.1
@@ -172,15 +209,15 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         mkdir sqlite
-        cp ./*.*xx ./sqlite/
+        cp ./*.* ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
         ls -a .
         cd ..
         mkdir mysql
-        cp ./*.*xx ./mysql/
+        cp ./*.* ./mysql/
         cd mysql
-        odb --database mysql --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
+        odb --database mysql --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
         ls -a .
 
     # - name: Save model changes

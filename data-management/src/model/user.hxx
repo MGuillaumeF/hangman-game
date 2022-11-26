@@ -1,21 +1,53 @@
-#ifndef __MODEL_USER_HXX__
-#define __MODEL_USER_HXX__
 
+/**
+ * @brief user.hxx DO NOT MODIFY THIS FILE, this file is a generated model class
+ */
+
+#ifndef __GENERATED_MODEL_OBJECT_USER_HXX__
+#define __GENERATED_MODEL_OBJECT_USER_HXX__
+
+#include "./chat.hxx"
+#include "./group.hxx"
+#include "./party.hxx"
+#include "./root_model_object.hxx"
+#include "./team.hxx"
+
+#include <ctime>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include <odb/core.hxx>
-
-#include "./group.hxx"
-#include "./root_model_object.hxx"
+class group;
+class team;
+class chat;
+class party;
 
 /**
- * @brief class of Users in model
+ * @brief class of user object in model
  *
  */
-#pragma db object
+#pragma db object session
+#pragma db object pointer(std::shared_ptr)
 class user final : public root_model_object {
+private:
+  friend class odb::access;
+  std::string m_login;
+  std::string m_password;
+  std::string m_salt_user;
+  std::string m_salt_session;
+  std::string m_token;
+  std::time_t m_last_connection;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<user>> m_friends;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<group>> m_groups;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<team>> m_teams;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<chat>> m_chats;
+#pragma db value_not_null unordered
+  std::vector<std::shared_ptr<party>> m_parties;
+
 public:
   /**
    * @brief Construct a new user object
@@ -24,180 +56,235 @@ public:
   user() = default;
 
   /**
-   * @brief Get the Login object
+   * @brief Set the login of object
    *
-   * @return const std::string&
-   */
-  const std::string &getLogin() const { return m_login; };
-
-  /**
-   * @brief Set the Login object
-   *
-   * @param login
+   * @param login The login of object
    */
   void setLogin(const std::string &login) { m_login = login; };
 
   /**
-   * @brief Get the Password object
+   * @brief Get the login of object
    *
-   * @return const std::string&
+   * @return const std::string& the login of object
    */
-  const std::string &getPassword() const { return m_password; };
+  const std::string &getLogin() const { return m_login; };
 
   /**
-   * @brief Set the Password object
+   * @brief Set the password of object
    *
-   * @param password
+   * @param password The password of object
    */
   void setPassword(const std::string &password) { m_password = password; };
 
   /**
-   * @brief Get the Salt User object
+   * @brief Get the password of object
    *
-   * @return const std::string&
+   * @return const std::string& the password of object
    */
-  const std::string &getSaltUser() const { return m_saltUser; };
+  const std::string &getPassword() const { return m_password; };
 
   /**
-   * @brief Set the Salt User object
+   * @brief Set the salt_user of object
    *
-   * @param saltUser
+   * @param salt_user The salt_user of object
    */
-  void setSaltUser(const std::string &saltUser) { m_saltUser = saltUser; };
+  void setSaltUser(const std::string &salt_user) { m_salt_user = salt_user; };
 
   /**
-   * @brief Get the Salt Session object
+   * @brief Get the salt_user of object
    *
-   * @return const std::string&
+   * @return const std::string& the salt_user of object
    */
-  const std::string &getSaltSession() const { return m_saltSession; };
+  const std::string &getSaltUser() const { return m_salt_user; };
 
   /**
-   * @brief Set the Salt Session object
+   * @brief Set the salt_session of object
    *
-   * @param saltSession
+   * @param salt_session The salt_session of object
    */
-  void setSaltSession(const std::string &saltSession) {
-    m_saltSession = saltSession;
+  void setSaltSession(const std::string &salt_session) {
+    m_salt_session = salt_session;
   };
 
   /**
-   * @brief Get the Token object
+   * @brief Get the salt_session of object
    *
-   * @return const std::string&
+   * @return const std::string& the salt_session of object
+   */
+  const std::string &getSaltSession() const { return m_salt_session; };
+
+  /**
+   * @brief Set the token of object
+   *
+   * @param token The token of object
+   */
+  void setToken(const std::string &token) { m_token = token; };
+
+  /**
+   * @brief Get the token of object
+   *
+   * @return const std::string& the token of object
    */
   const std::string &getToken() const { return m_token; };
 
   /**
-   * @brief Set the Token object
+   * @brief Set the last_connection of object
    *
-   * @param token
+   * @param last_connection The last_connection of object
    */
-  void setToken(const std::string &token) { m_token = token; };
-  /**
-
-   * @brief Get the Last connection object
-   *
-   * @return const std::time_t&
-   */
-  const std::time_t &getLastConnection() const { return m_lastConnection; };
-
-  /**
-   * @brief Set the last connection object
-   *
-   * @param lastConnection
-   */
-  void setLastConnection(const std::time_t &lastConnection) {
-    m_lastConnection = lastConnection;
+  void setLastConnection(const std::time_t &last_connection) {
+    m_last_connection = last_connection;
   };
 
   /**
-   * @brief Get the friends list of object
+   * @brief Get the last_connection of object
    *
-   * @return const std::vector<user>& The user list of users
+   * @return const std::time_t& the last_connection of object
    */
-  const std::vector<std::shared_ptr<user>> &getFriends() const {
-    return m_friends;
-  };
+  const std::time_t &getLastConnection() const { return m_last_connection; };
 
   /**
-   * @brief Set the users friends list
+   * @brief Set the friends of object
    *
-   * @param friends The friend list of user
+   * @param friends The friends of object
    */
   void setFriends(const std::vector<std::shared_ptr<user>> &friends) {
     m_friends = friends;
   };
 
   /**
-   * @brief Get the groups list of object
+   * @brief Get the friends of object
    *
-   * @return const std::vector<group>& The group list of user
+   * @return const std::vector<std::shared_ptr<user>>& the friends of object
    */
-  const std::vector<std::shared_ptr<group>> &getGroups() const {
-    return m_groups;
+  const std::vector<std::shared_ptr<user>> &getFriends() const {
+    return m_friends;
   };
 
   /**
-   * @brief Set the user groups list
+   * @brief Set the groups of object
    *
-   * @param groups The group list of user
+   * @param groups The groups of object
    */
   void setGroups(const std::vector<std::shared_ptr<group>> &groups) {
     m_groups = groups;
   };
 
   /**
-   * @brief method to check if all fields of object are valid
+   * @brief Get the groups of object
    *
-   * @return the error list of validation
+   * @return const std::vector<std::shared_ptr<group>>& the groups of object
    */
-  std::list<boost::property_tree::ptree> getErrors() const {
-    std::list<boost::property_tree::ptree> errors;
-    if (getLogin().size() < 3) {
-      boost::property_tree::ptree error;
-      error.put("field", "login");
-      error.put("message", "SIZE");
-      errors.emplace_back(error);
-    }
-    return errors;
-  }
+  const std::vector<std::shared_ptr<group>> &getGroups() const {
+    return m_groups;
+  };
 
   /**
-   * @brief method to convert object to property tree
+   * @brief Set the teams of object
    *
-   * @return The object on property tree format
+   * @param teams The teams of object
    */
-  boost::property_tree::ptree toPtree() {
-    return boost::property_tree::ptree();
-  }
+  void setTeams(const std::vector<std::shared_ptr<team>> &teams) {
+    m_teams = teams;
+  };
+
+  /**
+   * @brief Get the teams of object
+   *
+   * @return const std::vector<std::shared_ptr<team>>& the teams of object
+   */
+  const std::vector<std::shared_ptr<team>> &getTeams() const {
+    return m_teams;
+  };
+
+  /**
+   * @brief Set the chats of object
+   *
+   * @param chats The chats of object
+   */
+  void setChats(const std::vector<std::shared_ptr<chat>> &chats) {
+    m_chats = chats;
+  };
+
+  /**
+   * @brief Get the chats of object
+   *
+   * @return const std::vector<std::shared_ptr<chat>>& the chats of object
+   */
+  const std::vector<std::shared_ptr<chat>> &getChats() const {
+    return m_chats;
+  };
+
+  /**
+   * @brief Set the parties of object
+   *
+   * @param parties The parties of object
+   */
+  void setParties(const std::vector<std::shared_ptr<party>> &parties) {
+    m_parties = parties;
+  };
+
+  /**
+   * @brief Get the parties of object
+   *
+   * @return const std::vector<std::shared_ptr<party>>& the parties of object
+   */
+  const std::vector<std::shared_ptr<party>> &getParties() const {
+    return m_parties;
+  };
 
   /**
    * @brief method to extract object from property tree
    *
-   * @return The object found
+   * @return The user found
    */
-  static user parse(const boost::property_tree::ptree &property_tree) {
-    user parsedUser = root_model_object::parse<user>(property_tree);
-    parsedUser.setLogin(property_tree.get<std::string>("login"));
-    parsedUser.setPassword(property_tree.get<std::string>("password"));
-    parsedUser.setSaltUser(property_tree.get<std::string>("salt_user"));
-    const boost::optional<std::string> saltSession =
+  static std::unique_ptr<user>
+  parse(const boost::property_tree::ptree &property_tree) {
+    std::unique_ptr<user> parsedObject =
+        root_model_object::parse<user>(property_tree);
+    const boost::optional<std::string> login =
+        property_tree.get_optional<std::string>("login");
+    if (login) {
+      parsedObject->setLogin(*login);
+    }
+    const boost::optional<std::string> password =
+        property_tree.get_optional<std::string>("password");
+    if (password) {
+      parsedObject->setPassword(*password);
+    }
+    const boost::optional<std::string> salt_user =
+        property_tree.get_optional<std::string>("salt_user");
+    if (salt_user) {
+      parsedObject->setSaltUser(*salt_user);
+    }
+    const boost::optional<std::string> salt_session =
         property_tree.get_optional<std::string>("salt_session");
-    if (saltSession) {
-      parsedUser.setSaltSession(*saltSession);
+    if (salt_session) {
+      parsedObject->setSaltSession(*salt_session);
     }
     const boost::optional<std::string> token =
         property_tree.get_optional<std::string>("token");
     if (token) {
-      parsedUser.setToken(*token);
+      parsedObject->setToken(*token);
     }
-    const boost::optional<std::time_t> lastConnection =
+    const boost::optional<std::time_t> last_connection =
         property_tree.get_optional<std::time_t>("last_connection");
-    if (lastConnection) {
-      parsedUser.setLastConnection(*lastConnection);
+    if (last_connection) {
+      parsedObject->setLastConnection(*last_connection);
     }
-    return parsedUser;
+
+    return parsedObject;
+  }
+
+  /**
+   * @brief method to check if all fields of object are valid
+   *
+   * @return the error vector of validation
+   */
+  std::vector<model_error> getErrors() const {
+    std::vector<model_error> errors;
+    // TODO add implementation
+    return errors;
   }
 
   /**
@@ -213,21 +300,6 @@ public:
    * @return The plurial object type
    */
   static std::string getPlurialObjectType() { return "users"; }
-
-private:
-#pragma db unique not_null type("VARCHAR(255)")
-  std::string m_login;
-#pragma db options() options("CHECK(password != '')")
-  std::string m_password;
-#pragma db options() options("CHECK(saltUser != '')")
-  std::string m_saltUser;
-  std::string m_saltSession;
-  std::string m_token;
-  std::time_t m_lastConnection;
-#pragma db value_not_null unordered
-  std::vector<std::shared_ptr<user>> m_friends;
-#pragma db value_not_null unordered
-  std::vector<std::shared_ptr<group>> m_groups;
 };
 
 #pragma db object(user)
@@ -238,4 +310,8 @@ struct user_stat {
   std::size_t count;
 };
 
-#endif // USER_HXX
+#endif // end __GENERATED_MODEL_OBJECT_USER_HXX__
+
+#ifdef ODB_COMPILER
+
+#endif

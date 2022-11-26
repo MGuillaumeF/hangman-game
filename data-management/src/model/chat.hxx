@@ -1,11 +1,10 @@
 
 /**
- * @brief group.hxx DO NOT MODIFY THIS FILE, this file is a generated model
- * class
+ * @brief chat.hxx DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 
-#ifndef __GENERATED_MODEL_OBJECT_GROUP_HXX__
-#define __GENERATED_MODEL_OBJECT_GROUP_HXX__
+#ifndef __GENERATED_MODEL_OBJECT_CHAT_HXX__
+#define __GENERATED_MODEL_OBJECT_CHAT_HXX__
 
 #include "./root_model_object.hxx"
 
@@ -13,27 +12,30 @@
 #include <string>
 #include <vector>
 
+class message;
 class user;
 
 /**
- * @brief class of group object in model
+ * @brief class of chat object in model
  *
  */
 #pragma db object session
 #pragma db object pointer(std::shared_ptr)
-class group final : public root_model_object {
+class chat final : public root_model_object {
 private:
   friend class odb::access;
   std::string m_name;
-#pragma db value_not_null inverse(m_groups)
+#pragma db value_not_null inverse(m_chat)
+  std::vector<std::weak_ptr<message>> m_messages;
+#pragma db value_not_null inverse(m_chats)
   std::vector<std::weak_ptr<user>> m_members;
 
 public:
   /**
-   * @brief Construct a new group object
+   * @brief Construct a new chat object
    *
    */
-  group() = default;
+  chat() = default;
 
   /**
    * @brief Set the name of object
@@ -48,6 +50,24 @@ public:
    * @return const std::string& the name of object
    */
   const std::string &getName() const { return m_name; };
+
+  /**
+   * @brief Set the messages of object
+   *
+   * @param messages The messages of object
+   */
+  void setMessages(const std::vector<std::weak_ptr<message>> &messages) {
+    m_messages = messages;
+  };
+
+  /**
+   * @brief Get the messages of object
+   *
+   * @return const std::vector<std::weak_ptr<message>>& the messages of object
+   */
+  const std::vector<std::weak_ptr<message>> &getMessages() const {
+    return m_messages;
+  };
 
   /**
    * @brief Set the members of object
@@ -70,12 +90,12 @@ public:
   /**
    * @brief method to extract object from property tree
    *
-   * @return The group found
+   * @return The chat found
    */
-  static std::unique_ptr<group>
+  static std::unique_ptr<chat>
   parse(const boost::property_tree::ptree &property_tree) {
-    std::unique_ptr<group> parsedObject =
-        root_model_object::parse<group>(property_tree);
+    std::unique_ptr<chat> parsedObject =
+        root_model_object::parse<chat>(property_tree);
     const boost::optional<std::string> name =
         property_tree.get_optional<std::string>("name");
     if (name) {
@@ -101,26 +121,27 @@ public:
    *
    * @return The object type
    */
-  static std::string getObjectType() { return "group"; }
+  static std::string getObjectType() { return "chat"; }
 
   /**
    * @brief method to get plurial object type
    *
    * @return The plurial object type
    */
-  static std::string getPlurialObjectType() { return "groups"; }
+  static std::string getPlurialObjectType() { return "chats"; }
 };
 
-#pragma db object(group)
+#pragma db object(chat)
 
-#pragma db view object(group)
-struct group_stat {
-#pragma db column("count(" + group::m_id + ")")
+#pragma db view object(chat)
+struct chat_stat {
+#pragma db column("count(" + chat::m_id + ")")
   std::size_t count;
 };
 
-#endif // end __GENERATED_MODEL_OBJECT_GROUP_HXX__
+#endif // end __GENERATED_MODEL_OBJECT_CHAT_HXX__
 
 #ifdef ODB_COMPILER
+#include "./message.hxx"
 #include "./user.hxx"
 #endif

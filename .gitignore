@@ -5,3 +5,4 @@
 *.log
 /project-cppcheck-build-dir
 project.cppcheck
+**/node_modules

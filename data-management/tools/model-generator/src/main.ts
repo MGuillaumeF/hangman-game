@@ -41,7 +41,8 @@ const cppMapIncludes: { [key: string]: string } = {
 function getCppAttributeType(
   attrData: ModelAttributesProperties,
   includesLib?: Set<string>,
-  includesObjects?: Set<string>
+  includesObjects?: Set<string>,
+  declareModelObjectsCpp?: Set<string>
 ) {
   let attributeType = attrData.type;
   const isArray = /^.*\[\]$/.test(attributeType);
@@ -61,7 +62,11 @@ function getCppAttributeType(
   if (attributeTypeMapped) {
     attributeType = attributeTypeMapped;
   } else if (includesObjects && allClassNames.has(attributeType)) {
-    includesObjects.add(attributeType);
+    if (declareModelObjectsCpp && attrData.linked_column) {
+      declareModelObjectsCpp.add(attributeType);
+    } else {
+      includesObjects.add(attributeType);
+    }
   }
   if (attrData.cardinality && allClassNames.has(attributeType)) {
     if (includesLib) {
@@ -105,6 +110,9 @@ function generateClasses(modelClasses: ModelClassDefinition[]) {
  */
 function generateCppPragma(attrData: ModelAttributesProperties) {
   const pragmas = [];
+  if (attrData.object_id && attrData.macro === "increment-auto") {
+    pragmas.push("id", "auto");
+  }
   if (
     attrData.cardinality === "to_many" ||
     (attrData.cardinality === "many_to_many" && !attrData.linked_column)
@@ -140,13 +148,25 @@ function generateCppPragma(attrData: ModelAttributesProperties) {
 function generateCppAttribute(
   attrData: ModelAttributesProperties,
   includesCpp?: Set<string>,
-  includesModelObjectsCpp?: Set<string>
+  includesModelObjectsCpp?: Set<string>,
+  declareModelObjectsCpp?: Set<string>
 ) {
+  let defaultValue = attrData.default_value !== undefined ? attrData.default_value : '';
+  if (defaultValue !== '') {
+    if (attrData.type === "string") {
+      defaultValue = `"${defaultValue}"`;
+    }
+    if (attrData.type === "date" && defaultValue === "current") {
+      defaultValue = `std::time(nullptr)`;
+    }
+    defaultValue = `= ${defaultValue}`;
+  }
   return `${generateCppPragma(attrData)}${getCppAttributeType(
     attrData,
     includesCpp,
-    includesModelObjectsCpp
-  )} m_${attrData.name};`;
+    includesModelObjectsCpp,
+    declareModelObjectsCpp
+  )} m_${attrData.name}${defaultValue};`;
 }
 
 /**
@@ -187,6 +207,69 @@ function generateCppGetter(attrData: ModelAttributesProperties) {
   )}() const { return m_${attrData.name}; };`;
 }
 
+function generateParser(
+  modelClassName: string,
+  attrData: ModelAttributesProperties[]
+) {
+  const objParsing = attrData.map((attribute) => {
+    const isArray = /^.*\[\]$/.test(attribute.type);
+    if (isArray) {
+      return "";
+    } else if (allClassNames.has(attribute.type)) {
+      return "";
+      return `const boost::optional<const boost::property_tree::ptree&> ${
+        attribute.name
+      }_obj =
+          property_tree.get_child_optional("${attribute.name}");
+      if (${attribute.name}_obj) {
+        parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(${
+        attribute.type
+      }::parse(*${attribute.name}_obj));
+      }`;
+    } else {
+      const attributeTypeMapped = cppMapTypes[attribute.type]
+        ? cppMapTypes[attribute.type]
+        : attribute.type;
+
+      return `const boost::optional<${attributeTypeMapped}> ${attribute.name} =
+          property_tree.get_optional<${attributeTypeMapped}>("${
+        attribute.name
+      }");
+      if (${attribute.name}) {
+        parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(*${
+        attribute.name
+      });
+      }`;
+    }
+  });
+
+  return `/**
+   * @brief method to extract object from property tree
+   *
+   * @return The ${modelClassName} found
+   */
+  static std::unique_ptr<${modelClassName}> parse(const boost::property_tree::ptree &property_tree) {
+    std::unique_ptr<${modelClassName}> parsedObject = root_model_object::parse<${modelClassName}>(property_tree);
+    ${objParsing.join("\n")}
+    return parsedObject;
+  }`;
+}
+
+function generateCppGetErrors(modelClassName: string,
+  attrData: ModelAttributesProperties[]){
+  return `
+   /**
+   * @brief method to check if all fields of object are valid
+   *
+   * @return the error vector of validation
+   */
+  std::vector<model_error> getErrors() const {
+    std::vector<model_error> errors;
+    // TODO add implementation
+    return errors;
+  }`
+}
+
 /**
  *
  * @param modelClass
@@ -201,6 +284,7 @@ function generateCppClass(modelClass: ModelClassDefinition) {
 
   const includesCpp = new Set(["string"]);
   const includesModelObjectsCpp = new Set<string>();
+  const declareModelObjectsCpp = new Set<string>();
   const { attributes } = modelClass;
 
   if (className === "root_model_object") {
@@ -221,7 +305,8 @@ function generateCppClass(modelClass: ModelClassDefinition) {
       return generateCppAttribute(
         attributeObject,
         includesCpp,
-        includesModelObjectsCpp
+        includesModelObjectsCpp,
+        declareModelObjectsCpp
       );
     })
     .join("\n");
@@ -235,7 +320,8 @@ function generateCppClass(modelClass: ModelClassDefinition) {
       return generateCppAttribute(
         attributeObject,
         includesCpp,
-        includesModelObjectsCpp
+        includesModelObjectsCpp,
+        declareModelObjectsCpp
       );
     })
     .join("\n");
@@ -249,15 +335,15 @@ function generateCppClass(modelClass: ModelClassDefinition) {
       return generateCppAttribute(
         attributeObject,
         includesCpp,
-        includesModelObjectsCpp
+        includesModelObjectsCpp,
+        declareModelObjectsCpp
       );
     })
     .join("\n");
 
   const cppClassTemplate = `
 /**
- * @filename ${filename}
- * @brief DO NOT MODIFY THIS FILE, this file is a generated model class
+ * @brief ${filename} DO NOT MODIFY THIS FILE, this file is a generated model class
  */
 
 #ifndef ${guard}
@@ -268,17 +354,34 @@ ${Array.from(includesModelObjectsCpp)
   .map((inc) => `#include "./${inc}.hxx"`)
   .join("\n")}
 
+  ${
+    className === "root_model_object"
+      ? "#include \"./model_error.hpp\"\n#include <boost/property_tree/ptree.hpp>\n#include <list>\n#include <vector>"
+      : ""
+  }
 ${Array.from(includesCpp)
   .map((inc) => `#include <${inc}>`)
+  .join("\n")}
+
+${Array.from(
+  new Set<string>([
+    ...Array.from(declareModelObjectsCpp),
+    ...Array.from(includesModelObjectsCpp)
+  ])
+)
+  .filter((inc) => inc !== className && inc !== "root_model_object")
+  .map((inc) => `class ${inc};`)
   .join("\n")}
 
 /**
  * @brief class of ${className} object in model
  *
  */
-#pragma db object
+#pragma db object session
+#pragma db object pointer(std::shared_ptr)
 class ${className} ${extendClass ? `final : public ${extendClass}` : ""} {
-${privateAttributes.length > 0 ? "private:" : ""}
+private:
+friend class odb::access;
 ${privateAttributes}
 
 ${protectedAttributes.length > 0 ? "protected:" : ""}
@@ -294,6 +397,77 @@ public:
 ${publicAttributes}
 
 ${assessors.join("\n\n")}
+
+  ${
+    className === "root_model_object"
+      ? `
+  /**
+   * @brief method to convert object to property tree
+   *
+   * @return The object on property tree format
+   */
+  boost::property_tree::ptree toPtree();
+
+  /**
+   * @brief method to extract object from property tree
+   *
+   * @return The object found
+   */
+  template <typename T, typename std::enable_if_t<std::is_base_of<
+                            root_model_object, T>::value> * = nullptr>
+  static std::unique_ptr<T> parse(const boost::property_tree::ptree &property_tree) {
+    std::unique_ptr<T> childObject = std::make_unique<T>();
+    const boost::optional<uint32_t> id =
+        property_tree.get_optional<uint32_t>("id");
+    if (id) {
+      childObject->setId(*id);
+    }
+    const boost::optional<uint32_t> version =
+        property_tree.get_optional<uint32_t>("version");
+    if (version) {
+      childObject->setVersion(*version);
+    }
+    const boost::optional<std::string> created_by =
+        property_tree.get_optional<std::string>("created_by");
+    if (created_by) {
+      childObject->setCreatedBy(*created_by);
+    }
+    const boost::optional<std::string> updated_by =
+        property_tree.get_optional<std::string>("updated_by");
+    if (updated_by) {
+      childObject->setUpdatedBy(*updated_by);
+    }
+    return childObject;
+  };
+
+  /**
+   * @brief method of pre create in database
+   *
+   * @param author The author of new object
+   */
+  void preCreate(const std::string &author) {
+    setVersion(1);
+    setCreatedBy(author);
+    setCreatedAt(std::time(nullptr));
+    setUpdatedBy(author);
+    setUpdatedAt(std::time(nullptr));
+  }
+
+  /**
+   * @brief method of pre update in database
+   *
+   * @param author The author of update of object
+   */
+  void preUpdate(const std::string &author) {
+    setVersion(getVersion() + 1);
+    setUpdatedBy(author);
+    setUpdatedAt(std::time(nullptr));
+  }
+  `
+      : generateParser(className, attributes)
+  }
+
+  ${generateCppGetErrors(className, attributes)}
 
   /**
    * @brief method to get object type
@@ -323,7 +497,15 @@ struct ${className}_stat {
   std::size_t count;
 };
 
-#endid // end ${guard}`;
+#endif // end ${guard}
+
+#ifdef ODB_COMPILER
+${Array.from(declareModelObjectsCpp)
+  .map((inc) => `#include "./${inc}.hxx"`)
+  .join("\n")}
+#endif
+
+`;
 
   console.info("generated :", cppClassTemplate);
   return cppClassTemplate;
@@ -392,7 +574,7 @@ function isXMLModelClassDefinition(data: any): data is XMLModelClassDefinition {
   } else {
     result = false;
   }
-  console.log(result);
+
   return result;
 }
 
@@ -428,13 +610,14 @@ function xmlToInternalModelClassDefinitionList(
               min_length:
                 attr.min_length !== undefined
                   ? Number(attr.min_length)
-                  : undefined
+                  : undefined,
+              object_id: attr.object_id === "true"
             };
           });
       result.push({ ...data.$, attributes: modelAttributesList });
     }
   });
-  console.log(result);
+
   return result;
 }
 
@@ -445,11 +628,9 @@ parseString(xml, function (err, result) {
     result.model.classes[0] &&
     isXMLModelClassDefinitionList(result.model.classes[0]?.class)
   ) {
-    console.log("ee");
     const modelClasses = xmlToInternalModelClassDefinitionList(
       result?.model?.classes[0]?.class
     );
-    console.log("ee");
 
     for (const modelClass of modelClasses) {
       allClassNames.add(modelClass.name);
@@ -457,10 +638,7 @@ parseString(xml, function (err, result) {
     TypeScriptClassGenerator.classNames = allClassNames;
     generateClasses(modelClasses);
     const endpointDirPath = resolve("dist", "cpp", "endpoint");
-    const endpointPath = resolve(
-      endpointDirPath,
-      "generateCRUDOrderDispatcher.cpp"
-    );
+    const endpointPath = resolve(endpointDirPath, "CRUDOrderDispatcher.cpp");
     mkdirSync(endpointDirPath, { recursive: true });
     const generatedCRUDOrderDispatcher =
       generateCRUDOrderDispatcher(allClassNames);
