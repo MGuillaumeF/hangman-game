@@ -122,6 +122,7 @@ export class Word extends RootModelObject {
 
   public static parse(data: any): Word {
     const obj = new Word();
+    RootModelObject.parseMetaData<Word>(obj, data);
     if (typeof data === "object") {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {

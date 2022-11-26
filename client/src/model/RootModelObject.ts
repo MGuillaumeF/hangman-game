@@ -5,7 +5,7 @@
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class RootModelObject {
+export abstract class RootModelObject {
   protected static getConstraintes() {
     return {
       version: {
@@ -187,8 +187,7 @@ export class RootModelObject {
     return { version, id, createdBy, createdAt, updatedBy, updatedAt };
   }
 
-  public static parse(data: any): RootModelObject {
-    const obj = new RootModelObject();
+  public static parseMetaData<T extends RootModelObject>(obj: T, data: any): T {
     if (typeof data === "object") {
       if (data["version"] !== undefined) {
         if (typeof data["version"] === "number") {

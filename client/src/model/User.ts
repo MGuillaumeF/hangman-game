@@ -6,6 +6,7 @@ import { RootModelObject } from "./RootModelObject";
 import { Group } from "./Group";
 import { Team } from "./Team";
 import { Chat } from "./Chat";
+import { Party } from "./Party";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
@@ -69,6 +70,8 @@ export class User extends RootModelObject {
   private _teams: Team[] | undefined;
 
   private _chats: Chat[] | undefined;
+
+  private _parties: Party[] | undefined;
 
   /**
    * @brief Set the login of object
@@ -230,6 +233,22 @@ export class User extends RootModelObject {
   public get chats(): Chat[] | undefined {
     return this._chats;
   }
+  /**
+   * @brief Set the parties of object
+   *
+   * @param value The new parties value of object
+   */
+  public set parties(value: Party[] | undefined) {
+    this._parties = value;
+  }
+  /**
+   * @brief Get the parties of object
+   *
+   * @return Party[] | undefined the parties of object
+   */
+  public get parties(): Party[] | undefined {
+    return this._parties;
+  }
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
@@ -295,6 +314,13 @@ export class User extends RootModelObject {
         )
       );
     }
+    if (this.parties !== undefined) {
+      errors.push(
+        ...([] as ModelError[]).concat(
+          ...this.parties.map((item) => item.getErrors())
+        )
+      );
+    }
     return errors;
   }
   /**
@@ -311,7 +337,8 @@ export class User extends RootModelObject {
       friends,
       groups,
       teams,
-      chats
+      chats,
+      parties
     } = this;
     return {
       login,
@@ -329,12 +356,15 @@ export class User extends RootModelObject {
       teams:
         teams !== undefined ? teams.map((item) => item.toJSON()) : undefined,
       chats:
-        chats !== undefined ? chats.map((item) => item.toJSON()) : undefined
+        chats !== undefined ? chats.map((item) => item.toJSON()) : undefined,
+      parties:
+        parties !== undefined ? parties.map((item) => item.toJSON()) : undefined
     };
   }
 
   public static parse(data: any): User {
     const obj = new User();
+    RootModelObject.parseMetaData<User>(obj, data);
     if (typeof data === "object") {
       if (data["login"] !== undefined) {
         if (typeof data["login"] === "string") {
@@ -402,6 +432,13 @@ export class User extends RootModelObject {
       if (data["chats"] !== undefined) {
         if (Array.isArray(data["chats"])) {
           obj.chats = data["chats"].map((item) => Chat.parse(item));
+        } else {
+          throw Error("INVALID TYPE");
+        }
+      }
+      if (data["parties"] !== undefined) {
+        if (Array.isArray(data["parties"])) {
+          obj.parties = data["parties"].map((item) => Party.parse(item));
         } else {
           throw Error("INVALID TYPE");
         }

@@ -90,6 +90,7 @@ export class Group extends RootModelObject {
 
   public static parse(data: any): Group {
     const obj = new Group();
+    RootModelObject.parseMetaData<Group>(obj, data);
     if (typeof data === "object") {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {
