@@ -396,17 +396,21 @@ export class TypeScriptClassGenerator {
     return `
     public static parse${
       className === "RootModelObject"
-        ? `MetaData<T extends ${snakeCaseToUpperCamelCase(className)}>(obj : T, data : any)`
+        ? `MetaData<T extends ${snakeCaseToUpperCamelCase(
+            className
+          )}>(obj : T, data : any)`
         : "(data : any)"
     } : ${
       className === "RootModelObject"
         ? "T"
         : snakeCaseToUpperCamelCase(className)
     } {
-         ${className === "RootModelObject"
-            ? "" : `const obj = new ${className}();
+         ${
+           className === "RootModelObject"
+             ? ""
+             : `const obj = new ${className}();
                     RootModelObject.parseMetaData<${className}>(obj, data);`
-        }
+         }
         if (typeof data === "object") {
           ${attibutePropertiesList
             .map((attibuteProperties) => {

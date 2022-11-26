@@ -363,7 +363,8 @@ export class User extends RootModelObject {
   }
 
   public static parse(data: any): User {
-    const obj = RootModelObject.parseMetaData<User>(data);
+    const obj = new User();
+    RootModelObject.parseMetaData<User>(obj, data);
     if (typeof data === "object") {
       if (data["login"] !== undefined) {
         if (typeof data["login"] === "string") {

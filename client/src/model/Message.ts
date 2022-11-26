@@ -129,7 +129,8 @@ export class Message extends RootModelObject {
   }
 
   public static parse(data: any): Message {
-    const obj = RootModelObject.parseMetaData<Message>(data);
+    const obj = new Message();
+    RootModelObject.parseMetaData<Message>(obj, data);
     if (typeof data === "object") {
       if (data["content"] !== undefined) {
         if (typeof data["content"] === "string") {
