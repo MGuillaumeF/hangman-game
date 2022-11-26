@@ -27,7 +27,7 @@ export type XMLModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
   default_value?: string;
   linked_column?: string;
-  macro?: 'increment-auto';
+  macro?: "increment-auto";
   mandatory?: string;
   max?: string;
   max_length?: string;
@@ -44,7 +44,7 @@ export type ModelAttributesProperties = {
   cardinality?: UnidirectionalCardinality | BidirectionalCardinality;
   default_value?: string;
   linked_column?: string;
-  macro?: 'increment-auto';
+  macro?: "increment-auto";
   mandatory?: boolean;
   max?: number;
   max_length?: number;

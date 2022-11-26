@@ -114,7 +114,7 @@ export class Team extends RootModelObject {
   }
 
   public static parse(data: any): Team {
-    const obj = new Team();
+    const obj = RootModelObject.parse<Team>(data);
     if (typeof data === "object") {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {

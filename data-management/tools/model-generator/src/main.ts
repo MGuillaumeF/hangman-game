@@ -151,8 +151,9 @@ function generateCppAttribute(
   includesModelObjectsCpp?: Set<string>,
   declareModelObjectsCpp?: Set<string>
 ) {
-  let defaultValue = attrData.default_value !== undefined ? attrData.default_value : '';
-  if (defaultValue !== '') {
+  let defaultValue =
+    attrData.default_value !== undefined ? attrData.default_value : "";
+  if (defaultValue !== "") {
     if (attrData.type === "string") {
       defaultValue = `"${defaultValue}"`;
     }
@@ -255,8 +256,10 @@ function generateParser(
   }`;
 }
 
-function generateCppGetErrors(modelClassName: string,
-  attrData: ModelAttributesProperties[]){
+function generateCppGetErrors(
+  modelClassName: string,
+  attrData: ModelAttributesProperties[]
+) {
   return `
    /**
    * @brief method to check if all fields of object are valid
@@ -267,7 +270,7 @@ function generateCppGetErrors(modelClassName: string,
     std::vector<model_error> errors;
     // TODO add implementation
     return errors;
-  }`
+  }`;
 }
 
 /**
@@ -356,7 +359,7 @@ ${Array.from(includesModelObjectsCpp)
 
   ${
     className === "root_model_object"
-      ? "#include \"./model_error.hpp\"\n#include <boost/property_tree/ptree.hpp>\n#include <list>\n#include <vector>"
+      ? '#include "./model_error.hpp"\n#include <boost/property_tree/ptree.hpp>\n#include <list>\n#include <vector>'
       : ""
   }
 ${Array.from(includesCpp)

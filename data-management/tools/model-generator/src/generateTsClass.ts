@@ -394,8 +394,20 @@ export class TypeScriptClassGenerator {
     };
 
     return `
-    public static parse${className === "RootModelObject" ? `<T extends ${snakeCaseToUpperCamelCase(className)}>` : ''}(data : any) : ${className === "RootModelObject" ? 'T' : snakeCaseToUpperCamelCase(className)} {
-        const obj = ${className === "RootModelObject" ? "new T()" : `RootModelObject.parse<${className}>(data)` };
+    public static parse${
+      className === "RootModelObject"
+        ? `<T extends ${snakeCaseToUpperCamelCase(className)}>`
+        : ""
+    }(data : any) : ${
+      className === "RootModelObject"
+        ? "T"
+        : snakeCaseToUpperCamelCase(className)
+    } {
+        const obj = ${
+          className === "RootModelObject"
+            ? "new T()"
+            : `RootModelObject.parse<${className}>(data)`
+        };
         if (typeof data === "object") {
           ${attibutePropertiesList
             .map((attibuteProperties) => {
@@ -550,7 +562,7 @@ export function generateTsClass(modelClass: ModelClassDefinition): string {
     generator.generateParser(className, attributes)
   );
   const generatedTsTemplate = load("TsClasses", {
-    abstract : modelClass.abstract === "true" ? "abstract" : "",
+    abstract: modelClass.abstract === "true" ? "abstract" : "",
     className,
     constraintes: generator.generateAttributesConstraintes(
       attributes,
