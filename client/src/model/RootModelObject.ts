@@ -187,7 +187,7 @@ export abstract class RootModelObject {
     return { version, id, createdBy, createdAt, updatedBy, updatedAt };
   }
 
-  public static parse<T extends RootModelObject>(data: any): T {
+  public static parseMetadata<T extends RootModelObject>(data: any): T {
     const obj = new T();
     if (typeof data === "object") {
       if (data["version"] !== undefined) {
