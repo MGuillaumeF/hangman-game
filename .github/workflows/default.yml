@@ -744,9 +744,9 @@ jobs:
       run: |
         odb --version
         mkdir sqlite
-        copy ./*.*xx ./sqlite/
+        copy ./*.* ./sqlite/
         cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ *.hxx
+        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
