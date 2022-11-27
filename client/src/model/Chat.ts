@@ -119,8 +119,7 @@ export class Chat extends RootModelObject {
   }
 
   public static parse(data: any): Chat {
-    const obj = new Chat();
-    RootModelObject.parseMetaData<Chat>(obj, data);
+    const obj = RootModelObject.parseMetaData<Chat>(new Chat(), data);
     if (typeof data === "object") {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {
