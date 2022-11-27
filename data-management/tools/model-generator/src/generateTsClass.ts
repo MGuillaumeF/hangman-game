@@ -408,8 +408,7 @@ export class TypeScriptClassGenerator {
          ${
            className === "RootModelObject"
              ? ""
-             : `const obj = new ${className}();
-                    RootModelObject.parseMetaData<${className}>(obj, data);`
+             : `const obj = RootModelObject.parseMetaData<${className}>(new ${className}(), data);`
          }
         if (typeof data === "object") {
           ${attibutePropertiesList
