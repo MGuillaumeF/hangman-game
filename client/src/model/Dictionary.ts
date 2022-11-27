@@ -121,8 +121,10 @@ export class Dictionary extends RootModelObject {
   }
 
   public static parse(data: any): Dictionary {
-    const obj = new Dictionary();
-    RootModelObject.parseMetaData<Dictionary>(obj, data);
+    const obj = RootModelObject.parseMetaData<Dictionary>(
+      new Dictionary(),
+      data
+    );
     if (typeof data === "object") {
       if (data["name"] !== undefined) {
         if (typeof data["name"] === "string") {

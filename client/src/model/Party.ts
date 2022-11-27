@@ -170,8 +170,7 @@ export class Party extends RootModelObject {
   }
 
   public static parse(data: any): Party {
-    const obj = new Party();
-    RootModelObject.parseMetaData<Party>(obj, data);
+    const obj = RootModelObject.parseMetaData<Party>(new Party(), data);
     if (typeof data === "object") {
       if (data["start_date"] !== undefined) {
         if (data["start_date"] instanceof Date) {
