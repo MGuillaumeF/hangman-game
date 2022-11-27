@@ -89,7 +89,7 @@ function Settings({ id, navProperties }: Props): React.ReactElement {
           data-alt={t("PAGES.SETTINGS.TITLE")}
           onClick={onClick}
         >
-          <img src={settingsIcon} alt={t("PAGES.SETTINGS.TITLE")} />
+          <img src={settingsIcon} alt={String(t("PAGES.SETTINGS.TITLE"))} />
         </button>
 
         <TransitionGroup className={style.menus}>
@@ -104,10 +104,10 @@ function Settings({ id, navProperties }: Props): React.ReactElement {
                     <button
                       key={menu.translation}
                       className={style.item}
-                      data-alt={t(menu.translation)}
+                      data-alt={String(t(menu.translation))}
                       onClick={index === 1 ? onLanguageClick : undefined}
                     >
-                      <img src={menu.icon} alt={t(menu.translation)} />
+                      <img src={menu.icon} alt={String(t(menu.translation))} />
                     </button>
                   </CSSTransition>
                 );

@@ -5,9 +5,9 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "build": "webpack --node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
+    "build": "webpack --define-process-env-node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
     "build:doc": "styleguidist build",
-    "start": "webpack serve --open --progress --color --node-env development",
+    "start": "webpack serve --open --progress --color --define-process-env-node-env development",
     "cy:open": "cypress open",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
     "prettier": "prettier --write . --ignore-path ./.gitignore",
@@ -15,7 +15,7 @@
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore",
     "lint:stylelint": "stylelint \"**/*.{css,scss,sass}\" --custom-syntax postcss-scss --fix --formatter json > ./dist/reports/lint/stylelint-report.json --ignore-path ./.gitignore",
     "test": "npm-run-all -p start cy:run",
-    "webpack-stats": "webpack --node-env production --profile --json=stats.json"
+    "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
@@ -78,7 +78,7 @@
     "eslint-webpack-plugin": "^3.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
-    "i18next": "^22.0.4",
+    "i18next": "^22.0.6",
     "i18next-browser-languagedetector": "^7.0.1",
     "imports-loader": "^4.0.1",
     "jest": "^29.3.1",
@@ -109,7 +109,7 @@
     "wait-on": "^6.0.1",
     "web-vitals": "^3.1.0",
     "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0",
+    "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1",
     "webpack-visualizer-plugin2": "^1.0.0"
   },
