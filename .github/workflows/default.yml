@@ -68,6 +68,7 @@ jobs:
     - name: Save server changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
+      continue-on-error: true
       run: |
         git stash
         git checkout ${{github.head_ref}}
