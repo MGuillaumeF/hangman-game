@@ -21,9 +21,12 @@ module.exports = {
     "@babel/plugin-transform-regenerator",
     // add extends logic after conservation
     // to have error parent link in error stack trace
-    ["babel-plugin-transform-builtin-extend", {
-            globals: ["Error", "Array"]
-        }]
+    [
+      "babel-plugin-transform-builtin-extend",
+      {
+        globals: ["Error", "Array"]
+      }
+    ]
   ],
   ignore: ["./dist", "./build", "./test", "./node_modules"]
 };
