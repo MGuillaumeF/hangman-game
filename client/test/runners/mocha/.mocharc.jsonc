@@ -1,8 +1,4 @@
 {
-    "require": [
-        "test/runners/mocha/init.mjs"
-    ],
-    "spec": [
-        "test/ut/**/*.spec.ts"
-    ]
+  "require": ["test/runners/mocha/init.mjs"],
+  "spec": ["test/ut/**/*.spec.ts"]
 }
