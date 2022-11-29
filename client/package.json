@@ -14,7 +14,7 @@
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore",
     "lint:stylelint": "stylelint \"**/*.{css,scss,sass}\" --custom-syntax postcss-scss --fix --formatter json > ./dist/reports/lint/stylelint-report.json --ignore-path ./.gitignore",
-    "unit:test": "nyc mocha --config test/runners/mocha/.mocharc.jsonc --reporter mocha-sonarqube-reporter --reporter-options output=./dist/reports/xunit.xml",
+    "unit:test": "nyc mocha --config test/runners/mocha/.mocharc.jsonc --reporter mocha-sonarqube-reporter --reporter-options output=./xunit.xml",
     "smog:test": "npm-run-all -p start cy:run",
     "test": "unit:test;smog:test",
     "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
