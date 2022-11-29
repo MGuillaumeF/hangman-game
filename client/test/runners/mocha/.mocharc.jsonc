@@ -1,4 +1,4 @@
 {
-  "require": ["test/runners/mocha/init.mjs"],
+  "require": ["test/runners/mocha/init.mjs", "source-map-support/register"],
   "spec": ["test/ut/**/*.spec.ts"]
 }
