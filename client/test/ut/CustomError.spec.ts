@@ -1,16 +1,15 @@
 import assert from "assert";
 import HangmanError from "../../src/errors/HangmanError";
 
-function fakeParser() : void {
+function fakeParser(): void {
   try {
     JSON.parse("not a json string");
   } catch (e) {
     if (e instanceof Error) {
-      throw new HangmanError("Custom parsing error", { cause : e});
+      throw new HangmanError("Custom parsing error", { cause: e });
     }
   }
 }
-
 
 describe("Custom Error Test Suite", function () {
   it("should return -1 when the value is not present", function () {
