@@ -68,7 +68,6 @@ jobs:
     - name: Save server changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
-      continue-on-error: true
       run: |
         git stash
         git checkout ${{github.head_ref}}
@@ -117,7 +116,7 @@ jobs:
         git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add server/resources/icon/hangman-game
+        git add server/resources/icon/hangman-game || echo "No modification to add pop"
         git add data-management/resources/icon/data-management
         (git commit -m "[AUTO] update icon generated" && git push) || echo 'No modification to save'
       env:
@@ -165,11 +164,11 @@ jobs:
       run: |
         git stash
         git checkout ${{github.head_ref}}
-        git stash pop
+        git stash pop  || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add server
-        git add data-management
+        git add server  || echo "No modification to add pop"
+        git add data-management || echo "No modification to add pop"
         (git commit -m "[AUTO] clang format write" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -315,7 +314,7 @@ jobs:
         git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add wiki
+        git add wiki || echo "No modification to add pop"
         (git commit -m "[AUTO] update test unit test graph generated" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -413,11 +412,11 @@ jobs:
       run: |
         git stash
         git checkout ${{github.head_ref}}
-        git stash pop
+        git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
-        git add client
-        git add data-management/tools
+        git add client || echo "No modification to add pop"
+        git add data-management/tools || echo "No modification to add pop"
         (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
