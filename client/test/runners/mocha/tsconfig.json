@@ -1,19 +1,6 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "incremental": true,
-    "outDir": "./build/",
-    "sourceMap": true,
-    "module": "esnext",
-    "lib": ["DOM", "ESNext"],
-    "skipLibCheck": true,
-    "target": "es5",
-    "jsx": "react",
-    "allowJs": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "rootDir": "src",
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -26,15 +13,10 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": false,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noEmit": false,
-    "paths": {
-      "tslib": ["node_modules/tslib/tslib.d.ts"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "scripts"]
+    // mocha runs in node, which uses commonjs modules
+    "module": "CommonJs"
+  }
 }
