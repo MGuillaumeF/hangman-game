@@ -21,8 +21,9 @@ describe("Custom Error Test Suite", function () {
     } catch (e) {
       console.error("error raised un catch", e);
       assert.equal(true, e instanceof HangmanError);
-      if (e instanceof HangmanError){
-      assert.equal("Custom parsing error", e?.message);}
+      if (e instanceof HangmanError) {
+        assert.equal("Custom parsing error", e?.message);
+      }
     }
   });
 });
