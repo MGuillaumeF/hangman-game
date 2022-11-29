@@ -1,6 +1,6 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noResolve": false,
@@ -15,7 +15,7 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-        // mocha runs in node, which uses commonjs modules
-        "module": "CommonJs"
-    }
+    // mocha runs in node, which uses commonjs modules
+    "module": "CommonJs"
+  }
 }
