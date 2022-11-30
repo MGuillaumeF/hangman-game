@@ -4,6 +4,7 @@ export default class HangmanError extends Error {
   private static readonly date = Date.now();
   constructor(message: string, options: any) {
     // call parent constructor
+    // @ts-ignore
     super(message, options);
 
     // error stack for V8
