@@ -25,6 +25,7 @@ describe("Custom Error Test Suite", function () {
       if (e instanceof HangmanError) {
         console.error("error message", e.message);
         console.error("error stack", e.stack);
+        console.error("error string", e.toString());
         expect(e.message).to.equal(
           "Custom parsing error",
           "test message of custom error"
