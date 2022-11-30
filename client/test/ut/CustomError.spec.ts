@@ -43,14 +43,13 @@ describe("Custom Error Test Suite", function () {
             true,
             "test child rethrow error and custom error raised line appear in stack trace"
           );
-          expect(e!.toString().includes("CustomError.spec.ts:6")).to.equal(
+          expect(e!.cause!.stack!.includes("CustomError.spec.ts:6")).to.equal(
             true,
             "test child rethrow error and original error raised line appear in stack trace"
           );
           expect(
             e!
-              .toString()
-              .includes("SyntaxError: Unexpected token o in JSON at position 1")
+              .cause!.stack!.includes("SyntaxError: Unexpected token o in JSON at position 1")
           ).to.equal(
             true,
             "test child rethrow error and original cause appear in stack trace"
