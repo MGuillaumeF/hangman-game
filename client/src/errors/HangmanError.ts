@@ -1,4 +1,4 @@
-import "core-js/es/stable/error/constructor"
+import "core-js/es/stable/error/constructor";
 
 export default class HangmanError extends Error {
   // add specificity to debug
