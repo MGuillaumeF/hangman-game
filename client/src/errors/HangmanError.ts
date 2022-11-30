@@ -1,3 +1,5 @@
+import "core-js/es/stable/error/constructor"
+
 export default class HangmanError extends Error {
   // add specificity to debug
   public readonly name = "HangmanError";
@@ -5,7 +7,6 @@ export default class HangmanError extends Error {
   private static readonly date = Date.now();
   constructor(message: string, options?: { cause: any }) {
     // call parent constructor
-    // @ts-ignore
     super(message, options);
 
     // error stack for V8
