@@ -14,15 +14,15 @@ function fakeParser(): void {
 
 describe("Custom Error Test Suite", function () {
   it("should return -1 when the value is not present", function () {
-    // TODO remove sample test case
-    assert.equal([1, 2, 3].indexOf(4), -1);
-
     try {
       fakeParser();
     } catch (e) {
       console.error("error raised un catch", e);
-      assert.equal(true, e instanceof HangmanError);
+
+      expect(e instanceof HangmanError).to.equal(true, "Test error is hangman error instance");
       if (e instanceof HangmanError) {
+        console.error("error message", e.message);
+        console.error("error stack", e.stack);
         expect(e.message).to.equal(
           "Custom parsing error",
           "test message of custom error"
