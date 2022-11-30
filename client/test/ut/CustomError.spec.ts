@@ -38,11 +38,11 @@ describe("Custom Error Test Suite", function () {
             true,
             "test child error class name appear in stack trace"
           );
-          expect(e!.stack.includes("CustomError.spec.ts:10")).to.equal(
+          expect(e!.stack.includes("CustomError.spec.ts:9")).to.equal(
             true,
             "test child rethrow error and custom error raised line appear in stack trace"
           );
-          expect(e!.stack.includes("CustomError.spec.ts:7")).to.equal(
+          expect(e!.stack.includes("CustomError.spec.ts:6")).to.equal(
             true,
             "test child rethrow error and original error raised line appear in stack trace"
           );
