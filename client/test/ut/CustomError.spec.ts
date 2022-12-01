@@ -51,9 +51,9 @@ describe("Custom Error Test Suite", function () {
           );
         }
         expect(e?.cause instanceof Error).to.equal(
-        true,
-        "Test error cause is error instance"
-      );
+          true,
+          "Test error cause is error instance"
+        );
         if (e?.cause instanceof Error && e.cause?.stack) {
           expect(e.cause.stack.includes("CustomError.spec.ts:6")).to.equal(
             true,
