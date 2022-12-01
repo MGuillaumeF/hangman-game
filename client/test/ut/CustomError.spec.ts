@@ -35,31 +35,37 @@ describe("Custom Error Test Suite", function () {
           "test stack attribute is present and is type string"
         );
         if (e?.stack) {
-          expect(e!.stack.includes("HangmanError")).to.equal(
+          expect(e.stack.includes("HangmanError")).to.equal(
             true,
             "test child error class name appear in stack trace"
           );
-          expect(e!.stack.includes("CustomError.spec.ts:9")).to.equal(
+          expect(e.stack.includes("CustomError.spec.ts:9")).to.equal(
             true,
             "test child rethrow error and custom error raised line appear in stack trace"
           );
-          expect(e!.cause!.stack!.includes("CustomError.spec.ts:6")).to.equal(
+          expect(
+            e.stack.includes("HangmanError: Custom parsing error")
+          ).to.equal(
+            true,
+            "test child rethrow error and custom cause appear in stack trace"
+          );
+        }
+        expect(e?.cause instanceof Error).to.equal(
+        true,
+        "Test error cause is error instance"
+      );
+        if (e?.cause instanceof Error && e.cause?.stack) {
+          expect(e.cause.stack.includes("CustomError.spec.ts:6")).to.equal(
             true,
             "test child rethrow error and original error raised line appear in stack trace"
           );
           expect(
-            e!.cause!.stack!.includes(
+            e.cause.stack.includes(
               "SyntaxError: Unexpected token o in JSON at position 1"
             )
           ).to.equal(
             true,
             "test child rethrow error and original cause appear in stack trace"
-          );
-          expect(
-            e!.stack.includes("HangmanError: Custom parsing error")
-          ).to.equal(
-            true,
-            "test child rethrow error and custom cause appear in stack trace"
           );
         }
       }
