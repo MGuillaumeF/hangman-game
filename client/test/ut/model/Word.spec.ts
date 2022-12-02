@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Word from "../../src/model/Word";
+import Word from "../../../src/model/Word";
 
 describe("Word Model Object Test Suite", function () {
   it("Test parse method", function () {
