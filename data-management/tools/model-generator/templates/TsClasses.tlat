@@ -4,7 +4,7 @@
  */
 {{dependencies}}
 
-export {{abstract}} class {{className}} {{extendedClasses}} {
+export default {{abstract}} class {{className}} {{extendedClasses}} {
   {{constraintes}}
   {{privateAttributes}}
   {{privateStaticAttributes}}
