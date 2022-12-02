@@ -7,7 +7,7 @@ import { User } from "./User";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class Group extends RootModelObject {
+export default class Group extends RootModelObject {
   protected static getConstraintes() {
     return {
       ...RootModelObject.getConstraintes(),

@@ -8,7 +8,7 @@ import { User } from "./User";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class Chat extends RootModelObject {
+export default class Chat extends RootModelObject {
   protected static getConstraintes() {
     return {
       ...RootModelObject.getConstraintes(),

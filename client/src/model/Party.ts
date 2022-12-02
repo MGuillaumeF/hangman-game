@@ -9,7 +9,7 @@ import { Word } from "./Word";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class Party extends RootModelObject {
+export default class Party extends RootModelObject {
   protected static getConstraintes() {
     return {
       ...RootModelObject.getConstraintes(),

@@ -10,7 +10,7 @@ import { Party } from "./Party";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class User extends RootModelObject {
+export default class User extends RootModelObject {
   protected static getConstraintes() {
     return {
       ...RootModelObject.getConstraintes(),

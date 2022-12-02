@@ -7,7 +7,7 @@ import { Dictionary } from "./Dictionary";
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export class Word extends RootModelObject {
+export default class Word extends RootModelObject {
   protected static getConstraintes() {
     return {
       ...RootModelObject.getConstraintes(),
