@@ -5,7 +5,7 @@
 import { Validator } from "./Validator";
 import { ModelError } from "./ModelError";
 
-export default abstract class RootModelObject {
+export abstract class RootModelObject {
   protected static getConstraintes() {
     return {
       version: {
