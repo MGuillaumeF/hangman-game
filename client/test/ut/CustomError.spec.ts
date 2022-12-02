@@ -12,7 +12,7 @@ function fakeParser(): void {
 }
 
 describe("Custom Error Test Suite", function () {
-  it("should return -1 when the value is not present", function () {
+  it("Custom error test content of stack trace and parent cause properties", function () {
     try {
       fakeParser();
     } catch (e) {
