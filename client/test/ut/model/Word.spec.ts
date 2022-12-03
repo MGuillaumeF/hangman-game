@@ -1,23 +1,27 @@
 import { expect } from "chai";
 import { Word } from "../../../src/model/Word";
 
-describe("Word Model Object Test Suite", function () {
-  it("Test parse method", function () {
-    const myWord = Word.parse({
+const WORD_EXAMPLE = {
       name: "hello",
       definitions: ["salutation word"],
       dictionary : {
-        countryCode : "USA",
-        name: "AMERICAN"
+        country_code : "USA",
+        name: "AMERICAN",
+        words: [
+          { id : 1, created_by : "anonymous", created_at : 0, updated_at : 0, updated_by : "anonymous", version : 1, name : "world", definitions : [ "space of all", "scope of another def"]  }
+        ]
       }
-    });
+    };
+
+describe("Word Model Object Test Suite", function () {
+  it("Test parse method", function () {
+    const myWord = Word.parse(WORD_EXAMPLE);
+    console.info("word parsed", myWord);
     expect(myWord instanceof Word).to.equal(
       true,
       "Test word parser object is word instance"
     );
     if (myWord instanceof Word) {
-      console.info("word parsed", myWord);
-
       expect(myWord.name).to.be.a(
         "string",
         "test name attribute is present and is type string"
@@ -40,14 +44,7 @@ describe("Word Model Object Test Suite", function () {
   });
 
   it("Test toJson method", function () {
-    const myWord: any = Word.parse({
-      name: "hello",
-      definitions: ["salutation word"],
-      dictionary : {
-        countryCode : "USA",
-        name: "AMERICAN"
-      }
-    }).toJSON();
+    const myWord: any = Word.parse(WORD_EXAMPLE).toJSON();
     console.info("word json object", myWord);
 
     expect(myWord?.name).to.be.a(
