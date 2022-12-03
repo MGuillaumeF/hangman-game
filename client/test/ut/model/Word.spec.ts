@@ -16,11 +16,48 @@ describe("Word Model Object Test Suite", function () {
 
       expect(myWord.name).to.be.a(
         "string",
-        "test stack attribute is present and is type string"
+        "test name attribute is present and is type string"
       );
       expect(myWord.definitions).to.be.a(
         "array",
-        "test definition attribute is present and is type array"
+        "test definitions attribute is present and is type array"
+      );
+      expect(myWord.name).to.equal(
+        "hello",
+        "test name attribute is present and has good value"
+      );
+      if (Array.isArray(myWord?.definitions)) {
+        expect(myWord.definitions[0]).to.equal(
+          "salutation word",
+          "test definitions attribute is present and has good value in first case"
+        );
+      }
+    }
+  });
+
+  it("Test toJson method", function () {
+    const myWord: any = Word.parse({
+      name: "hello",
+      definitions: ["salutation word"]
+    }).toJSON();
+    console.info("word json object", myWord);
+
+    expect(myWord?.name).to.be.a(
+      "string",
+      "test name attribute is present and is type string"
+    );
+    expect(myWord?.definitions).to.be.a(
+      "array",
+      "test definitions attribute is present and is type array"
+    );
+    expect(myWord?.name).to.equal(
+      "hello",
+      "test name attribute is present and has good value"
+    );
+    if (Array.isArray(myWord?.definitions)) {
+      expect(myWord.definitions[0]).to.equal(
+        "salutation word",
+        "test definitions attribute is present and has good value in first case"
       );
     }
   });
