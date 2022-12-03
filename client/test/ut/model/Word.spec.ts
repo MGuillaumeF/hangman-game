@@ -11,8 +11,8 @@ const WORD_EXAMPLE = {
       {
         id: 1,
         created_by: "anonymous",
-        created_at: 0,
-        updated_at: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
         updated_by: "anonymous",
         version: 1,
         name: "world",
