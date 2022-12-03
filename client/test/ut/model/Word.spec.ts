@@ -56,6 +56,5 @@ describe("Word Model Object Test Suite", function () {
         "salutation word",
         "test definitions attribute is present and has good value in first case"
       );
-    }
   });
 });
