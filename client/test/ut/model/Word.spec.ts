@@ -2,16 +2,25 @@ import { expect } from "chai";
 import { Word } from "../../../src/model/Word";
 
 const WORD_EXAMPLE = {
-      name: "hello",
-      definitions: ["salutation word"],
-      dictionary : {
-        country_code : "USA",
-        name: "AMERICAN",
-        words: [
-          { id : 1, created_by : "anonymous", created_at : 0, updated_at : 0, updated_by : "anonymous", version : 1, name : "world", definitions : [ "space of all", "scope of another def"]  }
-        ]
+  name: "hello",
+  definitions: ["salutation word"],
+  dictionary: {
+    country_code: "USA",
+    name: "AMERICAN",
+    words: [
+      {
+        id: 1,
+        created_by: "anonymous",
+        created_at: 0,
+        updated_at: 0,
+        updated_by: "anonymous",
+        version: 1,
+        name: "world",
+        definitions: ["space of all", "scope of another def"]
       }
-    };
+    ]
+  }
+};
 
 describe("Word Model Object Test Suite", function () {
   it("Test parse method", function () {
