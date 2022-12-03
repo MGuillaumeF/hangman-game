@@ -5,7 +5,11 @@ describe("Word Model Object Test Suite", function () {
   it("Test parse method", function () {
     const myWord = Word.parse({
       name: "hello",
-      definitions: ["salutation word"]
+      definitions: ["salutation word"],
+      dictionary : {
+        countryCode : "USA",
+        name: "AMERICAN"
+      }
     });
     expect(myWord instanceof Word).to.equal(
       true,
@@ -38,7 +42,11 @@ describe("Word Model Object Test Suite", function () {
   it("Test toJson method", function () {
     const myWord: any = Word.parse({
       name: "hello",
-      definitions: ["salutation word"]
+      definitions: ["salutation word"],
+      dictionary : {
+        countryCode : "USA",
+        name: "AMERICAN"
+      }
     }).toJSON();
     console.info("word json object", myWord);
 
