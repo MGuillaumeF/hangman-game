@@ -28,7 +28,7 @@ export class TypeScriptClassGenerator {
    * @brief setter of classNames of TypeScript generator
    * @param the Set of classNames of model
    */
-  public static set classNames(value: Set<string>) : void {
+  public static set classNames(value: Set<string>) {
     TypeScriptClassGenerator._classNames = value;
   }
 
