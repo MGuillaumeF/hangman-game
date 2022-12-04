@@ -314,7 +314,7 @@ export class TypeScriptClassGenerator {
      */
     public toJSON() : any {
         const {${attrNamesList}} = this;
-        return {${attrSerializeList}}
+        return { ...super.toJSON(), ${attrSerializeList}}
     }
     `;
   }
