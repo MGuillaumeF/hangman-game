@@ -2,7 +2,7 @@
  * Custom application error
  */
 export default class HangmanError extends Error {
-  /** 
+  /**
    * error name to get it when errro is raised
    */
   public readonly name = HangmanError.name;
