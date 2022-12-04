@@ -108,6 +108,7 @@ export class Chat extends RootModelObject {
   public toJSON(): any {
     const { name, messages, members } = this;
     return {
+      ...super.toJSON(),
       name,
       messages:
         messages !== undefined

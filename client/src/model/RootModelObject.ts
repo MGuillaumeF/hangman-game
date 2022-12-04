@@ -184,7 +184,15 @@ export abstract class RootModelObject {
    */
   public toJSON(): any {
     const { version, id, createdBy, createdAt, updatedBy, updatedAt } = this;
-    return { version, id, createdBy, createdAt, updatedBy, updatedAt };
+    return {
+      ...super.toJSON(),
+      version,
+      id,
+      createdBy,
+      createdAt,
+      updatedBy,
+      updatedAt
+    };
   }
 
   public static parseMetaData<T extends RootModelObject>(obj: T, data: any): T {

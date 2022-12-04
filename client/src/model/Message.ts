@@ -121,6 +121,7 @@ export class Message extends RootModelObject {
   public toJSON(): any {
     const { content, sender, sendDate, chat } = this;
     return {
+      ...super.toJSON(),
       content,
       sender: sender !== undefined ? sender.toJSON() : undefined,
       sendDate,

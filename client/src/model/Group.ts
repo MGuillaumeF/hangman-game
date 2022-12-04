@@ -82,6 +82,7 @@ export class Group extends RootModelObject {
   public toJSON(): any {
     const { name, members } = this;
     return {
+      ...super.toJSON(),
       name,
       members:
         members !== undefined ? members.map((item) => item.toJSON()) : undefined
