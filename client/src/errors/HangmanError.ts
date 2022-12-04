@@ -1,9 +1,11 @@
+/**
+ * Custom application error
+ */
 export default class HangmanError extends Error {
   // add specificity to debug
-  public readonly name = "HangmanError";
-  public cause: any;
+  public cause?: Error;
   private static readonly date = Date.now();
-  constructor(message: string, options?: { cause: any }) {
+  constructor(message: string, options?: { cause: Error }) {
     // call parent constructor
     // @ts-ignore
     super(message, options);
