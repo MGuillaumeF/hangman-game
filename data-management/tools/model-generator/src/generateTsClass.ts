@@ -30,8 +30,8 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @returns
+   * method to generate dependencies import block
+   * @returns The string to list dependencies
    */
   public generateDependencies() {
     const dependencies = Array.from(this._dependencies);
@@ -47,9 +47,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibuteProperties
-   * @returns
+   * method to generate constraint of string data
+   * @param attibuteProperties Properties of string attribute 
+   * @returns The constraint object of attribute
    */
   private static generateStringConstraint(
     attibuteProperties: ModelAttributesProperties
@@ -68,6 +68,13 @@ export class TypeScriptClassGenerator {
       type: "string"
     };
   }
+
+
+  /**
+   * method to generate constraint of number data
+   * @param attibuteProperties Properties of number attribute 
+   * @returns The constraint object of attribute
+   */
   private static generateNumberConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
@@ -83,6 +90,12 @@ export class TypeScriptClassGenerator {
       type: "number"
     };
   }
+
+  /**
+   * method to generate constraint of date data
+   * @param attibuteProperties Properties of date attribute 
+   * @returns The constraint object of attribute
+   */
   private static generateDateConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
@@ -262,6 +275,10 @@ export class TypeScriptClassGenerator {
       }
     );
     return `
+    /**
+     * method to get errors of objects
+     * @returns the list of model constraint error
+     */
     public getErrors() : ModelError[] {
       const errors : ModelError[] = []
       ${checks.join("\n")}
@@ -270,9 +287,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibutePropertiesList
-   * @returns
+   * method to generate serializer function
+   * @param attibutePropertiesList the list of attributes properties
+   * @returns The string of generate serializer function
    */
   public generateSerializer(
     attibutePropertiesList: ModelAttributesProperties[]
@@ -311,6 +328,7 @@ export class TypeScriptClassGenerator {
     return `
     /**
      * @brief method to convert object to JSON object
+     * @returns the object json representation of object instance
      */
     public toJSON() : any {
         const {${attrNamesList}} = this;
@@ -322,9 +340,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibutePropertiesList
-   * @returns
+   * @brief method to generate convertor of any object to instance of class
+   * @param attibutePropertiesList the list of attributes properties
+   * @returns The string of generated convertor method
    */
   public generateParser(
     className: string,
@@ -396,6 +414,11 @@ export class TypeScriptClassGenerator {
     };
 
     return `
+   /**
+    * @brief method to generate convertor of any object to instance of class
+    * @param data The data to convert to instance
+    * @returns The instance of converted object
+    */
     public static parse${
       className === "RootModelObject"
         ? `MetaData<T extends ${snakeCaseToUpperCamelCase(
