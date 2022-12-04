@@ -341,6 +341,7 @@ export class User extends RootModelObject {
       parties
     } = this;
     return {
+      ...super.toJSON(),
       login,
       password,
       saltUser,

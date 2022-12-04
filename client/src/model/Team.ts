@@ -104,6 +104,7 @@ export class Team extends RootModelObject {
   public toJSON(): any {
     const { name, members, chat } = this;
     return {
+      ...super.toJSON(),
       name,
       members:
         members !== undefined

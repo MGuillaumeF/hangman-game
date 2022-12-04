@@ -113,6 +113,7 @@ export class Dictionary extends RootModelObject {
   public toJSON(): any {
     const { name, countryCode, words } = this;
     return {
+      ...super.toJSON(),
       name,
       countryCode,
       words:

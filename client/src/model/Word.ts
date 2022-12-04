@@ -114,6 +114,7 @@ export class Word extends RootModelObject {
   public toJSON(): any {
     const { name, definitions, dictionary } = this;
     return {
+      ...super.toJSON(),
       name,
       definitions,
       dictionary: dictionary !== undefined ? dictionary.toJSON() : undefined
