@@ -147,6 +147,10 @@ export abstract class RootModelObject {
   public get updatedAt(): Date | undefined {
     return this._updatedAt;
   }
+  /**
+   * @brief method to get errors of objects
+   * @returns the list of model constraint error
+   */
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
@@ -181,12 +185,18 @@ export abstract class RootModelObject {
   }
   /**
    * @brief method to convert object to JSON object
+   * @returns the object json representation of object instance
    */
   public toJSON(): any {
     const { version, id, createdBy, createdAt, updatedBy, updatedAt } = this;
     return { version, id, createdBy, createdAt, updatedBy, updatedAt };
   }
 
+  /**
+   * @brief method to generate convertor of any object to instance of class
+   * @param data The data to convert to instance
+   * @returns The instance of converted object
+   */
   public static parseMetaData<T extends RootModelObject>(obj: T, data: any): T {
     if (typeof data === "object") {
       if (data["version"] !== undefined) {

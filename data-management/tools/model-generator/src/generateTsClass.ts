@@ -3,7 +3,8 @@ import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 
 /**
- *
+ * @class
+ * @brief the TypeScript class model generator
  */
 export class TypeScriptClassGenerator {
   private static _classNames: Set<string> = new Set<string>();
@@ -12,8 +13,9 @@ export class TypeScriptClassGenerator {
   private _dependencies: Set<string> = new Set<string>();
 
   /**
-   *
-   * @param modelClass
+   * @constructor
+   * @brief the constructor of generator of TypeScript model class
+   * @param modelClass model class properties
    */
   constructor(modelClass: ModelClassDefinition) {
     this._currentName = modelClass.name;
@@ -23,17 +25,18 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
+   * @brief setter of classNames of TypeScript generator
+   * @param the Set of classNames of model
    */
   public static set classNames(value: Set<string>) {
     TypeScriptClassGenerator._classNames = value;
   }
 
   /**
-   *
-   * @returns
+   * @brief method to generate dependencies import block
+   * @returns The string to list dependencies
    */
-  public generateDependencies() {
+  public generateDependencies(): string {
     const dependencies = Array.from(this._dependencies);
     if (this._motherClass) {
       dependencies.unshift(snakeCaseToUpperCamelCase(this._motherClass));
@@ -47,9 +50,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibuteProperties
-   * @returns
+   * @brief method to generate constraint of string data
+   * @param attibuteProperties Properties of string attribute
+   * @returns The constraint object of attribute
    */
   private static generateStringConstraint(
     attibuteProperties: ModelAttributesProperties
@@ -68,6 +71,12 @@ export class TypeScriptClassGenerator {
       type: "string"
     };
   }
+
+  /**
+   * @brief method to generate constraint of number data
+   * @param attibuteProperties Properties of number attribute
+   * @returns The constraint object of attribute
+   */
   private static generateNumberConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
@@ -83,6 +92,12 @@ export class TypeScriptClassGenerator {
       type: "number"
     };
   }
+
+  /**
+   * @brief method to generate constraint of date data
+   * @param attibuteProperties Properties of date attribute
+   * @returns The constraint object of attribute
+   */
   private static generateDateConstraint(
     attibuteProperties: ModelAttributesProperties
   ): {
@@ -262,6 +277,10 @@ export class TypeScriptClassGenerator {
       }
     );
     return `
+    /**
+     * @brief method to get errors of objects
+     * @returns the list of model constraint error
+     */
     public getErrors() : ModelError[] {
       const errors : ModelError[] = []
       ${checks.join("\n")}
@@ -270,9 +289,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibutePropertiesList
-   * @returns
+   * @brief method to generate serializer function
+   * @param attibutePropertiesList the list of attributes properties
+   * @returns The string of generate serializer function
    */
   public generateSerializer(
     attibutePropertiesList: ModelAttributesProperties[]
@@ -311,6 +330,7 @@ export class TypeScriptClassGenerator {
     return `
     /**
      * @brief method to convert object to JSON object
+     * @returns the object json representation of object instance
      */
     public toJSON() : any {
         const {${attrNamesList}} = this;
@@ -322,9 +342,9 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
-   * @param attibutePropertiesList
-   * @returns
+   * @brief method to generate convertor of any object to instance of class
+   * @param attibutePropertiesList the list of attributes properties
+   * @returns The string of generated convertor method
    */
   public generateParser(
     className: string,
@@ -396,6 +416,11 @@ export class TypeScriptClassGenerator {
     };
 
     return `
+   /**
+    * @brief method to generate convertor of any object to instance of class
+    * @param data The data to convert to instance
+    * @returns The instance of converted object
+    */
     public static parse${
       className === "RootModelObject"
         ? `MetaData<T extends ${snakeCaseToUpperCamelCase(

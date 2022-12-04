@@ -249,6 +249,10 @@ export class User extends RootModelObject {
   public get parties(): Party[] | undefined {
     return this._parties;
   }
+  /**
+   * @brief method to get errors of objects
+   * @returns the list of model constraint error
+   */
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
@@ -325,6 +329,7 @@ export class User extends RootModelObject {
   }
   /**
    * @brief method to convert object to JSON object
+   * @returns the object json representation of object instance
    */
   public toJSON(): any {
     const {
@@ -363,6 +368,11 @@ export class User extends RootModelObject {
     };
   }
 
+  /**
+   * @brief method to generate convertor of any object to instance of class
+   * @param data The data to convert to instance
+   * @returns The instance of converted object
+   */
   public static parse(data: any): User {
     const obj = RootModelObject.parseMetaData<User>(new User(), data);
     if (typeof data === "object") {

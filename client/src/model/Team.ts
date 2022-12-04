@@ -77,6 +77,10 @@ export class Team extends RootModelObject {
   public get chat(): Chat | undefined {
     return this._chat;
   }
+  /**
+   * @brief method to get errors of objects
+   * @returns the list of model constraint error
+   */
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
@@ -100,6 +104,7 @@ export class Team extends RootModelObject {
   }
   /**
    * @brief method to convert object to JSON object
+   * @returns the object json representation of object instance
    */
   public toJSON(): any {
     const { name, members, chat } = this;
@@ -114,6 +119,11 @@ export class Team extends RootModelObject {
     };
   }
 
+  /**
+   * @brief method to generate convertor of any object to instance of class
+   * @param data The data to convert to instance
+   * @returns The instance of converted object
+   */
   public static parse(data: any): Team {
     const obj = RootModelObject.parseMetaData<Team>(new Team(), data);
     if (typeof data === "object") {
