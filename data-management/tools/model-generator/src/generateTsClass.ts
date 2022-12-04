@@ -3,7 +3,8 @@ import { ModelAttributesProperties, ModelClassDefinition } from "./modelTypes";
 import { snakeCaseToCamelCase, snakeCaseToUpperCamelCase } from "./utils";
 
 /**
- *
+ * @class
+ * @brief the TypeScript class model generator
  */
 export class TypeScriptClassGenerator {
   private static _classNames: Set<string> = new Set<string>();
@@ -12,8 +13,9 @@ export class TypeScriptClassGenerator {
   private _dependencies: Set<string> = new Set<string>();
 
   /**
-   *
-   * @param modelClass
+   * @constructor
+   * @brief the constructor of generator of TypeScript model class
+   * @param modelClass model class properties
    */
   constructor(modelClass: ModelClassDefinition) {
     this._currentName = modelClass.name;
@@ -23,17 +25,18 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   *
+   * @brief setter of classNames of TypeScript generator
+   * @param the Set of classNames of model
    */
-  public static set classNames(value: Set<string>) {
+  public static set classNames(value: Set<string>) : void {
     TypeScriptClassGenerator._classNames = value;
   }
 
   /**
-   * method to generate dependencies import block
+   * @brief method to generate dependencies import block
    * @returns The string to list dependencies
    */
-  public generateDependencies() {
+  public generateDependencies() : string {
     const dependencies = Array.from(this._dependencies);
     if (this._motherClass) {
       dependencies.unshift(snakeCaseToUpperCamelCase(this._motherClass));
@@ -47,7 +50,7 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   * method to generate constraint of string data
+   * @brief method to generate constraint of string data
    * @param attibuteProperties Properties of string attribute
    * @returns The constraint object of attribute
    */
@@ -70,7 +73,7 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   * method to generate constraint of number data
+   * @brief method to generate constraint of number data
    * @param attibuteProperties Properties of number attribute
    * @returns The constraint object of attribute
    */
@@ -91,7 +94,7 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   * method to generate constraint of date data
+   * @brief method to generate constraint of date data
    * @param attibuteProperties Properties of date attribute
    * @returns The constraint object of attribute
    */
@@ -275,7 +278,7 @@ export class TypeScriptClassGenerator {
     );
     return `
     /**
-     * method to get errors of objects
+     * @brief method to get errors of objects
      * @returns the list of model constraint error
      */
     public getErrors() : ModelError[] {
@@ -286,7 +289,7 @@ export class TypeScriptClassGenerator {
   }
 
   /**
-   * method to generate serializer function
+   * @brief method to generate serializer function
    * @param attibutePropertiesList the list of attributes properties
    * @returns The string of generate serializer function
    */
