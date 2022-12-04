@@ -1,9 +1,24 @@
+/**
+ * Custom application error
+ */
 export default class HangmanError extends Error {
-  // add specificity to debug
-  public readonly name = "HangmanError";
-  public cause: any;
+  /**
+   * error name to get it when errro is raised
+   */
+  public readonly name = HangmanError.name;
+  /**
+   * error cause if error is a rethrow
+   */
+  public cause?: Error;
+  /**
+   * the date of error throw
+   */
   private static readonly date = Date.now();
-  constructor(message: string, options?: { cause: any }) {
+  /**
+   * @param message the message of error
+   * @param options the cause or error
+   */
+  constructor(message: string, options?: { cause: Error }) {
     // call parent constructor
     // @ts-ignore
     super(message, options);
