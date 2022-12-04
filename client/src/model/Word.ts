@@ -81,6 +81,10 @@ export class Word extends RootModelObject {
   public get dictionary(): Dictionary | undefined {
     return this._dictionary;
   }
+  /**
+   * method to get errors of objects
+   * @returns the list of model constraint error
+   */
   public getErrors(): ModelError[] {
     const errors: ModelError[] = [];
     errors.push(
@@ -110,6 +114,7 @@ export class Word extends RootModelObject {
   }
   /**
    * @brief method to convert object to JSON object
+   * @returns the object json representation of object instance
    */
   public toJSON(): any {
     const { name, definitions, dictionary } = this;
@@ -121,6 +126,11 @@ export class Word extends RootModelObject {
     };
   }
 
+  /**
+   * @brief method to generate convertor of any object to instance of class
+   * @param data The data to convert to instance
+   * @returns The instance of converted object
+   */
   public static parse(data: any): Word {
     const obj = RootModelObject.parseMetaData<Word>(new Word(), data);
     if (typeof data === "object") {

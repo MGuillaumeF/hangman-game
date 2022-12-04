@@ -48,7 +48,7 @@ export class TypeScriptClassGenerator {
 
   /**
    * method to generate constraint of string data
-   * @param attibuteProperties Properties of string attribute 
+   * @param attibuteProperties Properties of string attribute
    * @returns The constraint object of attribute
    */
   private static generateStringConstraint(
@@ -69,10 +69,9 @@ export class TypeScriptClassGenerator {
     };
   }
 
-
   /**
    * method to generate constraint of number data
-   * @param attibuteProperties Properties of number attribute 
+   * @param attibuteProperties Properties of number attribute
    * @returns The constraint object of attribute
    */
   private static generateNumberConstraint(
@@ -93,7 +92,7 @@ export class TypeScriptClassGenerator {
 
   /**
    * method to generate constraint of date data
-   * @param attibuteProperties Properties of date attribute 
+   * @param attibuteProperties Properties of date attribute
    * @returns The constraint object of attribute
    */
   private static generateDateConstraint(
