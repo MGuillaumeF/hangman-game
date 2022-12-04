@@ -135,7 +135,7 @@ export class Party extends RootModelObject {
     return this._word;
   }
   /**
-   * method to get errors of objects
+   * @brief method to get errors of objects
    * @returns the list of model constraint error
    */
   public getErrors(): ModelError[] {

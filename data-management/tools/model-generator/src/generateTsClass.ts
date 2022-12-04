@@ -36,7 +36,7 @@ export class TypeScriptClassGenerator {
    * @brief method to generate dependencies import block
    * @returns The string to list dependencies
    */
-  public generateDependencies() : string {
+  public generateDependencies(): string {
     const dependencies = Array.from(this._dependencies);
     if (this._motherClass) {
       dependencies.unshift(snakeCaseToUpperCamelCase(this._motherClass));

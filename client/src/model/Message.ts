@@ -99,7 +99,7 @@ export class Message extends RootModelObject {
     return this._chat;
   }
   /**
-   * method to get errors of objects
+   * @brief method to get errors of objects
    * @returns the list of model constraint error
    */
   public getErrors(): ModelError[] {

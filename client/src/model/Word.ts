@@ -82,7 +82,7 @@ export class Word extends RootModelObject {
     return this._dictionary;
   }
   /**
-   * method to get errors of objects
+   * @brief method to get errors of objects
    * @returns the list of model constraint error
    */
   public getErrors(): ModelError[] {

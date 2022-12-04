@@ -250,7 +250,7 @@ export class User extends RootModelObject {
     return this._parties;
   }
   /**
-   * method to get errors of objects
+   * @brief method to get errors of objects
    * @returns the list of model constraint error
    */
   public getErrors(): ModelError[] {
