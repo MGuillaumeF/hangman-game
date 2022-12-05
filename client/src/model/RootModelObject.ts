@@ -189,7 +189,14 @@ export abstract class RootModelObject {
    */
   public toJSON(): any {
     const { version, id, createdBy, createdAt, updatedBy, updatedAt } = this;
-    return { version, id, createdBy, createdAt, updatedBy, updatedAt };
+    return {
+      version,
+      id,
+      created_by: createdBy,
+      created_at: createdAt,
+      updated_by: updatedBy,
+      updated_at: updatedAt
+    };
   }
 
   /**

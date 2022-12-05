@@ -120,7 +120,7 @@ export class Dictionary extends RootModelObject {
     return {
       ...super.toJSON(),
       name,
-      countryCode,
+      country_code: countryCode,
       words:
         words !== undefined ? words.map((item) => item.toJSON()) : undefined
     };

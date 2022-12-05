@@ -313,25 +313,31 @@ export class TypeScriptClassGenerator {
           ? attibuteProperties.type.slice(0, -2)
           : attibuteProperties.type;
 
-        let attributeSerialized : undefined | string;
+        let attributeSerialized: undefined | string;
 
         if (TypeScriptClassGenerator._classNames.has(rawType)) {
           attributeSerialized = `${attibuteProperties.name} : ${
-              isArrayType
-                ? `${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )} !== undefined ?
+            isArrayType
+              ? `${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )} !== undefined ?
                   ${snakeCaseToCamelCase(
                     attibuteProperties.name
                   )}.map(item => item.toJSON()) : undefined`
-                : `${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )} !== undefined ? ${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )}.toJSON() : undefined`
-            }`
+              : `${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )} !== undefined ? ${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )}.toJSON() : undefined`
+          }`;
         } else {
-          attributeSerialized = attibuteProperties.name === snakeCaseToCamelCase(attibuteProperties.name) ? attibuteProperties.name : `${attibuteProperties.name} : ${snakeCaseToCamelCase(attibuteProperties.name)}`;
+          attributeSerialized =
+            attibuteProperties.name ===
+            snakeCaseToCamelCase(attibuteProperties.name)
+              ? attibuteProperties.name
+              : `${attibuteProperties.name} : ${snakeCaseToCamelCase(
+                  attibuteProperties.name
+                )}`;
         }
         return attributeSerialized;
       })
