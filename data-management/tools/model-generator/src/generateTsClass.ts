@@ -296,20 +296,27 @@ export class TypeScriptClassGenerator {
   public generateSerializer(
     attibutePropertiesList: ModelAttributesProperties[]
   ): string {
+    // get all attributes names of object to serializer its
     const attrNamesList = attibutePropertiesList
       .map((attibuteProperties) =>
         snakeCaseToCamelCase(attibuteProperties.name)
       )
       .join(", ");
+
+    // get all attributes with type management to have good convertion
     const attrSerializeList = attibutePropertiesList
       .map((attibuteProperties) => {
+        // detect from type if is array type
         const isArrayType = /^.+\[\]$/.test(attibuteProperties.type);
+        // get type of data (without array notation if needed
         const rawType = isArrayType
           ? attibuteProperties.type.slice(0, -2)
           : attibuteProperties.type;
 
-        return TypeScriptClassGenerator._classNames.has(rawType)
-          ? `${snakeCaseToCamelCase(attibuteProperties.name)} : ${
+        let attributeSerialized : undefined | string;
+
+        if (TypeScriptClassGenerator._classNames.has(rawType)) {
+          attributeSerialized = `${attibuteProperties.name} : ${
               isArrayType
                 ? `${snakeCaseToCamelCase(
                     attibuteProperties.name
@@ -323,7 +330,10 @@ export class TypeScriptClassGenerator {
                     attibuteProperties.name
                   )}.toJSON() : undefined`
             }`
-          : snakeCaseToCamelCase(attibuteProperties.name);
+        } else {
+          attributeSerialized = attibuteProperties.name === snakeCaseToCamelCase(attibuteProperties.name) ? attibuteProperties.name : `${attibuteProperties.name} : ${snakeCaseToCamelCase(attibuteProperties.name)}`;
+        }
+        return attributeSerialized;
       })
       .join(", ");
 
