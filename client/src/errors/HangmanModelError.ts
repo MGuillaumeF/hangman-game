@@ -1,4 +1,5 @@
 import { ModelError } from "../model/ModelError"
+import HangmanError from "./HangmanError"
 
 /**
  * Custom model error
