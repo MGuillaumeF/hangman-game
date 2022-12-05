@@ -73,7 +73,7 @@
     "cypress-movie": "^3.0.20",
     "cypress-multi-reporters": "^1.6.1",
     "cypress-sonarqube-reporter": "^1.11.0",
-    "eslint": "^8.28.0",
+    "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-jest": "^27.1.6",
