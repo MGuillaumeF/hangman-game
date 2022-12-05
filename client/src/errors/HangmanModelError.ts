@@ -52,7 +52,7 @@ export default class HangmanModelError extends HangmanError {
    *
    * @param values The data list to add in model error array value of object
    */
-  public modelErrors(...values: ModelError[]) {
+  public addModelError(...values: ModelError[]) {
     this._modelErrors.push(...values);
   }
 }
