@@ -129,7 +129,7 @@ export class Message extends RootModelObject {
       ...super.toJSON(),
       content,
       sender: sender !== undefined ? sender.toJSON() : undefined,
-      sendDate,
+      send_date: sendDate,
       chat: chat !== undefined ? chat.toJSON() : undefined
     };
   }

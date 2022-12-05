@@ -349,10 +349,10 @@ export class User extends RootModelObject {
       ...super.toJSON(),
       login,
       password,
-      saltUser,
-      saltSession,
+      salt_user: saltUser,
+      salt_session: saltSession,
       token,
-      lastConnection,
+      last_connection: lastConnection,
       friends:
         friends !== undefined
           ? friends.map((item) => item.toJSON())

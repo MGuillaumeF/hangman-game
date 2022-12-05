@@ -163,8 +163,8 @@ export class Party extends RootModelObject {
     const { startDate, endDate, win, members, chat, word } = this;
     return {
       ...super.toJSON(),
-      startDate,
-      endDate,
+      start_date: startDate,
+      end_date: endDate,
       win,
       members:
         members !== undefined
