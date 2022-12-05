@@ -1,5 +1,5 @@
-import { ModelError } from "../model/ModelError"
-import HangmanError from "./HangmanError"
+import { ModelError } from "../model/ModelError";
+import HangmanError from "./HangmanError";
 
 /**
  * Custom model error
@@ -13,13 +13,17 @@ export default class HangmanModelError extends HangmanError {
   /**
    * The list of model errors
    */
-  private _modelErrors : ModelError[] = [];
+  private _modelErrors: ModelError[] = [];
 
   /**
    * @param message the message of error
    * @param options the cause or error
    */
-  constructor(message: string, modelErrors : ModelError[] = [], options?: { cause: Error }) {
+  constructor(
+    message: string,
+    modelErrors: ModelError[] = [],
+    options?: { cause: Error }
+  ) {
     // call parent constructor
     super(message, options);
     this._modelErrors = modelErrors;

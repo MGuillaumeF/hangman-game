@@ -83,6 +83,5 @@ describe("Word Model Object Test Suite", function () {
       WORD_EXAMPLE,
       "test parse to json object are equals"
     );
-
   });
 });
