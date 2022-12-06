@@ -7,7 +7,7 @@
   "scripts": {
     "build:dev": "webpack --define-process-env-node-env development --config ./webpack.config.mjs --progress --color",
     "build": "webpack --define-process-env-node-env production --config ./webpack.config.mjs --progress --color",
-    "build:doc": "typedoc --out docs .",
+    "build:doc": "typedoc --out docs ./src/main.ts",
     "postbuild": "npm run start ../../resources/model.xml",
     "poststart": "prettier --write dist",
     "prettier": "prettier --write . --ignore-path node_modules",
