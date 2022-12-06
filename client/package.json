@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack --define-process-env-node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
-    "build:doc": "styleguidist build && typedoc --out ./dist/docs/ts src",
+    "build:doc": "styleguidist build && typedoc --out ./dist/docs/ts .",
     "start": "webpack serve --open --progress --color --define-process-env-node-env development",
     "cy:open": "cypress open",
     "cy:run": "wait-on http://localhost:3000/ && cypress run --config-file cypress.json",
