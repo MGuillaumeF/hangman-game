@@ -137,14 +137,16 @@ jobs:
         npm start ../../resources/model.xml
         npm run lint:eslint:json || echo FAILED
 
+    - name: Generate Generator Docs
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: npm run build:doc
+
     - name: Copy Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
-        echo disable temporary
         cp ./dist/ts/model/* ../../../client/src/model
         cp ./dist/cpp/model/* ../../src/model
         cp ./dist/cpp/endpoint/* ../../src/endpoint
-        # rm -rf ../../../client/src/model/*
 
     - name: Audit dependencies model generator
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
