@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "@mguillaumef/audiso": "^0.0.4",
-    "jsdoc" : "^4.0.0"
+    "jsdoc": "^4.0.0"
   }
 }
