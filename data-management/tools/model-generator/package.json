@@ -30,7 +30,7 @@
     "@gfx/zopfli": "^1.0.15",
     "@mguillaumef/audiso": "^0.0.4",
     "@types/xml2js": "^0.4.11",
-    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
