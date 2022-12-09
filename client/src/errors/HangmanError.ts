@@ -20,7 +20,6 @@ export default class HangmanError extends Error {
    */
   constructor(message: string, options?: { cause: Error }) {
     // call parent constructor
-    // @ts-ignore
     super(message, options);
 
     // error stack for V8

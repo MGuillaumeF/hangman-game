@@ -17,6 +17,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     // mocha runs in node, which uses commonjs modules
-    "module": "CommonJs"
+    "module": "CommonJs",
+    "typeRoots": ["node_modules/@types", "types"]
   }
 }
