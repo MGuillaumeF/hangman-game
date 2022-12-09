@@ -108,7 +108,7 @@
     "react-styleguidist": "^13.0.0",
     "regenerator-runtime": "^0.13.11",
     "rimraf": "^3.0.2",
-    "sass": "^1.56.1",
+    "sass": "^1.56.2",
     "sass-loader": "^13.2.0",
     "sinon": "^15.0.0",
     "source-map-support": "^0.5.21",
