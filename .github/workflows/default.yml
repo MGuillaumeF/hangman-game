@@ -111,10 +111,10 @@ jobs:
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
       run: |
-        git rebase origin/main
-        git push --force
         git stash
         git checkout ${{github.head_ref}}
+        git rebase origin/main
+        git push --force
         git stash pop || echo "Nothing in stashed stack"
         git config user.name "MGuillaumeF"
         git config user.email "${{secrets.EMAIL}}"
