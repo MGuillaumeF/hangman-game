@@ -208,6 +208,13 @@ jobs:
         ./vcpkg install libodb-sqlite
         #./vcpkg install libodb-mysql
 
+    - name: Archive debug report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: VCPKG Debug libodb traces - Reports
+        path: ${{github.workspace}}/../vcpkg/buildtrees/libodb/install-x64-linux-dbg-out.log
+
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
