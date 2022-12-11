@@ -212,8 +212,9 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
+        working-directory: ${{github.workspace}}/..
         name: VCPKG Debug libodb traces - Reports
-        path: ${{github.workspace}}/../vcpkg/buildtrees/libodb/install-x64-linux-dbg-out.log
+        path: vcpkg/buildtrees/libodb/install-x64-linux-dbg-out.log
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
