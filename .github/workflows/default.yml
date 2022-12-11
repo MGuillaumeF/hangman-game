@@ -196,7 +196,6 @@ jobs:
       run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../../reports/audit-install-odb-report.json
 
     - name: Install lib odb
-      working-directory: ${{github.workspace}}/..
       run: |
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
@@ -212,9 +211,8 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        working-directory: ${{github.workspace}}/..
         name: VCPKG Debug libodb traces - Reports
-        path: vcpkg/buildtrees/libodb/install-x64-linux-dbg-out.log
+        path: ${{github.workspace}}/vcpkg/buildtrees/libodb/install-x64-linux-dbg-out.log
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
