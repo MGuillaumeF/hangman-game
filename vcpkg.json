@@ -1,0 +1,9 @@
+{
+  "name": "hangman-game",
+  "version-string": "1.0.0",
+  "homepage": "https://github.com/MGuillaumeF/hangman-game/",
+  "description": "Hangman Game application.",
+  "dependencies": [
+    { "name" : "libodb-sqlite", "version": "2.4.0" }
+  ]
+}
