@@ -203,7 +203,7 @@ jobs:
         git checkout 94ce0dab56f4d8ba6bd631ba59ed682b02d45c46
         # git pull
         ./bootstrap-vcpkg.sh
-        ./vcpkg update
+        # ./vcpkg update
         ./vcpkg integrate install
         # ./vcpkg install boost
         cd ${{github.workspace}}
