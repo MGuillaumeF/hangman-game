@@ -25,7 +25,7 @@
     }, 
     {
       "name": "vcpkg-cmake",
-      "version-date": "2022-10-30"
+      "version-date": "2022-09-16"
     },
     {
       "name": "vcpkg-cmake-config",
