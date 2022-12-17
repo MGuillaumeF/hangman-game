@@ -1,0 +1,153 @@
+name: HANGMAN-GAME - DEFAULT
+
+on:
+  schedule:
+    - cron: '1 1 1 * *'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: 
+      - main
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  BOOST_VERSION: 1.80.0
+  APPLICATION_VERSION: 0.1.0
+  CPP_COSO_VERSION: 0.2.1
+  APPLICATION_NAME: HangmanGame
+  DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
+  DB_USER: root
+  DB_PWD: root
+
+permissions: write-all
+
+jobs:
+
+ clear:
+    runs-on: ubuntu-latest
+    name: A job to delete old workflow runs
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Delete workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      with:
+        repository: MGuillaumeF/hangman-game
+        workflow: ".github/workflows/default.yml"
+        older-than-seconds: 86400   
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+ client-light :
+    env:
+      BUILD_TYPE: Debug
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - name: Generate Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: |
+        npm install
+        npm run build
+        npm start ../../resources/model.xml
+        npm run lint:eslint:json || echo FAILED
+    - name: Generate Generator Docs
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: npm run build:doc
+  
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: npm install
+
+    - name: Update Browserlist
+      working-directory: ${{github.workspace}}/client
+      run: npx browserslist@latest --update-db
+
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
+
+    - name: Extract Webpack stats
+      working-directory: ${{github.workspace}}/client
+      run: npm run webpack-stats
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: |
+        npm run unit:test
+        npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+    - name: Archive IHM Tests videos 
+      uses: actions/upload-artifact@v3
+      with:
+        name: IHM-Hangman-Game-Tests-Videos 
+        path: ${{github.workspace}}/client/cypress/videos
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov --reporter=text-summary
+
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Copy reports
+      working-directory: ${{github.workspace}}/client
+      if: always()
+      run: |
+        tree cypress
+        mkdir -p ./dist/cypress-reports
+        cp -R ./cypress/reports ./dist/cypress-reports
+        mv ./stats.json ./dist/reports/stats.json
+        mv ./build/stats.html ./dist/reports/stats.html
+    - name: Audit dependencies client
+      working-directory: ${{github.workspace}}/client
+      run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
+
+    - name: Convert Audit dependencies client report
+      working-directory: ${{github.workspace}}/client
+      run: ./node_modules/.bin/audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Generate Client Docs
+      working-directory: ${{github.workspace}}/client
+      run: npm run build:doc
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+
+ 
+
+ dependabot:
+    needs: [sonarcloud-analyse]
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.3.5
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Enable auto-merge for Dependabot PRs 
+        run: gh pr merge --delete-branch --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
