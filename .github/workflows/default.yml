@@ -200,16 +200,14 @@ jobs:
       run: |
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 94ce0dab56f4d8ba6bd631ba59ed682b02d45c46
-        # git pull
+        git pull
         ./bootstrap-vcpkg.sh
-        # ./vcpkg update
+        ./vcpkg update
         ./vcpkg integrate install
-        # ./vcpkg install boost
         cd ${{github.workspace}}
         ../vcpkg/vcpkg x-update-baseline
         cat vcpkg.json
-        ../vcpkg/vcpkg install libodb-sqlite
+        ../vcpkg/vcpkg install
         #./vcpkg install libodb-sqlite
         #./vcpkg install libodb-mysql
 
