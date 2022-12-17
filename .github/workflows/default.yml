@@ -206,7 +206,7 @@ jobs:
         ./vcpkg integrate install
         # ./vcpkg install boost
         cd ${{github.workspace}}
-        ../vcpkg/vcpkg x-update-baseline --add-initial-baseline
+        ../vcpkg/vcpkg x-update-baseline
         cat vcpkg.json
         ../vcpkg/vcpkg install
         #./vcpkg install libodb-sqlite
