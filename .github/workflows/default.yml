@@ -205,7 +205,8 @@ jobs:
         ./vcpkg update
         ./vcpkg integrate install
         # ./vcpkg install boost
-        ./vcpkg install --manifest-root=${{github.workspace}}
+        cd ${{github.workspace}}
+        ../vcpkg install
         #./vcpkg install libodb-sqlite
         #./vcpkg install libodb-mysql
 
