@@ -4,6 +4,7 @@
   "homepage": "https://github.com/MGuillaumeF/hangman-game/",
   "description": "Hangman Game application.",
   "dependencies": [
+    "boost",
     "libodb",
     "libodb-sqlite",
     "sqlite3",
