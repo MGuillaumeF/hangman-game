@@ -21,7 +21,7 @@
     },
     {
       "name": "sqlite3",
-      "version": "3.40.0"
+      "version": "3.39.2"
     }, 
     {
       "name": "vcpkg-cmake",
