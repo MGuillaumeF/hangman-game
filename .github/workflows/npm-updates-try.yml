@@ -129,12 +129,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.3.5
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
       - name: Enable auto-merge for PRs 
         run: gh pr merge --delete-branch --auto --squash "$PR_URL"
         env:
