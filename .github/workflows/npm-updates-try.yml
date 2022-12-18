@@ -28,6 +28,7 @@ jobs:
         npm run build
         npm start ../../resources/model.xml
         npm run lint:eslint:json || echo FAILED
+
     - name: Generate Generator Docs
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: npm run build:doc
@@ -48,14 +49,12 @@ jobs:
       run: npx browserslist@latest --update-db
 
     - name: Prettier format
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
       run: | 
         npm run prettier --config ./.prettierrc
         npm run prettier --config ./.prettierrc ../data-management/tools
 
     - name: Save client changes
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
       run: |
         git stash
@@ -129,7 +128,14 @@ jobs:
     needs: [npm-updates-try]
     runs-on: ubuntu-latest
     steps:
-      - name: Enable auto-merge for Dependabot PRs 
+
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.3.5
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Enable auto-merge for PRs 
         run: gh pr merge --delete-branch --auto --squash "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
