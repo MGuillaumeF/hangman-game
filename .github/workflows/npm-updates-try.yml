@@ -41,7 +41,7 @@ jobs:
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: |
-        npx npm-check-updates -u
+        npx npm-check-updates -u --reject cypress
         npm install
 
     - name: Update Browserlist
