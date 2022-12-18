@@ -23,7 +23,7 @@ jobs:
     - name: Generate Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
-        npx npm-check-updates
+        npx npm-check-updates -u
         npm install
         npm run build
         npm start ../../resources/model.xml
@@ -41,7 +41,7 @@ jobs:
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: |
-        npx npm-check-updates
+        npx npm-check-updates -u
         npm install
 
     - name: Update Browserlist
