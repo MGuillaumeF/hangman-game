@@ -51,7 +51,7 @@ jobs:
     - name: Prettier format
       working-directory: ${{github.workspace}}/client
       run: | 
-        npm run prettier --config ./.prettierrc
+        npm run prettier --config ./.prettierrc .
         npm run prettier --config ./.prettierrc ../data-management/tools
 
     - name: Save client changes
