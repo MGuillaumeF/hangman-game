@@ -1,8 +1,9 @@
 name: HANGMAN-GAME - NPM UPDATE TRY
 
 on:
-  push:
-    branches: [ main ]
+  pull_request:
+    branches: 
+      - main
   schedule:
     # all day at 1h01
     - cron: '1 1 * * *'
