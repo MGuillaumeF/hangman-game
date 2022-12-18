@@ -1,8 +1,11 @@
 name: HANGMAN-GAME - NPM UPDATE TRY
 
 on:
+  push:
+    branches: [ main ]
   schedule:
-    - cron: '1 1 1 * *'
+    # all day at 1h01
+    - cron: '1 1 * * *'
 
 permissions: write-all
 
@@ -19,6 +22,7 @@ jobs:
     - name: Generate Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
+        npx npm-check-updates
         npm install
         npm run build
         npm start ../../resources/model.xml
@@ -31,9 +35,12 @@ jobs:
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
         cp ./dist/ts/model/* ../../../client/src/model
+
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
-      run: npm install
+      run: |
+        npx npm-check-updates
+        npm install
 
     - name: Update Browserlist
       working-directory: ${{github.workspace}}/client
@@ -45,6 +52,7 @@ jobs:
       run: | 
         npm run prettier --config ./.prettierrc
         npm run prettier --config ./.prettierrc ../data-management/tools
+
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}
@@ -73,6 +81,7 @@ jobs:
       run: |
         npm run unit:test
         npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
     - name: Archive IHM Tests videos 
       uses: actions/upload-artifact@v3
       with:
@@ -100,6 +109,7 @@ jobs:
         cp -R ./cypress/reports ./dist/cypress-reports
         mv ./stats.json ./dist/reports/stats.json
         mv ./build/stats.html ./dist/reports/stats.html
+
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
