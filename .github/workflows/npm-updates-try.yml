@@ -114,7 +114,9 @@ jobs:
 
     - name: Save changes
       working-directory: ${{github.workspace}}
-      run: ./tools/updater.bash
+      run: |
+        git update-index --chmod=+x ./tools/updater.bash
+        ./tools/updater.bash
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         EMAIL: ${{secrets.EMAIL}}
