@@ -1,0 +1,123 @@
+name: HANGMAN-GAME - NPM UPDATE TRY
+
+on:
+  pull_request:
+    branches: 
+      - main
+  schedule:
+    # all day at 1h01
+    - cron: '1 1 * * *'
+
+permissions: write-all
+
+jobs:
+ npm-updates-try :
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - name: Generate Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: |
+        npx npm-check-updates -u > dependency_model_generator_update.log
+        cat dependency_model_generator_update.log
+        npm install
+        npm run build
+        npm start ../../resources/model.xml
+        npm run lint:eslint:json || echo FAILED
+
+    - name: Generate Generator Docs
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: npm run build:doc
+
+    - name: Copy Model classes
+      working-directory: ${{github.workspace}}/data-management/tools/model-generator
+      run: |
+        cp ./dist/ts/model/* ../../../client/src/model
+
+    - name: Install client's dependencies
+      working-directory: ${{github.workspace}}/client
+      run: |
+        npx npm-check-updates -u --reject cypress > dependency_client_update.log
+        cat dependency_client_update.log
+        npm install
+
+    - name: Update Browserlist
+      working-directory: ${{github.workspace}}/client
+      run: npx browserslist@latest --update-db
+
+    - name: Prettier format
+      working-directory: ${{github.workspace}}/client
+      run: | 
+        npm run prettier --config ./.prettierrc .
+        npm run prettier --config ./.prettierrc ../data-management/tools
+
+    - name: Build client
+      working-directory: ${{github.workspace}}/client
+      run: npm run build
+
+    - name: Extract Webpack stats
+      working-directory: ${{github.workspace}}/client
+      run: npm run webpack-stats
+
+    - name: Client tests
+      working-directory: ${{github.workspace}}/client
+      run: |
+        npm run unit:test
+        npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+
+    - name: Archive IHM Tests videos 
+      uses: actions/upload-artifact@v3
+      with:
+        name: IHM-Hangman-Game-Tests-Videos 
+        path: ${{github.workspace}}/client/cypress/videos
+
+    - name: Print summary coverage
+      working-directory: ${{github.workspace}}/client
+      run: npx nyc report --reporter=lcov --reporter=text-summary
+
+    - name: ESlint analyze json
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint:json || echo FAILED
+
+    - name: ESlint analyze html
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:eslint || echo FAILED
+
+    - name: Copy reports
+      working-directory: ${{github.workspace}}/client
+      if: always()
+      run: |
+        tree cypress
+        mkdir -p ./dist/cypress-reports
+        cp -R ./cypress/reports ./dist/cypress-reports
+        mv ./stats.json ./dist/reports/stats.json
+        mv ./build/stats.html ./dist/reports/stats.html
+
+    - name: Stylelint analyze
+      working-directory: ${{github.workspace}}/client
+      run: npm run lint:stylelint
+
+    - name: Generate Client Docs
+      working-directory: ${{github.workspace}}/client
+      run: npm run build:doc
+
+    - name: Archive Analyses reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+
+    - name: Save changes
+      working-directory: ${{github.workspace}}
+      run: |
+        git update-index --chmod=+x ./tools/updater.bash
+        chmod 777 ./tools/updater.bash
+        ./tools/updater.bash
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        EMAIL: ${{secrets.EMAIL}}
