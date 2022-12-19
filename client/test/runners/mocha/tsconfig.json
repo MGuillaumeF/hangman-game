@@ -18,6 +18,6 @@
     "noUncheckedIndexedAccess": true,
     // mocha runs in node, which uses commonjs modules
     "module": "CommonJs",
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["types", "node_modules/@types"]
   }
 }
