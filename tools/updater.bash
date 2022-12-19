@@ -5,10 +5,8 @@ dependency_model_generator_update=$(<data-management/tools/model-generator/depen
 
 if [[ `git status --porcelain` ]]; then
   git stash
-  git checkout -b full-npm-updates
-  git push -u origin full-npm-updates
-  git fetch
-  git checkout origin/full-npm-updates
+  git checkout -b feature/full-npm-updates
+  git push -u origin feature/full-npm-updates
   git config user.name "MGuillaumeF"
   git config user.email "$EMAIL"
   git add client || echo "No modification to add pop"
