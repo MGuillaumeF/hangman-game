@@ -11,7 +11,7 @@
     "boost-property-tree",
     "boost-system",
     "boost-thread",
-    "boost-test,
+    "boost-test",
     "boost-filesystem",
     "libodb",
     "libodb-sqlite",
