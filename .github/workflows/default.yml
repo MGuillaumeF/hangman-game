@@ -941,16 +941,11 @@ jobs:
         path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
 
  build-raspberry-pi-toolchain:
-    needs: [sonarcloud-analyse]
+    #needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
     steps:
 
     - uses: actions/checkout@v3
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
 
     - name: Install Raspberry PI x64 toolchain
       run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
