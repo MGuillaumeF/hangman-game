@@ -13,4 +13,8 @@ if [[ `git status --porcelain` ]]; then
   git add data-management/tools || echo "No modification to add pop"
   git commit -m "[AUTO][NPM_UPDATE] npm check update\nclient : $dependency_client_update\nmodel_generator : $dependency_model_generator_update" 
   git push
+  git switch main
+  git merge --ff-only feature/full-npm-updates
+  git push
+  git branch -d feature/full-npm-updates
 fi
