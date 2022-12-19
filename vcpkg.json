@@ -1,0 +1,26 @@
+{
+   "name": "hangman-game",
+   "version": "1.0.0",
+   "homepage": "https://github.com/MGuillaumeF/hangman-game/",
+   "description": "Hangman Game application.",
+   "dependencies": [
+     "libodb",
+     "libodb-sqlite",
+     "sqlite3"
+   ],
+   "overrides": [
+     {
+       "name": "libodb",
+       "version": "2.4.0"
+     },
+     {
+       "name": "libodb-sqlite",
+       "version": "2.4.0"
+     },
+     {
+       "name": "sqlite3",
+       "version": "3.40.0"
+     }
+   ],
+   "builtin-baseline": "b6b5c0b9a44819b095b369f507599c79ac885ec5"
+ }
