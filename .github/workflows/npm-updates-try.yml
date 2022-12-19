@@ -23,7 +23,8 @@ jobs:
     - name: Generate Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
       run: |
-        npx npm-check-updates -u
+        npx npm-check-updates -u > dependency_model_generator_update.log
+        cat dependency_model_generator_update.log
         npm install
         npm run build
         npm start ../../resources/model.xml
@@ -41,7 +42,8 @@ jobs:
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: |
-        npx npm-check-updates -u --reject cypress
+        npx npm-check-updates -u --reject cypress > dependency_client_update.log
+        cat dependency_client_update.log
         npm install
 
     - name: Update Browserlist
@@ -53,20 +55,6 @@ jobs:
       run: | 
         npm run prettier --config ./.prettierrc .
         npm run prettier --config ./.prettierrc ../data-management/tools
-
-    - name: Save client changes
-      working-directory: ${{github.workspace}}
-      run: |
-        git stash
-        git checkout ${{github.head_ref}}
-        git stash pop || echo "Nothing in stashed stack"
-        git config user.name "MGuillaumeF"
-        git config user.email "${{secrets.EMAIL}}"
-        git add client || echo "No modification to add pop"
-        git add data-management/tools || echo "No modification to add pop"
-        (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build client
       working-directory: ${{github.workspace}}/client
@@ -124,13 +112,9 @@ jobs:
         name: IHM-Hangman-Game-Analyses-report
         path: ${{github.workspace}}/client/dist
 
- merger:
-    needs: [npm-updates-try]
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Enable auto-merge for PRs 
-        run: gh pr merge --delete-branch --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Save changes
+      working-directory: ${{github.workspace}}
+      run: ./tools/updater.bash
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        EMAIL: ${{secrets.EMAIL}}
