@@ -11,7 +11,12 @@ if [[ `git status --porcelain` ]]; then
   git config user.email "$EMAIL"
   git add client || echo "No modification to add pop"
   git add data-management/tools || echo "No modification to add pop"
-  git commit -m "[AUTO][NPM_UPDATE] npm check update\nclient : $dependency_client_update\nmodel_generator : $dependency_model_generator_update" 
+  git commit -m "[AUTO][NPM_UPDATE] npm check updates
+
+client : $dependency_client_update
+
+model_generator : $dependency_model_generator_update"
+
   git push
   git switch main
   git merge --ff-only feature/full-npm-updates
