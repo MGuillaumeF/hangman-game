@@ -1,0 +1,227 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-12-20T02:13:20.278Z",
+    "end": "2022-12-20T02:13:50.064Z",
+    "duration": 29786,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b5e7f83b-c2ae-40d6-85d0-ca349a011f91",
+      "title": "",
+      "fullFile": "cypress/integration/loading.specs.ts",
+      "file": "cypress/integration/loading.specs.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c9e17bf5-fb21-46fb-963e-2a5e54f16e44",
+          "title": "Offlines Access",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Settings",
+              "fullTitle": "Offlines Access Settings",
+              "timedOut": null,
+              "duration": 13969,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.clearViewport();\ncy.visit(\"/\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addPresentation\"])(\"Settings\");\ncy.wait(2000);\ncy.visit(\"/\");\n// all parameters are optional\ncy.toast(\"Change language to French\", {\n    blocking: true\n});\ncy.get(\"#lang-fr\").click();\ncy.contains(\"Connexion\");\n// all parameters are optional\ncy.toast(\"Change language to English\", {\n    blocking: true\n});\ncy.get(\"#lang-en\").click();\ncy.contains(\"Sign In\");\ncy.get(\"#PAGES_SETTINGS_TITLE\").click();\n// all parameters are optional\ncy.toast(\"Display menu\", {\n    blocking: true\n});\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addEnd\"])();",
+              "err": {},
+              "uuid": "83b4cf5e-d816-4c6a-82ac-62e7aeb84c0a",
+              "parentUUID": "c9e17bf5-fb21-46fb-963e-2a5e54f16e44",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "83b4cf5e-d816-4c6a-82ac-62e7aeb84c0a"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 13969,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "c71a0d1f-9ac7-4960-9a5a-6328c3c6c712",
+          "title": "Subscription",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "With Success",
+              "fullTitle": "Subscription With Success",
+              "timedOut": null,
+              "duration": 7109,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.clearViewport();\ncy.visit(\"/\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addPresentation\"])(\"Subscription - with success\");\ncy.wait(2000);\ncy.visit(\"/\");\ncy.intercept(\"POST\", \"/api/v1/user/sign-up\", function (req) {\n    var _a, _b, _c, _d;\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_a = req.body) === null || _a === void 0 ? void 0 : _a.email).to.equal(\"mguillaumef@draft.com\");\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_b = req.body) === null || _b === void 0 ? void 0 : _b.login).to.equal(\"mguillaumef\");\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_c = req.body) === null || _c === void 0 ? void 0 : _c.password).to.equal(\"DROWssap987\");\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_d = req.body) === null || _d === void 0 ? void 0 : _d.confirm).to.equal(\"DROWssap987\");\n}).as(\"subscribe\");\ncy.get(\"#PAGES_SIGN_UP_LINK\").click();\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_UP_FIELDS_EMAIL\", \"mguillaumef@draft.com\");\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_UP_FIELDS_IDENTIFIER\", \"mguillaumef\");\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_UP_FIELDS_PASSWORD\", \"DROWssap987\");\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_UP_FIELDS_CONFIRM\", \"DROWssap987\").type(\"{enter}\");\ncy.wait(\"@subscribe\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addEnd\"])();",
+              "err": {},
+              "uuid": "7285dc7d-ab11-4c95-8cb0-3db95aa8f93d",
+              "parentUUID": "c71a0d1f-9ac7-4960-9a5a-6328c3c6c712",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "7285dc7d-ab11-4c95-8cb0-3db95aa8f93d"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 7109,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "c9ee477b-46d5-499f-8810-83072ea43553",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "With Success",
+              "fullTitle": "Login With Success",
+              "timedOut": null,
+              "duration": 5161,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.clearViewport();\ncy.visit(\"/\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addPresentation\"])(\"Login - with success\");\ncy.wait(2000);\ncy.visit(\"/\");\ncy.intercept(\"POST\", \"/api/v1/user/sign-in\", function (req) {\n    var _a, _b;\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_a = req.body) === null || _a === void 0 ? void 0 : _a.login).to.equal(\"mguillaumef\");\n    Object(chai__WEBPACK_IMPORTED_MODULE_0__[\"expect\"])((_b = req.body) === null || _b === void 0 ? void 0 : _b.password).to.equal(\"DROWssap987\");\n}).as(\"login\");\ncy.get(\"#PAGES_SIGN_IN_LINK\").click();\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_IN_FIELDS_IDENTIFIER\", \"mguillaumef\");\nObject(_components_BasicInputs__WEBPACK_IMPORTED_MODULE_2__[\"basicInputType\"])(\"FORMS_SIGN_IN_FIELDS_PASSWORD\", \"DROWssap987\").type(\"{enter}\");\ncy.wait(\"@login\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addEnd\"])();",
+              "err": {},
+              "uuid": "8ad9ae0f-9f1d-4d73-9b93-b7832c31b8bb",
+              "parentUUID": "c9ee477b-46d5-499f-8810-83072ea43553",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "8ad9ae0f-9f1d-4d73-9b93-b7832c31b8bb"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 5161,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "c3c1f7db-1dab-42ec-abf6-1430d4d8ddd0",
+          "title": "Errors pages",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Not Found",
+              "fullTitle": "Errors pages Not Found",
+              "timedOut": null,
+              "duration": 2961,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.clearViewport();\ncy.visit(\"/\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addPresentation\"])(\"Not Found\");\ncy.wait(2000);\ncy.visit(\"/badPage\");\ncy.contains(\"Error404\");\nObject(_presentation__WEBPACK_IMPORTED_MODULE_3__[\"addEnd\"])();",
+              "err": {},
+              "uuid": "a60f7fc9-808f-486c-9d68-633ff7489a1c",
+              "parentUUID": "c3c1f7db-1dab-42ec-abf6-1430d4d8ddd0",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "a60f7fc9-808f-486c-9d68-633ff7489a1c"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2961,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/tests",
+        "charts": true,
+        "html": true,
+        "json": true,
+        "reportPageTitle": "Browser Integration Tests Reports",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "overwrite": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

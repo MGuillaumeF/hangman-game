@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testExecutions version="1">
+  <file path="/home/runner/work/hangman-game/hangman-game/client/cypress/integration/loading.specs.ts">
+    <testCase name="Offlines Access - Settings" duration="13969"></testCase>
+    <testCase name="Subscription - With Success" duration="7109"></testCase>
+    <testCase name="Login - With Success" duration="5161"></testCase>
+    <testCase name="Errors pages - Not Found" duration="2961"></testCase>
+  </file>
+</testExecutions>
