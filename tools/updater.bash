@@ -16,5 +16,5 @@ if [[ `git status --porcelain` ]]; then
   git switch main
   git merge --ff-only feature/full-npm-updates
   git push
-  git branch -d feature/full-npm-updates
+  git push origin/feature/full-npm-updates --delete feature/full-npm-updates
 fi
