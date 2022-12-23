@@ -26,3 +26,8 @@ webpack.log
 
 # generated files
 src/generated
+
+
+.nyc_output
+cypress/reports
+cypress/videos
