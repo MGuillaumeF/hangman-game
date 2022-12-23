@@ -3,119 +3,391 @@
   <classes>
     <class name="root_model_object" abstract="true">
       <attributes>
-        <attribute name="version" visibility="protected" type="uint32" mandatory="true" min="1" default_value="0">
+        <attribute
+          name="version"
+          visibility="protected"
+          type="uint32"
+          mandatory="true"
+          min="1"
+          default_value="0"
+        >
         </attribute>
-        <attribute name="id" visibility="protected" type="uint32" mandatory="true" min="1" macro="increment-auto" object_id="true" default_value="0">
+        <attribute
+          name="id"
+          visibility="protected"
+          type="uint32"
+          mandatory="true"
+          min="1"
+          macro="increment-auto"
+          object_id="true"
+          default_value="0"
+        >
         </attribute>
-        <attribute name="created_by" visibility="protected" type="string" mandatory="true" min_length="3" default_value="anonymous">
+        <attribute
+          name="created_by"
+          visibility="protected"
+          type="string"
+          mandatory="true"
+          min_length="3"
+          default_value="anonymous"
+        >
         </attribute>
-        <attribute name="created_at" visibility="protected" type="date" mandatory="true" default_value="current">
+        <attribute
+          name="created_at"
+          visibility="protected"
+          type="date"
+          mandatory="true"
+          default_value="current"
+        >
         </attribute>
-        <attribute name="updated_by" visibility="protected" type="string" mandatory="true" min_length="3" default_value="anonymous">
+        <attribute
+          name="updated_by"
+          visibility="protected"
+          type="string"
+          mandatory="true"
+          min_length="3"
+          default_value="anonymous"
+        >
         </attribute>
-        <attribute name="updated_at" visibility="protected" type="date" mandatory="true" default_value="current">
+        <attribute
+          name="updated_at"
+          visibility="protected"
+          type="date"
+          mandatory="true"
+          default_value="current"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="user" extend="root_model_object">
       <attributes>
-        <attribute name="login" visibility="private" type="string" mandatory="true" unique="true" unique-insensitive="true" min_length="3" pattern="^[a-zA-Z0-9]{3,32}$">
+        <attribute
+          name="login"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          unique-insensitive="true"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,32}$"
+        >
         </attribute>
-        <attribute name="password" visibility="private" type="string" mandatory="true" min_length="8" pattern="^.*(?:(?:[a-z].*[A-Z].*\\d)|(?:[A-Z].*\\d.*[a-z])|(?:\\d.*[a-z].*[A-Z])).*$">
+        <attribute
+          name="password"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min_length="8"
+          pattern="^.*(?:(?:[a-z].*[A-Z].*\\d)|(?:[A-Z].*\\d.*[a-z])|(?:\\d.*[a-z].*[A-Z])).*$"
+        >
         </attribute>
-        <attribute name="salt_user" visibility="private" type="string" mandatory="true" min_length="32">
+        <attribute
+          name="salt_user"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min_length="32"
+        >
         </attribute>
-        <attribute name="salt_session" visibility="private" type="string" mandatory="true" min_length="32">
+        <attribute
+          name="salt_session"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min_length="32"
+        >
         </attribute>
-        <attribute name="token" visibility="private" type="string" mandatory="true" min_length="32">
+        <attribute
+          name="token"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          min_length="32"
+        >
         </attribute>
-        <attribute name="last_connection" visibility="private" type="date" mandatory="false">
+        <attribute
+          name="last_connection"
+          visibility="private"
+          type="date"
+          mandatory="false"
+        >
         </attribute>
-        <attribute name="friends" visibility="private" type="user[]" mandatory="false" cardinality="to_many">
+        <attribute
+          name="friends"
+          visibility="private"
+          type="user[]"
+          mandatory="false"
+          cardinality="to_many"
+        >
         </attribute>
-        <attribute name="groups" visibility="private" type="group[]" mandatory="true" cardinality="many_to_many">
+        <attribute
+          name="groups"
+          visibility="private"
+          type="group[]"
+          mandatory="true"
+          cardinality="many_to_many"
+        >
         </attribute>
-        <attribute name="teams" visibility="private" type="team[]" mandatory="false" cardinality="many_to_many">
+        <attribute
+          name="teams"
+          visibility="private"
+          type="team[]"
+          mandatory="false"
+          cardinality="many_to_many"
+        >
         </attribute>
-        <attribute name="chats" visibility="private" type="chat[]" mandatory="false" cardinality="many_to_many">
+        <attribute
+          name="chats"
+          visibility="private"
+          type="chat[]"
+          mandatory="false"
+          cardinality="many_to_many"
+        >
         </attribute>
-        <attribute name="parties" visibility="private" type="party[]" mandatory="false" cardinality="many_to_many">
+        <attribute
+          name="parties"
+          visibility="private"
+          type="party[]"
+          mandatory="false"
+          cardinality="many_to_many"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="group" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-z]{3,32}$">
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          min_length="3"
+          pattern="^[a-z]{3,32}$"
+        >
         </attribute>
-        <attribute name="members" visibility="private" type="user[]" mandatory="false" min_length="1" cardinality="many_to_many" linked_column="groups">
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="false"
+          min_length="1"
+          cardinality="many_to_many"
+          linked_column="groups"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="dictionary" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,}$"
+        >
         </attribute>
-        <attribute name="country_code" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
+        <attribute
+          name="country_code"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,}$"
+        >
         </attribute>
-        <attribute name="words" visibility="private" type="word[]" cardinality="one_to_many" linked_column="dictionary">
+        <attribute
+          name="words"
+          visibility="private"
+          type="word[]"
+          cardinality="one_to_many"
+          linked_column="dictionary"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="word" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,}$"
+        >
         </attribute>
-        <attribute name="definitions" visibility="private" type="string[]" mandatory="true" min_length="3">
+        <attribute
+          name="definitions"
+          visibility="private"
+          type="string[]"
+          mandatory="true"
+          min_length="3"
+        >
         </attribute>
-        <attribute name="dictionary" visibility="private" type="dictionary" cardinality="one_to_many">
+        <attribute
+          name="dictionary"
+          visibility="private"
+          type="dictionary"
+          cardinality="one_to_many"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="party" extend="root_model_object">
       <attributes>
-        <attribute name="start_date" visibility="private" type="date" mandatory="true">
+        <attribute
+          name="start_date"
+          visibility="private"
+          type="date"
+          mandatory="true"
+        >
         </attribute>
-        <attribute name="end_date" visibility="private" type="date" mandatory="false">
+        <attribute
+          name="end_date"
+          visibility="private"
+          type="date"
+          mandatory="false"
+        >
         </attribute>
-        <attribute name="win" visibility="private" type="bool" mandatory="false">
+        <attribute
+          name="win"
+          visibility="private"
+          type="bool"
+          mandatory="false"
+        >
         </attribute>
-        <attribute name="members" visibility="private" type="user[]" mandatory="true" min_length="1" cardinality="many_to_many" linked_column="parties">
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min_length="1"
+          cardinality="many_to_many"
+          linked_column="parties"
+        >
         </attribute>
-        <attribute name="chat" visibility="private" type="chat" mandatory="true" cardinality="to_one">
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="to_one"
+        >
         </attribute>
-        <attribute name="word" visibility="private" type="word" mandatory="true" cardinality="to_one">
+        <attribute
+          name="word"
+          visibility="private"
+          type="word"
+          mandatory="true"
+          cardinality="to_one"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="chat" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="false" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="false"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,}$"
+        >
         </attribute>
-        <attribute name="messages" visibility="private" type="message[]" mandatory="false" cardinality="one_to_many" linked_column="chat">
+        <attribute
+          name="messages"
+          visibility="private"
+          type="message[]"
+          mandatory="false"
+          cardinality="one_to_many"
+          linked_column="chat"
+        >
         </attribute>
-        <attribute name="members" visibility="private" type="user[]" mandatory="true" min_length="1" cardinality="many_to_many" linked_column="chats">
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min_length="1"
+          cardinality="many_to_many"
+          linked_column="chats"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="message" extend="root_model_object">
       <attributes>
-        <attribute name="content" visibility="private" type="string" mandatory="false" unique="false" min_length="1">
+        <attribute
+          name="content"
+          visibility="private"
+          type="string"
+          mandatory="false"
+          unique="false"
+          min_length="1"
+        >
         </attribute>
-        <attribute name="sender" visibility="private" type="user" mandatory="true" cardinality="to_one">
+        <attribute
+          name="sender"
+          visibility="private"
+          type="user"
+          mandatory="true"
+          cardinality="to_one"
+        >
         </attribute>
-        <attribute name="send_date" visibility="private" type="date" mandatory="true">
+        <attribute
+          name="send_date"
+          visibility="private"
+          type="date"
+          mandatory="true"
+        >
         </attribute>
-        <attribute name="chat" visibility="private" type="chat" mandatory="true" cardinality="one_to_many">
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="one_to_many"
+        >
         </attribute>
       </attributes>
     </class>
     <class name="team" extend="root_model_object">
       <attributes>
-        <attribute name="name" visibility="private" type="string" mandatory="true" unique="true" min_length="3" pattern="^[a-zA-Z0-9]{3,}$">
+        <attribute
+          name="name"
+          visibility="private"
+          type="string"
+          mandatory="true"
+          unique="true"
+          min_length="3"
+          pattern="^[a-zA-Z0-9]{3,}$"
+        >
         </attribute>
-        <attribute name="members" visibility="private" type="user[]" mandatory="true" min_length="2" cardinality="many_to_many" linked_column="teams">
+        <attribute
+          name="members"
+          visibility="private"
+          type="user[]"
+          mandatory="true"
+          min_length="2"
+          cardinality="many_to_many"
+          linked_column="teams"
+        >
         </attribute>
-        <attribute name="chat" visibility="private" type="chat" mandatory="true" cardinality="to_one">
+        <attribute
+          name="chat"
+          visibility="private"
+          type="chat"
+          mandatory="true"
+          cardinality="to_one"
+        >
         </attribute>
       </attributes>
     </class>

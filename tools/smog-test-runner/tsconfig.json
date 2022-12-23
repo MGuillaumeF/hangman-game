@@ -1,0 +1,26 @@
+{
+   "compilerOptions": {
+     "baseUrl": ".",
+     "skipLibCheck": true,
+     "target": "es5",
+     "allowSyntheticDefaultImports": true,
+     "alwaysStrict": true,
+     "noImplicitAny": true,
+     "noResolve": false,
+     "noImplicitThis": true,
+     "resolveJsonModule": true,
+     "strict": true,
+     "strictBindCallApply": true,
+     "strictFunctionTypes": true,
+     "strictNullChecks": true,
+     "strictPropertyInitialization": true,
+     "noFallthroughCasesInSwitch": true,
+     "noImplicitReturns": true,
+     "noPropertyAccessFromIndexSignature": true,
+     "noUncheckedIndexedAccess": true,
+     "target": "es5",
+     "lib": ["es5", "dom"],
+     "types": ["cypress", "node"]
+   },
+   "include": ["**/*.ts"]
+ }

@@ -26,6 +26,10 @@ updates:
     directory: "/server/test " # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/tools/smog-test-runner"
+    schedule:
+      interval: "weekly"
 
 
 

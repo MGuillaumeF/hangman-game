@@ -12,3 +12,11 @@ body {
   width: 100%;
   box-sizing: border-box;
 }
+
+:root {
+  --primary-color-1: rgba(180, 180, 0, 100%);
+  --primary-color-2: rgba(180, 180, 0, 60%);
+  --primary-color-3: rgba(180, 180, 0, 30%);
+  --secondary-color-1: rgba(180, 0, 90, 100%);
+  --tertiary-color-1: rgba(180, 90, 0, 100%);
+}
