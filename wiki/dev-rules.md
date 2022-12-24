@@ -348,7 +348,9 @@ En prenant de la hauteur on identifie le code « mort » et on peut l’élimi
 
 Les fonctionnalités qui ne sont pas graphiques sont à tester avec un environnement Front allégé (sans DOM)
 
-Les fonctionnalités graphiques sont à tester sur un résultat du code source en version de dev ou en version bundle (en version de deg de préférence pour collecter la couverture de code).
+Les spécificités du bundle doit être testées pour tous les environnements pour garantir qu'aucun comportement parasite ne sera dû à une différence d'environnement du runner de test
+
+Les fonctionnalités graphiques sont à tester sur un résultat du code source en version de dev ou en version bundle (en version de dev de préférence pour collecter la couverture de code).
 
 Pour les interfaces complexes (notamment la partie réseaux) il est possible de fournir des utilitaires de test pour simplifier les futures tests.
 
@@ -370,7 +372,7 @@ le model est testé de 3 façon :
 
 ![Les tests unitaires du connecteur de base de données](data-management-ut-tests.svg)
 
-## Convention de syntaxe : 
+## Convention de syntaxe
 
 ### Convention de composition
 
@@ -405,7 +407,9 @@ On n’utilise pas de JavaScript sauf pour les configurations ne supportant le T
 
 #### SNAKE CASE
 
-Les fichiers ressources (png, svg, pdf, json, etc...)
+- Les fichiers ressources (png, svg, pdf, json, etc...)
+- les classes CSS
+- les identifiant CSS
 
 #### SCREAMING SNAKE CASE
 
@@ -426,7 +430,7 @@ Les fichiers ressources (png, svg, pdf, json, etc...)
 - Les interfaces
 - Les composants React
 
-#### Cas particuliers :
+#### Cas particuliers
 
 Si possible éviter les majuscules pour les noms des fichiers (sauf quand le nom du fichier reprend le nom de son contenu)
 
