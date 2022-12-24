@@ -5,7 +5,7 @@ dependency_model_generator_update=$(<data-management/tools/model-generator/depen
 
 if [[ `git status --porcelain` ]]; then
   echo "=> Set configuration"
-  git push origin/feature/full-npm-updates --delete feature/full-npm-updates || echo "clean branches failed"
+  git branch --delete --remotes origin/feature/full-npm-updates || echo "clean branches failed"
   git config user.name "MGuillaumeF"
   git config user.email "$EMAIL"
   echo "=> List of Updates :"
@@ -31,5 +31,5 @@ model_generator : $dependency_model_generator_update"
   git switch main
   git merge --ff-only feature/full-npm-updates
   git push
-  git push origin/feature/full-npm-updates --delete feature/full-npm-updates
+  git branch --delete --remotes origin/feature/full-npm-updates || echo "clean branches failed"
 fi
