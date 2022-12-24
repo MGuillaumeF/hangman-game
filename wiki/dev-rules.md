@@ -33,8 +33,9 @@
 - (4) Les points d'entrée du serveur HTTP sont générés en même temps que les points d'entrée du connecteur de base de données pour les interfaces classique (CREATE = POST, READ = GET/POST, UPDATE = PUT/PATCH, DELETE = DELETE).
 - (5) La documentation des API HTTP est généré à partir du fichier déclaratif qui est à l'origine des points d'entrée HTTP.
 - (6) Les formulaires de l'IHM utilisent la documentation JSON des API HTTP pour leurs constructions.
+- (7) Les interfaces graphiques de l'application suivent le standard du web, pour l'expérience utilisateur, les accessibilités, la gestion du cache et des échanges de donnés.
 
-> Utiliser cette génération centralisée permet de garantir l'unicité des comportements autour de la données. 
+> Utiliser la génération centralisée du model de données et de la documentation permet de garantir l'unicité des comportements autour de la données. 
 
 ## Diagramme de déploiement
 
