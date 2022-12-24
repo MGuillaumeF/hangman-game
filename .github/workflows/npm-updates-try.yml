@@ -3,7 +3,7 @@ name: HANGMAN-GAME - NPM UPDATE TRY
 on:
   schedule:
     # all day at 1h01
-    - cron: '1 1 * * *'
+    - cron: '2 2 * * *'
 
 permissions: write-all
 
