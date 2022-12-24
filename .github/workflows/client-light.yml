@@ -1,13 +1,7 @@
 name: HANGMAN-GAME - CLIENT LIGHT
 
 on:
-  schedule:
-    - cron: '1 1 1 * *'
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: 
-      - main
+  workflow_dispatch:
 
 env:
   APPLICATION_VERSION: 0.1.0
