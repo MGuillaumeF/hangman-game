@@ -348,7 +348,7 @@ En prenant de la hauteur on identifie le code « mort » et on peut l’élimi
 
 Les fonctionnalités qui ne sont pas graphiques sont à tester avec un environnement Front allégé (sans DOM)
 
-Les spécificités du bundle doit être testées pour tous les environnements pour garantir qu'aucun comportement parasite ne sera dû à une différence d'environnement du runner de test
+Les spécificités du bundle doivent être testées pour tous les environnements pour garantir qu'aucun comportement parasite ne sera dû à une différence d'environnement du runner de test
 
 Les fonctionnalités graphiques sont à tester sur un résultat du code source en version de dev ou en version bundle (en version de dev de préférence pour collecter la couverture de code).
 
