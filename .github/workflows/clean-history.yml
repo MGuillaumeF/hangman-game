@@ -1,8 +1,7 @@
 name: HANGMAN-GAME - CLEAN
 
 on:
-  schedule:
-    - workflow_dispatch:
+  workflow_dispatch:
  
 permissions: write-all
 
