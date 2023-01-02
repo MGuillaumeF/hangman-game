@@ -1,18 +1,24 @@
+// type definitions for Cypress object "cy"
 /// <reference types="cypress" />
+
+// type definitions for custom commands like "createDefaultTodos"
+/// <reference types="../support" />
+
+// check this file using TypeScript if available
+// @ts-check
 
 import { expect } from "chai";
 // import * as specTitle from "cypress-sonarqube-reporter/specTitle";
 // import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { basicInputType } from "../components/BasicInputs";
 
 describe("Page Access", () => {
-   it("Visite page", () => {
+  it("Visite page", () => {
     // cy.clearViewport();
-     cy.visit("/");
-     cy.addPresentation("Settings");
-     cy.get("body");
-   });
- });
+    cy.visit("/");
+    cy.addPresentation("Settings");
+    cy.get("body");
+  });
+});
 
 describe("Offlines Access", () => {
   it("Settings", () => {
@@ -61,9 +67,10 @@ describe("Subscription", () => {
     cy.intercept(
       "POST",
       "/api/v1/user/sign-up",
-      (req
+      (
+        req
         // : CyHttpMessages.IncomingHttpRequest
-       ) => {
+      ) => {
         expect(req.body?.email).to.equal("mguillaumef@draft.com");
         expect(req.body?.login).to.equal("mguillaumef");
         expect(req.body?.password).to.equal("DROWssap987");
@@ -73,13 +80,13 @@ describe("Subscription", () => {
 
     cy.get("#PAGES_SIGN_UP_LINK").click();
 
-    basicInputType("FORMS_SIGN_UP_FIELDS_EMAIL", "mguillaumef@draft.com");
+    cy.basicInputType("FORMS_SIGN_UP_FIELDS_EMAIL", "mguillaumef@draft.com");
 
-    basicInputType("FORMS_SIGN_UP_FIELDS_IDENTIFIER", "mguillaumef");
+    cy.basicInputType("FORMS_SIGN_UP_FIELDS_IDENTIFIER", "mguillaumef");
 
-    basicInputType("FORMS_SIGN_UP_FIELDS_PASSWORD", "DROWssap987");
+    cy.basicInputType("FORMS_SIGN_UP_FIELDS_PASSWORD", "DROWssap987");
 
-    basicInputType("FORMS_SIGN_UP_FIELDS_CONFIRM", "DROWssap987").type(
+    cy.basicInputType("FORMS_SIGN_UP_FIELDS_CONFIRM", "DROWssap987").type(
       "{enter}"
     );
 
@@ -101,9 +108,10 @@ describe("Login", () => {
     cy.intercept(
       "POST",
       "/api/v1/user/sign-in",
-      (req
-       // : CyHttpMessages.IncomingHttpRequest
-       ) => {
+      (
+        req
+        // : CyHttpMessages.IncomingHttpRequest
+      ) => {
         expect(req.body?.login).to.equal("mguillaumef");
         expect(req.body?.password).to.equal("DROWssap987");
       }
@@ -111,9 +119,9 @@ describe("Login", () => {
 
     cy.get("#PAGES_SIGN_IN_LINK").click();
 
-    basicInputType("FORMS_SIGN_IN_FIELDS_IDENTIFIER", "mguillaumef");
+    cy.basicInputType("FORMS_SIGN_IN_FIELDS_IDENTIFIER", "mguillaumef");
 
-    basicInputType("FORMS_SIGN_IN_FIELDS_PASSWORD", "DROWssap987").type(
+    cy.basicInputType("FORMS_SIGN_IN_FIELDS_PASSWORD", "DROWssap987").type(
       "{enter}"
     );
 

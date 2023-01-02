@@ -1,46 +1,3 @@
-// load type definitions that come with Cypress module
-/// <reference types="cypress" />
-import "@cypress/code-coverage/support.ts";
-
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      /**
-       * Custom command to remove cypress left test list section
-       * @example cy.clearViewport()
-       */
-      clearViewport(): Chainable<JQuery<HTMLBodyElement>>;
-      /**
-       * Function to add empty black page in test
-       * @param id The id
-       * @param elements elements to add in pag
-       * @returns Function to add blac page in test
-       */
-      addPage(id: string, ...elements: any[]): Chainable<Document>;
-      /**
-       * Function to add End page in test displaying
-       * @returns The added page
-       */
-      addEnd(): Cypress.Chainable<Document>;
-
-      /**
-       * Function to add presentation page in test
-       * @param title The title of tests
-       * @param project The project of tests
-       * @param version Theverion of project
-       * @param author The author of project
-       * @returns The added page
-       */
-      addPresentation(
-        title: string,
-        project?: string,
-        version?: string,
-        author?: string
-      ): Cypress.Chainable<Document>;
-    }
-  }
-}
-
 /**
  * Custom command to remove cypress left test list section
  * @example cy.clearViewport()
@@ -173,3 +130,18 @@ Cypress.Commands.add("addEnd", () => {
     return cy.addPage("end", title);
   });
 });
+
+/**
+ * Function to ad value in basic field
+ * @param id The id of component
+ * @param value value The value to set in component
+ * @returns The Chainable Cypress type + check
+ */
+
+Cypress.Commands.add(
+  "basicInputType",
+  (id: string, value: string): Cypress.Chainable<JQuery<HTMLElement>> => {
+    cy.get(`label[for=${id}]`).click();
+    return cy.get(`#${id}`).click().type(value).should("have.value", value);
+  }
+);

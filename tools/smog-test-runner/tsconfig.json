@@ -18,9 +18,10 @@
      "noImplicitReturns": true,
      "noPropertyAccessFromIndexSignature": true,
      "noUncheckedIndexedAccess": true,
-     "target": "es5",
+     "outDir": "./cypress/",
      "lib": ["es5", "dom"],
      "types": ["cypress", "node"]
    },
-   "include": ["**/*.ts"]
+   "include": ["src/**/*.ts"],
+   "exclude": ["node_modules"]
  }
