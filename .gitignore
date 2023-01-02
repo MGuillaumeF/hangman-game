@@ -6,3 +6,9 @@
 /project-cppcheck-build-dir
 project.cppcheck
 **/node_modules
+/tools/smog-test-runner/.nyc_output
+/tools/smog-test-runner/coverage
+/tools/smog-test-runner/cypress.config.js
+/tools/smog-test-runner/cypress/e2e/first.cy.js
+/tools/smog-test-runner/cypress/support/commands.js
+/tools/smog-test-runner/cypress/support/e2e.js

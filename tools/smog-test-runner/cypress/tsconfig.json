@@ -18,7 +18,7 @@
      "noImplicitReturns": true,
      "noPropertyAccessFromIndexSignature": true,
      "noUncheckedIndexedAccess": true,
-     "outDir": "./cypress/",
+     "outDir": ".",
      "lib": ["es5", "dom"],
      "types": ["cypress", "node"]
    },
