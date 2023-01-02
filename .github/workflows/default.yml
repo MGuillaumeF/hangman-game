@@ -473,14 +473,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npm run lint:eslint || echo FAILED
-
     - name: Audit dependencies
       working-directory: ${{github.workspace}}/tools/smog-test-runner
       run: npm audit --json > ./audit-dependency-report.json || echo FAILED
