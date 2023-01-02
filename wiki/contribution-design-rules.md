@@ -15,7 +15,7 @@ La notion d' "User Story" n'existe pas sur ce model car les tâches sont à gran
 
 Les descriptions des tâches doivent respecter le format suivant :
 
-```
+```markdown
 **Objectif**:
 
 **Contraintes Imposées**:
@@ -46,7 +46,15 @@ Les descriptions des tâches doivent respecter le format suivant :
 
 ### Les critères de priorisation des tâches
 
+Les tâches sont triées par priorité `Critical`, `Highest`, `High`, `Low` et `Lowest`.
+
+Les tâches `Critical` sont les tâches qui ont des impacts bloquants une ou plusieurs autres tâches, elles ont généralement un impact significatif sur le projet et sont donc a traiter au plus tôt quand c'est possible.
+
+Les autres niveaux sont un ordre de priorisation par la plus value de la tâche pour l'application.
+
 ## Règles de gestion des versions
+
+La gestion de version de l'application se fait avec git, le système d'hébergement choisi pour le repository est GitHub. 
 
 ### L'usage de git en locale
 
