@@ -19,11 +19,8 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-import { mount } from 'cypress/react18'
 // Ensure global styles are loaded
 import '../../src/index.css';
-
-Cypress.Commands.add('mount' as keyof Cypress.Chainable<any>, mount)
 
 // Example use:
 // cy.mount(<MyComponent />)
