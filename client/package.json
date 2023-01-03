@@ -20,7 +20,7 @@
     "lint:stylelint": "stylelint \"**/*.{css,scss,sass}\" --custom-syntax postcss-scss --fix --formatter json > ./dist/reports/lint/stylelint-report.json --ignore-path ./.gitignore",
     "unit:test": "nyc mocha --config test/runners/mocha/.mocharc.jsonc --reporter mocha-multi-reporters --reporter-options configFile=mocha-multi-config.json",
     "e2e:test": "npm run cy:run --e2e",
-    "component:test": "npm run cy:run --component",
+    "component:test": "npm run cy:run --component --spec \"cypress/component/**/*\"",
     "ci:test": "start-server-and-test http://localhost:3000",
     "test": "npm run unit:test && npm run e2e:test && npm run component:test",
     "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
