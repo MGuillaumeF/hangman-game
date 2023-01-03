@@ -41,11 +41,11 @@ export default defineConfig({
       webpackConfig: require('./webpack.config'),
       // or a function - the result is merged with any
       // webpack.config that is found
-      webpackConfig: async () => {
+      /*webpackConfig: async () => {
         // ... do things ...
         const modifiedConfig = await injectCustomConfig(baseConfig)
         return modifiedConfig
-      },
+      },*/
     },
   },
   e2e: {
