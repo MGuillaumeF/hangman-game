@@ -20,7 +20,8 @@
      "noUncheckedIndexedAccess": true,
      "outDir": ".",
      "lib": ["es5", "dom"],
-     "types": ["cypress", "node"]
+     "types": ["cypress", "node"],
+     "module": "commonjs"
    },
    "include": ["src/**/*.ts"],
    "exclude": ["node_modules"]
