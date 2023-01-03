@@ -23,7 +23,7 @@ import { mount } from 'cypress/react'
 // Ensure global styles are loaded
 import '../../src/index.css';
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add('mount' as keyof Cypress.Chainable<any>, mount)
 
 // Example use:
 // cy.mount(<MyComponent />)
