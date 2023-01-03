@@ -20,7 +20,7 @@ import './commands'
 // require('./commands')
 
 // Ensure global styles are loaded
-import '../../src/index.css';
+import '../../src/index.scss';
 
 // Example use:
 // cy.mount(<MyComponent />)
