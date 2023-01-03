@@ -1,3 +1,5 @@
+import  { mount } from 'cypress/react18'
+
 /**
  * Custom command to remove cypress left test list section
  * @example cy.clearViewport()
@@ -170,3 +172,5 @@ for (const command of [
     }
   );
 }
+
+Cypress.Commands.add('mount', mount)
