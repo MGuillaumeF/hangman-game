@@ -101,5 +101,13 @@
         "xutility": "cpp",
         "*.ixx": "cpp",
         "cuchar": "cpp"
+    },
+    "files.exclude": {
+        "**/bin": true,
+        "**/node_modules": true
+    },
+    "files.watcherExclude": {
+        "**/bin": true,
+        "**/node_modules": true
     }
 }

@@ -31,3 +31,7 @@ src/generated
 .nyc_output
 cypress/reports
 cypress/videos
+
+cypress.config.js
+cypress/support/commands.js
+cypress/support/e2e.js
