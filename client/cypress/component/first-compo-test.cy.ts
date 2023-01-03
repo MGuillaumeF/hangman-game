@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from '../../src/components/BasicButton/Button'
 
 it('uses custom text for the button label', () => {
