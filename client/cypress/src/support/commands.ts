@@ -145,3 +145,28 @@ Cypress.Commands.add(
     return cy.get(`#${id}`).click().type(value).should("have.value", value);
   }
 );
+
+const COMMAND_DELAY = 300;
+
+for (const command of [
+  "visit",
+  "click",
+  "trigger",
+  "type",
+  "clear",
+  "reload",
+  "submit"
+]) {
+  Cypress.Commands.overwrite(
+    command as keyof Cypress.Chainable<any>,
+    (originalFn, ...args) => {
+      const origVal = originalFn(...args);
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(origVal);
+        }, COMMAND_DELAY);
+      });
+    }
+  );
+}

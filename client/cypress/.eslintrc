@@ -4,6 +4,7 @@
     "jest/valid-title": "off",
     "jest/valid-expect": "off",
     "promise/no-nesting": "off",
-    "promise/catch-or-return": "off"
+    "promise/catch-or-return": "off",
+    "@typescript-eslint/no-var-requires": "off"
   }
 }

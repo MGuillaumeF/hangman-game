@@ -92,28 +92,6 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npx nyc report --reporter=lcov --reporter=text-summary
 
-    - name: Install smog test runner's dependencies
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npm install
-
-    - name: Update Browserlist
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npx browserslist@latest --update-db
-
-    - name: Run smog tests
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npm start & (npm run cy:run && kill $(lsof -t -i:3000))
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Audit dependencies
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: npm audit --json > ./audit-dependency-report.json || echo FAILED
-
-    - name: Convert Audit dependencies client report
-      working-directory: ${{github.workspace}}/tools/smog-test-runner
-      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-report.json --output-file ./audit-report.json
-
     - name: ESlint analyze json
       working-directory: ${{github.workspace}}/client
       run: npm run lint:eslint:json || echo FAILED
