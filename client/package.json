@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack --define-process-env-node-env production --progress --color --env PUBLIC_PATH=\"'.'\"",
-    "build:doc": "styleguidist build && typedoc --out ./dist/docs/ts ./src/index.tsx",
+    "build:doc": "styleguidist build && typedoc --out ./dist/docs/ts --entryPointStrategy expand ./src/model --entryPointStrategy expand ./src/components  --entryPointStrategy expand ./src/errors",
     "start": "webpack serve --open --progress --color --define-process-env-node-env development",
     "cy:build": "cd cypress && tsc --project tsconfig.json",
     "postcy:build": "mv cypress/cypress.config.js . || move cypress\\cypress.config.js .",
