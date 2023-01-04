@@ -208,7 +208,7 @@ jobs:
         # mkdir custom-triplets
         # cp ./vcpkg/triplets/x64-linux.cmake custom-triplets/x64-linux-dynamic.cmake
         # ./vcpkg install boost
-        ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets= ${{github.workspace}}/tools/custom-triplets/std-14
+        ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         #./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
