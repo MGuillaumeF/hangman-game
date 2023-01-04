@@ -204,7 +204,7 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg update
         ./vcpkg integrate install
-        cat ./vcpkg/triplets/x64-linux.cmake
+        cat ./triplets/x64-linux.cmake
         # mkdir custom-triplets
         # cp ./vcpkg/triplets/x64-linux.cmake custom-triplets/x64-linux-dynamic.cmake
         # ./vcpkg install boost
