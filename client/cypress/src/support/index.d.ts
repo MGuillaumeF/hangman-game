@@ -48,13 +48,6 @@ declare global {
        */
       clearViewport(): Chainable<JQuery<HTMLBodyElement>>;
 
-      /**
-       * Custom command to amount react component in component test
-       * @param jsx The component to mount
-       * @param options
-       * @param rerenderKey
-       */
-      mount(jsx: React.ReactNode, options: MountOptions = {}, rerenderKey?: string): Cypress.Chainable<MountReturn>;
     }
   }
 }
