@@ -449,7 +449,7 @@ jobs:
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
-      run: npm ci unit:test
+      run: npm run ci:test
 
     - name: Archive IHM Tests videos 
       uses: actions/upload-artifact@v3
