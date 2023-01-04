@@ -399,7 +399,8 @@ jobs:
 
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
-      run: npm install
+      run: npm install --legacy-peer-deps
+
 
     - name: Update Browserlist
       working-directory: ${{github.workspace}}/client
