@@ -47,7 +47,6 @@ declare global {
        * @example cy.clearViewport()
        */
       clearViewport(): Chainable<JQuery<HTMLBodyElement>>;
-
     }
   }
 }

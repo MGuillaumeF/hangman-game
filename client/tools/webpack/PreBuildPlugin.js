@@ -78,8 +78,8 @@ class PreBuildPlugin {
       console.log("parts", namesParts);
       const name = [
         namesParts.shift(),
-        ...namesParts.map((value) =>
-          `${value[0].toUpperCase()}${value.slice(1)}`
+        ...namesParts.map(
+          (value) => `${value[0].toUpperCase()}${value.slice(1)}`
         )
       ].join("");
       parameters[name] = {
