@@ -35,4 +35,3 @@ cypress/videos
 cypress.config.js
 cypress/support/commands.js
 cypress/support/e2e.js
-cypress/support/components.js
