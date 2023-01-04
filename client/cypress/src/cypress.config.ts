@@ -33,21 +33,6 @@ export default defineConfig({
     }
   },
   screenshotsFolder: "cypress/reports/tests/assets",
-   component: {
-    devServer: {
-      framework: 'react',
-      bundler: 'webpack',
-      // optionally pass in webpack config
-      webpackConfig: require('./webpack.config'),
-      // or a function - the result is merged with any
-      // webpack.config that is found
-      /*webpackConfig: async () => {
-        // ... do things ...
-        const modifiedConfig = await injectCustomConfig(baseConfig)
-        return modifiedConfig
-      },*/
-    },
-  },
   e2e: {
     supportFile: "./cypress/support/e2e.js",
     baseUrl: `${HTTP_TEST_PROTOCOL}://${HTTP_TEST_DOMAIN_NAME}:${HTTP_TEST_PORT}${HTTP_TEST_PREFIX_LOCATION}`,
