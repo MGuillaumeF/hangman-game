@@ -13,33 +13,7 @@
     "boost-thread",
     "boost-test",
     "boost-filesystem",
-    "libodb",
-    "libodb-sqlite",
-    "sqlite3",
-    "vcpkg-cmake",
-    "vcpkg-cmake-config"
-  ],
-  "overrides": [
-    {
-      "name": "libodb",
-      "version": "2.4.0"
-    },
-    {
-      "name": "libodb-sqlite",
-      "version": "2.4.0"
-    },
-    {
-      "name": "sqlite3",
-      "version": "3.40.0"
-    }, 
-    {
-      "name": "vcpkg-cmake",
-      "version-date": "2022-10-30"
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "version-date": "2022-02-06"
-    }
-  ],
+    "libodb-sqlite"
+  ], 
   "builtin-baseline": "b6b5c0b9a44819b095b369f507599c79ac885ec5"
 }
