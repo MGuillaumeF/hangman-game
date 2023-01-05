@@ -204,8 +204,11 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg update
         ./vcpkg integrate install
+        cat ./triplets/x64-linux.cmake
+        # mkdir custom-triplets
+        # cp ./vcpkg/triplets/x64-linux.cmake custom-triplets/x64-linux-dynamic.cmake
         # ./vcpkg install boost
-        ./vcpkg install libodb-sqlite
+        ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         #./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
@@ -396,7 +399,8 @@ jobs:
 
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
-      run: npm install
+      run: npm install --legacy-peer-deps
+
 
     - name: Update Browserlist
       working-directory: ${{github.workspace}}/client
@@ -408,7 +412,6 @@ jobs:
       run: | 
         npm run prettier --config ./.prettierrc
         npm run prettier --config ./.prettierrc ../data-management/tools
-        npm run prettier --config ./.prettierrc ../tools
 
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
@@ -445,7 +448,7 @@ jobs:
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
-      run: npm ci unit:test
+      run: npm run ci:test
 
     - name: Archive IHM Tests videos 
       uses: actions/upload-artifact@v3
@@ -566,7 +569,7 @@ jobs:
         ./vcpkg update
         ./vcpkg integrate install
         # ./vcpkg install boost
-        ./vcpkg install libodb-sqlite
+        ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         #./vcpkg install libodb-mysql
 
     - name: Generate Model Sources
