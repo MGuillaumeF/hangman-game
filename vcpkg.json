@@ -15,11 +15,5 @@
     "boost-filesystem",
     "libodb-sqlite"
   ], 
-    "overrides": [
-    {
-      "name": "libodb-sqlite",
-      "version": "2.4.0"
-    }
-  ],
   "builtin-baseline": "b6b5c0b9a44819b095b369f507599c79ac885ec5"
 }
