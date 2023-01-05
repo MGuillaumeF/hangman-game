@@ -261,7 +261,8 @@ jobs:
       run: sudo dpkg -i cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
 
     - name: Generate target
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_OVERLAY_TRIPLETS=${{github.workspace}}/tools/custom-triplets/std-14
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
+      # -DVCPKG_OVERLAY_TRIPLETS=${{github.workspace}}/tools/custom-triplets/std-14
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
