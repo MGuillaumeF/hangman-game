@@ -40,7 +40,7 @@ jobs:
 
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Update Browserlist
       working-directory: ${{github.workspace}}/client
@@ -78,9 +78,7 @@ jobs:
 
     - name: Client tests
       working-directory: ${{github.workspace}}/client
-      run: |
-        npm run unit:test
-        npm start & (npm run cy:run && kill $(lsof -t -i:3000))
+      run: npm run ci:test
 
     - name: Archive IHM Tests videos 
       uses: actions/upload-artifact@v3

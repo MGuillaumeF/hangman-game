@@ -5,13 +5,6 @@ import BasicInput from "../../BasicInput/BasicInput";
 import BasicForm from "../BasicForm";
 import { HttpMethod } from "../FormTypes";
 
-const fieldsetStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5em",
-  borderRadius: "0.25em"
-};
-
 type Props = {
   id: string;
 };
@@ -51,7 +44,7 @@ function SignUp({ id }: Props) {
       fields={Object.values(FIELDS)}
       submitTitle="FORMS.SIGN_UP.FIELDS.SUBMIT.LABEL"
     >
-      <fieldset style={fieldsetStyle}>
+      <fieldset>
         <legend>{t("FORMS.SIGN_UP.TITLE")}</legend>
 
         <BasicInput

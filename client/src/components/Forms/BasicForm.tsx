@@ -6,6 +6,7 @@ import React, {
   useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import Button from "../BasicButton/Button";
 import style from "./BasicForm.scss";
 import { Field, FormAggregateObject, FormUnit, HttpMethod } from "./FormTypes";
 
@@ -146,11 +147,15 @@ function BasicForm({
       >
         {children}
 
-        <input
+        <Button
+          id={`submit-${id}`}
+          level="primary"
           disabled={pendingState}
           type="submit"
           value={String(t(submitTitle))}
-        />
+        >
+          {String(t(submitTitle))}
+        </Button>
       </form>
       {pendingState ? <div>{String(t("loading"))}</div> : null}
     </>

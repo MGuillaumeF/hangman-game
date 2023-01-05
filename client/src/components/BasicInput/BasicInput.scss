@@ -1,10 +1,15 @@
 div.BasicInput {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
+  label {
+    position: absolute;
+  }
   & input[type="text"],
   & input[type="password"],
   & input[type="email"] {
+    width: 100%;
     border-radius: 0.25em 0.25em 0 0;
     border-color: rgba(0, 0, 0, 30%);
     border-style: solid;
@@ -13,7 +18,7 @@ div.BasicInput {
     color: #333;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
       sans-serif;
-    width: 100%;
+    width: 20em;
     &::placeholder {
       color: transparent;
     }
@@ -24,13 +29,12 @@ div.BasicInput {
     & + label {
       transition: transform 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
       transform-origin: left;
-      transform: translate(0.25em, -1.3em);
     }
     &:not(:placeholder-shown),
     &:focus {
       & + label {
         transform-origin: left;
-        transform: scale(60%) translate(0.25em, -350%);
+        transform: scale(60%) translate(0.25em, -100%);
       }
     }
   }

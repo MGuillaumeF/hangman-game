@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "regenerator-runtime/runtime";
+import Button from "./components/BasicButton/Button";
 import SignIn from "./components/Forms/SignIn/SignIn";
 import SignUp from "./components/Forms/SignUp/SignUp";
 import AboutUs from "./components/pages/AboutUs/AboutUs";
@@ -90,12 +91,22 @@ function App(): JSX.Element {
         </Routes>
         <Settings id="PAGES_SETTINGS_TITLE" />
         <div style={langStyle}>
-          <button id="lang-fr" onClick={onLanguageClick}>
+          <Button
+            type="button"
+            level="secondary"
+            id="lang-fr"
+            onClick={onLanguageClick}
+          >
             FR
-          </button>
-          <button id="lang-en" onClick={onLanguageClick}>
+          </Button>
+          <Button
+            type="button"
+            level="secondary"
+            id="lang-en"
+            onClick={onLanguageClick}
+          >
             EN
-          </button>
+          </Button>
         </div>
       </div>
     </BrowserRouter>
