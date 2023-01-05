@@ -205,11 +205,11 @@ jobs:
         ./vcpkg update
         ./vcpkg integrate install
         cat ./triplets/x64-linux.cmake
-        cp ${{github.workspace}}/tools/custom-triplets/std-14/x64-linux.cmake ./triplets/x64-linux.cmake
+        # cp ${{github.workspace}}/tools/custom-triplets/std-14/x64-linux.cmake ./triplets/x64-linux.cmake
         cd ${{github.workspace}}
         ../vcpkg/vcpkg x-update-baseline
         cat vcpkg.json
-        ../vcpkg/vcpkg install
+        ../vcpkg/vcpkg install --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         # ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         #./vcpkg install libodb-mysql
 
