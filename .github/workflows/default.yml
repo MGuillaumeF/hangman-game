@@ -412,7 +412,6 @@ jobs:
       run: | 
         npm run prettier --config ./.prettierrc
         npm run prettier --config ./.prettierrc ../data-management/tools
-        npm run prettier --config ./.prettierrc ../tools
 
     - name: Save client changes
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
