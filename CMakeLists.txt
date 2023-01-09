@@ -36,6 +36,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   MESSAGE("Compiler used is Microsoft Visual Studio C++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}")
   SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
+  add_compile_options(/w)
 endif()
 
 add_definitions("-Wall")
