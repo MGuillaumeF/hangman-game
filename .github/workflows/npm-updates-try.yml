@@ -42,9 +42,10 @@ jobs:
       run: |
         npx npm-check-updates -u > dependency_client_update.log
         cat dependency_client_update.log
-        npm install --force
+        npm install --legacy-peer-deps
 
     - name: Update Browserlist
+      continue-on-error: true
       working-directory: ${{github.workspace}}/client
       run: npx browserslist@latest --update-db
 
