@@ -8,6 +8,7 @@
     "boost-beast",
     "boost-chrono",
     "boost-core",
+    "boost-lambda",
     "boost-property-tree",
     "boost-system",
     "boost-thread",
