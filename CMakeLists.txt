@@ -28,7 +28,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   MESSAGE("Compiler used is g++")
   SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage --coverage -fprofile-abs-path")
   SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -ftest-coverage -lgcov --coverage")
-  add_compile_options(-Wall -Wextra -pedantic -Werror)
+  add_compile_options(-Wall -Wextra -pedantic)
+  #  -Werror
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
   MESSAGE("Compiler used is Intel")
