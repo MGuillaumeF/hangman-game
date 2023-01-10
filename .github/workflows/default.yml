@@ -571,9 +571,12 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg update
         ./vcpkg integrate install
-        # ./vcpkg install boost
-        ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
-        #./vcpkg install libodb-mysql
+        cat ./triplets/x64-linux.cmake
+        # cp ${{github.workspace}}/tools/custom-triplets/std-14/x64-linux.cmake ./triplets/x64-linux.cmake
+        cd ${{github.workspace}}
+        ../vcpkg/vcpkg x-update-baseline
+        cat vcpkg.json
+        ../vcpkg/vcpkg install --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
 
     - name: Generate Model Sources
       working-directory: ${{github.workspace}}/data-management/src/model
@@ -598,7 +601,7 @@ jobs:
         languages: 'cpp'
 
     - name: Generate target
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
