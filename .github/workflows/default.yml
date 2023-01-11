@@ -209,7 +209,7 @@ jobs:
         cd ${{github.workspace}}
         ../vcpkg/vcpkg x-update-baseline
         cat vcpkg.json
-        ../vcpkg/vcpkg install --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
+        ../vcpkg/vcpkg install --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14/targets/x64
         # ./vcpkg install libodb-sqlite:x64-linux --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14
         #./vcpkg install libodb-mysql
 
@@ -961,10 +961,26 @@ jobs:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
 
+    - name: Install lib odb
+      working-directory: ${{github.workspace}}/..
+      run: |
+        git clone https://github.com/Microsoft/vcpkg
+        cd vcpkg
+        git pull
+        ./bootstrap-vcpkg.sh
+        ./vcpkg update
+        ./vcpkg integrate install
+        cat ./triplets/x64-linux.cmake
+        cd ${{github.workspace}}
+        ../vcpkg/vcpkg x-update-baseline
+        cat vcpkg.json
+        ../vcpkg/vcpkg install --overlay-triplets=${{github.workspace}}/tools/custom-triplets/std-14/targets/arm64
+
     - name: Install Raspberry PI x64 toolchain
       run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
     - name: Install Boost
+      if: github.actor == 'never'
       uses: MarkusJx/install-boost@v2.4.3
       id: install-boost
       with:
