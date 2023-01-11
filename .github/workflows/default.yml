@@ -989,7 +989,7 @@ jobs:
         arch: aarch64 # Note the new 'arch' option
 
     - name: Generate Target
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE -DBoost_DEBUG=ON -D Boost_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/include -D NOT_GENERATE_DB_ACCESS=true
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE -DBoost_DEBUG=ON -D Boost_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/include -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
