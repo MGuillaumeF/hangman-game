@@ -14,7 +14,7 @@
     { "name": "boost-thread", "version>=" : "1.80.0"},
     { "name": "boost-test", "version>=" : "1.80.0"},
     { "name": "boost-filesystem", "version>=" : "1.80.0"},
-    { "name": "libodb-sqlite","version>=" : "2.4.0"}
+    { "name": "libodb-sqlite","version>=" : "2.4.0#10"}
   ], 
   "builtin-baseline": "b6b5c0b9a44819b095b369f507599c79ac885ec5"
 }
