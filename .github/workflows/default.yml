@@ -1001,12 +1001,16 @@ jobs:
       # Build your program with the given configuration
       run: cpack -G "ZIP;DEB"
 
+    - name: Copy build error
+      if: failure()
+      run: cp -R ${{github.workspace}}/../vcpkg/buildtrees ${{github.workspace}}/vcpkg_buildtrees
+
     - name: Archive build error
-      if: always()
+      if: failure()
       uses: actions/upload-artifact@v3
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64-build-error
-        path: ${{github.workspace}}/../vcpkg/buildtrees/boost-system
+        path: ${{github.workspace}}/vcpkg_buildtrees
 
     - name: Archive Server ZIP
       uses: actions/upload-artifact@v3
