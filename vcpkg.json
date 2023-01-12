@@ -1,20 +1,20 @@
 {
   "name": "hangman-game",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/MGuillaumeF/hangman-game/",
   "description": "Hangman Game application.",
   "dependencies": [
-    "boost-asio",
-    "boost-beast",
-    "boost-chrono",
-    "boost-core",
-    "boost-lambda",
-    "boost-property-tree",
-    "boost-system",
-    "boost-thread",
-    "boost-test",
-    "boost-filesystem",
-    "libodb-sqlite"
+    { "name": "boost-asio", "version>=" : "1.80.0"},
+    { "name": "boost-beast",  "version>=" : "1.80.0"},
+    { "name": "boost-chrono", "version>=" : "1.80.0"},
+    { "name": "boost-core", "version>=" : "1.80.0"},
+    { "name": "boost-lambda", "version>=" : "1.80.0"},
+    { "name": "boost-property-tree", "version>=" : "1.80.0"},
+    { "name": "boost-system", "version>=" : "1.80.0"},
+    { "name": "boost-thread", "version>=" : "1.80.0"},
+    { "name": "boost-test", "version>=" : "1.80.0"},
+    { "name": "boost-filesystem", "version>=" : "1.80.0"},
+    { "name": "libodb-sqlite","version>=" : "2.4.0#10"}
   ], 
   "builtin-baseline": "b6b5c0b9a44819b095b369f507599c79ac885ec5"
 }
