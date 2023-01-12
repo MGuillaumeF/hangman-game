@@ -177,6 +177,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Install boost
+      if: ${{ false }}
       uses: MarkusJx/install-boost@v2.4.3
       id: install-boost
       with:
