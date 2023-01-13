@@ -697,14 +697,15 @@ jobs:
       run: |
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
+        set PATH=%CD%;%PATH%
         git pull
         .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
+        vcpkg update
+        vcpkg integrate install
         cd ${{github.workspace}}
-        cmd.exe /C "..\vcpkg\vcpkg x-update-baseline"
+        vcpkg x-update-baseline
         cat vcpkg.json
-        cmd.exe /C "..\vcpkg\vcpkg install"
+        vcpkg install
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
