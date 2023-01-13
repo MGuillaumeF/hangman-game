@@ -701,12 +701,13 @@ jobs:
         .\bootstrap-vcpkg.sh
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
+        cd ${{github.workspace}}
+        cmd.exe /C "../vcpkg/vcpkg x-update-baseline"
+        cat vcpkg.json
+        cmd.exe /C "../vcpkg/vcpkg install"
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -770,13 +771,13 @@ jobs:
         .\bootstrap-vcpkg.sh
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
-
+        cd ${{github.workspace}}
+        cmd.exe /C "../vcpkg/vcpkg x-update-baseline"
+        cat vcpkg.json
+        cmd.exe /C "../vcpkg/vcpkg install"
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
