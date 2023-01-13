@@ -702,9 +702,9 @@ jobs:
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
         cd ${{github.workspace}}
-        cmd.exe /C "${{github.workspace}}\..\vcpkg\vcpkg x-update-baseline"
+        call ..\vcpkg\vcpkg x-update-baseline
         cat vcpkg.json
-        cmd.exe /C "${{github.workspace}}\..\vcpkg\vcpkg install"
+        call ..\vcpkg\vcpkg install
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
@@ -772,9 +772,9 @@ jobs:
         cmd.exe /C "vcpkg update"
         cmd.exe /C "vcpkg integrate install"
         cd ${{github.workspace}}
-        cmd.exe /C "${{github.workspace}}\..\vcpkg\vcpkg x-update-baseline"
+        call ..\vcpkg\vcpkg x-update-baseline
         cat vcpkg.json
-        cmd.exe /C "${{github.workspace}}\..\vcpkg\vcpkg install"
+        call ..\vcpkg\vcpkg install
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
