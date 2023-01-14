@@ -700,7 +700,7 @@ jobs:
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
         git pull
-        bootstrap-vcpkg.cmd
+        .\bootstrap-vcpkg.sh
         vcpkg update
         vcpkg integrate install
 
