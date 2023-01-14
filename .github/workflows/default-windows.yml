@@ -31,6 +31,7 @@ jobs:
       run: mkdir ${{github.workspace}}/server/reports
 
     - uses: actions/download-artifact@v3
+      if: github.actor == 'dependabot[bot]'
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
