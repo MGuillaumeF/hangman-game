@@ -45,7 +45,7 @@ const req = get(url, (res) => {
       `\n\n => The file "${outputfFile}" is downloaded, his size on disk : ${stats.size} octets`
     );
 
-    zl.extract(outputfFile, "C:\\tools").then(
+    zl.extract(outputfFile, process.env.ODB_DOWNLOAD_DEST || "C:\\tools").then(
       function () {
         console.log("done");
       },
