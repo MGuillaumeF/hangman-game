@@ -84,6 +84,7 @@ jobs:
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+        ODB_LIBODB_ROOT: C:/tools/odb-2.4.0-i686-windows
 
     - name: Build server windows
       working-directory: ${{github.workspace}}
