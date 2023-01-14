@@ -701,10 +701,9 @@ jobs:
         .\bootstrap-vcpkg.sh
         cmd.exe /C "vcpkg.exe update"
         cmd.exe /C "vcpkg.exe integrate install"
-        cd ${{github.workspace}}
-        call cmd.exe /C "..\vcpkg\vcpkg.exe x-update-baseline"
+        cmd.exe /C "vcpkg.exe x-update-baseline --manifest-root=${{github.workspace}}"
         cat vcpkg.json
-        call cmd.exe /C "..\vcpkg\vcpkg.exe install"
+        cmd.exe /C "vcpkg.exe install --manifest-root=${{github.workspace}}"
       shell: cmd 
 
     - name: Generate target 
