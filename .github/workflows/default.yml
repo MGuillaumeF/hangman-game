@@ -699,12 +699,12 @@ jobs:
         cd vcpkg
         git pull
         .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
+        cmd.exe /C "vcpkg.exe update"
+        cmd.exe /C "vcpkg.exe integrate install"
         cd ${{github.workspace}}
-        call ..\vcpkg\vcpkg x-update-baseline
+        call cmd.exe /C "..\vcpkg\vcpkg.exe x-update-baseline"
         cat vcpkg.json
-        call ..\vcpkg\vcpkg install
+        call cmd.exe /C "..\vcpkg\vcpkg.exe install"
       shell: cmd 
 
     - name: Generate target 
@@ -770,12 +770,13 @@ jobs:
         cd vcpkg
         git pull
         .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
+        cmd.exe /C "vcpkg.exe update"
+        cmd.exe /C "vcpkg.exe integrate install"
         cd ${{github.workspace}}
-        call ..\vcpkg\vcpkg x-update-baseline
+        call cmd.exe /C "..\vcpkg\vcpkg.exe x-update-baseline"
         cat vcpkg.json
-        call ..\vcpkg\vcpkg install
+        call cmd.exe /C "..\vcpkg\vcpkg.exe install"
+      shell: cmd 
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
