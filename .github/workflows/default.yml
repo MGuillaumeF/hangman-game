@@ -705,6 +705,7 @@ jobs:
         call ..\vcpkg\vcpkg x-update-baseline
         cat vcpkg.json
         call ..\vcpkg\vcpkg install
+      shell: cmd 
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
