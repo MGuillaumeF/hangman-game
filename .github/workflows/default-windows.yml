@@ -19,7 +19,6 @@ permissions: write-all
 
 jobs:
  build-debug-Windows:
-    needs: [sonarcloud-analyse]
     env:
       BUILD_TYPE: Debug
     runs-on: windows-latest
