@@ -14,6 +14,7 @@ env:
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
   DB_PWD: root
+  ODB_DOWNLOAD_DEST: D:/
 
 permissions: write-all
 
