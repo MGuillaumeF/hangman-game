@@ -380,12 +380,14 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
         
     - name: Generate Swagger UI
+      continue-on-error: true
       uses: Legion2/swagger-ui-action@v1
       with:
         output: ${{github.workspace}}/api-docs
         spec-file: ${{github.workspace}}/server/docs/api_doc.json
 
     - name: Archive Swagger UI
+      continue-on-error: true
       uses: actions/upload-artifact@v3
       with:
         name: API-Docs-Hangman-Game
@@ -407,7 +409,7 @@ jobs:
     - name: Update Browserlist
       continue-on-error: true
       working-directory: ${{github.workspace}}/client
-      run: npx browserslist@latest --update-db --legacy-peer-deps
+      run: npx browserslist@latest --update-db
 
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
