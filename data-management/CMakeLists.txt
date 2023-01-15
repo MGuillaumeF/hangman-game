@@ -57,7 +57,7 @@ file(GLOB_RECURSE TEST_CLIENT_TCP_SRC_UT_DIR CONFIGURE_DEPENDS
 
 # search external dependence ODB
 #find_package (ODB REQUIRED COMPONENTS ${SGBD_DEPENDENCY})
-find_package(odb CONFIG REQUIRED)
+find_package(odb)
 find_package (Boost)
 include(${ODB_USE_FILE})
 
