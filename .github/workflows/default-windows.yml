@@ -88,7 +88,7 @@ jobs:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Archive Generate failed
-      if: failed()
+      if: ${{ failure() }}
       uses: actions/upload-artifact@v3
       with:
         name: Server-Hangman-Game failed generate
