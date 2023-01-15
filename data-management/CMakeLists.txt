@@ -53,10 +53,11 @@ file(GLOB_RECURSE TEST_CLIENT_TCP_SRC_UT_DIR CONFIGURE_DEPENDS
      "src/TCP/Client.cpp"
 )
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
 # search external dependence ODB
-find_package (ODB REQUIRED COMPONENTS ${SGBD_DEPENDENCY})
+#find_package (ODB REQUIRED COMPONENTS ${SGBD_DEPENDENCY})
+find_package(odb CONFIG REQUIRED)
 find_package (Boost)
 include(${ODB_USE_FILE})
 
