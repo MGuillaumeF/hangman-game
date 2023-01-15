@@ -82,6 +82,13 @@ jobs:
         cat vcpkg.json
         vcpkg install
 
+    - name: Install ODB_ROOT
+      working-directory: ${{github.workspace}}/data-management/tools/install-odb
+      run: |
+        npm install
+        npm start
+        echo "D:\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
