@@ -19,6 +19,10 @@ BOOST_AUTO_TEST_SUITE(testUserEndpointNominal)
 
 BOOST_AUTO_TEST_CASE(test_create_one) {
 
+  std::cout << "TEST SUITE : testUserEndpointNominal" << std::endl
+            << "TEST CASE : test_create_one" << std::endl
+            << "START : " << std::endl;
+
   boost::asio::io_context ioContext;
   const hangman::tcp::Server server(ioContext, 50000);
   std::vector<std::thread> threads;
@@ -49,9 +53,15 @@ BOOST_AUTO_TEST_CASE(test_create_one) {
     }
   }
   BOOST_CHECK_EQUAL(1, counter);
+
+  std::cout << "END : " << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(test_create_many) {
+
+  std::cout << "TEST SUITE : testUserEndpointNominal" << std::endl
+            << "TEST CASE : test_create_many" << std::endl
+            << "START : " << std::endl;
 
   boost::asio::io_context ioContext;
   const hangman::tcp::Server server(ioContext, 50000);
@@ -83,6 +93,7 @@ BOOST_AUTO_TEST_CASE(test_create_many) {
     }
   }
   BOOST_CHECK_EQUAL(2, counter);
+  std::cout << "END : " << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(test_read) {

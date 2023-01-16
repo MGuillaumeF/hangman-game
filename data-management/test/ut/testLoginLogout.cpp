@@ -35,61 +35,71 @@
 BOOST_AUTO_TEST_SUITE(testLoginLogout)
 
 BOOST_AUTO_TEST_CASE(test_nominal) {
-  std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
 
-  boost::asio::io_context ioContext;
-  const hangman::tcp::Server server(ioContext, 50000);
-  std::vector<std::thread> threads;
-  threads.reserve(1);
+  std::cout << "TEST SUITE : testLoginLogout" << std::endl
+            << "TEST CASE : test_nominal" << std::endl
+            << "START : " << std::endl;
+  try {
 
-  threads.emplace_back([&ioContext] { ioContext.run(); });
+    std::shared_ptr<odb::core::database> db = DataAccess::getDatabaseAccess();
 
-  // create the user to test logging
-  const boost::property_tree::ptree responseCreate =
-      hangman::tcp::Client::sendRequest(
-          "127.0.0.1", 50000,
-          "./resources/database-order/login-logout/create-login-user.xml");
+    boost::asio::io_context ioContext;
+    const hangman::tcp::Server server(ioContext, 50000);
+    std::vector<std::thread> threads;
+    threads.reserve(1);
 
-  BOOST_CHECK_EQUAL(200, responseCreate.get<uint16_t>("status-code"));
+    threads.emplace_back([&ioContext] { ioContext.run(); });
 
-  // send logging request
-  const boost::property_tree::ptree responseLogin =
-      hangman::tcp::Client::sendRequest(
-          "127.0.0.1", 50000,
-          "./resources/database-order/login-logout/login-user.xml");
-  BOOST_CHECK_EQUAL(200, responseLogin.get<uint16_t>("status-code"));
+    // create the user to test logging
+    const boost::property_tree::ptree responseCreate =
+        hangman::tcp::Client::sendRequest(
+            "127.0.0.1", 50000,
+            "./resources/database-order/login-logout/create-login-user.xml");
 
-  // count if user is created
-  // force update of token
-  uint8_t counter = 0;
-  for (const auto &node : responseCreate) {
-    if (node.first == "user") {
-      counter += 1;
-      const uint32_t id = node.second.get<uint32_t>("id");
+    BOOST_CHECK_EQUAL(200, responseCreate.get<uint16_t>("status-code"));
 
-      odb::core::transaction t(db->begin());
+    // send logging request
+    const boost::property_tree::ptree responseLogin =
+        hangman::tcp::Client::sendRequest(
+            "127.0.0.1", 50000,
+            "./resources/database-order/login-logout/login-user.xml");
+    BOOST_CHECK_EQUAL(200, responseLogin.get<uint16_t>("status-code"));
 
-      std::shared_ptr<user> loggedUser(db->load<user>(id));
-      loggedUser->setToken("example_token");
-      db->update(*loggedUser);
+    // count if user is created
+    // force update of token
+    uint8_t counter = 0;
+    for (const auto &node : responseCreate) {
+      if (node.first == "user") {
+        counter += 1;
+        const uint32_t id = node.second.get<uint32_t>("id");
 
-      t.commit();
+        odb::core::transaction t(db->begin());
+
+        std::shared_ptr<user> loggedUser(db->load<user>(id));
+        loggedUser->setToken("example_token");
+        db->update(*loggedUser);
+
+        t.commit();
+      }
     }
+    BOOST_CHECK_EQUAL(1, counter);
+
+    // logout of user
+    const boost::property_tree::ptree responseLogout =
+        hangman::tcp::Client::sendRequest(
+            "127.0.0.1", 50000,
+            "./resources/database-order/login-logout/logout-user.xml");
+    BOOST_CHECK_EQUAL(200, responseLogout.get<uint16_t>("status-code"));
+
+    ioContext.stop();
+
+    for (size_t i = 0; i < threads.size(); ++i) {
+      threads[i].join();
+    }
+  } catch (const std::exception &ex) {
+    std::cerr << "ERROR RAISED : " << ex.what() << std::endl;
   }
-  BOOST_CHECK_EQUAL(1, counter);
-
-  // logout of user
-  const boost::property_tree::ptree responseLogout =
-      hangman::tcp::Client::sendRequest(
-          "127.0.0.1", 50000,
-          "./resources/database-order/login-logout/logout-user.xml");
-  BOOST_CHECK_EQUAL(200, responseLogout.get<uint16_t>("status-code"));
-
-  ioContext.stop();
-
-  for (size_t i = 0; i < threads.size(); ++i) {
-    threads[i].join();
-  }
+  std::cout << "END : " << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

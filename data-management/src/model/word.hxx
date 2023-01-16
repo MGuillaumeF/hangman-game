@@ -6,6 +6,7 @@
 #ifndef __GENERATED_MODEL_OBJECT_WORD_HXX__
 #define __GENERATED_MODEL_OBJECT_WORD_HXX__
 
+#include "../../endpoint/DataAccess.hpp"
 #include "./dictionary.hxx"
 #include "./root_model_object.hxx"
 
@@ -100,6 +101,26 @@ public:
     if (name) {
       parsedObject->setName(*name);
     }
+    const boost::optional<const boost::property_tree::ptree &> definitions =
+        property_tree.get_child_optional("definitions");
+    std::vector<std::string> defs;
+    if (definitions) {
+      for (const auto &def : *definitions) {
+        if (def.first == "definition") {
+          defs.emplace_back(def.second);
+        }
+      }
+    }
+    if (definitions && !defs.empty()) {
+      parsedObject->setDefinitions(defs);
+    }
+
+    odb::core::transaction t(DataAccess::getDatabaseAccess()->begin());
+    uint32_t dictionaryId = property_tree.get<uint32_t>("dictionary");
+    std::shared_ptr<dictionary> foundDictionary(
+        DataAccess::getDatabaseAccess()->load<dictionary>(dictionaryId));
+    parsedObject->setDictionary(foundDictionary);
+    t.commit();
 
     return parsedObject;
   }
