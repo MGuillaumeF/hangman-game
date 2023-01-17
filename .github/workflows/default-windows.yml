@@ -15,6 +15,7 @@ env:
   DB_USER: root
   DB_PWD: root
   ODB_DOWNLOAD_DEST: D:/
+  GENERATE_MODEL: false
 
 permissions: write-all
 
@@ -38,6 +39,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install boost
+      if: ${{ env.GENERATE_MODEL == true }}
       uses: MarkusJx/install-boost@v2.4.3
       id: install-boost
       with:
@@ -53,6 +55,7 @@ jobs:
         echo "D:\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: generate model
+      if: ${{ env.GENERATE_MODEL == true }}
       working-directory: ${{github.workspace}}/data-management/src/model
       run: |
         odb --version
