@@ -104,7 +104,7 @@ void LocationEndpoint::doGet() {
   // trace access log with adapted level
   const std::string accessLog = "[" +
                                 std::to_string(getResponse().result_int()) +
-                                "] " + request.target().to_string();
+                                "] " + std::string(request.target());
   // test if is a success or error
   if (boost::beast::http::to_status_class(getResponse().result_int()) <
       boost::beast::http::status_class::client_error) {
