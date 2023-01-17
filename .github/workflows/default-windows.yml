@@ -83,7 +83,7 @@ jobs:
       run: |
         vcpkg x-update-baseline
         cat vcpkg.json
-        vcpkg install
+        # vcpkg install
 
     - name: Install ODB_ROOT
       working-directory: ${{github.workspace}}/data-management/tools/install-odb
