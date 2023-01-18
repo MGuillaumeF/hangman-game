@@ -34,7 +34,7 @@ void Session::handleRequest(
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
   logger->info("HTTP_DATA_READ",
-               "request received on target " + req.target().to_string());
+               "request received on target " + std::string(req.target()));
 
   bool responseDefined = false;
 
