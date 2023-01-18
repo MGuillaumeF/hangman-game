@@ -128,7 +128,7 @@ void LocationEndpoint::doDelete() {
     setResponse(http::Utils::bad_request(request, "Illegal request-target"));
   } else {
     // default response is not found
-    setResponse(http::Utils::not_found(request, request.target().to_string()));
+    setResponse(http::Utils::not_found(request, std::string(request.target())));
 
     // Request path must be absolute and not contain "..".
     // Build the path to the requested file
@@ -139,7 +139,7 @@ void LocationEndpoint::doDelete() {
       std::filesystem::remove(path);
       setResponse(
           http::Utils::wrapper_response(request, boost::beast::http::status::ok,
-                                        request.target().to_string(), ""));
+                                        std::string(request.target()), ""));
     }
   }
 }
