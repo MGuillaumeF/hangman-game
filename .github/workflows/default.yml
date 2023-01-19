@@ -380,12 +380,14 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
         
     - name: Generate Swagger UI
+      continue-on-error: true
       uses: Legion2/swagger-ui-action@v1
       with:
         output: ${{github.workspace}}/api-docs
         spec-file: ${{github.workspace}}/server/docs/api_doc.json
 
     - name: Archive Swagger UI
+      continue-on-error: true
       uses: actions/upload-artifact@v3
       with:
         name: API-Docs-Hangman-Game
@@ -407,7 +409,7 @@ jobs:
     - name: Update Browserlist
       continue-on-error: true
       working-directory: ${{github.workspace}}/client
-      run: npx browserslist@latest --update-db --legacy-peer-deps
+      run: npx browserslist@latest --update-db
 
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
@@ -693,20 +695,27 @@ jobs:
         odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
 
     - name: Install lib odb
-      working-directory: ${{github.workspace}}/..
+      working-directory: ${{github.workspace}}
       run: |
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
         git pull
         .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
+        vcpkg update
+        vcpkg integrate install
+
+    - name: add vcpkg in path
+      run: echo "${{github.workspace}}/vcpkg" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      # run: echo "${{github.workspace}}/vcpkg" >> $GITHUB_PATH
+
+    - name: install cpp dependencies
+      run: |
+        vcpkg x-update-baseline
+        cat vcpkg.json
+        vcpkg install
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
@@ -768,15 +777,16 @@ jobs:
         cd vcpkg
         git pull
         .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
-
+        cmd.exe /C "vcpkg.exe update"
+        cmd.exe /C "vcpkg.exe integrate install"
+        cd ${{github.workspace}}
+        call cmd.exe /C "..\vcpkg\vcpkg.exe x-update-baseline"
+        cat vcpkg.json
+        call cmd.exe /C "..\vcpkg\vcpkg.exe install"
+      shell: cmd 
 
     - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_INSTALL=OFF
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
