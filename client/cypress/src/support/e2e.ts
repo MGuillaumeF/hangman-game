@@ -1,7 +1,6 @@
 // load type definitions that come with Cypress module
 /// <reference types="cypress" />
 import "@cypress/code-coverage/support";
-import "cypress-movie/commands";
 import { Context } from "mocha";
 import addContext from "mochawesome/addContext";
 import "./commands";

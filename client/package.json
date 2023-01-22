@@ -75,7 +75,6 @@
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
     "cypress": "^12.3.0",
-    "cypress-movie": "^3.0.20",
     "cypress-multi-reporters": "^1.6.2",
     "cypress-sonarqube-reporter": "^1.12.0",
     "dotenv": "^16.0.3",
