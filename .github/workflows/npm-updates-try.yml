@@ -42,7 +42,7 @@ jobs:
       run: |
         npx npm-check-updates -u > dependency_client_update.log
         cat dependency_client_update.log
-        npm install --legacy-peer-deps
+        npm install
 
     - name: Update Browserlist
       continue-on-error: true

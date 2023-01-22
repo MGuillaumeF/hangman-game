@@ -402,12 +402,12 @@ jobs:
 
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Update Browserlist
       continue-on-error: true
       working-directory: ${{github.workspace}}/client
-      run: npx browserslist@latest --update-db --legacy-peer-deps
+      run: npx browserslist@latest --update-db
 
     - name: Prettier format
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
