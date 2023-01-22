@@ -11,10 +11,12 @@ import { expect } from "chai";
 import specTitle from "cypress-sonarqube-reporter/specTitle";
 // import { CyHttpMessages } from "cypress/types/net-stubbing";
 
+const ROOT_PATH = "/";
+
 describe(specTitle("Page Access"), () => {
   it("Visite page", () => {
     // cy.clearViewport();
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
     cy.addPresentation("Settings");
     cy.get("body");
   });
@@ -23,12 +25,12 @@ describe(specTitle("Page Access"), () => {
 describe(specTitle("Offlines Access"), () => {
   it("Settings", () => {
     // cy.clearViewport();
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.addPresentation("Settings");
 
     cy.wait(2000);
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
     // all parameters are optional
     /*cy.toast("Change language to French", {
       blocking: true
@@ -57,12 +59,12 @@ describe(specTitle("Offlines Access"), () => {
 describe(specTitle("Subscription"), () => {
   it("With Success", () => {
     // cy.clearViewport();
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.addPresentation("Subscription - with success");
 
     cy.wait(2000);
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.intercept(
       "POST",
@@ -98,12 +100,12 @@ describe(specTitle("Subscription"), () => {
 describe(specTitle("Login"), () => {
   it("With Success", () => {
     // cy.clearViewport();
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.addPresentation("Login - with success");
 
     cy.wait(2000);
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.intercept(
       "POST",
@@ -133,12 +135,12 @@ describe(specTitle("Login"), () => {
 describe(specTitle("Errors pages"), () => {
   it("Not Found", () => {
     // cy.clearViewport();
-    cy.visit("/");
+    cy.visit(ROOT_PATH);
 
     cy.addPresentation("Not Found");
 
     cy.wait(2000);
-    cy.visit("/badPage");
+    cy.visit(`${ROOT_PATH}/badPage`);
     cy.contains("Error404");
 
     cy.addEnd();

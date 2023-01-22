@@ -53,15 +53,15 @@ const changeLangBtnClick = (
 };
 
 const transitionMenuClasses = {
-  appear: style.fadeAppear,
-  appearActive: style.fadeActiveAppear,
-  appearDone: style.fadeDoneAppear,
+  // appear: style.fadeAppear,
+  // appearActive: style.fadeActiveAppear,
+  // appearDone: style.fadeDoneAppear,
   enter: style.fadeEnter,
-  enterActive: style.fadeAtiveEnter,
-  enterDone: style.fadeDoneEnter,
-  exit: style.fadeExit,
-  exitActive: style.fadeActiveExit,
-  exitDone: style.fadeDoneExit
+  //enterActive: style.fadeAtiveEnter,
+  // enterDone: style.fadeDoneEnter,
+  exit: style.fadeExit
+  // exitActive: style.fadeActiveExit,
+  // exitDone: style.fadeDoneExit
 };
 
 function Settings({ id, navProperties }: Props): React.ReactElement {

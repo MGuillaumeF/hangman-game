@@ -99,13 +99,16 @@ module.exports = (env, args) => {
 
   const config = {
     mode: MODE,
-    entry: "./src/index.tsx",
-
+    entry: {
+      main: "./src/index.tsx",
+      book: "./src/book/index.tsx"
+    },
     cache: false,
     output: {
       path: path.resolve(__dirname, "build"),
       publicPath: MODE === DEV ? "/" : process.env.PUBLIC_PATH || ".",
-      filename: "[name].bundle.js"
+      filename:
+        MODE === DEV ? "[name].bundle.js" : "[name].[contenthash].bundle.js"
     },
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
@@ -126,6 +129,12 @@ module.exports = (env, args) => {
         {
           test: /\.s[ac]ss$/i,
           use: [
+            {
+              loader: "@teamsupercell/typings-for-css-modules-loader",
+              options: {
+                formatter: "prettier"
+              }
+            },
             // Translates CSS into CommonJS
             {
               loader: "css-loader",
@@ -196,7 +205,17 @@ module.exports = (env, args) => {
         inject: "head",
         title: "Hangman Game",
         template: path.resolve(__dirname, "public/index.html"),
-        favicon: path.resolve(__dirname, "public/favicon.ico")
+        favicon: path.resolve(__dirname, "public/favicon.ico"),
+        chunks: ["main"],
+        filename: "index.html"
+      }),
+      new HtmlWebpackPlugin({
+        inject: "head",
+        title: "Hangman Game - Story Book",
+        template: path.resolve(__dirname, "public/index.html"),
+        favicon: path.resolve(__dirname, "public/favicon.ico"),
+        chunks: ["book"],
+        filename: "book/index.html"
       }),
       // new CleanWebpackPlugin(),
       new ESLintPlugin({
@@ -245,7 +264,7 @@ module.exports = (env, args) => {
           warnings: false
         }
       },
-      static: [path.join(__dirname, "dist")],
+      //static: [path.join(__dirname, "dist")],
       //compress: true,
       port: 3000,
       hot: true
