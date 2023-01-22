@@ -1,22 +1,33 @@
 <!-- © copyrights - all rights reserved MGuillaumeF -->
-<svg version="1.1"
-     viewBox="0 0 500 500"
-     width="500" height="500"
-     xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 500 L125 500 L125 475 L50 475 
-L50 35 L245 35 L245 75 L250 75
+<svg version="1.1" viewBox="0 0 500 500" width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  /* 1 */
+  <path d="M0 487.5 L125 487.5" stroke="#000000" stroke-width="25" stroke-dasharray="2000">
+    <animate attributeName="stroke-dashoffset" values="2037;0;2037" dur="5" calcMode="spline" />
+  </path>
 
-L250 10
-L25 10 L25 475 L0 475 Z" fill="#000000" />
+  /* 2 */
+  <path d="M37.5 475 L37.5 10" stroke="#000000" stroke-width="25" />
 
-<path d="M50 85 L50 110 L125 35 L100 35 Z" fill="#000000" />
+  /* 3*/
+  <path d="M37.5 22.5 L245 22.5" stroke="#000000" stroke-width="25" />
 
-<circle cx="247.5" cy="125" r="50" fill="transparent" stroke="#000000" stroke-width="4" />
-<path d="M247.5 175 L247.5 300" stroke="#000000" stroke-width="4" />
-<path d="M247.5 300 L300.5 335" stroke="#000000" stroke-width="4" />
-<path d="M247.5 300 L194.5 335" stroke="#000000" stroke-width="4" />
+  /* 4 */
+  <path d="M40 97.5 L122.5 25" stroke="#000000" stroke-width="18" />
 
-<path d="M247.5 220 L300.5 255" stroke="#000000" stroke-width="4" />
-<path d="M247.5 220 L194.5 255" stroke="#000000" stroke-width="4" />
+  /* 5 */
+  <path d="M247.5 10 L247.5 75" stroke="#000000" stroke-width="6" />
+
+  /* 6 */
+  <circle cx="247.5" cy="125" r="50" fill="transparent" stroke="#000000" stroke-width="4" />
+  /* 7 */
+  <path d="M247.5 175 L247.5 300" stroke="#000000" stroke-width="4" />
+  /* 8 */
+  <path d="M247.5 300 L300.5 335" stroke="#000000" stroke-width="4" />
+  /* 9 */
+  <path d="M247.5 300 L194.5 335" stroke="#000000" stroke-width="4" />
+  /* 10 */
+  <path d="M247.5 220 L300.5 255" stroke="#000000" stroke-width="4" />
+  /* 11*/
+  <path d="M247.5 220 L194.5 255" stroke="#000000" stroke-width="4" />
 
 </svg>
