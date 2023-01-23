@@ -21,10 +21,17 @@
     "e2e:test": "cypress run --e2e",
     "ci:test": "start-server-and-test http://localhost:3000",
     "test": "npm run unit:test && npm run e2e:test",
-    "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
+    "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not IE 11"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -45,6 +52,14 @@
     "@gfx/zopfli": "^1.0.15",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@mguillaumef/audiso": "^0.0.4",
+    "@storybook/addon-actions": "^6.5.15",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-interactions": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/builder-webpack5": "^6.5.15",
+    "@storybook/manager-webpack5": "^6.5.15",
+    "@storybook/react": "^6.5.15",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
