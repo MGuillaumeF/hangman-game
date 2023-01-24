@@ -1,0 +1,39 @@
+.Keyboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 0.25em;
+  column-gap: 0.25em;
+  div {
+    display: flex;
+    justify-content: center;
+    row-gap: 0.25em;
+    column-gap: 0.25em;
+    button {
+      color : #FFFFFF;
+      background-color : #333333;
+      border : 1px solid #333333;
+      border-radius: 0.25em;
+      width : 3em;
+      height: 3em;
+      &:hover {
+        background-color : #FFF;
+        color : #333;
+        cursor: pointer;
+      }
+      &:active,&:focus {
+        background-color : #EEE;
+        color : #666;
+        cursor: pointer;
+      }
+      &:focus {
+        outline: 1px solid #ffb6b6;
+      }
+      &:disabled {
+        background-color : #444;
+        color : #666;
+        cursor: not-allowed ;
+      }
+    }
+  }
+}
