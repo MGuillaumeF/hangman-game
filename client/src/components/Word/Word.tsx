@@ -1,5 +1,5 @@
 import React from "react";
-
+import style from "./Word.scss";
 /**
  *
  */
@@ -21,18 +21,23 @@ type Props = {
  */
 function Word({ word, usedLetters }: Props): JSX.Element {
   return (
-    <p>
+    <div className={style.Word}>
       {word
         .toLocaleUpperCase()
         .split("")
         .map((letter: string, index: number): JSX.Element => {
           return (
-            <span key={index}>
+            <div
+              className={
+                usedLetters.includes(letter) ? style.letter : style.empty
+              }
+              key={index}
+            >
               {usedLetters.includes(letter) ? letter : "_"}
-            </span>
+            </div>
           );
         })}
-    </p>
+    </div>
   );
 }
 
