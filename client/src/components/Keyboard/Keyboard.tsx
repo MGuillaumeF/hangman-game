@@ -14,6 +14,10 @@ type KeyboardProps = {
    */
   disposition: "azerty" | "querty";
   /**
+   * The id prefix of letters [id]-keyboard-[letter]
+   */
+  id: string;
+  /**
    * Function called when a letter is selected
    * @param letter The letter selected
    * @returns void
@@ -67,7 +71,7 @@ const onKeyDownListenerBuilder = (
  * @param param0 @see KeyboardProps
  * @returns The JSX.Element component
  */
-function Keyboard({ disposition, disabledLetters, onSelect }: KeyboardProps): JSX.Element {
+function Keyboard({ disposition, disabledLetters, id, onSelect }: KeyboardProps): JSX.Element {
   const letters = disposition === "azerty" ? AZERTY : QWERTY;
   const disabledLettersUpperCase = disabledLetters
     ? disabledLetters.toLocaleUpperCase()
