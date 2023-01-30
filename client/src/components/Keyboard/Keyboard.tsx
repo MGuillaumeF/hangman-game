@@ -95,6 +95,7 @@ function Keyboard({ disposition, disabledLetters, id, onSelect }: KeyboardProps)
         <div key={index}>
           {row.split("").map((letter: string) => (
             <button
+              id={`${id}-keyboard-${letter}`}
               disabled={disabledLettersUpperCase.includes(letter)}
               key={letter}
               onClick={onSelect ? onClickBuilder(onSelect) : undefined}
