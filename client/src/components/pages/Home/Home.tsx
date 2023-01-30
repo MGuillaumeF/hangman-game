@@ -64,6 +64,7 @@ function Home({ id }: Props) {
         color="#555555"
       />
       <Keyboard
+        id="home-page"
         disposition="azerty"
         disabledLetters={disabledLetters}
         onSelect={onSelectBuilder(disabledLetters, setDisabledLetters)}
