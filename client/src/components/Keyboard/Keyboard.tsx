@@ -2,39 +2,39 @@ import React, { SyntheticEvent, useEffect } from "react";
 import style from "./Keyboard.scss";
 
 /**
- *
+ * Properties to build Keyboard component
  */
-type Props = {
+type KeyboardProps = {
   /**
-   *
+   * The list of letter to disable in keyboard
    */
   disabledLetters?: string;
   /**
-   *
+   * The disposition of keyboard's letters
    */
   disposition: "azerty" | "querty";
   /**
-   *
-   * @param letter
-   * @returns
+   * Function called when a letter is selected
+   * @param letter The letter selected
+   * @returns void
    */
   onSelect?: (letter: string) => void;
 };
 
 /**
- *
+ * The letters rows of AZERTY keyboard
  */
 const AZERTY: string[] = ["AZERTYUIOP", "QSDFGHJKLM", "WXCVBN"];
 
 /**
- *
+ * The letters rows of QWERTY keyboard
  */
 const QWERTY: string[] = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
 /**
- *
- * @param selectHandler
- * @returns
+ * The function to build on click callback from the letter selection handler
+ * @param selectHandler The function to call when a letter is selected
+ * @returns The SyntheticEvent handler caller of letter select handler
  */
 const onClickBuilder = (
   selectHandler: (letter: string) => void
@@ -47,9 +47,9 @@ const onClickBuilder = (
 };
 
 /**
- *
- * @param selectHandler
- * @returns
+ * The function to build on Keypress callback from the letter selection handler
+ * @param selectHandler The function to call when a letter is selected
+ * @returns The KeyboardEvent handler caller of letter select handler
  */
 const onKeyDownListenerBuilder = (
   selectHandler: (letter: string) => void
@@ -63,11 +63,11 @@ const onKeyDownListenerBuilder = (
 };
 
 /**
- *
- * @param param0
- * @returns
+ * Component of Keyboard entry
+ * @param param0 @see KeyboardProps
+ * @returns The JSX.Element component
  */
-function Keyboard({ disposition, disabledLetters, onSelect }: Props) {
+function Keyboard({ disposition, disabledLetters, onSelect }: KeyboardProps): JSX.Element {
   const letters = disposition === "azerty" ? AZERTY : QWERTY;
   const disabledLettersUpperCase = disabledLetters
     ? disabledLetters.toLocaleUpperCase()
