@@ -1,25 +1,30 @@
 import React from "react";
 import style from "./Word.scss";
+
 /**
- *
+ * Properties of Word to found displayer
  */
-type Props = {
+type WordProps = {
   /**
-   *
+   * The id prefix of letter to found [id]-word-letter-[index]
+   */
+  id: string;
+  /**
+   * The string of used letters to display it
    */
   usedLetters: string;
   /**
-   *
+   * The word to found
    */
   word: string;
 };
 
 /**
- *
- * @param param0
- * @returns
+ * Component to display word found dashed output
+ * @param param0 {@see WordProps}
+ * @returns The JSX.Element of displayer
  */
-function Word({ word, usedLetters }: Props): JSX.Element {
+function Word({ id, word, usedLetters }: WordProps): JSX.Element {
   return (
     <div className={style.Word}>
       {word
@@ -32,6 +37,7 @@ function Word({ word, usedLetters }: Props): JSX.Element {
                 usedLetters.includes(letter) ? style.letter : style.empty
               }
               key={index}
+              id={`${id}-word-letter-${index}`}
             >
               {usedLetters.includes(letter) ? letter : "_"}
             </div>
