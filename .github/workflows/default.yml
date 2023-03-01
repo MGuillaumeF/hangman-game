@@ -596,7 +596,7 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
         languages: 'cpp'
 
@@ -612,7 +612,7 @@ jobs:
 
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2
 
     - name: Package server
       working-directory: ${{github.workspace}}/bin
