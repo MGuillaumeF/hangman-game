@@ -111,7 +111,7 @@
     "react-docgen-typescript": "^2.2.2",
     "react-styleguidist": "^13.1.1",
     "regenerator-runtime": "^0.13.11",
-    "rimraf": "^4.4.0",
+    "rimraf": "^4.4.1",
     "sass": "^1.59.3",
     "sass-loader": "^13.2.1",
     "sinon": "^15.0.2",
@@ -131,7 +131,7 @@
     "url-loader": "^4.1.1",
     "wait-on": "^7.0.1",
     "web-vitals": "^3.3.0",
-    "webpack": "^5.76.2",
+    "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.1",
     "webpack-visualizer-plugin2": "^1.0.0"
