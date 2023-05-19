@@ -54,6 +54,7 @@ const opts = {
 
 // Usage with async await
 try {
+  console.log("*** wait server state change to started ***");
   await waitOn(opts);
 
   console.info("INFO", "start tests");
