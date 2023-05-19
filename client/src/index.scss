@@ -13,10 +13,63 @@ body {
   box-sizing: border-box;
 }
 
+
 :root {
   --primary-color-1: rgba(180, 180, 0, 100%);
   --primary-color-2: rgba(180, 180, 0, 60%);
   --primary-color-3: rgba(180, 180, 0, 30%);
   --secondary-color-1: rgba(180, 0, 90, 100%);
   --tertiary-color-1: rgba(180, 90, 0, 100%);
+
+  --dark-primary : #606060; 
+  --dark-primary-contrast : #FFFFFF; 
+  --dark-secondary : #000000; 
+  --dark-secondary-contrast : #FFFFFF; 
+  --dark-selected : #0c59cf; 
+
+  --dark-primary-40 : #60606066; 
+  --dark-primary-contrast-40 : #FFFFFF66; 
+  --dark-secondary-40 : #00000066; 
+  --dark-secondary-contrast-40 : #FFFFFF66; 
+  --dark-selected-40 : #0c59cf66;
+
+  --light-primary : #FFFFFF; 
+  --light-primary-contrast : #000000; 
+  --light-secondary : #AAAAAA; 
+  --light-secondary-contrast : #606060; 
+  --light-selected : #0c59cf; 
+
+  --light-primary-40 : #FFFFFF66; 
+  --light-primary-contrast-40 : #00000066; 
+  --light-secondary-40 : #AAAAAA66; 
+  --light-secondary-contrast-40 : #60606066; 
+  --light-selected-40 : #0c59cf66;
+}
+
+html[data-theme=light] {
+  
+  --primary : var(--light-primary);
+  --primary-contrast : var(--light-primary-contrast);
+  --secondary : var(--light-secondary);
+  --secondary-contrast : var(--light-secondary-contrast);
+  --selected : var(--light-selected);
+  --primary-40 : var(--light-primary-40);
+  --primary-contrast-40 : var(--light-primary-contrast-40);
+  --secondary-40 : var(--light-secondary-40);
+  --secondary-contrast-40 : var(--light-secondary-contrast-40);
+  --selected-40 : var(--light-selected-40);
+}
+
+html[data-theme=dark] {
+
+  --primary : var(--dark-primary);
+  --primary-contrast : var(--dark-primary-contrast);
+  --secondary : var(--dark-secondary);
+  --secondary-contrast : var(--dark-secondary-contrast);
+  --selected : var(--dark-selected);
+  --primary-40 : var(--dark-primary-40);
+  --primary-contrast-40 : var(--dark-primary-contrast-40);
+  --secondary-40 : var(--dark-secondary-40);
+  --secondary-contrast-40 : var(--dark-secondary-contrast-40);
+  --selected-40 : var(--dark-selected-40);
 }

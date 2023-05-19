@@ -16,7 +16,7 @@ function loadCss(css: {
     processedClassName.push(...css.className.split(" "));
   }
   if (css.level) {
-    processedClassName.push(levelMap.get(css.level));
+    processedClassName.push(levelMap.get(css.level) || "primary");
   }
   return processedClassName.join(" ");
 }

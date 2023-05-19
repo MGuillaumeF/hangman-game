@@ -24,7 +24,12 @@
     "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not IE 11"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -45,6 +50,7 @@
     "@gfx/zopfli": "^1.0.15",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@mguillaumef/audiso": "^0.0.4",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

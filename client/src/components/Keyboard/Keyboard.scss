@@ -1,0 +1,117 @@
+
+.Keyboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 0.25em;
+  column-gap: 0.25em;
+  div {
+    display: flex;
+    justify-content: center;
+    row-gap: 0.25em;
+    column-gap: 0.25em;
+    button {
+      color : var(--keyboard-letter-color);
+      background-color : var(--keyboard-letter-background-color);
+      border : 0.0625em  solid var(--keyboard-letter-border-color);
+      border-radius: 0.25em;
+      width : 3em;
+      height: 3em;
+      &:hover {
+        --keyboard-letter-color : var(--keyboard-letter-color-hover);
+        --keyboard-letter-background-color : var(--keyboard-letter-background-color-hover);
+        --keyboard-letter-border-color :  var(--keyboard-letter-border-color-hover);
+        cursor: pointer;
+      }
+      &:active {
+        --keyboard-letter-color : var(--keyboard-letter-color-active);
+        --keyboard-letter-background-color : var(--keyboard-letter-background-color-active);
+        --keyboard-letter-border-color :  var(--keyboard-letter-border-color-active);
+        cursor: pointer;
+      }
+      &:focus {
+        --keyboard-letter-color : var(--keyboard-letter-color-focus);
+        --keyboard-letter-background-color : var(--keyboard-letter-background-color-focus);
+        --keyboard-letter-border-color :  var(--keyboard-letter-border-color-focus);
+        outline: 0.0625em dashed var(--keyboard-letter-outline-color-focus);
+        cursor: pointer;
+      }
+      &:disabled {
+        --keyboard-letter-color : var(--keyboard-letter-color-disable);
+        --keyboard-letter-background-color : var(--keyboard-letter-background-color-disable);
+        --keyboard-letter-border-color :  var(--keyboard-letter-border-color-disable);
+        cursor: not-allowed ;
+      }
+    }
+  }
+}
+html {
+  --keyboard-letter-background-color:#606060;
+  --keyboard-letter-color:#FFFFFF;
+  --keyboard-letter-border-color:#606060;
+
+  --keyboard-letter-background-color-hover:#FFFFFF;
+  --keyboard-letter-color-hover:#000000; 
+  --keyboard-letter-border-color-hover:#000000; 
+
+  --keyboard-letter-background-color-active:#FFFFFF;
+  --keyboard-letter-color-active:#00000066;
+  --keyboard-letter-border-color-active:#00000066;
+
+  --keyboard-letter-background-color-disable:#60606066; 
+  --keyboard-letter-color-disable:#d6d6d6;
+  --keyboard-letter-border-color-disable:#60606066; 
+
+  --keyboard-letter-background-color-focus: #0c59cf; 
+  --keyboard-letter-color-focus:#FFFFFF;
+  --keyboard-letter-border-color-focus: #0c59cf; 
+  --keyboard-letter-outline-color-focus:#000000; 
+  &[data-theme=light] {
+    .Keyboard {
+      --keyboard-letter-background-color:var(--primary);
+      --keyboard-letter-color:var(--primary-contrast);
+      --keyboard-letter-border-color:var(--primary-contrast);
+
+      --keyboard-letter-background-color-hover:var(--secondary-contrast);
+      --keyboard-letter-color-hover:var(--primary);
+      --keyboard-letter-border-color-hover:var(--secondary-contrast);
+
+      --keyboard-letter-background-color-active:var(--secondary-contrast);
+      --keyboard-letter-color-active:var(--secondary-40);
+      --keyboard-letter-border-color-active:var(--secondary-40);
+
+      --keyboard-letter-background-color-disable:var(--primary-contrast-40);
+      --keyboard-letter-color-disable:#d6d6d6;
+      --keyboard-letter-border-color-disable:var(--primary-contrast-40);
+
+      --keyboard-letter-background-color-focus:var(--primary);
+      --keyboard-letter-color-focus:var(--selected);
+      --keyboard-letter-border-color-focus:var(--primary);
+      --keyboard-letter-outline-color-focus:var(--selected);
+    }
+  }
+  &[data-theme=dark] {
+    .Keyboard {
+      --keyboard-letter-background-color:var(--primary);
+      --keyboard-letter-color:var(--primary-contrast);
+      --keyboard-letter-border-color:var(--primary);
+
+      --keyboard-letter-background-color-hover:var(--secondary-contrast);
+      --keyboard-letter-color-hover:var(--secondary);
+      --keyboard-letter-border-color-hover:var(--secondary);
+
+      --keyboard-letter-background-color-active:var(--secondary-contrast);
+      --keyboard-letter-color-active:var(--secondary-40);
+      --keyboard-letter-border-color-active:var(--secondary-40);
+
+      --keyboard-letter-background-color-disable:var(--primary-40);
+      --keyboard-letter-color-disable:#d6d6d6;
+      --keyboard-letter-border-color-disable:var(--primary-40);
+
+      --keyboard-letter-background-color-focus:var(--selected);
+      --keyboard-letter-color-focus:var(--secondary-contrast);
+      --keyboard-letter-border-color-focus:var(--selected);
+      --keyboard-letter-outline-color-focus:var(--secondary);
+    }
+  }
+}
