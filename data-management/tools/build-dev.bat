@@ -1,3 +1,4 @@
+@echo off
 REM vcpkg install libmysql --triplet=x64-windows
 REM vcpkg install libodb --triplet=x64-windows
 REM vcpkg install libodb-mysql --triplet=x64-windows
