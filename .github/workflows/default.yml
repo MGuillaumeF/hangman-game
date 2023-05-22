@@ -950,7 +950,7 @@ jobs:
         path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
 
  build-raspberry-pi-toolchain:
-    # needs: [sonarcloud-analyse]
+    needs: [sonarcloud-analyse]
     runs-on: ubuntu-latest
     steps:
 
