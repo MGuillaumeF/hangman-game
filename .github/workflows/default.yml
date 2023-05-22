@@ -962,7 +962,7 @@ jobs:
         path: ${{github.workspace}}/client/build
 
     - name: Install Raspberry PI x64 toolchain
-      run: sudo apt-get install -y gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
+      run: sudo apt-get install -y gcc-13-aarch64-linux-gnu g++-13-aarch64-linux-gnu
 
     - name: Install Boost
       uses: MarkusJx/install-boost@v2.4.3
