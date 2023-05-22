@@ -24,12 +24,7 @@
     "webpack-stats": "webpack --define-process-env-node-env production --profile --json=stats.json"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all",
-      "not IE 11"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all", "not IE 11"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

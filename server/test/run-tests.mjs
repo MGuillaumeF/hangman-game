@@ -16,24 +16,24 @@ const runServer = spawn("./HangmanGame", [], {
   )
 });
 
-let stdOutServer = '';
+let stdOutServer = "";
 runServer.stdout.on("data", (data) => {
   let rows = `${data}`.split(/\r?\n/);
-  stdOutServer += '[COUT] ' + rows.join('\n[COUT] ');
-  stdOutServer = stdOutServer.replace(/(\[COUT\]\s){2,}/g, '[COUT] ');
+  stdOutServer += "[COUT] " + rows.join("\n[COUT] ");
+  stdOutServer = stdOutServer.replace(/(\[COUT\]\s){2,}/g, "[COUT] ");
 });
 
 runServer.stderr.on("data", (data) => {
   let rows = `${data}`.split(/\r?\n/);
-  stdOutServer += '[CERR] ' + rows.join('\n[CERR] ');
-  stdOutServer = stdOutServer.replace(/(\[CERR\]\s){2,}/g, '[CERR] ');
+  stdOutServer += "[CERR] " + rows.join("\n[CERR] ");
+  stdOutServer = stdOutServer.replace(/(\[CERR\]\s){2,}/g, "[CERR] ");
 });
 
 runServer.on("close", (code) => {
   console.info("INFO", "sever close with code", code);
-  console.log('******** START OUTPUT SERVER PROCESS ********');
+  console.log("******** START OUTPUT SERVER PROCESS ********");
   console.log(stdOutServer);
-  console.log('********* END OUTPUT SERVER PROCESS *********');
+  console.log("********* END OUTPUT SERVER PROCESS *********");
   if (!isNaN(code) && code > 0) {
     process.exit(1);
   }
@@ -54,36 +54,40 @@ const opts = {
 
 // Usage with async await
 try {
-  await waitOn(opts);
+  // console.log("*INFO wait server state change to started ***");
+  // await waitOn(opts);
+  console.info("WAIT 20 secondes before run tests");
 
-  console.info("INFO", "start tests");
-  const runTests = spawn("ctest", ["--verbose"], {
-    cwd: resolve(__dirname, "../../bin")
-  });
+  setTimeout(() => {
+    console.info("INFO", "start tests");
+    const runTests = spawn("ctest", ["--verbose"], {
+      cwd: resolve(__dirname, "../../bin")
+    });
 
-  let stdOutTests = '';
-  runTests.stdout.on("data", (data) => {
-    let rows = `${data}`.split(/\r?\n/);
-    stdOutTests += '[COUT] ' + rows.join('\n[COUT] ');
-    stdOutTests = stdOutTests.replace(/(\[COUT\]\s){2,}/g, '[COUT] ');
-  });
+    let stdOutTests = "";
+    runTests.stdout.on("data", (data) => {
+      let rows = `${data}`.split(/\r?\n/);
+      stdOutTests += "[COUT] " + rows.join("\n[COUT] ");
+      stdOutTests = stdOutTests.replace(/(\[COUT\]\s){2,}/g, "[COUT] ");
+    });
 
-  runTests.stderr.on("data", (data) => {
-    let rows = `${data}`.split(/\r?\n/);
-    stdOutTests += '[CERR] ' + rows.join('\n[CERR] ');
-    stdOutTests = stdOutTests.replace(/(\[CERR\]\s){2,}/g, '[CERR] ');
-  });
+    runTests.stderr.on("data", (data) => {
+      let rows = `${data}`.split(/\r?\n/);
+      stdOutTests += "[CERR] " + rows.join("\n[CERR] ");
+      stdOutTests = stdOutTests.replace(/(\[CERR\]\s){2,}/g, "[CERR] ");
+    });
 
-  runTests.on("close", (code) => {
-    console.log('******** START OUTPUT TEST PROCESS ********');
-    console.log(stdOutTests);
-    console.log('********* END OUTPUT TEST PROCESS *********');
-    console.info("INFO", "tests close with code", code);
-    runServer.kill();
-    if (!isNaN(code) && code > 0) {
-      process.exit(1);
-    }
-  });
+    runTests.on("close", (code) => {
+      console.log("******** START OUTPUT TEST PROCESS ********");
+      console.log(stdOutTests);
+      console.log("********* END OUTPUT TEST PROCESS *********");
+      console.info("INFO", "tests close with code", code);
+      runServer.kill();
+      if (!isNaN(code) && code > 0) {
+        process.exit(1);
+      }
+    });
+  }, 20000);
 } catch (err) {
   console.error("ERROR", err);
 }
