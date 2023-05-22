@@ -955,14 +955,9 @@ jobs:
     steps:
 
     - uses: actions/checkout@v3
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
+    
     - name: Install Raspberry PI x64 toolchain
-      run: sudo apt-get install -y gcc-13-aarch64-linux-gnu g++-13-aarch64-linux-gnu
+      run: sudo apt-get install -y gcc-12-aarch64-linux-gnu g++-12-aarch64-linux-gnu
 
     - name: Install Boost
       uses: MarkusJx/install-boost@v2.4.3
@@ -971,6 +966,11 @@ jobs:
         boost_version: ${{env.BOOST_VERSION}} # Currently only works with boost v1.79.0
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         arch: aarch64 # Note the new 'arch' option
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
 
     - name: Generate Target
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=${{github.workspace}}/tools/toolchains/Toolchain-RaspberryPi.cmake -D Boost_NO_SYSTEM_PATHS=TRUE -DBoost_DEBUG=ON -D Boost_INCLUDE_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/include -D NOT_GENERATE_DB_ACCESS=true
