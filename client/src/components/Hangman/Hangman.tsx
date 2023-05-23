@@ -174,7 +174,7 @@ function Hangman({
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect
-        fill={backgroundColor || "transparent"}
+        fill={backgroundColor ?? "transparent"}
         width={String(width)}
         height={String(height)}
       />
@@ -185,7 +185,7 @@ function Hangman({
             <Type
               key={index}
               {...props}
-              stroke={color || "#000000"}
+              stroke={color ?? "#000000"}
               strokeDasharray="2000"
             >
               <animate
@@ -199,7 +199,7 @@ function Hangman({
             </Type>
           );
         } else {
-          return <Type key={index} {...props} stroke={color || "#000000"} />;
+          return <Type key={index} {...props} stroke={color ?? "#000000"} />;
         }
       })}
     </svg>
