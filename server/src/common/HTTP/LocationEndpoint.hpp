@@ -29,11 +29,6 @@ public:
    */
   void doDelete() override;
 
-  /**
-   * @brief Destroy the Http Token Endpoint object
-   */
-  ~LocationEndpoint() override;
-
 private:
   /**
    * @brief Get logger
