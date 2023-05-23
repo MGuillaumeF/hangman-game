@@ -59,10 +59,4 @@ void HttpTokenEndpoint::doPost() {
   res.prepare_payload();
   // set generated response
   setResponse(res);
-}
-
-/**
- * @brief Destroy the Http Token Endpoint:: Http Token Endpoint object
- *
- */
-HttpTokenEndpoint::~HttpTokenEndpoint() = default;
+} 
