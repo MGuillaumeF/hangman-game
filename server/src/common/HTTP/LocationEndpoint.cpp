@@ -161,8 +161,3 @@ bool LocationEndpoint::isValidFileTarget(
            target.find("..") != boost::beast::string_view::npos);
 }
 
-/**
- * @brief Destroy the Http Location Endpoint:: Http Location Endpoint object
- *
- */
-LocationEndpoint::~LocationEndpoint() = default;
