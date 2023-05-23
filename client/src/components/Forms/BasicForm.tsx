@@ -79,9 +79,9 @@ const onSubmitRequest = async (
   pendingUpdater(true);
   try {
     const response = await fetch(
-      event.currentTarget.getAttribute("action") || "/",
+      event.currentTarget.getAttribute("action") ?? "/",
       {
-        method: event.currentTarget.getAttribute("method") || "POST",
+        method: event.currentTarget.getAttribute("method") ?? "POST",
         headers: {
           "Content-Type": "application/json"
         },
