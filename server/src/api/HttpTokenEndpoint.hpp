@@ -18,11 +18,7 @@ public:
    * @brief Method to overwrite POST method
    */
   void doPost() override;
-  /**
-   * @brief Destroy the Http Token Endpoint object
-   */
-  ~HttpTokenEndpoint() override;
-
+  
 private:
   /**
    * @brief Get logger
