@@ -106,12 +106,6 @@ public:
     return m_allowedMethods.contains(method);
   }
 
-  /**
-   * @brief Destroy the Http Restrictive Endpoint object
-   *
-   */
-  virtual ~RestrictiveEndpoint() = default;
-
 protected:
   /**
    * @brief Method not Allowed default error
