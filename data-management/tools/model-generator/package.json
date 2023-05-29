@@ -18,7 +18,7 @@
     "webpack-stats": "webpack --node-env production --profile --json=stats.json"
   },
   "dependencies": {
-    "xml2js": "^0.5.0"
+    "xml2js": "^0.6.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
