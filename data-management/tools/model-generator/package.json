@@ -46,7 +46,7 @@
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
     "eslint-webpack-plugin": "^4.0.1",
     "prettier": "^2.8.8",
-    "ts-loader": "^9.4.2",
+    "ts-loader": "^9.4.3",
     "tslib": "^2.5.2",
     "typescript": "^5.0.4",
     "typedoc": "^0.24.7",
