@@ -9,7 +9,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "daily"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/client" # Location of package manifests
     schedule:
@@ -17,15 +17,15 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/data-management/tools/install-odb" # Location of package manifests
     schedule:
-      interval: "monthly"
+      interval: "daily"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/data-management/tools/model-generator" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/server/test " # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
 
 
 
