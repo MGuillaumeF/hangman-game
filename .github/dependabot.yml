@@ -13,7 +13,7 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/client" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/data-management/tools/install-odb" # Location of package manifests
     schedule:
