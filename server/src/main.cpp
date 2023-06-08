@@ -17,6 +17,8 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include "./config.hpp"
+
 /**
  * To write a log message
  * @param filename The name of log file
@@ -91,6 +93,9 @@ int32_t main(int argc, char *argv[]) {
   int16_t exitStatus = EXIT_SUCCESS;
   // load logger configuration file to create them appenders
   loadLoggerConfiguration();
+
+  logger->info("HTTP_CONFIGURATION", PROJECT_NAME + " - " + APPLICATION_NAME +
+                                         " - version " + PROJECT_VERSION);
 
   // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();

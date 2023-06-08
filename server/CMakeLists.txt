@@ -10,6 +10,15 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
 endif()
 
+  # Create application executable files
+  set(APPLICATION_NAME "${PROJECT_NAME}")
+  set(APPLICATION_DESCRIPTION "${APPLICATION_NAME} Server application")
+  configure_file (config.hpp.in src/config.hpp @ONLY)
+  set(APPLICATION_ICON_PATH "resources/icon/hangman-game/hangman-game.ico")
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../appicon.rc.in appicon.rc @ONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../versioninfo.rc.cmake.in versioninfo.rc @ONLY)
+  set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
+
 # Add all srcs files in SRCS variable
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
      "src/*.hpp"
@@ -52,9 +61,7 @@ find_package (Boost)
 if (Boost_FOUND)
   # add boost includes
   include_directories(${Boost_INCLUDE_DIRS}) 
-  # Create application executable files
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
-  set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
+
   add_executable(${PROJECT_NAME} ${SRCS} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
   if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/configuration)
