@@ -4,7 +4,7 @@
 
 // import TCP Server
 #include "./TCP/Server.hpp"
-#include "./config.hpp"
+#include "config.hpp"
 
 int32_t main(int argc, char *argv[]) {
   odb::session s;

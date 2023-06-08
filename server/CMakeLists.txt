@@ -13,10 +13,10 @@ endif()
   # Create application executable files
   set(APPLICATION_NAME "${PROJECT_NAME}")
   set(APPLICATION_DESCRIPTION "${APPLICATION_NAME} Server application")
-  configure_file (config.hpp.in src/config.hpp @ONLY)
+  configure_file (config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config.hpp @ONLY)
   set(APPLICATION_ICON_PATH "resources/icon/hangman-game/hangman-game.ico")
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../appicon.rc.in appicon.rc @ONLY)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../versioninfo.rc.cmake.in versioninfo.rc @ONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../appicon.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc @ONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../versioninfo.rc.cmake.in ${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc @ONLY)
   set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
 
 # Add all srcs files in SRCS variable
@@ -62,7 +62,7 @@ if (Boost_FOUND)
   # add boost includes
   include_directories(${Boost_INCLUDE_DIRS}) 
 
-  add_executable(${PROJECT_NAME} ${SRCS} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
+  add_executable(${PROJECT_NAME} ${SRCS} "${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
   if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_custom_command(TARGET HangmanGame PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/configuration)
   else ()
@@ -73,9 +73,9 @@ if (Boost_FOUND)
   install(DIRECTORY "${PROJECT_SOURCE_DIR}/client/build/" DESTINATION "${PROJECT_NAME}/")
   
   if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR})
+    add_executable(HangmanGameTest ${TESTS_SRC_UT_DIR} ${HTTP_SRC_DIR} ${LOGGER_SRC_DIR} ${API_SRC_DIR}  src/config.hpp )
     add_test(HangmanGameUnitTests HangmanGameTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logUT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml) 
-    add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR})
+    add_executable(HangmanGameITTest ${TESTS_SRC_IT_DIR} src/config.hpp )
     add_test(HangmanGameIntegrationTests HangmanGameITTest --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logIT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportIT.xml)
   endif()
 
