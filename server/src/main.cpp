@@ -94,12 +94,11 @@ int32_t main(int argc, char *argv[]) {
   // load logger configuration file to create them appenders
   loadLoggerConfiguration();
 
-  logger->info("HTTP_CONFIGURATION", PROJECT_NAME + " - " + APPLICATION_NAME +
-                                         " - version " + PROJECT_VERSION);
-
   // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
-
+  
+  logger->info("HTTP_CONFIGURATION", PROJECT_NAME + " - " + APPLICATION_NAME +
+                                         " - version " + PROJECT_VERSION);
   // get server configuration
   auto config = ConfigurationServer();
 
