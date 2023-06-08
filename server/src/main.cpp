@@ -13,6 +13,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -96,9 +97,11 @@ int32_t main(int argc, char *argv[]) {
 
   // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
-
-  logger->info("HTTP_CONFIGURATION", PROJECT_NAME + " - " + APPLICATION_NAME +
-                                         " - version " + PROJECT_VERSION);
+  
+std::stringstream versionLog;
+versionLog << PROJECT_NAME << " - " << APPLICATION_NAME <<
+                                         " - version " << PROJECT_VERSION;
+  logger->info("HTTP_CONFIGURATION", versionLog.str());
   // get server configuration
   auto config = ConfigurationServer();
 
