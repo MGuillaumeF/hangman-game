@@ -2,7 +2,7 @@
 #define BOOST_TEST_DYN_LINK
 // #define BOOST_TEST_NO_MAIN
 
-#include "config.hpp"
+#include "../config.hpp"
 
 #include <boost/test/included/unit_test.hpp>
 /*
