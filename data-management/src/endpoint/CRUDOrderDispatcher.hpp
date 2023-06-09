@@ -5,7 +5,7 @@
 #include "./StatusCode.hpp"
 // generated configuration
 #include "./DataAccess.hpp"
-#include "config.hpp"
+#include "../config.hpp"
 
 #include <odb/transaction.hxx>
 
