@@ -7,7 +7,7 @@
 #include "./DataAccess.hpp"
 
 // generated configuration
-#include "config.hpp"
+#include "../config.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <odb/transaction.hxx>
