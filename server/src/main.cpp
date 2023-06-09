@@ -11,11 +11,14 @@
 #include <iostream>
 #include <iterator>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
+
+#include "./config.hpp"
 
 /**
  * To write a log message
@@ -95,6 +98,10 @@ int32_t main(int argc, char *argv[]) {
   // get singleton logger instance
   const std::unique_ptr<Logger> &logger = Logger::getInstance();
 
+  std::stringstream versionLog;
+  versionLog << PROJECT_NAME << " - " << APPLICATION_NAME << " - version "
+             << PROJECT_VERSION;
+  logger->info("HTTP_CONFIGURATION", versionLog.str());
   // get server configuration
   auto config = ConfigurationServer();
 

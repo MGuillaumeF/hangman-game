@@ -4,8 +4,8 @@
 #include "../model/root_model_object.hxx"
 #include "./StatusCode.hpp"
 // generated configuration
+#include "../config.hpp"
 #include "./DataAccess.hpp"
-#include "config.hpp"
 
 #include <odb/transaction.hxx>
 

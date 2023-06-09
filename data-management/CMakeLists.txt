@@ -17,6 +17,7 @@ if (SGBD_NAME STREQUAL "SQLITE")
     set(SGBD_NAME "SQLITE")
     set(SGBD_DEPENDENCY "sqlite")
 endif()
+
 set(MODEL_SRCS "src/model/${SGBD_DEPENDENCY}/*-odb.cxx" "src/model/${SGBD_DEPENDENCY}/*-odb.hxx")
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -28,6 +29,15 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 add_definitions("-Wall")
+
+# Create application executable files
+set(APPLICATION_NAME ${PROJECT_NAME}-data-management)
+set(APPLICATION_DESCRIPTION "${APPLICATION_NAME} Server database connector")
+configure_file (config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config.hpp @ONLY)
+set(APPLICATION_ICON_PATH "resources/icon/data-management/data-management.ico")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../appicon.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../versioninfo.rc.cmake.in ${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc @ONLY)
+set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
 
 # Add all tests files in TESTS_SRC_UT_DIR variable
 file(GLOB_RECURSE TESTS_SRC_UT_DIR CONFIGURE_DEPENDS
@@ -61,14 +71,9 @@ find_package (Boost)
 include(${ODB_USE_FILE})
 
 if (ODB_FOUND)
-  # Specify the configuration file from which the header file will be generated
-  configure_file (config.hpp.in config.hpp @ONLY)
   include_directories(${ODB_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${EXTERNAL_INCLUDE_DIRS}) 
 
-  # Create application executable files
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc.cmake.in versioninfo.rc @ONLY)
-  set(APP_ICO_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
-  add_executable(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}  src/main.cpp ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
+  add_executable(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}  src/main.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/config.hpp ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
   add_custom_command(TARGET ${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/configuration)
   add_custom_command(TARGET ${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/database-order ${CMAKE_CURRENT_BINARY_DIR}/resources/database-order)
 
@@ -76,10 +81,10 @@ if (ODB_FOUND)
   # install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/configuration/" DESTINATION "${PROJECT_NAME}/configuration")
 
   if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_executable(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR} "${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
+    add_executable(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${TESTS_SRC_UT_DIR} ${CONNECTOR_MODEL_SRC_DIR}  ${CMAKE_CURRENT_SOURCE_DIR}/src/config.hpp "${CMAKE_CURRENT_SOURCE_DIR}/versioninfo.rc" ${APP_ICO_RESOURCE})
     add_test(${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests ${PROJECT_NAME}-data-management-${SGBD_DEPENDENCY}-unit-tests --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/logUT.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml)
   endif()
-  add_executable(${PROJECT_NAME}-data-management-tcp-client ${TEST_CLIENT_TCP_SRC_UT_DIR})
+  add_executable(${PROJECT_NAME}-data-management-tcp-client ${TEST_CLIENT_TCP_SRC_UT_DIR}  ${CMAKE_CURRENT_SOURCE_DIR}/src/config.hpp)
   add_custom_command(TARGET ${PROJECT_NAME}-data-management-tcp-client PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/database-order ${CMAKE_CURRENT_BINARY_DIR}/resources/database-order)
   # add_custom_command(TARGET ${PROJECT_NAME}-data-management-unit-tests PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/configuration ${CMAKE_CURRENT_BINARY_DIR}/configuration)
   # add_test(DataManagementUnitTests ${PROJECT_NAME}-data-management-unit-tests --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reports.xml --report_sink=${CMAKE_CURRENT_SOURCE_DIR}/reports/reportUT.xml)

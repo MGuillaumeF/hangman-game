@@ -1,15 +1,8 @@
 # minimum CMake version (minimum feature)
 cmake_minimum_required(VERSION 3.12)
 
-
-set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-
-
 # Add name on project 
-project(HangmanGame VERSION "${PACKAGE_VERSION}")
+project(HangmanGame VERSION "0.1.0")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   MESSAGE("Debug mode activate test")

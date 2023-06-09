@@ -4,12 +4,16 @@
 
 // import TCP Server
 #include "./TCP/Server.hpp"
+#include "config.hpp"
 
 int32_t main(int argc, char *argv[]) {
   odb::session s;
   // by default process exit status is success
   int32_t exitStatus = EXIT_SUCCESS;
   try {
+
+    std::cout << PROJECT_NAME << " - " << APPLICATION_NAME << " - version "
+              << PROJECT_VERSION;
     // create io context for server
     boost::asio::io_context ioContext{3};
     // attach tcp server on io context and declare it on 50000 port

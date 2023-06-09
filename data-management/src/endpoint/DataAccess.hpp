@@ -4,7 +4,7 @@
 #include <memory>
 
 // generated configuration
-#include "config.hpp"
+#include "../config.hpp"
 
 #include <odb/transaction.hxx>
 
