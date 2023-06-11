@@ -308,10 +308,10 @@ jobs:
     - name: Unit Tests Graph
       working-directory: ${{github.workspace}}
       run: |
-        cd ${{github.workspace}}/bin/server/bin
+        cd ${{github.workspace}}/bin/server/test/ut/
         ./HangmanGameTest --list_content=DOT > ${{github.workspace}}/server/reports/content.dot 2>&1
         dot ${{github.workspace}}/server/reports/content.dot -Tsvg -o ${{github.workspace}}/wiki/server-ut-tests.svg
-        cd ${{github.workspace}}/bin/data-management/bin
+        cd ${{github.workspace}}/bin/data-management/test/ut/
         ./HangmanGame-data-management-sqlite-unit-tests --list_content=DOT > ${{github.workspace}}/data-management/reports/content.dot 2>&1
         dot ${{github.workspace}}/data-management/reports/content.dot -Tsvg -o ${{github.workspace}}/wiki/data-management-ut-tests.svg
         dot ${{github.workspace}}/wiki/components.dot -Tsvg -o ${{github.workspace}}/wiki/components-diagram.svg
@@ -719,7 +719,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
 
     - name: Unit Tests
-      run: ${{github.workspace}}/bin/server/bin/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
+      run: ${{github.workspace}}/bin/server/test/ut/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
     
     - name: Archive Test report
       uses: actions/upload-artifact@v3
@@ -777,7 +777,6 @@ jobs:
         # cmd.exe /C "vcpkg install boost --triplet x64-windows"
         cmd.exe /C "vcpkg install libodb --triplet x64-windows"
         cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
-
 
     - name: Generate target 
       run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake

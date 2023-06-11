@@ -147,12 +147,12 @@ BOOST_AUTO_TEST_CASE(testEndpoints) {
   requestProperties.method = boost::beast::http::verb::get;
   requestProperties.body = "";
 
-  requestProperties.target = "/bin/configuration/mime-types.xml-old";
+  requestProperties.target = "/configuration/mime-types.xml-old";
   response = sendRequest(requestProperties);
 
   BOOST_CHECK_EQUAL(boost::beast::http::status::not_found, response.result());
 
-  requestProperties.target = "/../../../../bin/configuration/mime-types.xml";
+  requestProperties.target = "/../../../../configuration/mime-types.xml";
   response = sendRequest(requestProperties);
 
   BOOST_CHECK_EQUAL(boost::beast::http::status::bad_request, response.result());
