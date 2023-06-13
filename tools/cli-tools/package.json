@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node src/main.mjs",
+    "download": "node src/main.mjs download",
+    "extract": "node src/main.mjs extract",
     "build:doc": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {

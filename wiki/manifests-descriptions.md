@@ -24,7 +24,7 @@ Quand un manifest est présent au moment dans le dossier courant au moment de l'
 Les manifests package.json sont nombreux sur le projet :
 
 - /client
-- /data-management/tools/install-odb
+- /tools/cli-tools
 - /data-management/tools/model-generator
 
 Les package.json séparent les dépendances de développement des dépendances de production, il est possible de l'installer que les dépendances de production avec la commande `npm install --production`.
