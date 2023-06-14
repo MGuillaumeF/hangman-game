@@ -124,11 +124,13 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Create reports directory (server)
-      run: |
-        mkdir ${{github.workspace}}/server/reports
+      run: mkdir ${{github.workspace}}/server/reports
 
-    - name: Create reports directory
+    - name: Create reports directory (data-management)
       run: mkdir ${{github.workspace}}/data-management/reports
+
+    - name: Create reports directory (tools)
+      run: mkdir ${{github.workspace}}/tools/reports
 
     - name: Generate Model classes
       working-directory: ${{github.workspace}}/data-management/tools/model-generator
@@ -184,16 +186,16 @@ jobs:
         boost_version: ${{env.BOOST_VERSION}}
         
     - name: installer odb compiler dependencies
-      working-directory: ${{github.workspace}}/data-management/tools/install-odb
+      working-directory: ${{github.workspace}}/tools/cli-tools
       run: npm install
 
     - name: Audit dependencies installer odb win
-      working-directory: ${{github.workspace}}/data-management/tools/install-odb
-      run: npm audit --json > ./audit-dependency-install-odb-report.json || echo FAILED
+      working-directory: ${{github.workspace}}/tools/cli-tools
+      run: npm audit --json > ./audit-dependency-cli-tools-report.json || echo FAILED
 
     - name: Convert Audit dependencies installer odb win report
-      working-directory: ${{github.workspace}}/data-management/tools/install-odb
-      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-install-odb-report.json --output-file ../../reports/audit-install-odb-report.json
+      working-directory: ${{github.workspace}}/tools/cli-tools
+      run: ./node_modules/.bin/audiso --input-file=./audit-dependency-cli-tools-report.json --output-file ../reports/audit-cli-tools-report.json
 
     - name: Install lib odb
       working-directory: ${{github.workspace}}/..
@@ -253,11 +255,11 @@ jobs:
       run:  mysql --user=odb_test --database=odb_test < user.sql
 
     - name: Download cpp-coso ${{env.CPP_COSO_VERSION}}
-      uses: wei/wget@v1
-      with:
-        args: -O cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb https://mguillaumef.github.io/cpp-coso/delivery/${{env.CPP_COSO_VERSION}}/cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
+      working-directory: ${{github.workspace}}/tools/cli-tools
+      run: npm run download https://mguillaumef.github.io/cpp-coso/delivery/${{env.CPP_COSO_VERSION}}/cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb 
 
     - name: Install cpp-coso
+      working-directory: ${{github.workspace}}/tools/cli-tools
       run: sudo dpkg -i cpp-coso-${{env.CPP_COSO_VERSION}}-Linux.deb
 
     - name: Generate target
@@ -677,10 +679,11 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/data-management/tools/install-odb
+      working-directory: ${{github.workspace}}/tools/cli-tools
       run: |
         npm install
-        npm start
+        npm run download https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-windows.zip odb-2.4.0-i686-windows.zip
+        npm run extract odb-2.4.0-i686-windows.zip C:\/tools
         echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: generate model
@@ -746,10 +749,11 @@ jobs:
         boost_install_dir: 'D:/'
 
     - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/data-management/tools/install-odb
+      working-directory: ${{github.workspace}}/tools/cli-tools
       run: |
         npm install
-        npm start
+        npm run download https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-windows.zip odb-2.4.0-i686-windows.zip
+        npm run extract odb-2.4.0-i686-windows.zip C:\/tools
         echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: generate model
