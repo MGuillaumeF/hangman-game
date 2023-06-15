@@ -1,4 +1,4 @@
-cd ../../bin/server/bin
+cd ../../bin/server/app
 ./HangmanGame 2>&1 > ./integration-tests-report.log &
 sleep 15
 

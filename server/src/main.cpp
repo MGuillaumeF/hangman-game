@@ -1,6 +1,7 @@
 #include "./common/Logger/Logger.hpp"
 
 #include "./api/HttpTokenEndpoint.hpp"
+#include "./api/game/GameEndPoint.hpp"
 #include "./common/HTTP/Configuration/ConfigurationServer.hpp"
 #include "./common/HTTP/LocationEndpoint.hpp"
 #include "./common/HTTP/Server.hpp"
@@ -112,6 +113,14 @@ int32_t main(int argc, char *argv[]) {
         HttpTokenEndpoint tokenEndpoint(req);
         tokenEndpoint.dispatchRequest();
         return tokenEndpoint.getResponse();
+      });
+  http::Session::addRequestDispatcher(
+      "/api/game",
+      [](const boost::beast::http::request<boost::beast::http::string_body>
+             &req) {
+        GameEndPoint gameEndpoint(req);
+        gameEndpoint.dispatchRequest();
+        return gameEndpoint.getResponse();
       });
   http::Session::addRequestDispatcher(
       "/", [](const boost::beast::http::request<boost::beast::http::string_body>

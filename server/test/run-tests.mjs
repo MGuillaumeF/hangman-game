@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import waitOn from "wait-on";
+// import waitOn from "wait-on";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,8 +11,8 @@ const runServer = spawn("./HangmanGame", [], {
   cwd: resolve(
     __dirname,
     process.platform === "win32"
-      ? "../../bin/server/bin/Debug"
-      : "../../bin/server/bin"
+      ? "../../bin/server/app/Debug"
+      : "../../bin/server/app"
   )
 });
 
