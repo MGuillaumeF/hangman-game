@@ -7,7 +7,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20 /experimental:module /internalPartition")
 endif()
 
 # Add all srcs files in SRCS variable
