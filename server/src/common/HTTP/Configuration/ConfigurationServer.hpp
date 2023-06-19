@@ -1,9 +1,10 @@
 #ifndef __CONFIGURATION_SERVER_HPP__
 #define __CONFIGURATION_SERVER_HPP__
 
-#include <iostream>
+import <iostream>
 #include <string>
-#include <vector>
+import <vector>
+import <cstdint>
 
 /**
  * Configuration HTTP Server Class is to manage configuration of server
