@@ -51,6 +51,12 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+        
+    - name: Install GCC/G++
+      run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y gcc-13 g++-13
+
+    - name: echo g++ version
+      run: g++ -v
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -58,9 +64,6 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: cpp, javascript
-
-    - name: echo g++ version
-      run: g++ -v
 
     - name: clang format
       run: |
