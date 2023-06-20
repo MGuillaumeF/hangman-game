@@ -63,7 +63,7 @@ jobs:
       run: g++ -v
       
     - name: build std headers modules
-      run: g++ -c -fmodules-ts -x c++-system-header  -std=c++20 iostream string vector
+      run: g++ std=c++20 -fmodules-ts -xc++-system-header iostream string vector
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
