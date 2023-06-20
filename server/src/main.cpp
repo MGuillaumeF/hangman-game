@@ -6,7 +6,7 @@
 #include "./common/HTTP/LocationEndpoint.hpp"
 #include "./common/HTTP/Server.hpp"
 #include "./common/HTTP/Session.hpp"
-/*
+
 #include <algorithm>
 #include <functional>
 import <iostream>
@@ -15,8 +15,6 @@ import <iostream>
 #include <sstream>
 #include <string>
 import <vector>
-*/
-import std;
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/property_tree/json_parser.hpp>
