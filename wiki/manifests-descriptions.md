@@ -17,7 +17,7 @@ on y retrouve différentes informations :
 ## Le manifest vcpkg.json
 
 Le manifest de vcpkg permet de définir la liste des dépendances C++
-Quand un manifest est présent au moment dans le dossier courant au moment de l'appel de la commande cmake de génération de la solution, la commande d'installation vcpkg est appelé (avec le triplet par défaut)
+Quand un manifest est présent dans le dossier courant au moment de l'appel de la commande cmake de génération de la solution, la commande d'installation vcpkg est appelé (avec le triplet par défaut)
 
 ## Les manifests package.json
 
