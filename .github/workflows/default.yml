@@ -287,7 +287,7 @@ jobs:
       # --suppress=*:${{github.workspace}}/server/*
 
     - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='data-management/src/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='data-management/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
@@ -312,7 +312,7 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
 
     - name: Lint Clang-Tidy
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
 
     - name: Convert Lint Clang-Tidy to sonarqube format
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
