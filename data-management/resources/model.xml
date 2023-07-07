@@ -1,8 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <model>
-  <classes>
     <class name="root_model_object" abstract="true">
-      <attributes>
         <attribute
           name="version"
           visibility="protected"
@@ -152,10 +150,8 @@
           cardinality="many_to_many"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="group" extend="root_model_object">
-      <attributes>
         <attribute
           name="name"
           visibility="private"
@@ -176,10 +172,8 @@
           linked_column="groups"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="dictionary" extend="root_model_object">
-      <attributes>
         <attribute
           name="name"
           visibility="private"
@@ -208,10 +202,8 @@
           linked_column="dictionary"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="word" extend="root_model_object">
-      <attributes>
         <attribute
           name="name"
           visibility="private"
@@ -237,10 +229,8 @@
           cardinality="one_to_many"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="party" extend="root_model_object">
-      <attributes>
         <attribute
           name="start_date"
           visibility="private"
@@ -288,10 +278,8 @@
           cardinality="to_one"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="chat" extend="root_model_object">
-      <attributes>
         <attribute
           name="name"
           visibility="private"
@@ -321,10 +309,8 @@
           linked_column="chats"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="message" extend="root_model_object">
-      <attributes>
         <attribute
           name="content"
           visibility="private"
@@ -357,10 +343,8 @@
           cardinality="one_to_many"
         >
         </attribute>
-      </attributes>
     </class>
     <class name="team" extend="root_model_object">
-      <attributes>
         <attribute
           name="name"
           visibility="private"
@@ -389,7 +373,5 @@
           cardinality="to_one"
         >
         </attribute>
-      </attributes>
     </class>
-  </classes>
 </model>
