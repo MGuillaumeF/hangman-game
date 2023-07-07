@@ -48,10 +48,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   #/EHsc /MD
 endif()
 
-  # No flag EHsc and MD found -> set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /EHsc /MD")
-  add_compile_options(/w)
-endif()
-
 add_subdirectory(./server)
 if (NOT NOT_GENERATE_DB_ACCESS)
   add_subdirectory(./data-management)
