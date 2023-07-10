@@ -134,7 +134,7 @@
     "web-vitals": "^3.3.2",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.0",
+    "webpack-dev-server": "^4.15.1",
     "webpack-visualizer-plugin2": "^1.0.0"
   },
   "dependencies": {
