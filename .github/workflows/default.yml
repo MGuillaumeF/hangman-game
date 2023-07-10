@@ -15,7 +15,7 @@ env:
   BUILD_TYPE: Release
   BOOST_VERSION: 1.81.0
   APPLICATION_VERSION: 0.1.0
-  CPP_COSO_VERSION: 0.2.3
+  CPP_COSO_VERSION: 0.3.1
   APPLICATION_NAME: HangmanGame
   DB_POPULATE: CREATE USER odb_test@localhost;CREATE DATABASE odb_test;GRANT ALL PRIVILEGES ON *.* TO odb_test@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;
   DB_USER: root
@@ -122,6 +122,9 @@ jobs:
         (git commit -m "[AUTO] update icon generated" && git push) || echo 'No modification to save'
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Create reports directory (root)
+      run: mkdir ${{github.workspace}}/reports
 
     - name: Create reports directory (server)
       run: mkdir ${{github.workspace}}/server/reports
@@ -271,7 +274,9 @@ jobs:
     - name: Build server
       working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/bin
+      run: | 
+        cmake --build ${{github.workspace}}/bin 2> ${{github.workspace}}/reports/gcc_warning_report.txt
+        cat ${{github.workspace}}/reports/gcc_warning_report.txt
   
     - name: Lint Cpp Check (server)
       run: cppcheck --enable=all --language=c++ --std=c++20 --xml --verbose --output-file=${{github.workspace}}/server/reports/cppcheck_report.xml --project=${{github.workspace}}/bin/compile_commands.json ${{github.workspace}}/server
@@ -282,7 +287,7 @@ jobs:
       # --suppress=*:${{github.workspace}}/server/*
 
     - name: Lint Clang-Tidy (data-management)
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='data-management/src/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='data-management/.*' -p bin data-management/**/*.*pp > ${{github.workspace}}/data-management/reports/clang_tidy_report.txt || echo 'FAILED'
 
     - name: Convert Lint Clang-Tidy to sonarqube format (data-management)
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/data-management/reports/clang_tidy_report.txt ${{github.workspace}}/data-management/reports/clang-tidy-sonarqube-report.json
@@ -293,6 +298,13 @@ jobs:
     - name: Convert Lint Cpp Check to sonarqube format (data-management)
       run: /usr/cpp-coso/cpp-coso cppcheck ${{github.workspace}}/data-management/reports/cppcheck_report.xml ${{github.workspace}}/data-management/reports/cppcheck-sonarqube-report.json
 
+    - name: Convert GCC Warnings to sonarqube format
+      working-directory: ${{github.workspace}}/bin
+      run: | 
+        /usr/cpp-coso/cpp-coso gcc-warning ${{github.workspace}}/reports/gcc_warning_report.txt ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json
+        cp ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json ${{github.workspace}}/server/reports/gcc-warning-sonarqube-report.json
+        cp ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json ${{github.workspace}}/data-management/reports/gcc-warning-sonarqube-report.json
+        
     - name: Archive data-management report
       uses: actions/upload-artifact@v3
       with:
@@ -300,7 +312,7 @@ jobs:
         path: ${{github.workspace}}/data-management/reports
 
     - name: Lint Clang-Tidy
-      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/src/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
+      run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
 
     - name: Convert Lint Clang-Tidy to sonarqube format
       run: /usr/cpp-coso/cpp-coso clang-tidy ${{github.workspace}}/server/reports/clang_tidy_report.txt ${{github.workspace}}/server/reports/clang-tidy-sonarqube-report.json
