@@ -519,7 +519,7 @@ jobs:
 
     - name: Setup sonarqube
       if: github.actor != 'dependabot[bot]'
-      uses: warchant/setup-sonar-scanner@v4
+      uses: warchant/setup-sonar-scanner@v5
 
     - name: Run SonarQube full
       working-directory: ${{github.workspace}}
