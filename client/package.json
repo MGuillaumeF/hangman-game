@@ -74,7 +74,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.8.1",
-    "css-minimizer-webpack-plugin": "^5.0.0",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "cypress": "^12.9.0",
     "cypress-multi-reporters": "^1.6.3",
     "cypress-sonarqube-reporter": "^1.12.0",
