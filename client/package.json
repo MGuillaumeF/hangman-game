@@ -119,7 +119,7 @@
     "source-map-support": "^0.5.21",
     "start-server-and-test": "^2.0.0",
     "style-loader": "^3.3.3",
-    "stylelint": "^15.10.2",
+    "stylelint": "^15.10.3",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-no-unsupported-browser-features": "^7.0.0",
     "stylelint-prettier": "^4.0.1",
