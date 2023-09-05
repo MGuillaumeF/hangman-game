@@ -30,7 +30,7 @@ jobs:
     name: A job to delete old workflow runs
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Delete workflow runs
       uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
@@ -555,7 +555,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
@@ -672,7 +672,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
@@ -745,7 +745,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: actions/download-artifact@v3
       with:
@@ -840,7 +840,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
@@ -923,7 +923,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: actions/download-artifact@v3
       with:
@@ -969,7 +969,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Install Raspberry PI x64 toolchain
       run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y gcc-12-aarch64-linux-gnu g++-12-aarch64-linux-gnu
@@ -1036,7 +1036,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Checkout Branch
       run: echo "change git branch to develop"
