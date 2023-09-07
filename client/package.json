@@ -41,7 +41,7 @@
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@babel/register": "^7.22.5",
-    "@cypress/code-coverage": "^3.11.0",
+    "@cypress/code-coverage": "^3.12.0",
     "@gfx/zopfli": "^1.0.15",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@mguillaumef/audiso": "^0.0.4",
