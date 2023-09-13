@@ -107,7 +107,7 @@
     "nyc": "^15.1.0",
     "postcss": "^8.4.22",
     "postcss-loader": "^7.3.3",
-    "postcss-scss": "^4.0.7",
+    "postcss-scss": "^4.0.8",
     "prettier": "^3.0.2",
     "react-docgen-typescript": "^2.2.2",
     "react-styleguidist": "^13.1.1",
