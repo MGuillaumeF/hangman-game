@@ -55,7 +55,7 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: cpp, javascript
 
@@ -451,7 +451,7 @@ jobs:
 
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
     - name: Extract Webpack stats
       working-directory: ${{github.workspace}}/client
@@ -610,7 +610,7 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: 'cpp'
 
@@ -626,7 +626,7 @@ jobs:
 
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
     - name: Package server
       working-directory: ${{github.workspace}}/bin
