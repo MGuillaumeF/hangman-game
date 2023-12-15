@@ -560,7 +560,7 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -650,7 +650,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
 
@@ -677,7 +677,7 @@ jobs:
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -747,7 +747,7 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -822,7 +822,7 @@ jobs:
     runs-on: windows-latest
     steps:
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
 
@@ -845,7 +845,7 @@ jobs:
     - name: Create reports directory
       run: mkdir ${{github.workspace}}/server/reports
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -925,7 +925,7 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -982,7 +982,7 @@ jobs:
         platform_version: 20.04 # The images are built on ubuntu 20.04, but this option isn't really required
         arch: aarch64 # Note the new 'arch' option
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -1044,42 +1044,42 @@ jobs:
     - name: Test if version number is available
       run: echo "test if version ${{env.APPLICATION_VERSION}} is available"
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.deb
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-desktop.zip
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/desktop
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/linux/arm64
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/OSX
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
         path: ${{github.workspace}}/packaging/${{env.APPLICATION_NAME}}/${{env.APPLICATION_VERSION}}/windows
