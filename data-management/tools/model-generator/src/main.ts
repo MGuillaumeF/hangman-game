@@ -91,7 +91,7 @@ function generateClasses(modelClasses: ModelClassDefinition[]) {
       resolve("dist", "cpp", "model", `${modelClass.name}.hxx`),
       generateCppClass(modelClass)
     );
-    if (!process.argv.includes('--cpp-only')) {
+    if (!process.argv.includes("--cpp-only")) {
       const modelTsDirPath = resolve("dist", "ts", "model");
       mkdirSync(modelTsDirPath, { recursive: true });
       writeFileSync(
