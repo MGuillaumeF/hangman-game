@@ -25,23 +25,18 @@ permissions: write-all
 
 jobs:
 
- clear:
-    runs-on: ubuntu-latest
-    name: A job to delete old workflow runs
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+ call-clear-worflow-in-local-repo:
+  uses: ./.github/workflows/clear.yml
+  with:
+   job-to-clear: default
+  secrets: inherit
 
-    - name: Delete workflow runs
-      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
-      with:
-        repository: MGuillaumeF/hangman-game
-        workflow: ".github/workflows/default.yml"
-        older-than-seconds: 86400   
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ call-client-worflow-in-local-repo:
+  uses: ./.github/workflows/client.yml
+  secrets: inherit
 
  sonarcloud-analyse:
+    needs: [call-client-worflow-in-local-repo]
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
@@ -408,108 +403,9 @@ jobs:
         name: Docs-Hangman-Game
         path: ${{github.workspace}}/docs
 
-    - name: Install client's dependencies
-      working-directory: ${{github.workspace}}/client
-      run: npm install
-
-    - name: Update Browserlist
-      continue-on-error: true
-      working-directory: ${{github.workspace}}/client
-      run: npx browserslist@latest --update-db
-
-    - name: Prettier format
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      working-directory: ${{github.workspace}}/client
-      run: | 
-        npm run prettier --config ./.prettierrc
-        npm run prettier --config ./.prettierrc ../data-management/tools
-
-    - name: Save client changes
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      working-directory: ${{github.workspace}}
-      run: |
-        git stash
-        git checkout ${{github.head_ref}}
-        git stash pop || echo "Nothing in stashed stack"
-        git config user.name "MGuillaumeF"
-        git config user.email "${{secrets.EMAIL}}"
-        git add client || echo "No modification to add pop"
-        git add data-management/tools || echo "No modification to add pop"
-        (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Build client
-      working-directory: ${{github.workspace}}/client
-      run: npm run build
-
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/analyze@v3
-
-    - name: Extract Webpack stats
-      working-directory: ${{github.workspace}}/client
-      run: npm run webpack-stats
-
-    - name: Archive IHM
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Client tests
-      working-directory: ${{github.workspace}}/client
-      run: npm run ci:test
-
-    - name: Archive IHM Tests videos 
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game-Tests-Videos 
-        path: ${{github.workspace}}/client/cypress/videos
-
-    - name: Print summary coverage
-      working-directory: ${{github.workspace}}/client
-      run: npx nyc report --reporter=lcov --reporter=text-summary
-
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint || echo FAILED
-
-    - name: Copy reports
-      working-directory: ${{github.workspace}}/client
-      if: always()
-      run: |
-        tree cypress
-        mkdir -p ./dist/cypress-reports
-        cp -R ./cypress/reports ./dist/cypress-reports
-        mv ./stats.json ./dist/reports/stats.json
-        mv ./build/stats.html ./dist/reports/stats.html
-
-    - name: Audit dependencies client
-      working-directory: ${{github.workspace}}/client
-      run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
-
-    - name: Convert Audit dependencies client report
-      working-directory: ${{github.workspace}}/client
-      run: ./node_modules/.bin/audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
-
-    - name: Stylelint analyze
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:stylelint
-
-    - name: Generate Client Docs
-      working-directory: ${{github.workspace}}/client
-      run: npm run build:doc
-
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
 
     - name: Setup sonarqube
       if: github.actor != 'dependabot[bot]'

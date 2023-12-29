@@ -1,18 +1,18 @@
-name: HANGMAN-GAME - CLIENT LIGHT
+name: HANGMAN-GAME - CLIENT
 
 on:
   workflow_dispatch:
-
-env:
-  APPLICATION_VERSION: 0.1.0
-  APPLICATION_NAME: HangmanGame
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+      EMAIL:
+        required: true
 
 permissions: write-all
 
 jobs:
- client-light :
-    env:
-      BUILD_TYPE: Debug
+ client :
     runs-on: ubuntu-latest
     steps:
 
@@ -41,8 +41,9 @@ jobs:
     - name: Install client's dependencies
       working-directory: ${{github.workspace}}/client
       run: npm install
-
+  
     - name: Update Browserlist
+      continue-on-error: true
       working-directory: ${{github.workspace}}/client
       run: npx browserslist@latest --update-db
 
@@ -76,6 +77,12 @@ jobs:
       working-directory: ${{github.workspace}}/client
       run: npm run webpack-stats
 
+    - name: Archive IHM
+      uses: actions/upload-artifact@v4
+      with:
+        name: IHM-Hangman-Game
+        path: ${{github.workspace}}/client/build
+
     - name: Client tests
       working-directory: ${{github.workspace}}/client
       run: npm run ci:test
@@ -108,6 +115,14 @@ jobs:
         mv ./stats.json ./dist/reports/stats.json
         mv ./build/stats.html ./dist/reports/stats.html
 
+    - name: Audit dependencies client
+      working-directory: ${{github.workspace}}/client
+      run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
+
+    - name: Convert Audit dependencies client report
+      working-directory: ${{github.workspace}}/client
+      run: ./node_modules/.bin/audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
+
     - name: Stylelint analyze
       working-directory: ${{github.workspace}}/client
       run: npm run lint:stylelint
@@ -123,7 +138,7 @@ jobs:
         path: ${{github.workspace}}/client/dist
 
  dependabot:
-    needs: [client-light]
+    needs: [client]
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
