@@ -7,6 +7,7 @@ REM vcpkg install libodb-pgsql --triplet=x64-windows
 REM vcpkg install boost --triplet=x64-windows
 
 set start_path=%CD%
+set BUILD_TYPE=Release
 
 cd /D %~dp0
 cd model-generator
@@ -29,9 +30,9 @@ odb --database sqlite --generate-query --generate-schema --std c++14 -IC:/dev/vc
 cd /D %~dp0
 cd ../..
 
-call cmake -S . -B bin -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake -DSGBD_NAME=SQLITE
-call cmake --build bin --config Debug
-cd bin/data-management/bin/Debug
+call cmake -S . -B bin -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake -DSGBD_NAME=SQLITE
+call cmake --build bin --config %BUILD_TYPE%
+cd bin/data-management/bin/%BUILD_TYPE%
 call HangmanGame-data-management-sqlite-unit-tests.exe --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=reports.xml --report_sink=reportUT.xml
     
 
