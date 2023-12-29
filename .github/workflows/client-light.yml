@@ -81,7 +81,7 @@ jobs:
       run: npm run ci:test
 
     - name: Archive IHM Tests videos 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: IHM-Hangman-Game-Tests-Videos 
         path: ${{github.workspace}}/client/cypress/videos
@@ -117,7 +117,7 @@ jobs:
       run: npm run build:doc
 
     - name: Archive Analyses reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: IHM-Hangman-Game-Analyses-report
         path: ${{github.workspace}}/client/dist
