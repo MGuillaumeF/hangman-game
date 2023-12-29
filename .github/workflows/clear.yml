@@ -1,0 +1,52 @@
+name: HANGMAN-GAME - CLEAR
+
+on:
+  workflow_dispatch:
+    inputs:
+     job-to-clear:
+      description: 'Job name to clear'
+      required: true
+      default: 'all'
+      type: choice
+      options:
+        - all
+        - clear
+        - default
+        - client-light
+  workflow_call:
+    inputs:
+      job-to-clear:
+        required: true
+        type: string
+
+permissions: write-all
+
+jobs:
+
+ clear:
+    runs-on: ubuntu-latest
+    name: A job to delete old workflow runs
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Delete all workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      if: ${{ inputs.job-to-clear == 'all' }}
+      with:
+        repository: MGuillaumeF/hangman-game
+        older-than-seconds: 86400   
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Delete workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      if: ${{ inputs.job-to-clear != 'all' }}
+      with:
+        repository: MGuillaumeF/hangman-game
+        workflow:  ".github/workflows/${{ inputs.job-to-clear }}.yml"
+        older-than-seconds: 86400   
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+ 

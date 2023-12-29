@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
-import { generateTsClass, TypeScriptClassGenerator } from "./generateTsClass";
+import { TypeScriptClassGenerator, generateTsClass } from "./generateTsClass";
 import {
   ModelAttributesProperties,
   ModelClassDefinition,
@@ -86,20 +86,22 @@ function getCppAttributeType(
 function generateClasses(modelClasses: ModelClassDefinition[]) {
   for (const modelClass of modelClasses) {
     const modelCppDirPath = resolve("dist", "cpp", "model");
-    const modelTsDirPath = resolve("dist", "ts", "model");
     mkdirSync(modelCppDirPath, { recursive: true });
-    mkdirSync(modelTsDirPath, { recursive: true });
     writeFileSync(
       resolve("dist", "cpp", "model", `${modelClass.name}.hxx`),
       generateCppClass(modelClass)
     );
-    writeFileSync(
-      resolve(
-        modelTsDirPath,
-        `${snakeCaseToUpperCamelCase(modelClass.name)}.ts`
-      ),
-      generateTsClass(modelClass)
-    );
+    if (!process.argv.includes("--cpp-only")) {
+      const modelTsDirPath = resolve("dist", "ts", "model");
+      mkdirSync(modelTsDirPath, { recursive: true });
+      writeFileSync(
+        resolve(
+          modelTsDirPath,
+          `${snakeCaseToUpperCamelCase(modelClass.name)}.ts`
+        ),
+        generateTsClass(modelClass)
+      );
+    }
   }
 }
 
@@ -200,8 +202,8 @@ function generateCppGetter(attrData: ModelAttributesProperties) {
    * @brief Get the ${attrData.name} of object
    *
    * @return const ${getCppAttributeType(attrData)}& the ${
-    attrData.name
-  } of object
+     attrData.name
+   } of object
    */
   const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(
     attrData.name
@@ -224,8 +226,8 @@ function generateParser(
           property_tree.get_child_optional("${attribute.name}");
       if (${attribute.name}_obj) {
         parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(${
-        attribute.type
-      }::parse(*${attribute.name}_obj));
+          attribute.type
+        }::parse(*${attribute.name}_obj));
       }`;
     } else {
       const attributeTypeMapped = cppMapTypes[attribute.type]
@@ -234,12 +236,12 @@ function generateParser(
 
       return `const boost::optional<${attributeTypeMapped}> ${attribute.name} =
           property_tree.get_optional<${attributeTypeMapped}>("${
-        attribute.name
-      }");
+            attribute.name
+          }");
       if (${attribute.name}) {
         parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(*${
-        attribute.name
-      });
+          attribute.name
+        });
       }`;
     }
   });

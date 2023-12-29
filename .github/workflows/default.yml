@@ -25,23 +25,18 @@ permissions: write-all
 
 jobs:
 
- clear:
-    runs-on: ubuntu-latest
-    name: A job to delete old workflow runs
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+ call-clear-worflow-in-local-repo:
+  uses: ./.github/workflows/clear.yml
+  with:
+   job-to-clear: default
+  secrets: inherit
 
-    - name: Delete workflow runs
-      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
-      with:
-        repository: MGuillaumeF/hangman-game
-        workflow: ".github/workflows/default.yml"
-        older-than-seconds: 86400   
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ call-client-worflow-in-local-repo:
+  uses: ./.github/workflows/client.yml
+  secrets: inherit
 
  sonarcloud-analyse:
+    needs: [call-client-worflow-in-local-repo]
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
@@ -51,6 +46,17 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+        
+    # Download reports and coverage of IHM to run sonarqube
+    - uses: actions/download-artifact@v4
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+        
+    - uses: actions/download-artifact@v4
+      with:
+        name: IHM-Hangman-Game-Analyses-coverage
+        path: ${{github.workspace}}/client/coverage
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -140,7 +146,7 @@ jobs:
       run: |
         npm install
         npm run build
-        npm start ../../resources/model.xml
+        npm start ../../resources/model.xml --cpp-only
         npm run lint:eslint:json || echo FAILED
 
     - name: Generate Generator Docs
@@ -408,108 +414,9 @@ jobs:
         name: Docs-Hangman-Game
         path: ${{github.workspace}}/docs
 
-    - name: Install client's dependencies
-      working-directory: ${{github.workspace}}/client
-      run: npm install
-
-    - name: Update Browserlist
-      continue-on-error: true
-      working-directory: ${{github.workspace}}/client
-      run: npx browserslist@latest --update-db
-
-    - name: Prettier format
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      working-directory: ${{github.workspace}}/client
-      run: | 
-        npm run prettier --config ./.prettierrc
-        npm run prettier --config ./.prettierrc ../data-management/tools
-
-    - name: Save client changes
-      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
-      working-directory: ${{github.workspace}}
-      run: |
-        git stash
-        git checkout ${{github.head_ref}}
-        git stash pop || echo "Nothing in stashed stack"
-        git config user.name "MGuillaumeF"
-        git config user.email "${{secrets.EMAIL}}"
-        git add client || echo "No modification to add pop"
-        git add data-management/tools || echo "No modification to add pop"
-        (git commit -m "[AUTO] prettier format write" && git push) || echo 'No modification to save'
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Build client
-      working-directory: ${{github.workspace}}/client
-      run: npm run build
-
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'schedule' }}
       uses: github/codeql-action/analyze@v3
-
-    - name: Extract Webpack stats
-      working-directory: ${{github.workspace}}/client
-      run: npm run webpack-stats
-
-    - name: Archive IHM
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Client tests
-      working-directory: ${{github.workspace}}/client
-      run: npm run ci:test
-
-    - name: Archive IHM Tests videos 
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game-Tests-Videos 
-        path: ${{github.workspace}}/client/cypress/videos
-
-    - name: Print summary coverage
-      working-directory: ${{github.workspace}}/client
-      run: npx nyc report --reporter=lcov --reporter=text-summary
-
-    - name: ESlint analyze json
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint:json || echo FAILED
-
-    - name: ESlint analyze html
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:eslint || echo FAILED
-
-    - name: Copy reports
-      working-directory: ${{github.workspace}}/client
-      if: always()
-      run: |
-        tree cypress
-        mkdir -p ./dist/cypress-reports
-        cp -R ./cypress/reports ./dist/cypress-reports
-        mv ./stats.json ./dist/reports/stats.json
-        mv ./build/stats.html ./dist/reports/stats.html
-
-    - name: Audit dependencies client
-      working-directory: ${{github.workspace}}/client
-      run: npm audit --json > ./dist/reports/audit-dependency-report.json || echo FAILED
-
-    - name: Convert Audit dependencies client report
-      working-directory: ${{github.workspace}}/client
-      run: ./node_modules/.bin/audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-report.json
-
-    - name: Stylelint analyze
-      working-directory: ${{github.workspace}}/client
-      run: npm run lint:stylelint
-
-    - name: Generate Client Docs
-      working-directory: ${{github.workspace}}/client
-      run: npm run build:doc
-
-    - name: Archive Analyses reports
-      uses: actions/upload-artifact@v4
-      with:
-        name: IHM-Hangman-Game-Analyses-report
-        path: ${{github.workspace}}/client/dist
 
     - name: Setup sonarqube
       if: github.actor != 'dependabot[bot]'
@@ -660,156 +567,23 @@ jobs:
 
  build-debug-Windows:
     needs: [sonarcloud-analyse]
-    env:
-      BUILD_TYPE: Debug
-    runs-on: windows-latest
-    if: github.actor != 'dependabot[bot]'
-    steps:
-
-    - uses: actions/checkout@v3
-    
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports
-
-    - uses: actions/download-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.3
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-        # OPTIONAL: in workspace by default
-        boost_install_dir: 'D:/'
-
-    - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/tools/cli-tools
-      run: |
-        npm install
-        npm run download https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-windows.zip odb-2.4.0-i686-windows.zip
-        npm run extract odb-2.4.0-i686-windows.zip C:\/tools
-        echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-    - name: generate model
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run: |
-        odb --version
-        mkdir sqlite
-        copy ./*.* ./sqlite/
-        cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
-
-    - name: Install lib odb
-      working-directory: ${{github.workspace}}/..
-      run: |
-        git clone https://github.com/Microsoft/vcpkg
-        cd vcpkg
-        git pull
-        .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
-
-    - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server windows
-      working-directory: ${{github.workspace}}
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
-
-    - name: Unit Tests
-      run: ${{github.workspace}}/bin/server/test/ut/Debug/HangmanGameTest.exe --result_code=no --show_progress=yes --log_level=all --log_format=XML --report_level=detailed --report_format=XML --log_sink=${{github.workspace}}/server/reports/reports.xml --report_sink=${{github.workspace}}/server/reports/reportUT.xml
-    
-    - name: Archive Test report
-      uses: actions/upload-artifact@v4
-      with:
-        name: Server-Hangman-Game Unit Test (win - temp) - Reports
-        path: ${{github.workspace}}/server/reports
+    uses: ./.github/workflows/build-windows.yml
+    with:
+     BUILD_TYPE: Debug
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
+    secrets: inherit
 
  build-release-Windows:
     needs: [build-debug-Windows]
-    runs-on: windows-latest
-    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - uses: actions/download-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.3
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-        # OPTIONAL: in workspace by default
-        boost_install_dir: 'D:/'
-
-    - name: Install ODB_ROOT
-      working-directory: ${{github.workspace}}/tools/cli-tools
-      run: |
-        npm install
-        npm run download https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-windows.zip odb-2.4.0-i686-windows.zip
-        npm run extract odb-2.4.0-i686-windows.zip C:\/tools
-        echo "C:\\tools\\odb-2.4.0-i686-windows\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-    - name: generate model
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run: |
-        odb --version
-        mkdir sqlite
-        copy ./*.* ./sqlite/
-        cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++14 -I${{ steps.install-boost.outputs.BOOST_ROOT }}/include/ -I${{github.workspace}}/data-management/src/model *.hxx
-
-    - name: Install lib odb
-      working-directory: ${{github.workspace}}/..
-      run: |
-        git clone https://github.com/Microsoft/vcpkg
-        cd vcpkg
-        git pull
-        .\bootstrap-vcpkg.sh
-        cmd.exe /C "vcpkg update"
-        cmd.exe /C "vcpkg integrate install"
-        # cmd.exe /C "vcpkg install boost --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb --triplet x64-windows"
-        cmd.exe /C "vcpkg install libodb-sqlite --triplet x64-windows"
-
-    - name: Generate target 
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/../vcpkg/scripts/buildsystems/vcpkg.cmake
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server windows
-      working-directory: ${{github.workspace}}
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/bin --config ${{env.BUILD_TYPE}}
-
-    - name: Package server
-      working-directory: ${{github.workspace}}/bin
-      # Build your program with the given configuration
-      run: cpack -G "ZIP;NSIS64"
-
-    - name: Archive Application windows ZIP
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
-        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.zip
-
-    - name: Archive Application windows NSIS 64
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
-        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-win64.exe
+    uses: ./.github/workflows/build-windows.yml
+    with:
+     BUILD_TYPE: Release
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
+    secrets: inherit
 
  install-server-Windows:
     needs: [build-release-Windows]
@@ -827,136 +601,24 @@ jobs:
       run: 'tree "C:\program files\${{env.APPLICATION_NAME}}\${{env.APPLICATION_NAME}}"'
 
  build-debug-MacOSX:
-    needs: [sonarcloud-analyse]
-    env:
-      BUILD_TYPE: Debug
-    runs-on: macos-11
-    if: github.actor != 'dependabot[bot]'
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - name: Create reports directory
-      run: mkdir ${{github.workspace}}/server/reports
-
-    - uses: actions/download-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.3
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-
-    - name: Install compiler odb
-      if: ${{ false }}
-      working-directory: ${{github.workspace}}
-      run: |
-        brew install tree
-        brew install gcc
-        brew install mysql
-        brew install autoconf-archive
-        curl -o odb-2.4.0-i686-macosx.tar.bz2 https://www.codesynthesis.com/download/odb/2.4/odb-2.4.0-i686-macosx.tar.bz2
-        sudo tar -xf odb-2.4.0-i686-macosx.tar.bz2
-        tree odb-2.4.0-i686-macosx
-        echo "${{github.workspace}}/odb-2.4.0-i686-macosx/bin" >> $GITHUB_PATH
-
-    - name: Generate Model Sources
-      if: ${{ false }}
-      working-directory: ${{github.workspace}}/data-management/src/model
-      run: |
-        mkdir sqlite
-        cp ./user.hxx ./sqlite/user.hxx
-        cd sqlite
-        odb --database sqlite --generate-query --generate-schema --std c++11 user.hxx || echo "SQLite failed"
-        ls -a .
-        cd ..
-        mkdir mysql
-        cp ./user.hxx ./mysql/user.hxx
-        cd mysql
-        odb --database mysql --generate-query --generate-schema --std c++11 user.hxx || echo "MySQL failed"
-        ls -a .
-
-    - name: Install lib odb
-      if: ${{ false }}
-      working-directory: ${{github.workspace}}/..
-      run: |
-        git clone https://github.com/Microsoft/vcpkg
-        cd vcpkg
-        git pull
-        ./bootstrap-vcpkg.sh
-        ./vcpkg update
-        ./vcpkg integrate install
-        # ./vcpkg install boost
-        ./vcpkg install libodb
-        ./vcpkg install libodb-sqlite
-        ./vcpkg install libodb-mysql
-        ./vcpkg install libmysql
-
-    - name: Generate target
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -D NOT_GENERATE_DB_ACCESS=true
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server
-      working-directory: ${{github.workspace}}
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/bin
-
-    - name: Server Tests ctest
-      working-directory: ${{github.workspace}}/server/test
-      run: |
-        chmod +x ./run-tests.sh
-        ./run-tests.sh
+  needs: [sonarcloud-analyse]
+  uses: ./.github/workflows/build-osx.yml
+  with:
+   BUILD_TYPE: Debug
+   APPLICATION_NAME: HangmanGame
+   APPLICATION_VERSION: 0.1.0
+   BOOST_VERSION: 1.81.0
+  secrets: inherit
 
  build-release-MacOSX:
     needs: [build-debug-MacOSX]
-    runs-on: macos-11
-    if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - uses: actions/download-artifact@v4
-      with:
-        name: IHM-Hangman-Game
-        path: ${{github.workspace}}/client/build
-
-    - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.3
-      id: install-boost
-      with:
-        boost_version: ${{env.BOOST_VERSION}}
-
-    - name: Generate target
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/bin -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -D NOT_GENERATE_DB_ACCESS=true
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-
-    - name: Build server
-      working-directory: ${{github.workspace}}
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/bin
-
-    - name: Package Application
-      working-directory: ${{github.workspace}}/bin
-      run: cpack -G "ZIP;DragNDrop"
-
-    - name: Archive Application OSX ZIP
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
-        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
-
-    - name: Archive Application DMG
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
-        path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.dmg
+    uses: ./.github/workflows/build-osx.yml
+    with:
+     BUILD_TYPE: Release
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
+    secrets: inherit
 
  build-raspberry-pi-toolchain:
     needs: [sonarcloud-analyse]
@@ -1005,24 +667,6 @@ jobs:
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
         path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
-
- dependabot:
-    needs: [sonarcloud-analyse]
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    steps:
-
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.6.0
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Enable auto-merge for Dependabot PRs 
-        run: gh pr merge --delete-branch --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
  packaging:
     needs: [ install-server-Linux, install-server-Windows, build-release-MacOSX, build-raspberry-pi-toolchain]
