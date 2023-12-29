@@ -200,8 +200,8 @@ function generateCppGetter(attrData: ModelAttributesProperties) {
    * @brief Get the ${attrData.name} of object
    *
    * @return const ${getCppAttributeType(attrData)}& the ${
-    attrData.name
-  } of object
+     attrData.name
+   } of object
    */
   const ${getCppAttributeType(attrData)} &get${snakeCaseToUpperCamelCase(
     attrData.name
@@ -224,8 +224,8 @@ function generateParser(
           property_tree.get_child_optional("${attribute.name}");
       if (${attribute.name}_obj) {
         parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(${
-        attribute.type
-      }::parse(*${attribute.name}_obj));
+          attribute.type
+        }::parse(*${attribute.name}_obj));
       }`;
     } else {
       const attributeTypeMapped = cppMapTypes[attribute.type]
@@ -234,12 +234,12 @@ function generateParser(
 
       return `const boost::optional<${attributeTypeMapped}> ${attribute.name} =
           property_tree.get_optional<${attributeTypeMapped}>("${
-        attribute.name
-      }");
+            attribute.name
+          }");
       if (${attribute.name}) {
         parsedObject->set${snakeCaseToUpperCamelCase(attribute.name)}(*${
-        attribute.name
-      });
+          attribute.name
+        });
       }`;
     }
   });

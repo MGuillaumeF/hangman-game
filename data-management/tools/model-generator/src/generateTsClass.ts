@@ -199,12 +199,10 @@ export class TypeScriptClassGenerator {
                errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
                )}.map(item => Validator.checkStringProperty(${snakeCaseToUpperCamelCase(
-                    this._currentName
-                  )}.getConstraintes().${
-                    attibuteProperties.name
-                  }, "${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )}", item))));
+                 this._currentName
+               )}.getConstraintes().${
+                 attibuteProperties.name
+               }, "${snakeCaseToCamelCase(attibuteProperties.name)}", item))));
               }`
                 );
               } else {
@@ -228,12 +226,10 @@ export class TypeScriptClassGenerator {
                errors.push(...([] as ModelError[]).concat(...this.${snakeCaseToCamelCase(
                  attibuteProperties.name
                )}.map(item => Validator.checkNumberProperty(${snakeCaseToUpperCamelCase(
-                    this._currentName
-                  )}.getConstraintes().${
-                    attibuteProperties.name
-                  }, "${snakeCaseToCamelCase(
-                    attibuteProperties.name
-                  )}", item))));
+                 this._currentName
+               )}.getConstraintes().${
+                 attibuteProperties.name
+               }, "${snakeCaseToCamelCase(attibuteProperties.name)}", item))));
               }`
                 );
               } else {
@@ -372,8 +368,8 @@ export class TypeScriptClassGenerator {
     ) => `if (data['${attibuteProperties.name}'] !== undefined) { 
         if (Array.isArray(data['${attibuteProperties.name}'])) {
           obj.${snakeCaseToCamelCase(attibuteProperties.name)} = data['${
-      attibuteProperties.name
-    }'].map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
+            attibuteProperties.name
+          }'].map(item => ${snakeCaseToUpperCamelCase(rawType)}.parse(item));
         } else {
           throw Error("INVALID TYPE")
         }
@@ -387,8 +383,8 @@ export class TypeScriptClassGenerator {
           obj.${snakeCaseToCamelCase(
             attibuteProperties.name
           )} = ${snakeCaseToUpperCamelCase(rawType)}.parse(data['${
-      attibuteProperties.name
-    }'])
+            attibuteProperties.name
+          }'])
         } else {
           throw Error("INVALID TYPE")
         }
@@ -514,8 +510,8 @@ export class TypeScriptClassGenerator {
   public set ${snakeCaseToCamelCase(
     attrData.name
   )}(value : ${this.generateAttributeType(
-      attrData
-    )}) { this._${snakeCaseToCamelCase(attrData.name)} = value; }`;
+    attrData
+  )}) { this._${snakeCaseToCamelCase(attrData.name)} = value; }`;
   }
 
   /**
@@ -529,14 +525,14 @@ export class TypeScriptClassGenerator {
    * @brief Get the ${attrData.name} of object
    *
    * @return ${this.generateAttributeType(attrData)} the ${snakeCaseToCamelCase(
-      attrData.name
-    )} of object
+     attrData.name
+   )} of object
    */
    public get ${snakeCaseToCamelCase(
      attrData.name
    )} () : ${this.generateAttributeType(
-      attrData
-    )} { return this._${snakeCaseToCamelCase(attrData.name)}; }`;
+     attrData
+   )} { return this._${snakeCaseToCamelCase(attrData.name)}; }`;
   }
 
   /**
