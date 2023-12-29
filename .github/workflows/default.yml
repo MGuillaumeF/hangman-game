@@ -36,7 +36,7 @@ jobs:
   secrets: inherit
 
  sonarcloud-analyse:
-    needs: [call-client-worflow-in-local-repo]
+    needs: [call-client-worflow-in-local-repo/client]
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
@@ -46,6 +46,17 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+        
+    # Download reports and coverage of IHM to run sonarqube
+    - uses: actions/download-artifact@v4
+      with:
+        name: IHM-Hangman-Game-Analyses-report
+        path: ${{github.workspace}}/client/dist
+        
+    - uses: actions/download-artifact@v4
+      with:
+        name: IHM-Hangman-Game-Analyses-coverage
+        path: ${{github.workspace}}/client/coverage
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL

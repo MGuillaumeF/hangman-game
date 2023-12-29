@@ -135,6 +135,12 @@ jobs:
         name: IHM-Hangman-Game-Analyses-report
         path: ${{github.workspace}}/client/dist
 
+    - name: Archive IHM Coverages
+      uses: actions/upload-artifact@v4
+      with:
+        name: IHM-Hangman-Game-Analyses-coverage
+        path: ${{github.workspace}}/client/coverage
+
  dependabot:
     needs: [client]
     runs-on: ubuntu-latest
