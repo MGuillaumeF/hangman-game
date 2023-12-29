@@ -569,20 +569,20 @@ jobs:
     needs: [sonarcloud-analyse]
     uses: ./.github/workflows/build-windows.yml
     with:
-     BUILD_TYPE: 'Debug'
-     APPLICATION_NAME: ${{ env.APPLICATION_NAME }}
-     APPLICATION_VERSION: ${{ env.APPLICATION_VERSION }}
-     BOOST_VERSION: ${{ env.BOOST_VERSION }}
+     BUILD_TYPE: Debug
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
     secrets: inherit
 
  build-release-Windows:
     needs: [build-debug-Windows]
     uses: ./.github/workflows/build-windows.yml
     with:
-     BUILD_TYPE: 'Release'
-     APPLICATION_NAME: ${{ env.APPLICATION_NAME }}
-     APPLICATION_VERSION: ${{ env.APPLICATION_VERSION }}
-     BOOST_VERSION: ${{ env.BOOST_VERSION }}
+     BUILD_TYPE: Release
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
     secrets: inherit
 
  install-server-Windows:
@@ -604,20 +604,20 @@ jobs:
   needs: [sonarcloud-analyse]
   uses: ./.github/workflows/build-osx.yml
   with:
-   BUILD_TYPE: 'Debug'
-   APPLICATION_NAME: ${{ env.APPLICATION_NAME }}
-   APPLICATION_VERSION: ${{ env.APPLICATION_VERSION }}
-   BOOST_VERSION: ${{ env.BOOST_VERSION }}
+   BUILD_TYPE: Debug
+   APPLICATION_NAME: HangmanGame
+   APPLICATION_VERSION: 0.1.0
+   BOOST_VERSION: 1.81.0
   secrets: inherit
 
  build-release-MacOSX:
     needs: [build-debug-MacOSX]
     uses: ./.github/workflows/build-osx.yml
     with:
-     BUILD_TYPE: 'Release'
-     APPLICATION_NAME: ${{ env.APPLICATION_NAME }}
-     APPLICATION_VERSION: ${{ env.APPLICATION_VERSION }}
-     BOOST_VERSION: ${{ env.BOOST_VERSION }}
+     BUILD_TYPE: Release
+     APPLICATION_NAME: HangmanGame
+     APPLICATION_VERSION: 0.1.0
+     BOOST_VERSION: 1.81.0
     secrets: inherit
 
  build-raspberry-pi-toolchain:
