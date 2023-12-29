@@ -146,7 +146,7 @@ jobs:
       run: |
         npm install
         npm run build
-        npm start ../../resources/model.xml
+        npm start ../../resources/model.xml --cpp-only
         npm run lint:eslint:json || echo FAILED
 
     - name: Generate Generator Docs

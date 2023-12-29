@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { parseString } from "xml2js";
 import { generateCRUDOrderDispatcher } from "./generateCRUDOrderDispatcher";
-import { generateTsClass, TypeScriptClassGenerator } from "./generateTsClass";
+import { TypeScriptClassGenerator, generateTsClass } from "./generateTsClass";
 import {
   ModelAttributesProperties,
   ModelClassDefinition,
@@ -86,20 +86,22 @@ function getCppAttributeType(
 function generateClasses(modelClasses: ModelClassDefinition[]) {
   for (const modelClass of modelClasses) {
     const modelCppDirPath = resolve("dist", "cpp", "model");
-    const modelTsDirPath = resolve("dist", "ts", "model");
     mkdirSync(modelCppDirPath, { recursive: true });
-    mkdirSync(modelTsDirPath, { recursive: true });
     writeFileSync(
       resolve("dist", "cpp", "model", `${modelClass.name}.hxx`),
       generateCppClass(modelClass)
     );
-    writeFileSync(
-      resolve(
-        modelTsDirPath,
-        `${snakeCaseToUpperCamelCase(modelClass.name)}.ts`
-      ),
-      generateTsClass(modelClass)
-    );
+    if (!process.argv.includes('--cpp-only')) {
+      const modelTsDirPath = resolve("dist", "ts", "model");
+      mkdirSync(modelTsDirPath, { recursive: true });
+      writeFileSync(
+        resolve(
+          modelTsDirPath,
+          `${snakeCaseToUpperCamelCase(modelClass.name)}.ts`
+        ),
+        generateTsClass(modelClass)
+      );
+    }
   }
 }
 
