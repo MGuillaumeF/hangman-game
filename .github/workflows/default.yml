@@ -304,12 +304,6 @@ jobs:
         /usr/cpp-coso/cpp-coso gcc-warning ${{github.workspace}}/reports/gcc_warning_report.txt ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json
         cp ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json ${{github.workspace}}/server/reports/gcc-warning-sonarqube-report.json
         cp ${{github.workspace}}/reports/gcc-warning-sonarqube-report.json ${{github.workspace}}/data-management/reports/gcc-warning-sonarqube-report.json
-        
-    - name: Archive data-management report
-      uses: actions/upload-artifact@v4
-      with:
-        name: Data-Management-Hangman-Game - Reports
-        path: ${{github.workspace}}/data-management/reports
 
     - name: Lint Clang-Tidy
       run: clang-tidy -checks='*,-modernize-use-trailing-return-type,-llvm-header-guard,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations' -header-filter='server/.*' -p server/bin server/**/*.*pp > ${{github.workspace}}/server/reports/clang_tidy_report.txt || echo "raised error"
@@ -952,7 +946,7 @@ jobs:
       working-directory: ${{github.workspace}}/bin
       run: cpack -G "ZIP;DragNDrop"
 
-    - name: Archive Application ZIP
+    - name: Archive Application OSX ZIP
       uses: actions/upload-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Darwin.zip
@@ -1000,13 +994,13 @@ jobs:
       # Build your program with the given configuration
       run: cpack -G "ZIP;DEB"
 
-    - name: Archive Server ZIP
+    - name: Archive Application Linux ZIP
       uses: actions/upload-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.zip
         path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.zip
 
-    - name: Archive Server DEB
+    - name: Archive Application DEB
       uses: actions/upload-artifact@v4
       with:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
