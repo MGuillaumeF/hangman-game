@@ -913,24 +913,6 @@ jobs:
         name: ${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux-arm64.deb
         path: ${{github.workspace}}/bin/${{env.APPLICATION_NAME}}-${{env.APPLICATION_VERSION}}-Linux.deb
 
- dependabot:
-    needs: [sonarcloud-analyse]
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    steps:
-
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.6.0
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Enable auto-merge for Dependabot PRs 
-        run: gh pr merge --delete-branch --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
  packaging:
     needs: [ install-server-Linux, install-server-Windows, build-release-MacOSX, build-raspberry-pi-toolchain]
     runs-on: ubuntu-latest
