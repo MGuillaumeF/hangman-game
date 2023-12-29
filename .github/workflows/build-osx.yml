@@ -57,11 +57,11 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Create reports directory
-	  if: ${{ inputs.BUILD_TYPE == 'Debug' }}
+      if: ${{ inputs.BUILD_TYPE == 'Debug' }}
       run: mkdir ${{github.workspace}}/server/reports
 
     - uses: actions/download-artifact@v4
-	  if: ${{ inputs.BUILD_TYPE == 'Release' }}
+      if: ${{ inputs.BUILD_TYPE == 'Release' }}
       with:
         name: IHM-Hangman-Game
         path: ${{github.workspace}}/client/build
@@ -128,26 +128,26 @@ jobs:
       run: cmake --build ${{github.workspace}}/bin
 
     - name: Server Tests ctest
-	  if: ${{ inputs.BUILD_TYPE == 'Debug' }}
+      if: ${{ inputs.BUILD_TYPE == 'Debug' }}
       working-directory: ${{github.workspace}}/server/test
       run: |
         chmod +x ./run-tests.sh
         ./run-tests.sh
-		
+    
     - name: Package Application
-	  if: ${{ inputs.BUILD_TYPE == 'Release' }}
+      if: ${{ inputs.BUILD_TYPE == 'Release' }}
       working-directory: ${{github.workspace}}/bin
       run: cpack -G "ZIP;DragNDrop"
 
     - name: Archive Application OSX ZIP
-	  if: ${{ inputs.BUILD_TYPE == 'Release' }}
+      if: ${{ inputs.BUILD_TYPE == 'Release' }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{inputs.APPLICATION_NAME}}-${{inputs.APPLICATION_VERSION}}-Darwin.zip
         path: ${{github.workspace}}/bin/${{inputs.APPLICATION_NAME}}-${{inputs.APPLICATION_VERSION}}-Darwin.zip
 
     - name: Archive Application DMG
-	  if: ${{ inputs.BUILD_TYPE == 'Release' }}
+      if: ${{ inputs.BUILD_TYPE == 'Release' }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{inputs.APPLICATION_NAME}}-${{inputs.APPLICATION_VERSION}}-Darwin.dmg
