@@ -36,7 +36,7 @@ jobs:
   secrets: inherit
 
  sonarcloud-analyse:
-    needs: [client]
+    needs: [call-client-worflow-in-local-repo]
     env:
       BUILD_TYPE: Debug
     runs-on: ubuntu-latest
