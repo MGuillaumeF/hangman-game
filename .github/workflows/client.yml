@@ -49,7 +49,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       working-directory: ${{github.workspace}}/client
       run: | 
-        npm run prettier --config ./.prettierrc
+        npm run prettier --config ./.prettierrc .
         npm run prettier --config ./.prettierrc ../data-management/tools
 
     - name: Save client changes
