@@ -5,7 +5,7 @@
     "build:doc": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
-    "zip-lib": "^0.7.3"
+    "zip-lib": "^1.0.1"
   },
   "devDependencies": {
     "@mguillaumef/audiso": "^0.0.4",
