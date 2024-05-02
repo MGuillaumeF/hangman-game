@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "@mguillaumef/audiso": "^0.0.4",
-    "jsdoc": "^4.0.2"
+    "jsdoc": "^4.0.3"
   }
 }
