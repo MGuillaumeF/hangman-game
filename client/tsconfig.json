@@ -27,6 +27,7 @@
     "strictPropertyInitialization": true,
     "noFallthroughCasesInSwitch": true,
     "declaration": false,
+    "typeRoots": ["./types", "./node_modules/@types"],
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,

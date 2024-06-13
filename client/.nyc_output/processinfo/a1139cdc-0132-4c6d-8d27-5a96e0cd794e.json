@@ -1,0 +1,29 @@
+{
+  "parent": null,
+  "pid": 2468,
+  "argv": [
+    "/usr/local/bin/node",
+    "/home/runner/work/hangman-game/hangman-game/client/node_modules/.bin/mocha",
+    "--config",
+    "test/runners/mocha/.mocharc.jsonc",
+    "--reporter",
+    "mocha-multi-reporters",
+    "--reporter-options",
+    "configFile=mocha-multi-config.json"
+  ],
+  "execArgv": [],
+  "cwd": "/home/runner/work/hangman-game/hangman-game/client",
+  "time": 1671502363092,
+  "ppid": 2457,
+  "coverageFilename": "/home/runner/work/hangman-game/hangman-game/client/.nyc_output/a1139cdc-0132-4c6d-8d27-5a96e0cd794e.json",
+  "externalId": "",
+  "uuid": "a1139cdc-0132-4c6d-8d27-5a96e0cd794e",
+  "files": [
+    "/home/runner/work/hangman-game/hangman-game/client/src/errors/HangmanError.ts",
+    "/home/runner/work/hangman-game/hangman-game/client/src/model/Word.ts",
+    "/home/runner/work/hangman-game/hangman-game/client/src/model/RootModelObject.ts",
+    "/home/runner/work/hangman-game/hangman-game/client/src/model/Validator.ts",
+    "/home/runner/work/hangman-game/hangman-game/client/src/model/ModelError.ts",
+    "/home/runner/work/hangman-game/hangman-game/client/src/model/Dictionary.ts"
+  ]
+}
