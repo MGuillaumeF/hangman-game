@@ -75,4 +75,13 @@ describe("Word Model Object Test Suite", function () {
       );
     }
   });
+
+  it("Test cyclicly conservation parse/toJson method", function () {
+    const myWord: any = Word.parse(WORD_EXAMPLE).toJSON();
+
+    expect(myWord).to.be.equal(
+      WORD_EXAMPLE,
+      "test parse to json object are equals"
+    );
+  });
 });
